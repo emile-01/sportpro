@@ -5,7 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elite Match Predictor</title>
 
+<!-- Firebase Analytics -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",
+  authDomain: "sportpre-69123.firebaseapp.com",
+  projectId: "sportpre-69123",
+  storageBucket: "sportpre-69123.firebasestorage.app",
+  messagingSenderId: "210702903592",
+  appId: "1:210702903592:web:63ea951f2243f52de5c81d",
+  measurementId: "G-46Y1K4H98M"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+window.analytics = analytics;
+window.logEvent = logEvent;
+</script>
 <style>
+
 :root{
 --primary:#2563eb;
 --secondary:#0f172a;
@@ -82,6 +104,17 @@ font-weight:800;
 cursor:pointer;
 font-size:1rem;
 margin-top:10px;
+}
+
+.support-btn{
+background:var(--accent);
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+font-weight:700;
+cursor:pointer;
+margin-bottom:20px;
 }
 
 #loaderOverlay{
@@ -178,6 +211,39 @@ padding:15px;
 border-radius:8px;
 margin-top:20px;
 }
+
+#supportOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(15,23,42,.95);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:3000;
+}
+
+.support-modal{
+background:white;
+width:90%;
+max-width:700px;
+border-radius:16px;
+padding:30px;
+max-height:90%;
+overflow-y:auto;
+position:relative;
+}
+
+.support-modal h2{
+margin-top:0;
+}
+
+.support-modal ul{
+line-height:1.6;
+}
+
 </style>
 </head>
 
@@ -185,7 +251,11 @@ margin-top:20px;
 
 <div class="container">
 
-<h2 style="text-align:center;">⚽⚽football predictor⚽⚽</h2>
+<h2 style="text-align:center;">⚽⚽ Football Predictor ⚽⚽</h2>
+
+<div style="text-align:center;">
+<button class="support-btn" onclick="openSupport()">📘 Support / How To Use</button>
+</div>
 
 <div class="grid">
 
@@ -268,7 +338,6 @@ margin-top:20px;
 </div>
 
 <div><label>A - Trophies</label><input type="number" id="a_titles" value="1"></div>
-
 <div><label>B - Trophies</label><input type="number" id="b_titles" value="0"></div>
 
 </div>
@@ -279,25 +348,20 @@ margin-top:20px;
 
 </div>
 
-
 <div id="loaderOverlay">
 <h2>Analyzing Match...</h2>
 <div id="percentageText" style="font-size:2rem;font-weight:800;">0%</div>
 <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
 </div>
 
-
 <div id="resultOverlay">
 <div class="result-modal">
-
 <span class="close-x" onclick="closeResults()">×</span>
 
 <h2>Prediction Report</h2>
 
 <div class="stat-item"><span class="stat-label">Win Probability</span><span class="stat-value" id="res_win"></span></div>
-
 <div class="stat-item"><span class="stat-label">Expected Goals</span><span class="stat-value" id="res_exG"></span></div>
-
 <div class="stat-item"><span class="stat-label">Over 2.5 Goals</span><span class="stat-value" id="res_over"></span></div>
 
 <h3 style="margin-top:25px;">Correct Score Predictions</h3>
@@ -312,8 +376,63 @@ margin-top:20px;
 </div>
 </div>
 
+<div id="supportOverlay">
+<div class="support-modal">
+
+<span class="close-x" onclick="closeSupport()">×</span>
+
+<h2>How To Use This Predictor</h2>
+
+<h3>Where To Get Match Data</h3>
+
+<ul>
+<li>Flashscore</li>
+<li>SofaScore</li>
+<li>WhoScored</li>
+<li>Transfermarkt</li>
+<li>FBref</li>
+</ul>
+
+<h3>What Each Input Means</h3>
+
+<ul>
+<li><b>H2H Wins</b> = Head to Head wins in last 5 meetings</li>
+<li><b>Recent Wins</b> = Wins in last 5 matches</li>
+<li><b>Avg Scored</b> = Average goals scored in last 3 games</li>
+<li><b>Avg Conceded</b> = Average goals conceded in last 3 games</li>
+<li><b>Key Player</b> = Important player available</li>
+<li><b>Coach System</b> = Team tactical formation</li>
+<li><b>Trophies</b> = Total major titles team has won</li>
+</ul>
+
+<h3>Example Using AI</h3>
+
+Ask AI:
+
+<pre>
+Give statistics for Arsenal vs Chelsea:
+
+1. Last 5 head to head wins
+2. Last 5 match results
+3. Average goals scored last 3 matches
+4. Average goals conceded last 3 matches
+5. Key player availability
+</pre>
+
+<p>Then insert the numbers into the predictor.</p>
+
+</div>
+</div>
 
 <script>
+
+function openSupport(){
+document.getElementById("supportOverlay").style.display="flex"
+}
+
+function closeSupport(){
+document.getElementById("supportOverlay").style.display="none"
+}
 
 function factorial(n){return n<=1?1:n*factorial(n-1)}
 
@@ -322,6 +441,10 @@ return(Math.pow(lambda,k)*Math.exp(-lambda))/factorial(k)
 }
 
 function startAnalysis(){
+
+if(window.logEvent){
+logEvent(window.analytics,"prediction_generated");
+}
 
 const loader=document.getElementById('loaderOverlay')
 const fill=document.getElementById('pFill')
@@ -375,7 +498,6 @@ titles:parseInt(b_titles.value)
 
 const weather=document.getElementById("weather").value==="bad"?-0.2:0
 
-
 let lambdaA=
 (A.att*0.6+B.def*0.4)+
 (A.form*0.5)+
@@ -384,7 +506,6 @@ let lambdaA=
 (A.sys)+
 (A.titles*0.03)+
 weather
-
 
 let lambdaB=
 (B.att*0.6+A.def*0.4)+
@@ -395,12 +516,10 @@ let lambdaB=
 (B.titles*0.03)+
 weather
 
-
 lambdaA=Math.max(.2,Math.min(lambdaA,3.5))
 lambdaB=Math.max(.2,Math.min(lambdaB,3.5))
 
 const totalExG=lambdaA+lambdaB
-
 
 let scores=[]
 let home=0
@@ -408,9 +527,7 @@ let away=0
 let draw=0
 let over25=0
 
-
 for(let a=0;a<=6;a++){
-
 for(let b=0;b<=6;b++){
 
 let p=poisson(lambdaA,a)*poisson(lambdaB,b)
@@ -424,36 +541,28 @@ else draw+=p
 if(a+b>2.5)over25+=p
 
 }
-
 }
 
-
 scores.sort((a,b)=>b.prob-a.prob)
-
 
 const probHome=home*100
 const probAway=away*100
 const probDraw=draw*100
 const probOver=over25*100
 
-
 res_win.innerText=
 `Home ${probHome.toFixed(1)}% | Draw ${probDraw.toFixed(1)}% | Away ${probAway.toFixed(1)}%`
 
 res_exG.innerText=totalExG.toFixed(2)
-
 res_over.innerText=probOver.toFixed(1)+"%"
 
-
 const scoreContainer=document.getElementById("scorePredictions")
-
 scoreContainer.innerHTML=""
 
 scores.slice(0,3).forEach(s=>{
 scoreContainer.innerHTML+=
 `<div class="score-pill">${s.score} (${(s.prob*100).toFixed(1)}%)</div>`
 })
-
 
 let picks=[]
 
