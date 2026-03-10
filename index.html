@@ -500,26 +500,76 @@ titles:parseInt(b_titles.value)
 
 const weather=document.getElementById("weather").value==="bad"?-0.2:0
 
-let lambdaA=
-(A.att*0.6+B.def*0.4)+
-(A.form*0.5)+
-(A.h2h*0.3)+
-(A.key*0.15)+
-(A.sys)+
-(A.titles*0.03)+
-weather
+/* ---------- ATTACK & DEFENSE BASE ---------- */
 
-let lambdaB=
-(B.att*0.6+A.def*0.4)+
-(B.form*0.5)+
-(B.h2h*0.3)+
-(B.key*0.15)+
-(B.sys)+
-(B.titles*0.03)+
-weather
+let attackA = A.att
+let defenseA = A.def
 
-lambdaA=Math.max(.2,Math.min(lambdaA,3.5))
-lambdaB=Math.max(.2,Math.min(lambdaB,3.5))
+let attackB = B.att
+let defenseB = B.def
+
+/* ---------- FORM FACTOR ---------- */
+
+let formA = 1 + (A.form - 0.5) * 0.4
+let formB = 1 + (B.form - 0.5) * 0.4
+
+/* ---------- H2H FACTOR ---------- */
+
+let h2hA = 1 + (A.h2h - 0.5) * 0.25
+let h2hB = 1 + (B.h2h - 0.5) * 0.25
+
+/* ---------- PLAYER IMPACT ---------- */
+
+let playerA = 1 + (A.key * 0.08)
+let playerB = 1 + (B.key * 0.08)
+
+/* ---------- COACH SYSTEM ---------- */
+
+let tacticA = 1 + A.sys
+let tacticB = 1 + B.sys
+
+/* ---------- TROPHY EXPERIENCE ---------- */
+
+let expA = 1 + (A.titles * 0.02)
+let expB = 1 + (B.titles * 0.02)
+
+/* ---------- WEATHER ---------- */
+
+let weatherFactor = weather
+
+/* ---------- EXPECTED GOALS (Improved Model) ---------- */
+
+/* Defense resistance (stable scaling) */
+
+let defenseImpactA = 1 - (defenseB * 0.25)
+let defenseImpactB = 1 - (defenseA * 0.25)
+
+/* Base expected goals */
+
+let lambdaA =
+attackA *
+defenseImpactA *
+formA *
+h2hA *
+playerA *
+tacticA *
+expA +
+weatherFactor
+
+let lambdaB =
+attackB *
+defenseImpactB *
+formB *
+h2hB *
+playerB *
+tacticB *
+expB +
+weatherFactor
+
+/* ---------- LIMIT VALUES ---------- */
+
+lambdaA = Math.max(0.2, Math.min(lambdaA, 3.8))
+lambdaB = Math.max(0.2, Math.min(lambdaB, 3.8))
 
 const totalExG=lambdaA+lambdaB
 
