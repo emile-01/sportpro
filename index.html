@@ -9,25 +9,40 @@
 
 <!-- Firebase Analytics -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAnalytics, logEvent, setUserId, setUserProperties } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",
-  authDomain: "sportpre-69123.firebaseapp.com",
-  projectId: "sportpre-69123",
-  storageBucket: "sportpre-69123.firebasestorage.app",
-  messagingSenderId: "210702903592",
-  appId: "1:210702903592:web:63ea951f2243f52de5c81d",
-  measurementId: "G-46Y1K4H98M"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",
+    authDomain: "sportpre-69123.firebaseapp.com",
+    projectId: "sportpre-69123",
+    storageBucket: "sportpre-69123.firebasestorage.app",
+    messagingSenderId: "210702903592",
+    appId: "1:210702903592:web:63ea951f2243f52de5c81d",
+    measurementId: "G-46Y1K4H98M"
+  };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
-window.analytics = analytics;
-window.logEvent = logEvent;
+  // 1. Identify the user for Retention Tracking
+  // In a real app, use their Email/ID. Here, we use a unique ID stored in localStorage.
+  let uuid = localStorage.getItem('user_uuid');
+  if (!uuid) {
+    uuid = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('user_uuid', uuid);
+  }
+  setUserId(analytics, uuid);
+
+  // 2. Make functions globally available for your HTML buttons
+  window.analytics = analytics;
+  window.logEvent = logEvent;
+  window.setUserProperties = setUserProperties;
+
+  // Track initial page view with custom data
+  logEvent(analytics, 'page_view', { page_title: 'Elite Match Predictor' });
 </script>
+  
 <style>
 
 :root{
@@ -253,7 +268,7 @@ line-height:1.6;
 
 <div class="container">
 
-<h2 style="text-align:center;">⚽⚽ Football Predictor ⚽⚽</h2>
+<h2 style="text-align:center;">⚽ Football Predictor ⚽</h2>
 
 <div style="text-align:center;">
 <button class="support-btn" onclick="openSupport()">📘 Support / How To Use</button>
@@ -442,200 +457,152 @@ function poisson(lambda,k){
 return(Math.pow(lambda,k)*Math.exp(-lambda))/factorial(k)
 }
 
-function startAnalysis(){
+function startAnalysis() {
+    // 1. Firebase Tracking Logic
+    if (window.logEvent) {
+        window.logEvent(window.analytics, "prediction_generated", {
+            home_team_form: document.getElementById('a_form').value,
+            away_team_form: document.getElementById('b_form').value,
+            weather_condition: document.getElementById('weather').value
+        });
+        
+        let count = parseInt(localStorage.getItem('pred_count') || 0) + 1;
+        localStorage.setItem('pred_count', count);
+        
+        if (count > 5) {
+            window.setUserProperties(window.analytics, { user_type: "power_user" });
+        }
+    }
 
-if(window.logEvent){
-logEvent(window.analytics,"prediction_generated");
-}
+    // 2. UI Loader Logic (Now correctly inside the function)
+    const loader = document.getElementById('loaderOverlay');
+    const fill = document.getElementById('pFill');
+    const txt = document.getElementById('percentageText');
 
-const loader=document.getElementById('loaderOverlay')
-const fill=document.getElementById('pFill')
-const txt=document.getElementById('percentageText')
+    loader.style.display = 'flex';
+    let progress = 0;
 
-loader.style.display='flex'
+    const interval = setInterval(() => {
+        progress += 5;
+        fill.style.width = progress + "%";
+        txt.innerText = progress + "%";
 
-let progress=0
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                loader.style.display = 'none';
+                calculateResults(); 
+            }, 300);
+        }
+    }, 80);
+} // <--- This single brace now closes EVERYTHING properly.
+  
+  
 
-const interval=setInterval(()=>{
 
-progress+=5
-fill.style.width=progress+"%"
-txt.innerText=progress+"%"
-
-if(progress>=100){
-clearInterval(interval)
-
-setTimeout(()=>{
-loader.style.display='none'
-calculateResults()
-},300)
-
-}
-
-},80)
-
-}
 
 function calculateResults(){
+    // 1. We must define these variables so the code can find your HTML inputs
+    const a_h2h = document.getElementById('a_h2h');
+    const a_form = document.getElementById('a_form');
+    const a_att = document.getElementById('a_att');
+    const a_def = document.getElementById('a_def');
+    const a_key = document.getElementById('a_key');
+    const a_sys = document.getElementById('a_sys');
+    const a_titles = document.getElementById('a_titles');
 
-const A={
-att:parseFloat(a_att.value),
-def:parseFloat(a_def.value),
-h2h:parseInt(a_h2h.value)/5,
-form:parseInt(a_form.value)/5,
-key:parseInt(a_key.value),
-sys:parseFloat(a_sys.value),
-titles:parseInt(a_titles.value)
+    const b_h2h = document.getElementById('b_h2h');
+    const b_form = document.getElementById('b_form');
+    const b_att = document.getElementById('b_att');
+    const b_def = document.getElementById('b_def');
+    const b_key = document.getElementById('b_key');
+    const b_sys = document.getElementById('b_sys');
+    const b_titles = document.getElementById('b_titles');
+
+    const res_win = document.getElementById('res_win');
+    const res_exG = document.getElementById('res_exG');
+    const res_over = document.getElementById('res_over');
+    const resultOverlay = document.getElementById('resultOverlay');
+
+    // 2. Data processing
+    const A = {
+        att: parseFloat(a_att.value),
+        def: parseFloat(a_def.value),
+        h2h: parseInt(a_h2h.value) / 5,
+        form: parseInt(a_form.value) / 5,
+        key: parseInt(a_key.value),
+        sys: parseFloat(a_sys.value),
+        titles: parseInt(a_titles.value)
+    };
+
+    const B = {
+        att: parseFloat(b_att.value),
+        def: parseFloat(b_def.value),
+        h2h: parseInt(b_h2h.value) / 5,
+        form: parseInt(b_form.value) / 5,
+        key: parseInt(b_key.value),
+        sys: parseFloat(b_sys.value),
+        titles: parseInt(b_titles.value)
+    };
+
+    const weather = document.getElementById("weather").value === "bad" ? -0.2 : 0;
+
+    // 3. Prediction Math (Poisson Distribution logic)
+    let defenseImpactA = 1 - (B.def * 0.25);
+    let defenseImpactB = 1 - (A.def * 0.25);
+
+    let lambdaA = Math.max(0.2, (A.att * defenseImpactA * (1 + (A.form - 0.5) * 0.4) * (1 + (A.h2h - 0.5) * 0.25) * (1 + (A.key * 0.08)) * (1 + A.sys) * (1 + (A.titles * 0.02))) + weather);
+    let lambdaB = Math.max(0.2, (B.att * defenseImpactB * (1 + (B.form - 0.5) * 0.4) * (1 + (B.h2h - 0.5) * 0.25) * (1 + (B.key * 0.08)) * (1 + B.sys) * (1 + (B.titles * 0.02))) + weather);
+
+    const totalExG = lambdaA + lambdaB;
+
+    let scores = [];
+    let homeProb = 0, awayProb = 0, drawProb = 0, over25Prob = 0;
+
+    for (let a = 0; a <= 6; a++) {
+        for (let b = 0; b <= 6; b++) {
+            let p = poisson(lambdaA, a) * poisson(lambdaB, b);
+            scores.push({ score: `${a} - ${b}`, prob: p });
+            if (a > b) homeProb += p;
+            else if (b > a) awayProb += p;
+            else drawProb += p;
+            if (a + b > 2.5) over25Prob += p;
+        }
+    }
+
+    // 4. Update the UI with results
+    scores.sort((a, b) => b.prob - a.prob);
+
+    res_win.innerText = `Home ${(homeProb * 100).toFixed(1)}% | Draw ${(drawProb * 100).toFixed(1)}% | Away ${(awayProb * 100).toFixed(1)}%`;
+    res_exG.innerText = totalExG.toFixed(2);
+    res_over.innerText = (over25Prob * 100).toFixed(1) + "%";
+
+    const scoreContainer = document.getElementById("scorePredictions");
+    scoreContainer.innerHTML = "";
+    scores.slice(0, 3).forEach(s => {
+        scoreContainer.innerHTML += `<div class="score-pill">${s.score} (${(s.prob * 100).toFixed(1)}%)</div>`;
+    });
+
+    let picks = [];
+    if (homeProb > 0.55) picks.push("Home Win");
+    else if (awayProb > 0.55) picks.push("Away Win");
+    else picks.push("Double Chance");
+
+    if (over25Prob > 0.60) picks.push("Over 2.5 Goals");
+    if (over25Prob < 0.40) picks.push("Under 2.5 Goals");
+    if (totalExG > 3) picks.push("BTTS Yes");
+
+    document.getElementById("res_pick").innerHTML = "• " + picks.join("<br>• ");
+    
+    // 5. Finally, show the result modal
+    resultOverlay.style.display = "flex";
 }
 
-const B={
-att:parseFloat(b_att.value),
-def:parseFloat(b_def.value),
-h2h:parseInt(b_h2h.value)/5,
-form:parseInt(b_form.value)/5,
-key:parseInt(b_key.value),
-sys:parseFloat(b_sys.value),
-titles:parseInt(b_titles.value)
-}
-
-const weather=document.getElementById("weather").value==="bad"?-0.2:0
-
-/* ---------- ATTACK & DEFENSE BASE ---------- */
-
-let attackA = A.att
-let defenseA = A.def
-
-let attackB = B.att
-let defenseB = B.def
-
-/* ---------- FORM FACTOR ---------- */
-
-let formA = 1 + (A.form - 0.5) * 0.4
-let formB = 1 + (B.form - 0.5) * 0.4
-
-/* ---------- H2H FACTOR ---------- */
-
-let h2hA = 1 + (A.h2h - 0.5) * 0.25
-let h2hB = 1 + (B.h2h - 0.5) * 0.25
-
-/* ---------- PLAYER IMPACT ---------- */
-
-let playerA = 1 + (A.key * 0.08)
-let playerB = 1 + (B.key * 0.08)
-
-/* ---------- COACH SYSTEM ---------- */
-
-let tacticA = 1 + A.sys
-let tacticB = 1 + B.sys
-
-/* ---------- TROPHY EXPERIENCE ---------- */
-
-let expA = 1 + (A.titles * 0.02)
-let expB = 1 + (B.titles * 0.02)
-
-/* ---------- WEATHER ---------- */
-
-let weatherFactor = weather
-
-/* ---------- EXPECTED GOALS (Improved Model) ---------- */
-
-/* Defense resistance (stable scaling) */
-
-let defenseImpactA = 1 - (defenseB * 0.25)
-let defenseImpactB = 1 - (defenseA * 0.25)
-
-/* Base expected goals */
-
-let lambdaA =
-attackA *
-defenseImpactA *
-formA *
-h2hA *
-playerA *
-tacticA *
-expA +
-weatherFactor
-
-let lambdaB =
-attackB *
-defenseImpactB *
-formB *
-h2hB *
-playerB *
-tacticB *
-expB +
-weatherFactor
-
-/* ---------- LIMIT VALUES ---------- */
-
-lambdaA = Math.max(0.2, Math.min(lambdaA, 3.8))
-lambdaB = Math.max(0.2, Math.min(lambdaB, 3.8))
-
-const totalExG=lambdaA+lambdaB
-
-let scores=[]
-let home=0
-let away=0
-let draw=0
-let over25=0
-
-for(let a=0;a<=6;a++){
-for(let b=0;b<=6;b++){
-
-let p=poisson(lambdaA,a)*poisson(lambdaB,b)
-
-scores.push({score:`${a} - ${b}`,prob:p})
-
-if(a>b)home+=p
-else if(b>a)away+=p
-else draw+=p
-
-if(a+b>2.5)over25+=p
-
-}
-}
-
-scores.sort((a,b)=>b.prob-a.prob)
-
-const probHome=home*100
-const probAway=away*100
-const probDraw=draw*100
-const probOver=over25*100
-
-res_win.innerText=
-`Home ${probHome.toFixed(1)}% | Draw ${probDraw.toFixed(1)}% | Away ${probAway.toFixed(1)}%`
-
-res_exG.innerText=totalExG.toFixed(2)
-res_over.innerText=probOver.toFixed(1)+"%"
-
-const scoreContainer=document.getElementById("scorePredictions")
-scoreContainer.innerHTML=""
-
-scores.slice(0,3).forEach(s=>{
-scoreContainer.innerHTML+=
-`<div class="score-pill">${s.score} (${(s.prob*100).toFixed(1)}%)</div>`
-})
-
-let picks=[]
-
-if(probHome>55)picks.push("Home Win")
-else if(probAway>55)picks.push("Away Win")
-else picks.push("Double Chance")
-
-if(probOver>60)picks.push("Over 2.5 Goals")
-if(probOver<40)picks.push("Under 2.5 Goals")
-
-if(totalExG>3)picks.push("BTTS Yes")
-
-res_pick.innerHTML="• "+picks.join("<br>• ")
-
-resultOverlay.style.display="flex"
-
-}
 
 function closeResults(){
-resultOverlay.style.display="none"
+    document.getElementById("resultOverlay").style.display="none";
 }
+
 
 </script>
 
