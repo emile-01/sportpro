@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Elite Hub | Triple Terminal - Professional Betting Intelligence</title>
+    <meta name="description" content="Elite Hub is the ultimate terminal for professional betting codes and live market analysis. Join agents worldwide to share and rank the best picks.">
+    <meta name="keywords" content="betting codes, sportybet, betpawa, 1xbet, betting tips, elite hub, betting terminal">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Elite Hub | Triple Terminal">
+    <meta property="og:description" content="Access live betting terminals and pro picks. High-accuracy codes shared by top agents.">
+    <meta property="og:image" content="https://yourdomain.com/logo.png"> <meta property="og:url" content="https://yourdomain.com/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Elite Hub | Triple Terminal">
+    <meta name="twitter:description" content="The pro-standard for betting code distribution.">
+    <meta name="twitter:image" content="https://yourdomain.com/logo.png">
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #020203; --surface: #0a0a0c; --card: #111114;
+            --accent: #3b82f6; --border: #1f1f23; --text: #ffffff; 
+            --dim: #71717a; --gold: #fbbf24; --red: #ff4d4d;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; height: 100vh; overflow: hidden; }
+
+        #shell { display: grid; grid-template-columns: 1fr; width: 100vw; height: 100vh; }
+        @media (min-width: 1024px) { 
+            #shell { grid-template-columns: 320px 1fr 320px; } 
+            #chat-side, #profile-side { display: flex !important; position: static !important; border-inline: 1px solid var(--border); }
+        }
+
+        .view { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: var(--bg); }
+        .nav { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .scroll { flex-grow: 1; overflow-y: auto; padding: 15px; }
+
+        #chat-side { display: none; background: var(--surface); flex-direction: column; }
+        #chat-msgs { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .msg { font-size: 0.85rem; padding: 8px 12px; background: var(--card); border-radius: 10px; border-left: 3px solid var(--accent); border: 1px solid var(--border); }
+        .msg b { color: var(--accent); font-size: 0.7rem; display: block; margin-bottom: 2px; }
+        
+        .chat-input-area { padding: 15px; border-top: 1px solid var(--border); }
+        .input-group { display: flex; gap: 8px; }
+
+        .h-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; }
+        .h-scroll::-webkit-scrollbar { display: none; }
+        .rec-item { flex: 0 0 240px; scroll-snap-align: start; padding: 15px; border-radius: 12px; background: linear-gradient(135deg, var(--card) 0%, var(--surface) 100%); border: 1px solid var(--gold); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .booking-box { font-family: monospace; font-size: 1.4rem; font-weight: 800; color: var(--accent); background: #000; padding: 10px; border-radius: 8px; text-align: center; margin: 8px 0; cursor: pointer; border: 1px solid #222; }
+
+        #profile-side { display: none; background: var(--surface); flex-direction: column; padding: 20px; }
+        .rank-card { background: #000; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid var(--accent); margin-bottom: 15px; color: #fff; }
+
+        input, select { width: 100%; padding: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; }
+        .btn-go { background: var(--accent); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 8px; cursor: pointer; }
+        .fab { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; z-index: 99; cursor: pointer; color: white; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .tour-box { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--accent); text-align: center; max-width: 300px; }
+    </style>
+</head>
+<body>
+
+<div id="shell">
+    <div id="chat-side" class="view">
+        <div class="nav"><h3 style="margin:0; font-size:0.9rem; color:var(--accent);">LIVE CHAT</h3><i class="fas fa-times lg:hidden" onclick="toggleView('chat-side', false)"></i></div>
+        <div id="chat-msgs"></div>
+        <div class="chat-input-area">
+            <div class="input-group">
+                <input type="text" id="chat-input" placeholder="Type..." onkeydown="if(event.key==='Enter') sendChat()">
+                <button class="btn-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <small style="font-size:0.6rem; color:var(--dim);">Self-destructs after 4 hours.</small>
+        </div>
+    </div>
+
+    <div class="view">
+        <div class="nav">
+            <i class="fas fa-comments lg:hidden" onclick="toggleView('chat-side', true)"></i>
+            <h2 style="letter-spacing:-1px; margin:0;">ELITE HUB</h2>
+            <i class="fas fa-user lg:hidden" onclick="toggleView('profile-side', true)"></i>
+        </div>
+        <div class="scroll">
+            <div id="step-picks" style="font-size:0.7rem; font-weight:900; color:var(--gold); margin-bottom:10px;">🔥 TOP 8 PRO PICKS</div>
+            <div class="h-scroll" id="rec-feed"></div>
+
+            <div id="step-market" style="font-size:0.7rem; font-weight:900; color:var(--dim); margin-top:20px; margin-bottom:10px;">📡 MARKET TERMINAL</div>
+            <div id="live-feed"></div>
+        </div>
+    </div>
+
+    <div id="profile-side" class="view">
+        <div class="nav"><h3 style="margin:0; font-size:0.9rem; color:var(--accent);">AGENT PROFILE</h3><i class="fas fa-times lg:hidden" onclick="toggleView('profile-side', false)"></i></div>
+        <div id="auth-box">
+            <input type="email" id="email" placeholder="Email"><input type="password" id="pass" placeholder="Password">
+            <button class="btn-go" onclick="authAction('in')">LOGIN</button>
+            <button onclick="authAction('up')" style="background:none; border:none; color:var(--dim); width:100%; margin-top:10px; cursor:pointer; font-size:0.8rem;">Register New Terminal</button>
+        </div>
+        <div id="user-box" style="display:none;">
+            <div class="rank-card" id="step-rank">
+                <div style="font-size:0.6rem; color:var(--accent); font-weight:bold;">GLOBAL RANK</div>
+                <div id="rank-num" style="font-size:2.5rem; font-weight:900;">#--</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);"><span>Posts</span><b id="p-count">0</b></div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);"><span>Likes</span><b id="l-count">0</b></div>
+            <button onclick="logout()" style="width:100%; margin-top:20px; background:var(--card); color:var(--text); border:1px solid var(--border); padding:12px; border-radius:8px; cursor:pointer;">Logout</button>
+        </div>
+    </div>
+</div>
+
+<div class="fab" id="step-plus" onclick="document.getElementById('post-modal').style.display='flex'"><i class="fas fa-plus"></i></div>
+
+<div class="overlay" id="post-modal">
+    <div style="background:var(--card); padding:25px; border-radius:20px; width:90%; max-width:380px; border:1px solid var(--border);">
+        <h3 style="margin:0;">Broadcast Code</h3>
+        <select id="p-plat" style="margin-top:15px;">
+            <option>Betpawa</option><option>SportyBet</option><option>1XBet</option>
+            <option>Winner</option><option>Gorilla Games</option>
+        </select>
+        <input type="text" id="p-code" placeholder="BOOKING CODE">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <input type="number" id="p-exp-val" value="1" min="1">
+            <select id="p-exp-unit">
+                <option value="h">Hours</option>
+                <option value="d">Days</option>
+            </select>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <button class="btn-go" onclick="sendPost(false)">SIGNED</button>
+            <button class="btn-go" style="background:#222;" onclick="sendPost(true)">ANON</button>
+        </div>
+        <button onclick="document.getElementById('post-modal').style.display='none'" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer;">Cancel</button>
+    </div>
+</div>
+
+<div class="overlay" id="tour-modal">
+    <div class="tour-box">
+        <i id="tour-icon" class="fas fa-info-circle" style="font-size:2rem; color:var(--accent); margin-bottom:15px;"></i>
+        <h3 id="tour-title">Welcome Agent</h3>
+        <p id="tour-desc" style="font-size:0.9rem; color:var(--dim);"></p>
+        <button class="btn-go" onclick="nextTour()">Next</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, onSnapshot, orderBy, Timestamp, where, doc, updateDoc, increment, getDocs, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",
+        authDomain: "sportpre-69123.firebaseapp.com",
+        projectId: "sportpre-69123",
+        storageBucket: "sportpre-69123.firebasestorage.app",
+        messagingSenderId: "210702903592",
+        appId: "1:210702903592:web:63ea951f2243f52de5c81d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const filterText = (t) => t.replace(/\b(fuck|shit|bitch|asshole|pussy|links|http|www|.com|.net)\b/gi, "****");
+
+    const init = () => {
+        let firstLoad = true;
+        onSnapshot(query(collection(db, "codes"), orderBy("createdAt", "desc")), (snap) => {
+            const now = Date.now();
+            let items = [];
+            snap.forEach(d => {
+                const data = d.data();
+                if (data.expiresAt.toMillis() < now || data.bad >= 5) {
+                    deleteDoc(doc(db, "codes", d.id));
+                } else {
+                    items.push({id: d.id, ...data});
+                }
+            });
+
+            const rec = items.filter(i => !i.isAnon && i.likes >= 1).sort((a,b) => b.likes - a.likes).slice(0, 8);
+            document.getElementById('rec-feed').innerHTML = rec.map(i => `<div class="rec-item"><div class="booking-box" onclick="copy('${i.code}')">${i.code}</div><small>${i.platform}</small></div>`).join('');
+            document.getElementById('live-feed').innerHTML = items.map(i => `<div class="card"><div style="display:flex; justify-content:space-between; font-size:0.6rem;"><span>${i.platform}</span><span>${new Date(i.expiresAt.toMillis()).toLocaleDateString()}</span></div><div class="booking-box" onclick="copy('${i.code}')">${i.code}</div><div style="display:flex; justify-content:space-between; font-size:0.7rem;"><div onclick="vote('${i.id}','likes')" style="cursor:pointer">❤️ ${i.likes}</div><div onclick="vote('${i.id}','bad')" style="cursor:pointer">👎 ${i.bad || 0}</div><div onclick="copy('${i.code}')" style="cursor:pointer">COPY</div></div></div>`).join('');
+        });
+
+        onSnapshot(query(collection(db, "chats"), orderBy("at", "desc"), limit(50)), (snap) => {
+            const box = document.getElementById('chat-msgs');
+            const fourHoursAgo = Date.now() - (4 * 3600000);
+            
+            box.innerHTML = snap.docs.filter(d => {
+                const time = d.data().at.toMillis();
+                if (time < fourHoursAgo) {
+                    deleteDoc(doc(db, "chats", d.id));
+                    return false;
+                }
+                return true;
+            }).map(d => `<div class="msg"><b>${d.data().user}</b>${d.data().text}</div>`).reverse().join('');
+            box.scrollTop = box.scrollHeight;
+        });
+    };
+
+    let tourStep = 0;
+    const tourData = [
+        { t: "Live Terminal", d: "Real-time betting codes from top analysts. Swipe to see Pro Picks.", i: "fa-bolt" },
+        { t: "Live Chat", d: "Discuss strategies with other agents. Messages expire after 4 hours.", i: "fa-comments" },
+        { t: "Broadcast", d: "Share your own codes. You set the expiry (up to 12 days).", i: "fa-plus-circle" },
+        { t: "Ranking", d: "Gain likes to climb the Global Rank. Signed posts build your reputation.", i: "fa-trophy" }
+    ];
+
+    window.nextTour = () => {
+        tourStep++;
+        if(tourStep >= tourData.length) {
+            document.getElementById('tour-modal').style.display = 'none';
+            localStorage.setItem('hub_tour', 'done');
+        } else {
+            document.getElementById('tour-title').innerText = tourData[tourStep].t;
+            document.getElementById('tour-desc').innerText = tourData[tourStep].d;
+            document.getElementById('tour-icon').className = "fas " + tourData[tourStep].i;
+        }
+    };
+
+    onAuthStateChanged(auth, u => {
+        document.getElementById('auth-box').style.display = u ? 'none' : 'block';
+        document.getElementById('user-box').style.display = u ? 'block' : 'none';
+        if(u) {
+            updateProfile(u.uid);
+            // GA4: Identify user for retention tracking
+            gtag('config', 'G-XXXXXXXXXX', { 'user_id': u.uid });
+        }
+        init();
+        if(!localStorage.getItem('hub_tour')) {
+            document.getElementById('tour-modal').style.display = 'flex';
+            nextTour(); tourStep = 0;
+        }
+    });
+
+    window.sendChat = async () => {
+        const u = auth.currentUser;
+        if(!u) return alert("Login to chat");
+        const input = document.getElementById('chat-input');
+        const text = filterText(input.value.trim());
+        if(!text) return;
+        await addDoc(collection(db, "chats"), { user: u.email.split('@')[0], text, at: Timestamp.now() });
+        input.value = "";
+        gtag('event', 'chat_sent');
+    };
+
+    window.sendPost = async (isAnon) => {
+        const code = document.getElementById('p-code').value.toUpperCase();
+        const val = parseInt(document.getElementById('p-exp-val').value);
+        const unit = document.getElementById('p-exp-unit').value;
+
+        if(!code || (!isAnon && !auth.currentUser)) return;
+
+        if(unit === 'h' && val > 24) return alert("Max hours allowed: 24");
+        if(unit === 'd' && val > 12) return alert("Max days allowed: 12");
+
+        const ms = unit === 'h' ? val * 3600000 : val * 86400000;
+
+        await addDoc(collection(db, "codes"), {
+            code, platform: document.getElementById('p-plat').value,
+            uid: isAnon ? "anon" : auth.currentUser.uid, isAnon, likes: 0, bad: 0,
+            createdAt: Timestamp.now(),
+            expiresAt: Timestamp.fromDate(new Date(Date.now() + ms))
+        });
+        document.getElementById('post-modal').style.display = 'none';
+        gtag('event', 'code_broadcast', { 'platform': document.getElementById('p-plat').value });
+    };
+
+    window.authAction = async (t) => {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+        try { 
+            t==='up'? await createUserWithEmailAndPassword(auth,e,p) : await signInWithEmailAndPassword(auth,e,p); 
+            gtag('event', t==='up' ? 'sign_up' : 'login');
+        } catch(err){ alert(err.message); }
+    };
+
+    async function updateProfile(uid) {
+        const snap = await getDocs(collection(db, "codes"));
+        let l = 0, c = 0, scores = {};
+        snap.forEach(d => {
+            const data = d.data();
+            if(data.uid !== "anon") {
+                scores[data.uid] = (scores[data.uid]||0) + (data.likes*10) - (data.bad*5);
+                if(data.uid === uid) { c++; l += data.likes; }
+            }
+        });
+        const ranked = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+        document.getElementById('p-count').innerText = c;
+        document.getElementById('l-count').innerText = l;
+        const rIndex = ranked.findIndex(e => e[0] === uid);
+        document.getElementById('rank-num').innerText = rIndex === -1 ? "#--" : "#" + (rIndex + 1);
+    }
+
+    window.toggleView = (id, show) => {
+        const el = document.getElementById(id);
+        el.style.display = show ? 'flex' : 'none';
+        if(show) Object.assign(el.style, {position:'fixed', top:'0', left:'0', width:'100%', height:'100%', zIndex:'200'});
+    };
+
+    window.vote = (id, f) => {
+        updateDoc(doc(db, "codes", id), { [f]: increment(1) });
+        gtag('event', 'vote_cast', { 'type': f });
+    };
+    window.logout = () => signOut(auth);
+    window.copy = (c) => { 
+        navigator.clipboard.writeText(c); 
+        alert("Code Copied"); 
+        gtag('event', 'code_copy', { 'code': c });
+    };
+</script>
+</body>
+</html>
