@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>footst | Admin Control Panel & Analytics</title>
+    <meta name="theme-color" content="#0F4C5C">
+    
+    <!-- Typography: Anthropic Serif (Newsreader) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #D4A017;
+            --secondary: #0F4C5C;
+            --bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --text-main: #111827;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --input-bg: #F9FAFB;
+            
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+            
+            --font-title: 15px;
+            --font-body: 13px;
+            --font-meta: 11px;
+
+            --space-1: 6px;
+            --space-2: 12px;
+            --space-3: 18px;
+            --space-4: 24px;
+        }
+
+        body {
+            font-family: 'Newsreader', Georgia, serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-layout {
+            width: 100%;
+            max-width: 960px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-2) var(--space-3);
+        }
+
+        header {
+            padding-bottom: var(--space-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: var(--space-3);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .logo-box {
+            width: 26px;
+            height: 26px;
+            background: var(--secondary);
+            border-radius: 6px;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 0.3px;
+            text-transform: lowercase;
+        }
+
+        /* VIEWS (LOGIN vs DASHBOARD) */
+        .admin-view {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-3);
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .admin-view.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ADMIN TABS SWITCHER */
+        .admin-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--input-bg);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .admin-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 8px 12px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .admin-tab.active {
+            background: var(--bg);
+            color: var(--secondary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-weight: 700;
+        }
+
+        .tab-content-panel {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .tab-content-panel.active {
+            display: flex;
+        }
+
+        .card-box {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .section-title {
+            font-size: var(--font-title);
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-group {
+            display: grid;
+            gap: 4px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.12);
+        }
+
+        .form-label {
+            font-size: var(--font-meta);
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* METRIC CARDS */
+        .metric-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .metric-label {
+            font-size: var(--font-meta);
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .metric-trend {
+            font-size: 10px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* GRAPH & CHARTS */
+        .chart-container-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bar-chart-visual {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 160px;
+            padding-top: 20px;
+            border-bottom: 2px solid var(--border);
+            gap: 8px;
+        }
+
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .bar-column {
+            width: 100%;
+            max-width: 36px;
+            background: var(--secondary);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.4s ease;
+            position: relative;
+        }
+
+        .bar-column:hover {
+            background: var(--primary);
+        }
+
+        .bar-tooltip-val {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .bar-label {
+            font-size: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: #FFFFFF;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary:hover {
+            background: #135d70;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #FFFFFF;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: var(--font-meta);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: var(--font-meta);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
+        .status-won { background: rgba(22, 163, 74, 0.12); color: var(--success); }
+        .status-lost { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #FFFFFF;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: var(--font-body);
+            min-width: 600px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .data-table th {
+            background: var(--input-bg);
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: var(--font-meta);
+            text-transform: uppercase;
+        }
+
+        #errorMsg {
+            color: var(--danger);
+            font-size: var(--font-meta);
+            font-weight: 700;
+            display: none;
+        }
+    </style>
+
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <div class="app-layout">
+        <header>
+            <a href="#" class="brand-logo">
+                <div class="logo-box">f</div>
+                <span class="logo-text">footst admin</span>
+            </a>
+            <span id="authStatusIndicator" style="font-size: var(--font-meta); color: var(--text-light); font-weight: 600;">🔒 Restricted Access</span>
+        </header>
+
+        <!-- VIEW 1: PASSWORD LOGIN -->
+        <div class="admin-view active" id="loginView">
+            <div class="card-box" style="max-width: 400px; margin: 40px auto; width: 100%;">
+                <div class="section-title">Admin Authentication</div>
+                <p style="font-size: var(--font-meta); color: var(--text-light);">Enter admin passcode to access console.</p>
+                
+                <div class="input-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="adminPasswordInput" placeholder="Enter password (Alliance)">
+                </div>
+
+                <div id="errorMsg">Incorrect password. Please try again.</div>
+
+                <button class="btn-primary" onclick="verifyAdminPassword()" style="width: 100%;">Access Console</button>
+            </div>
+        </div>
+
+        <!-- VIEW 2: ADMIN MANAGEMENT & ANALYTICS CONSOLE -->
+        <div class="admin-view" id="dashboardView">
+            
+            <!-- TOP SWITCHER TABS -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" id="tabPredictionsBtn" onclick="switchAdminTab('predictions')">📝 Predictions Manager</button>
+                <button class="admin-tab" id="tabAnalyticsBtn" onclick="switchAdminTab('analytics')">📊 Real Database Analytics</button>
+            </div>
+
+            <!-- TAB 1: PREDICTIONS MANAGER -->
+            <div class="tab-content-panel active" id="predictionsPanel">
+                <div class="card-box">
+                    <div class="section-title">
+                        <span>Post New Prediction</span>
+                        <span style="font-size: var(--font-meta); color: var(--text-light);">Connected to DB</span>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="form-label">Date</label>
+                            <input type="text" id="postDate" value="Today">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-label">Kickoff Time</label>
+                            <input type="text" id="postTime" value="20:00">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="form-label">Competing Teams</label>
+                        <input type="text" id="postTeams" placeholder="e.g. Arsenal vs Chelsea">
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="form-label">Verified Tip / Market</label>
+                            <input type="text" id="postTips" placeholder="e.g. Home Win or Over 2.5">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-label">Initial Status</label>
+                            <select id="postStatus">
+                                <option value="Pending" selected>Pending</option>
+                                <option value="Won">Won</option>
+                                <option value="Lost">Lost</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="addNewPrediction()" style="width: fit-content; margin-top: 4px;">
+                        <span>Publish Prediction</span>
+                    </button>
+                </div>
+
+                <div class="card-box">
+                    <div class="section-title">
+                        <span>Prediction History & Management</span>
+                        <button class="btn-primary" onclick="loadAdminPredictions()" style="padding: 4px 8px; font-size: var(--font-meta);">Refresh Data</button>
+                    </div>
+                    <p style="font-size: var(--font-meta); color: var(--text-light);">Update match outcomes or delete records directly from database.</p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date / Time</th>
+                                    <th>Teams</th>
+                                    <th>Tip</th>
+                                    <th>Status Control</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPredictionsTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-light);">Loading prediction history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: REAL DB ANALYTICS & TRAFFIC PANEL -->
+            <div class="tab-content-panel" id="analyticsPanel">
+                
+                <!-- LIVE METRICS FROM FIRESTORE -->
+                <div class="grid-4">
+                    <div class="metric-card">
+                        <span class="metric-label">Active Connections (DB)</span>
+                        <span class="metric-value" id="metricActiveNow">-</span>
+                        <span class="metric-trend">Live Firestore Query</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Last 30 Min Hits</span>
+                        <span class="metric-value" id="metricLast30">-</span>
+                        <span class="metric-trend">Filtered by Timestamp</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">New Users Registered</span>
+                        <span class="metric-value" id="metricNewUsers">-</span>
+                        <span class="metric-trend">Total Doc Count</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Total Audit Logs</span>
+                        <span class="metric-value" id="metricRetention">-</span>
+                        <span class="metric-trend">Database Records</span>
+                    </div>
+                </div>
+
+                <!-- REAL DATABASE HOURLY GRAPH -->
+                <div class="card-box">
+                    <div class="section-title">
+                        <span>Traffic Volume by Hour (Real Database Aggregation)</span>
+                        <button class="btn-primary" onclick="loadRealAnalyticsData()" style="padding: 4px 8px; font-size: var(--font-meta);">Sync DB Metrics</button>
+                    </div>
+                    <p style="font-size: var(--font-meta); color: var(--text-light);">Aggregated directly from your active session/visitor logs stored in Firestore.</p>
+
+                    <div class="chart-container-box">
+                        <div class="bar-chart-visual" id="hourlyTrafficChart">
+                            <div style="width:100%; text-align:center; color: var(--text-light); padding-top: 60px;">Fetching records from database...</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-light); font-weight: 600; padding-top: 4px;">
+                            <span>00h</span>
+                            <span>06h</span>
+                            <span>12h</span>
+                            <span>18h</span>
+                            <span>23h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE VISITOR SESSIONS TABLE -->
+                <div class="card-box">
+                    <div class="section-title">
+                        <span>Live Database Visitor Stream (`visitor_logs`)</span>
+                        <span style="font-size: var(--font-meta); color: var(--text-light);" id="visitorCountBadge">Live Sync Active</span>
+                    </div>
+                    <p style="font-size: var(--font-meta); color: var(--text-light);">To capture live users here, call `logUserVisit()` on your public pages.</p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Session Reference ID</th>
+                                    <th>Status</th>
+                                    <th>Target Page</th>
+                                    <th>Recorded Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeSessionsTableBody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: var(--text-light);">Querying `visitor_logs` collection...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // FIREBASE CONFIGURATION & INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNIsjSl60AlGmtmtC4H3uy5bQ_WCG2HV0",
+            authDomain: "poats-dd25a.firebaseapp.com",
+            projectId: "poats-dd25a",
+            storageBucket: "poats-dd25a.firebasestorage.app",
+            messagingSenderId: "804924221918",
+            appId: "1:804924221918:web:2aeed317da8773e3fbd54f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ROUTING SIMULATOR FOR domain.name/life1001
+        window.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            const sessionAuth = sessionStorage.getItem('footst_admin_auth');
+            
+            if (path.includes('life1001') || sessionAuth === 'true') {
+                if (sessionAuth === 'true') {
+                    showDashboard();
+                }
+            } else {
+                window.history.pushState({}, '', '/life1001');
+            }
+
+            // Optional: Auto-log current visitor into database for live tracking
+            logCurrentVisitor();
+        });
+
+        function verifyAdminPassword() {
+            const pwd = document.getElementById('adminPasswordInput').value;
+            const err = document.getElementById('errorMsg');
+            
+            if (pwd === 'Alliance') {
+                sessionStorage.setItem('footst_admin_auth', 'true');
+                err.style.display = 'none';
+                showDashboard();
+            } else {
+                err.style.display = 'block';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginView').classList.remove('active');
+            document.getElementById('dashboardView').classList.add('active');
+            document.getElementById('authStatusIndicator').textContent = '🟢 Admin Session Active';
+            loadAdminPredictions();
+            loadRealAnalyticsData();
+        }
+
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+
+            if (tabName === 'predictions') {
+                document.getElementById('tabPredictionsBtn').classList.add('active');
+                document.getElementById('predictionsPanel').classList.add('active');
+            } else {
+                document.getElementById('tabAnalyticsBtn').classList.add('active');
+                document.getElementById('analyticsPanel').classList.add('active');
+                loadRealAnalyticsData();
+            }
+        }
+
+        // AUTOMATIC VISITOR TELEMETRY WRITER
+        function logCurrentVisitor() {
+            db.collection("visitor_logs").add({
+                page: window.location.pathname,
+                userAgent: navigator.userAgent.substring(0, 45),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(err => console.error("Telemetry write error:", err));
+        }
+
+        // REAL DATABASE ANALYTICS LOADER (NO MOCK DATA / NO IMAGINATION)
+        function loadRealAnalyticsData() {
+            const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+            db.collection("visitor_logs").orderBy("timestamp", "desc").limit(100).get()
+                .then((snapshot) => {
+                    let totalCount = snapshot.size;
+                    let last30Count = 0;
+                    let hourlyBuckets = new Array(24).fill(0);
+                    const tbody = document.getElementById('activeSessionsTableBody');
+                    
+                    if (snapshot.empty) {
+                        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-light);">No visitor logs found in Firestore collection ` + "`visitor_logs`" + `.</td></tr>`;
+                        document.getElementById('metricActiveNow').textContent = '0';
+                        document.getElementById('metricLast30').textContent = '0';
+                        document.getElementById('metricNewUsers').textContent = '0';
+                        document.getElementById('metricRetention').textContent = '0';
+                        document.getElementById('hourlyTrafficChart').innerHTML = `<div style="width:100%; text-align:center; color: var(--text-light); padding-top:60px;">No historical telemetry records available.</div>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = '';
+                    let renderedRows = 0;
+
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const timeObj = data.timestamp ? data.timestamp.toDate() : new Date();
+                        
+                        // Check last 30 mins window
+                        if (timeObj >= thirtyMinutesAgo) {
+                            last30Count++;
+                        }
+
+                        // Aggregate by hour of day (0 - 23)
+                        const hour = timeObj.getHours();
+                        hourlyBuckets[hour]++;
+
+                        // Render recent visitor stream table rows (limit display to 10)
+                        if (renderedRows < 10) {
+                            const timeString = data.timestamp ? timeObj.toLocaleTimeString() : 'Just now';
+                            tbody.innerHTML += `
+                                htmlEscapeRow = 
+                                <tr>
+                                    <td><strong>${doc.id.substring(0, 10)}...</strong> (${data.userAgent || 'Web Client'})</td>
+                                    <td><span class="status-badge status-won">Recorded</span></td>
+                                    <td>${data.page || '/'}</td>
+                                    <td style="color: var(--text-light);">${timeString}</td>
+                                </tr>
+                            `;
+                            renderedRows++;
+                        }
+                    });
+
+                    // Update Top Metric Cards with Real Data
+                    document.getElementById('metricActiveNow').textContent = last30Count; // Active within window
+                    document.getElementById('metricLast30').textContent = last30Count;
+                    document.getElementById('metricNewUsers').textContent = totalCount;
+                    document.getElementById('metricRetention').textContent = totalCount;
+
+                    // Render Real Hourly Chart Bars based on actual database counts
+                    renderRealChart(hourlyBuckets);
+                })
+                .catch((error) => {
+                    console.error("Error fetching real analytics:", error);
+                    document.getElementById('activeSessionsTableBody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--danger);">Failed to query database logs. Check Firestore security rules.</td></tr>`;
+                });
+        }
+
+        function renderRealChart(buckets) {
+            const chartContainer = document.getElementById('hourlyTrafficChart');
+            chartContainer.innerHTML = '';
+
+            const maxVal = Math.max(...buckets, 1); // Prevent division by zero
+
+            // We will map 24 hours into 12 summary columns (2 hours per column) for a clean UI layout
+            for (let i = 0; i < 24; i += 2) {
+                const combinedVal = buckets[i] + (buckets[i+1] || 0);
+                const heightPercent = Math.round((combinedVal / maxVal) * 100);
+
+                chartContainer.innerHTML += `
+                    <div class="bar-group">
+                        <div class="bar-column" style="height: ${Math.max(heightPercent, 6)}%;">
+                            <span class="bar-tooltip-val">${combinedVal}</span>
+                        </div>
+                        <span class="bar-label">${i}h</span>
+                    </div>
+                `;
+            }
+        }
+
+        function addNewPrediction() {
+            const date = document.getElementById('postDate').value || 'Today';
+            const hours = document.getElementById('postTime').value || '20:00';
+            const teams = document.getElementById('postTeams').value;
+            const tips = document.getElementById('postTips').value;
+            const results = document.getElementById('postStatus').value;
+
+            if (!teams || !tips) {
+                alert('Please fill out the teams and tip fields.');
+                return;
+            }
+
+            db.collection("predictions").add({
+                date: date,
+                hours: hours,
+                teams: teams,
+                tips: tips,
+                results: results,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert('Prediction published successfully!');
+                document.getElementById('postTeams').value = '';
+                document.getElementById('postTips').value = '';
+                loadAdminPredictions();
+            })
+            .catch((error) => {
+                console.error("Error adding prediction: ", error);
+                alert('Failed to publish prediction.');
+            });
+        }
+
+        function loadAdminPredictions() {
+            const tbody = document.getElementById('adminPredictionsTableBody');
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-light);">Loading records...</td></tr>`;
+
+            db.collection("predictions").orderBy("date", "desc").get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-light);">No predictions found in database.</td></tr>`;
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const docId = doc.id;
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${data.date || 'Today'} (${data.hours || '20:00'})</td>
+                                <td><strong>${data.teams || ''}</strong></td>
+                                <td>${data.tips || ''}</td>
+                                <td>
+                                    <select onchange="updatePredictionStatus('${docId}', this.value)" style="padding: 2px 6px; font-size: var(--font-meta);">
+                                        <option value="Pending" ${data.results === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="Won" ${data.results === 'Won' ? 'selected' : ''}>Won</option>
+                                        <option value="Lost" ${data.results === 'Lost' ? 'selected' : ''}>Lost</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn-danger" onclick="deletePrediction('${docId}')">Remove</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching admin predictions: ", error);
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Failed to load database records.</td></tr>`;
+                });
+        }
+
+        function updatePredictionStatus(docId, newStatus) {
+            db.collection("predictions").doc(docId).update({
+                results: newStatus
+            }).catch((error) => {
+                console.error("Error updating status: ", error);
+                alert('Failed to update prediction status.');
+            });
+        }
+
+        function deletePrediction(docId) {
+            if (confirm('Are you sure you want to remove this prediction?')) {
+                db.collection("predictions").doc(docId).delete().then(() => {
+                    loadAdminPredictions();
+                }).catch((error) => {
+                    console.error("Error deleting prediction: ", error);
+                    alert('Failed to delete prediction.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
