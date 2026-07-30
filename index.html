@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>footst | Advanced Match Simulator</title>
+    <meta name="theme-color" content="#0F4C5C">
+    
+    <!-- Typography: Anthropic Serif (Newsreader) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts for Blackboard Hand-Written Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #D4A017;
+            --secondary: #0F4C5C;
+            --bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --text-main: #111827;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --input-bg: #F9FAFB;
+            
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+            
+            --font-title: 15px;
+            --font-body: 13px;
+            --font-meta: 11px;
+
+            --space-1: 6px;
+            --space-2: 12px;
+            --space-3: 18px;
+            --space-4: 24px;
+        }
+
+        body {
+            font-family: 'Newsreader', Georgia, serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .app-layout {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+            padding: 0 var(--space-2);
+        }
+
+        @media (min-width: 992px) {
+            .app-layout {
+                grid-template-columns: 220px minmax(0, 1fr) 280px;
+                gap: var(--space-4);
+                padding: 0 var(--space-3);
+            }
+        }
+
+        /* HEADER / MOBILE TOP BAR */
+        header {
+            padding-top: var(--space-2);
+            padding-bottom: var(--space-1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background: var(--bg);
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .logo-box {
+            width: 26px;
+            height: 26px;
+            background: var(--secondary);
+            border-radius: 6px;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(15, 76, 92, 0.2);
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 0.3px;
+            text-transform: lowercase;
+        }
+
+        /* HEADER RIGHT BUTTONS WRAPPER */
+        .header-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* SHIELD VERIFIED PREDICTIONS TRIGGER BUTTON */
+        .shield-trigger-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--secondary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .shield-trigger-btn:hover {
+            background: var(--secondary);
+            color: #FFFFFF;
+            border-color: var(--secondary);
+        }
+
+        /* GUIDE BUTTON ON TOP RIGHT */
+        .guide-trigger-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--secondary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .guide-trigger-btn:hover {
+            background: var(--secondary);
+            color: #FFFFFF;
+            border-color: var(--secondary);
+        }
+
+        /* VERIFIED PREDICTIONS MODAL OVERLAY (SHIELD) */
+        #shieldModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(17, 24, 39, 0.6);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-2);
+            backdrop-filter: blur(4px);
+        }
+
+        .shield-modal-content {
+            background: var(--bg);
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: modalPop 0.25s ease-out;
+            border: 1px solid var(--border);
+        }
+
+        .shield-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--space-1);
+        }
+
+        /* GUIDE MODAL OVERLAY */
+        #guideModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(17, 24, 39, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-2);
+            backdrop-filter: blur(4px);
+        }
+
+        .guide-modal-content {
+            background: var(--bg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: modalPop 0.25s ease-out;
+            border: 1px solid var(--border);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .guide-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--space-1);
+        }
+
+        .guide-close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        .guide-close-btn:hover {
+            color: var(--danger);
+        }
+
+        /* COLLAPSIBLE GUIDE HINT */
+        .collapsible-guide-card {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+
+        .collapsible-header {
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: var(--font-body);
+            background: rgba(15, 76, 92, 0.04);
+            transition: background 0.15s ease;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(15, 76, 92, 0.08);
+        }
+
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 12px;
+            font-size: var(--font-meta);
+            color: var(--text-main);
+        }
+
+        .collapsible-body.open {
+            max-height: 400px;
+            padding: 10px 12px 12px 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* LEFT NAVIGATION */
+        .left-sidebar {
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .left-sidebar {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-3);
+                padding-top: var(--space-2);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                border-right: 1px solid var(--border);
+                padding-right: var(--space-2);
+            }
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: 8px 12px;
+            font-size: var(--font-body);
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--input-bg);
+            color: var(--secondary);
+            transform: translateX(2px);
+            box-shadow: inset 2px 0 0 var(--secondary);
+        }
+
+        /* MAIN APP SCREENS */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            padding-bottom: 90px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CLEAN SECTIONS */
+        .section {
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header-title {
+            font-size: var(--font-title);
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* 16:9 RATIO ANIMATION STAGE & BLACKBOARD ANIMATION STYLES */
+        .animation-stage-16-9 {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #111e18;
+            border: 6px solid #3b281a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+        }
+
+        .stadium-scene-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+            z-index: 1;
+            opacity: 0.95;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .pitch-turf {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 45%;
+            background: linear-gradient(to top, #132e1d, #1e462d);
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .goal-net-structure {
+            position: absolute;
+            bottom: 45%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 50px;
+            border: 2px dashed rgba(255,255,255,0.4);
+            border-bottom: none;
+        }
+
+        .stadium-action-container {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .player-silhouette {
+            position: absolute;
+            bottom: 25px;
+            left: 20%;
+            font-size: 36px;
+            transform-origin: bottom center;
+            animation: playerShootMotion 2.5s infinite ease-in-out;
+        }
+
+        @keyframes playerShootMotion {
+            0%, 100% { transform: rotate(0deg) translateX(0); }
+            30% { transform: rotate(-10deg) translateX(-5px); }
+            45% { transform: rotate(25deg) translateX(15px); }
+            60% { transform: rotate(0deg) translateX(5px); }
+        }
+
+        .soccer-ball-flying {
+            position: absolute;
+            bottom: 35px;
+            left: 24%;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 0 rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.8);
+            animation: ballTrajectory 2.5s infinite cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes ballTrajectory {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            45% { transform: translate(0, 0) scale(1.1); }
+            80% { transform: translate(320px, -90px) scale(0.7); opacity: 1; }
+            100% { transform: translate(350px, -70px) scale(0.5); opacity: 0; }
+        }
+
+        .goal-win-badge {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(212, 160, 23, 0.9);
+            color: #111827;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-weight: 700;
+            font-size: var(--font-meta);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            animation: badgePulse 1.2s infinite alternate;
+            z-index: 3;
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .blackboard-text-layer {
+            position: relative;
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding: 10px;
+            background: rgba(17, 30, 24, 0.65);
+            border-radius: 4px;
+        }
+
+        .handwritten-script {
+            font-family: 'Caveat', cursive, serif;
+            color: #f0fdf4;
+            font-size: clamp(18px, 2.8vw, 32px);
+            line-height: 1.3;
+            text-shadow: 0 0 4px rgba(255,255,255,0.6), 0 0 10px rgba(74, 222, 128, 0.4);
+            white-space: pre-wrap;
+            animation: chalkWritingEffect 6s infinite steps(45, end);
+            overflow: hidden;
+            border-right: 2px solid rgba(255,255,255,0.7);
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        @keyframes chalkWritingEffect {
+            0% { width: 0; }
+            45% { width: 100%; }
+            80% { width: 100%; opacity: 1; }
+            95% { width: 100%; opacity: 0.2; }
+            100% { width: 0; opacity: 0; }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .input-group {
+            display: grid;
+            gap: 4px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.12);
+        }
+
+        .form-label {
+            font-size: var(--font-meta);
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .form-helper {
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .wizard-step {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-2);
+            background: var(--input-bg);
+            padding: var(--space-3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .wizard-step.active {
+            display: flex;
+        }
+
+        .wizard-progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--space-1);
+        }
+
+        .wizard-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+
+        .wizard-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-1);
+        }
+
+        .screen-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--input-bg);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .screen-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 8px 10px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-meta);
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .screen-tab.active {
+            background: var(--bg);
+            color: var(--secondary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-weight: 700;
+        }
+
+        .card-result {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .fixtures-row {
+            display: flex;
+            gap: var(--space-2);
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .fixture-card-item {
+            flex: 1;
+            min-width: 260px;
+            background: #18222d;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid #2a3b4c;
+        }
+
+        .fixture-header-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .fixture-teams-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .fixture-team-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .winner-kit-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .winner-kit-circle.white-kit {
+            background: #FFFFFF;
+            color: #111827;
+            border: 1.5px solid #E5E7EB;
+        }
+
+        .winner-kit-circle.black-kit {
+            background: #111827;
+            color: #FFFFFF;
+            border: 1.5px solid #374151;
+        }
+
+        .team-name-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #FFFFFF;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100px;
+        }
+
+        .vs-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #9ca3af;
+        }
+
+        .sticky-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid var(--border);
+            padding: 10px var(--space-3);
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+        }
+
+        .sticky-action-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: #FFFFFF;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(15, 76, 92, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #135d70;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 76, 92, 0.3);
+        }
+
+        .btn-secondary-action {
+            background: var(--input-bg);
+            color: var(--secondary);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary-action:hover {
+            background: var(--border);
+        }
+
+        .table-scroll-wrapper {
+            position: relative;
+        }
+
+        .table-scroll-wrapper::after {
+            content: "➔";
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 76, 92, 0.85);
+            color: #FFFFFF;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            animation: pulseScrollSign 1.5s infinite ease-in-out;
+            z-index: 5;
+        }
+
+        @keyframes pulseScrollSign {
+            0%, 100% { opacity: 0.6; transform: translateY(-50%) translateX(0); }
+            50% { opacity: 1; transform: translateY(-50%) translateX(3px); }
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: var(--font-body);
+            min-width: 420px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .data-table th {
+            background: var(--input-bg);
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: var(--font-meta);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .highlight-val {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .badge-prob {
+            background: rgba(212, 160, 23, 0.12);
+            color: #B8860B;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: var(--font-meta);
+            border: 1px solid rgba(212, 160, 23, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-conf-high {
+            background: rgba(22, 163, 74, 0.12);
+            color: var(--success);
+            border-color: rgba(22, 163, 74, 0.3);
+        }
+
+        .badge-conf-med {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-conf-low {
+            background: rgba(220, 38, 38, 0.12);
+            color: var(--danger);
+            border-color: rgba(220, 38, 38, 0.3);
+        }
+
+        .chart-container-box {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .chart-bar-row {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .chart-bar-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-meta);
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .chart-bar-track {
+            width: 100%;
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chart-fill-home { background: var(--secondary); }
+        .chart-fill-draw { background: var(--warning); }
+        .chart-fill-away { background: var(--primary); }
+
+        .tips-box {
+            background: var(--input-bg);
+            border-left: 3px solid var(--primary);
+            padding: var(--space-2);
+            border-radius: 0 6px 6px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tips-title {
+            font-size: var(--font-meta);
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tips-content {
+            font-size: var(--font-body);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .history-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: var(--font-meta);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.15s ease;
+        }
+
+        .history-card:hover {
+            background: var(--input-bg);
+        }
+
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            backdrop-filter: blur(4px);
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0deg, var(--border) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s linear;
+            box-shadow: 0 4px 12px rgba(212, 160, 23, 0.2);
+        }
+
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--bg);
+        }
+
+        .progress-value {
+            position: relative;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .loading-text {
+            font-size: var(--font-title);
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 0.5px;
+            animation: pulseText 1.2s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .right-sidebar {
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .right-sidebar {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-3);
+                padding-top: var(--space-2);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                border-left: 1px solid var(--border);
+                padding-left: var(--space-2);
+            }
+        }
+
+        .section-box {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: var(--space-2);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .section-title {
+            font-size: var(--font-title);
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .widget-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .widget-item {
+            font-size: var(--font-meta);
+            color: var(--text-light);
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .widget-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <!-- PREDICTING LOADER OVERLAY -->
+    <div id="loadingOverlay">
+        <div class="circular-progress" id="circularProgress">
+            <span class="progress-value" id="progressValue">0%</span>
+        </div>
+        <div class="loading-text" id="loadingStatusText">Predicting outcomes...</div>
+    </div>
+
+    <!-- VERIFIED PREDICTIONS MODAL (SHIELD) -->
+    <div id="shieldModal">
+        <div class="shield-modal-content">
+            <div class="shield-modal-header">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 18px;">🛡️</span>
+                    <span style="font-size: 15px; font-weight: 700; color: var(--secondary);">Verified Source Expert Predictions</span>
+                </div>
+                <button class="guide-close-btn" onclick="toggleShieldModal()">&times;</button>
+            </div>
+            <div style="background: rgba(212, 160, 23, 0.1); border: 1px dashed var(--primary); padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="background: var(--danger); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; animation: badgePulse 1s infinite;">New</span>
+                    <span style="font-size: var(--font-meta); font-weight: 700; color: var(--secondary);">🔥 Today's VIP Bankroll Accumulator Updated!</span>
+                </div>
+                <span style="font-size: var(--font-meta); color: var(--text-light);">Just Added</span>
+            </div>
+
+            <p style="font-size: var(--font-meta); color: var(--text-light);">
+                Predictions Done from footst analyst. Displays verified tips categorized for today.
+            </p>
+
+            <div class="table-scroll-wrapper" style="margin-top: 4px;">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Competing Teams</th>
+                                <th>Verified Tip</th>
+                                <th>Result / Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="firebasePredictionsBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--text-light);">Loading predictions from database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="toggleShieldModal()" style="width: 100%; margin-top: 4px;">Close Panel</button>
+        </div>
+    </div>
+
+    <!-- GUIDE MODAL (🫴 HAND GUIDE) -->
+    <div id="guideModal">
+        <div class="guide-modal-content">
+            <div class="guide-modal-header">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 18px;">🫴</span>
+                    <span style="font-size: 15px; font-weight: 700; color: var(--secondary);">App User Guide & Instructions</span>
+                </div>
+                <button class="guide-close-btn" onclick="toggleGuideModal()">&times;</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; color: var(--text-main);">
+                <p style="font-size: var(--font-body);">
+                    Welcome to <strong>Footst</strong>! Input data effortlessly using our streamlined interactive wizard sequence.
+                </p>
+
+                <!-- Guide Tab 1 -->
+                <div class="collapsible-guide-card">
+                    <div class="collapsible-header" onclick="toggleAccordion(this)">
+                        <span>1. Welcome & Overview</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <p><strong>What it is:</strong> Your entry point to the application.</p>
+                        <p style="margin-top: 4px;"><strong>How to use:</strong> Review professional Poisson forecasting parameters, then click <em>"Proceed to Data Wizard"</em>.</p>
+                    </div>
+                </div>
+
+                <!-- Guide Tab 2 -->
+                <div class="collapsible-guide-card">
+                    <div class="collapsible-header" onclick="toggleAccordion(this)">
+                        <span>2. Wizard Data Input Guide</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <p><strong>What it is:</strong> A step-by-step sequential questionnaire designed to prevent scrolling fatigue.</p>
+                        <p style="margin-top: 4px;"><strong>How to use:</strong> Answer each question one at a time regarding team names, averages, venue status, and form, then click next.</p>
+                    </div>
+                </div>
+
+                <!-- Guide Tab 3 -->
+                <div class="collapsible-guide-card">
+                    <div class="collapsible-header" onclick="toggleAccordion(this)">
+                        <span>3. Results & Prediction Guide</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <p><strong>What it is:</strong> Automatically rendered after completing the wizard.</p>
+                        <p style="margin-top: 4px;"><strong>How to use:</strong> View exact 1X2 outcomes, visual probability charts, goal markets, scoreline matrices, and confidence ratings instantly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="toggleGuideModal()" style="width: 100%; margin-top: 2px;">Got It, Let's Continue</button>
+        </div>
+    </div>
+
+    <div class="app-layout">
+
+        <!-- LEFT SIDEBAR: NAVIGATION -->
+        <aside class="left-sidebar">
+            <a href="#" class="brand-logo" style="margin-bottom: var(--space-2);">
+                <div class="logo-box">f</div>
+                <span class="logo-text">footst</span>
+            </a>
+
+            <ul class="nav-list">
+                <li><a class="nav-link active" id="navScreen1" onclick="switchScreen(1)">🏠 Welcome</a></li>
+                <li><a class="nav-link" id="navScreen2" onclick="switchScreen(2)">⚙️ Wizard Input</a></li>
+                <li><a class="nav-link" id="navScreen3" onclick="switchScreen(3)">📊 Results Display</a></li>
+            </ul>
+        </aside>
+
+        <!-- CENTER MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- MOBILE HEADER -->
+            <header>
+                <div class="header-left">
+                    <a href="#" class="brand-logo">
+                        <div class="logo-box">f</div>
+                        <span class="logo-text">footst</span>
+                    </a>
+                </div>
+                <div class="header-right-actions">
+                    <button class="shield-trigger-btn" onclick="toggleShieldModal()">
+                        <span>🛡️</span>
+                        <span>Verified Tips</span>
+                    </button>
+                    <button class="guide-trigger-btn" onclick="toggleGuideModal()">
+                        <span>🫴</span>
+                        <span>Guide</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- SCREEN SELECTOR TABS -->
+            <div class="screen-tabs">
+                <button class="screen-tab active" id="tabScreen1" onclick="switchScreen(1)">1. Welcome</button>
+                <button class="screen-tab" id="tabScreen2" onclick="switchScreen(2)">2. Wizard Input</button>
+                <button class="screen-tab" id="tabScreen3" onclick="switchScreen(3)">3. Results</button>
+            </div>
+
+            <!-- SCREEN 1: WELCOME -->
+            <section class="screen active" id="screen1">
+                <div class="section" style="border-bottom: none; padding-top: 6px;">
+                    <div class="section-header-title">
+                        <span>Welcome to Footst Match Simulator</span>
+                    </div>
+
+                    <div class="animation-stage-16-9">
+                        <div class="stadium-scene-bg">
+                            <div class="goal-net-structure"></div>
+                            <div class="pitch-turf"></div>
+                        </div>
+
+                        <div class="stadium-action-container">
+                            <div class="player-silhouette">🏃‍♂️⚽</div>
+                            <div class="soccer-ball-flying"></div>
+                            <div class="goal-win-badge">🎯 Goal & Win!</div>
+                        </div>
+
+                        <div class="blackboard-text-layer">
+                            <div class="handwritten-script">footst is the website for everyone who want to reduce betting risk and enjoy smart football</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: var(--font-body); color: var(--text-main); margin-top: 8px;">
+                        <p>
+                            <strong>Footst</strong> uses advanced Poisson mathematics to deliver professional match outcome probabilities directly to your device.
+                        </p>
+                        
+                        <p>
+                            We've optimized data entry with an interactive, sequential questionnaire format to prevent heavy scrolling and make configuration quick and effortless.
+                        </p>
+                    </div>
+
+                    <div class="card-result" style="margin-top: 8px; background: var(--input-bg);">
+                        <span style="font-size: var(--font-meta); font-weight: 700; color: var(--secondary); text-transform: uppercase;">Wizard Features</span>
+                        <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 4px; font-size: var(--font-meta); color: var(--text-main); font-weight: 600;">
+                            <li>Step-by-step questioning process for clean data input.</li>
+                            <li>Automatic progression straight to final prediction metrics upon completion.</li>
+                            <li>Visual prediction charts and clear High, Medium, and Low confidence classifications.</li>
+                        </ul>
+                    </div>
+
+                    <button class="btn-primary" onclick="switchScreen(2)" style="width: fit-content; margin-top: 8px;">
+                        <span>Proceed to Data Wizard</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SCREEN 2: WIZARD DATA INPUT CONFIGURATION -->
+            <section class="screen" id="screen2">
+                <div class="section" style="border-bottom: none; padding-top: 6px;">
+                    <div class="section-header-title">
+                        <span>Fixture Overview</span>
+                        <span style="font-size: var(--font-meta); font-weight: 500; color: var(--text-light);" id="wizardStepIndicator">Step 1 of 4</span>
+                    </div>
+
+                    <div class="fixtures-row">
+                        <div class="fixture-card-item">
+                            <div class="fixture-header-info">
+                                <span>footst wizard</span>
+                                <span>active setup</span>
+                            </div>
+                            <div class="fixture-teams-row">
+                                <div class="fixture-team-block">
+                                    <div class="winner-kit-circle white-kit">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h1.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+                                    </div>
+                                    <span class="team-name-label" id="homeCardName">FC Copenhagen</span>
+                                </div>
+                                <span class="vs-text">v</span>
+                                <div class="fixture-team-block">
+                                    <div class="winner-kit-circle black-kit">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h1.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+                                    </div>
+                                    <span class="team-name-label" id="awayCardName">Lyngby BK</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WIZARD CONTAINER -->
+                <div class="section">
+                    <div class="wizard-progress-bar-container">
+                        <div class="wizard-progress-fill" id="wizardProgressFill" style="width: 25%;"></div>
+                    </div>
+
+                    <!-- STEP 1: SQUAD NAMES -->
+                    <div class="wizard-step active" id="wizardStep1">
+                        <div style="font-size: var(--font-title); font-weight: 700; color: var(--secondary);">
+                            Question 1: Who is playing today?
+                        </div>
+                        <p style="font-size: var(--font-meta); color: var(--text-light);">Provide the team names competing in this fixture.</p>
+                        
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label class="form-label">Team A (Home Squad Name)</label>
+                                <input type="text" id="homeTeam" value="FC Copenhagen" placeholder="e.g. FC Copenhagen" oninput="syncTeamNames()">
+                            </div>
+                            <div class="input-group">
+                                <label class="form-label">Team B (Away Squad Name)</label>
+                                <input type="text" id="awayTeam" value="Lyngby BK" placeholder="e.g. Lyngby BK" oninput="syncTeamNames()">
+                            </div>
+                        </div>
+
+                        <div class="wizard-nav-buttons">
+                            <div></div>
+                            <button class="btn-primary" onclick="nextWizardStep(2)">
+                                <span>Next Question</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: GOAL AVERAGES -->
+                    <div class="wizard-step" id="wizardStep2">
+                        <div style="font-size: var(--font-title); font-weight: 700; color: var(--secondary);">
+                            Question 2: What are their scoring and defensive averages?
+                        </div>
+                        <p style="font-size: var(--font-meta); color: var(--text-light);">Input estimated goals scored and conceded per match.</p>
+                        
+                        <div class="grid-2">
+                            <div style="display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                                <span style="font-weight: 700; font-size: var(--font-meta); color: var(--secondary);">Team A Averages</span>
+                                <div class="input-group">
+                                    <label class="form-label">Goals Scored</label>
+                                    <input type="number" id="homeLambda" step="0.05" value="1.85">
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-label">Goals Conceded</label>
+                                    <input type="number" id="homeConceded" step="0.05" value="0.95">
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                                <span style="font-weight: 700; font-size: var(--font-meta); color: var(--secondary);">Team B Averages</span>
+                                <div class="input-group">
+                                    <label class="form-label">Goals Scored</label>
+                                    <input type="number" id="awayLambda" step="0.05" value="1.20">
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-label">Goals Conceded</label>
+                                    <input type="number" id="awayConceded" step="0.05" value="1.45">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-nav-buttons">
+                            <button class="btn-secondary-action" onclick="prevWizardStep(1)">Back</button>
+                            <button class="btn-primary" onclick="nextWizardStep(3)">
+                                <span>Next Question</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: VENUE STATUS -->
+                    <div class="wizard-step" id="wizardStep3">
+                        <div style="font-size: var(--font-title); font-weight: 700; color: var(--secondary);">
+                            Question 3: What is the venue assignment?
+                        </div>
+                        <p style="font-size: var(--font-meta); color: var(--text-light);">Specify home/away ground allocations.</p>
+                        
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label class="form-label">Team A Venue</label>
+                                <select id="homeVenue">
+                                    <option value="home" selected>Playing Home</option>
+                                    <option value="away">Playing Away</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="form-label">Team B Venue</label>
+                                <select id="awayVenue">
+                                    <option value="home">Playing Home</option>
+                                    <option value="away" selected>Playing Away</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="wizard-nav-buttons">
+                            <button class="btn-secondary-action" onclick="prevWizardStep(2)">Back</button>
+                            <button class="btn-primary" onclick="nextWizardStep(4)">
+                                <span>Next Question</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: FORM & SQUAD STATUS -->
+                    <div class="wizard-step" id="wizardStep4">
+                        <div style="font-size: var(--font-title); font-weight: 700; color: var(--secondary);">
+                            Question 4: How are their recent form and squad conditions?
+                        </div>
+                        <p style="font-size: var(--font-meta); color: var(--text-light);">Fine-tune adjustments for performance modeling.</p>
+                        
+                        <div class="grid-2">
+                            <div style="display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                                <span style="font-weight: 700; font-size: var(--font-meta); color: var(--secondary);">Team A Condition</span>
+                                <div class="input-group">
+                                    <label class="form-label">Recent Form</label>
+                                    <select id="homeForm">
+                                        <option value="1.25">Great</option>
+                                        <option value="1.0" selected>Average</option>
+                                        <option value="0.75">Poor</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-label">Squad Availability</label>
+                                    <select id="homeSquadStatus">
+                                        <option value="1.1" selected>Full Squad</option>
+                                        <option value="0.85">Missing Key Player</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                                <span style="font-weight: 700; font-size: var(--font-meta); color: var(--secondary);">Team B Condition</span>
+                                <div class="input-group">
+                                    <label class="form-label">Recent Form</label>
+                                    <select id="awayForm">
+                                        <option value="1.25">Great</option>
+                                        <option value="1.0" selected>Average</option>
+                                        <option value="0.75">Poor</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-label">Squad Availability</label>
+                                    <select id="awaySquadStatus">
+                                        <option value="1.1" selected>Full Squad</option>
+                                        <option value="0.85">Missing Key Player</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-nav-buttons">
+                            <button class="btn-secondary-action" onclick="prevWizardStep(3)">Back</button>
+                            <button class="btn-primary" onclick="startPredictionSimulation()" style="background: var(--success);">
+                                <span>Run Final Simulation</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 3: SIMULATION RESULTS -->
+            <section class="screen" id="screen3">
+                <div class="card-result" style="margin-top: 6px;">
+                    <div class="section-header-title">
+                        <span id="matchTitleDisplay">FC Copenhagen vs Lyngby BK</span>
+                        <span class="badge-prob badge-conf-high" id="confidenceBadge">High Confidence</span>
+                    </div>
+
+                    <!-- Visual Probability Charts Section -->
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <span style="font-size: var(--font-meta); font-weight: 700; color: var(--secondary); text-transform: uppercase;">Visual Match Prediction Chart</span>
+                        <div class="chart-container-box">
+                            <div class="chart-bar-row">
+                                <div class="chart-bar-label-row">
+                                    <span id="chartHomeLabel">FC Copenhagen Win</span>
+                                    <span id="chartHomeVal">0.0%</span>
+                                </div>
+                                <div class="chart-bar-track">
+                                    <div class="chart-bar-fill chart-fill-home" id="chartBarHome" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="chart-bar-row">
+                                <div class="chart-bar-label-row">
+                                    <span>Draw Result</span>
+                                    <span id="chartDrawVal">0.0%</span>
+                                </div>
+                                <div class="chart-bar-track">
+                                    <div class="chart-bar-fill chart-fill-draw" id="chartBarDraw" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="chart-bar-row">
+                                <div class="chart-bar-label-row">
+                                    <span id="chartAwayLabel">Lyngby BK Win</span>
+                                    <span id="chartAwayVal">0.0%</span>
+                                </div>
+                                <div class="chart-bar-track">
+                                    <div class="chart-bar-fill chart-fill-away" id="chartBarAway" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Probabilities Table with Scroll Sign Indicator -->
+                    <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+                        <span style="font-size: var(--font-meta); font-weight: 700; color: var(--secondary); text-transform: uppercase;">Projected Probabilities</span>
+                        
+                        <div class="table-scroll-wrapper">
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Market Tier</th>
+                                            <th>Prediction Target</th>
+                                            <th>Probability Rating</th>
+                                            <th>Confidence Level</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="marketTableBody">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Correct Score Matrix Table -->
+                    <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+                        <span style="font-size: var(--font-meta); font-weight: 700; color: var(--secondary); text-transform: uppercase;">Expected Score Matrix</span>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Scoreline Outcome</th>
+                                        <th>Calculated Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scoreTableBody">
+                                    <!-- Injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Insight -->
+                    <div class="tips-box">
+                        <div class="tips-title">💡 Strategic Insight</div>
+                        <div class="tips-content" id="recommendedTipText">Simulation matrix ready.</div>
+                    </div>
+
+                    <button class="btn-primary" onclick="switchScreen(2); currentWizardStep = 1; updateWizardDisplay();" style="background: var(--input-bg); color: var(--secondary); border: 1px solid var(--border); width: fit-content; margin-top: 2px;">
+                        <span>← Modify Wizard Parameters</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="right-sidebar">
+            <div class="section-box">
+                <div class="section-title">System Status</div>
+                <ul class="widget-list">
+                    <li class="widget-item">Interactive wizard input sequence calibrated.</li>
+                    <li class="widget-item">Visual charts and confidence metrics integrated.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Prediction History</div>
+                <div id="historyContainer" style="display: flex; flex-direction: column; gap: 6px;">
+                    <div class="history-card">
+                        <span>Arsenal vs Chelsea</span>
+                        <span style="color: var(--success)">2 - 1</span>
+                    </div>
+                    <div class="history-card">
+                        <span>Real Madrid vs Barcelona</span>
+                        <span style="color: var(--warning)">1 - 1</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- STICKY ACTION BAR -->
+    <div class="sticky-action-bar">
+        <div class="sticky-action-container">
+            <span style="font-size: var(--font-meta); color: var(--text-light); font-weight: 600;" id="stickyBarStatus">Wizard Ready</span>
+            <button class="btn-primary" onclick="startPredictionSimulation()">
+                <span>Run Final Prediction</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // FIREBASE CONFIGURATION & INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNIsjSl60AlGmtmtC4H3uy5bQ_WCG2HV0",
+            authDomain: "poats-dd25a.firebaseapp.com",
+            projectId: "poats-dd25a",
+            storageBucket: "poats-dd25a.firebasestorage.app",
+            messagingSenderId: "804924221918",
+            appId: "1:804924221918:web:2aeed317da8773e3fbd54f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let currentWizardStep = 1;
+
+        // Check if user has visited before using localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const hasVisited = localStorage.getItem('footst_visited');
+            if (hasVisited) {
+                switchScreen(2);
+            } else {
+                localStorage.setItem('footst_visited', 'true');
+                switchScreen(1);
+            }
+
+            // Fetch verified predictions from Firebase Firestore database
+            fetchVerifiedPredictions();
+        });
+
+        function fetchVerifiedPredictions() {
+            const tbody = document.getElementById('firebasePredictionsBody');
+            db.collection("predictions").orderBy("date", "desc").get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-light);">No admin predictions posted yet.</td></tr>`;
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="highlight-val">${data.date || 'Today'}</td>
+                                <td>${data.hours || '20:00'}</td>
+                                <td><strong>${data.teams || 'Team A vs Team B'}</strong></td>
+                                <td><span class="badge-prob">${data.tips || 'Home Win'}</span></td>
+                                <td style="color: var(--success); font-weight: 700;">${data.results || 'Pending'}</td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching Firestore predictions: ", error);
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Failed to load predictions from database.</td></tr>`;
+                });
+        }
+
+        function switchScreen(screenNum) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.screen-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`screen${screenNum}`).classList.add('active');
+            document.getElementById(`tabScreen${screenNum}`).classList.add('active');
+            const sidebarNav = document.getElementById(`navScreen${screenNum}`);
+            if (sidebarNav) sidebarNav.classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextWizardStep(step) {
+            currentWizardStep = step;
+            updateWizardDisplay();
+        }
+
+        function prevWizardStep(step) {
+            currentWizardStep = step;
+            updateWizardDisplay();
+        }
+
+        function updateWizardDisplay() {
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById(`wizardStep${i}`);
+                if (stepEl) {
+                    stepEl.classList.toggle('active', i === currentWizardStep);
+                }
+            }
+            const indicator = document.getElementById(`wizardStepIndicator`);
+            if (indicator) {
+                indicator.textContent = `Step ${currentWizardStep} of 4`;
+            }
+            const fill = document.getElementById(`wizardProgressFill`);
+            if (fill) {
+                fill.style.width = `${(currentWizardStep / 4) * 100}%`;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleShieldModal() {
+            const modal = document.getElementById('shieldModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function toggleGuideModal() {
+            const modal = document.getElementById('guideModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function toggleAccordion(header) {
+            const body = header.nextElementSibling;
+            const isOpen = body.classList.contains('open');
+            body.classList.toggle('open', !isOpen);
+            const arrow = header.querySelector('span:last-child');
+            if (arrow) {
+                arrow.textContent = isOpen ? '▼' : '▲';
+            }
+        }
+
+        function syncTeamNames() {
+            const homeVal = document.getElementById('homeTeam').value;
+            const awayVal = document.getElementById('awayTeam').value;
+            document.getElementById('homeCardName').textContent = homeVal || "Team A";
+            document.getElementById('awayCardName').textContent = awayVal || "Team B";
+        }
+
+        // ENHANCED POISSON FUNCTIONS
+        function poissonProbability(lambda, k) {
+            if (lambda <= 0) lambda = 0.01;
+            return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
+        }
+
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) result *= i;
+            return result;
+        }
+
+        // Enhanced prediction engine that properly uses ALL collected data
+        function startPredictionSimulation() {
+            const overlay = document.getElementById('loadingOverlay');
+            const progressVal = document.getElementById('progressValue');
+            const circularProgress = document.getElementById('circularProgress');
+            const statusText = document.getElementById('loadingStatusText');
+            
+            overlay.style.display = 'flex';
+            
+            const phases = [
+                { progress: 25, text: "Analyzing team statistics..." },
+                { progress: 45, text: "Applying venue and form factors..." },
+                { progress: 75, text: "Running Poisson distribution simulation..." },
+                { progress: 95, text: "Synthesizing prediction matrix..." },
+                { progress: 100, text: "Prediction complete!" }
+            ];
+
+            let currentStep = 0;
+            let currentPercent = 0;
+
+            const interval = setInterval(() => {
+                currentPercent += 2;
+                if (currentPercent > phases[currentStep].progress) {
+                    currentStep++;
+                    if (currentStep < phases.length) {
+                        statusText.textContent = phases[currentStep].text;
+                    }
+                }
+
+                if (currentPercent >= 100) {
+                    currentPercent = 100;
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        runEnhancedPoissonPrediction();
+                        switchScreen(3);
+                    }, 400);
+                }
+
+                progressVal.textContent = currentPercent + "%";
+                const degree = (currentPercent / 100) * 360;
+                circularProgress.style.background = `conic-gradient(var(--primary) ${degree}deg, var(--border) 0deg)`;
+            }, 25);
+        }
+
+        function getConfidenceBadgeHtml(probVal) {
+            if (probVal >= 55) {
+                return `<span class="badge-prob badge-conf-high">High (${probVal.toFixed(1)}%)</span>`;
+            } else if (probVal >= 35) {
+                return `<span class="badge-prob badge-conf-med">Medium (${probVal.toFixed(1)}%)</span>`;
+            } else {
+                return `<span class="badge-prob badge-conf-low">Low (${probVal.toFixed(1)}%)</span>`;
+            }
+        }
+
+        function getConfidenceLevel(probVal) {
+            if (probVal >= 55) return "High";
+            if (probVal >= 35) return "Medium";
+            return "Low";
+        }
+
+        function runEnhancedPoissonPrediction() {
+            // 1. COLLECT ALL INPUT DATA
+            const homeName = document.getElementById('homeTeam').value || "FC Copenhagen";
+            const awayName = document.getElementById('awayTeam').value || "Lyngby BK";
+            
+            // Core statistical inputs
+            const rawHomeScored = parseFloat(document.getElementById('homeLambda').value) || 1.5;
+            const rawHomeConceded = parseFloat(document.getElementById('homeConceded').value) || 1.0;
+            const rawAwayScored = parseFloat(document.getElementById('awayLambda').value) || 1.2;
+            const rawAwayConceded = parseFloat(document.getElementById('awayConceded').value) || 1.3;
+
+            // Venue factors
+            const homeVenue = document.getElementById('homeVenue').value;
+            const awayVenue = document.getElementById('awayVenue').value;
+
+            // Form and squad factors
+            const homeFormFactor = parseFloat(document.getElementById('homeForm').value) || 1.0;
+            const homeSquadFactor = parseFloat(document.getElementById('homeSquadStatus').value) || 1.0;
+            const awayFormFactor = parseFloat(document.getElementById('awayForm').value) || 1.0;
+            const awaySquadFactor = parseFloat(document.getElementById('awaySquadStatus').value) || 1.0;
+
+            // 2. APPLY HOME ADVANTAGE (Statistical average ~0.35 goals per match)
+            const HOME_ADVANTAGE = 0.35;
+            
+            // Calculate base attack/defense strengths
+            let homeAttackStrength = rawHomeScored;
+            let homeDefenseStrength = rawHomeConceded;
+            let awayAttackStrength = rawAwayScored;
+            let awayDefenseStrength = rawAwayConceded;
+
+            // Apply form factors (weighted at 60% strength to avoid over-correction)
+            const FORM_WEIGHT = 0.6;
+            homeAttackStrength = homeAttackStrength * (1 + (homeFormFactor - 1) * FORM_WEIGHT);
+            homeDefenseStrength = homeDefenseStrength / (1 + (homeFormFactor - 1) * FORM_WEIGHT * 0.3);
+            awayAttackStrength = awayAttackStrength * (1 + (awayFormFactor - 1) * FORM_WEIGHT);
+            awayDefenseStrength = awayDefenseStrength / (1 + (awayFormFactor - 1) * FORM_WEIGHT * 0.3);
+
+            // Apply squad factors (weighted at 40% strength)
+            const SQUAD_WEIGHT = 0.4;
+            homeAttackStrength = homeAttackStrength * (1 + (homeSquadFactor - 1) * SQUAD_WEIGHT);
+            homeDefenseStrength = homeDefenseStrength / (1 + (homeSquadFactor - 1) * SQUAD_WEIGHT * 0.2);
+            awayAttackStrength = awayAttackStrength * (1 + (awaySquadFactor - 1) * SQUAD_WEIGHT);
+            awayDefenseStrength = awayDefenseStrength / (1 + (awaySquadFactor - 1) * SQUAD_WEIGHT * 0.2);
+
+            // Apply venue (home advantage)
+            const homeIsAtHome = (homeVenue === 'home');
+            const awayIsAway = (awayVenue === 'away');
+            
+            let homeLambda = homeAttackStrength;
+            let awayLambda = awayAttackStrength;
+            
+            if (homeIsAtHome) {
+                homeLambda = homeAttackStrength * (1 + HOME_ADVANTAGE / homeAttackStrength);
+            } else {
+                homeLambda = homeAttackStrength * (1 - HOME_ADVANTAGE / homeAttackStrength);
+            }
+            
+            if (awayIsAway) {
+                awayLambda = awayAttackStrength * (1 - HOME_ADVANTAGE / awayAttackStrength);
+            } else {
+                awayLambda = awayAttackStrength * (1 + HOME_ADVANTAGE / awayAttackStrength);
+            }
+
+            // Ensure positive values
+            homeLambda = Math.max(homeLambda, 0.1);
+            awayLambda = Math.max(awayLambda, 0.1);
+
+            // 3. RUN FULL POISSON DISTRIBUTION (0-12 goals)
+            const MAX_GOALS = 12;
+            let homeWinProb = 0;
+            let drawProb = 0;
+            let awayWinProb = 0;
+            let bttsYesProb = 0;
+            let bttsNoProb = 0;
+            let over25Prob = 0;
+            let under25Prob = 0;
+            let over35Prob = 0;
+            let scoreMatrix = [];
+            let totalProbabilityMass = 0;
+
+            for (let h = 0; h <= MAX_GOALS; h++) {
+                for (let a = 0; a <= MAX_GOALS; a++) {
+                    const pH = poissonProbability(homeLambda, h);
+                    const pA = poissonProbability(awayLambda, a);
+                    const p = pH * pA;
+                    
+                    totalProbabilityMass += p;
+                    
+                    // 1X2 Outcomes
+                    if (h > a) homeWinProb += p;
+                    else if (h === a) drawProb += p;
+                    else awayWinProb += p;
+
+                    // BTTS
+                    if (h > 0 && a > 0) bttsYesProb += p;
+                    else bttsNoProb += p;
+
+                    // Over/Under 2.5
+                    if (h + a > 2.5) over25Prob += p;
+                    else under25Prob += p;
+
+                    // Over/Under 3.5
+                    if (h + a > 3.5) over35Prob += p;
+
+                    // Store top scorelines for display
+                    scoreMatrix.push({ score: `${h} - ${a}`, prob: p });
+                }
+            }
+
+            // Normalize to ensure probabilities sum to 100%
+            const normalizationFactor = 1 / totalProbabilityMass;
+            
+            homeWinProb *= normalizationFactor * 100;
+            drawProb *= normalizationFactor * 100;
+            awayWinProb *= normalizationFactor * 100;
+            bttsYesProb *= normalizationFactor * 100;
+            bttsNoProb *= normalizationFactor * 100;
+            over25Prob *= normalizationFactor * 100;
+            under25Prob *= normalizationFactor * 100;
+            over35Prob *= normalizationFactor * 100;
+
+            // Normalize score matrix
+            scoreMatrix.forEach(item => {
+                item.prob = item.prob * normalizationFactor * 100;
+            });
+
+            // Sort score matrix by probability (descending)
+            scoreMatrix.sort((a, b) => b.prob - a.prob);
+
+            // 4. UPDATE UI WITH RESULTS
+            // Match title
+            document.getElementById('matchTitleDisplay').textContent = `${homeName} vs ${awayName}`;
+
+            // Charts
+            document.getElementById('chartHomeLabel').textContent = `${homeName} Win`;
+            document.getElementById('chartAwayLabel').textContent = `${awayName} Win`;
+            document.getElementById('chartHomeVal').textContent = `${homeWinProb.toFixed(1)}%`;
+            document.getElementById('chartDrawVal').textContent = `${drawProb.toFixed(1)}%`;
+            document.getElementById('chartAwayVal').textContent = `${awayWinProb.toFixed(1)}%`;
+
+            document.getElementById('chartBarHome').style.width = `${Math.min(homeWinProb, 100)}%`;
+            document.getElementById('chartBarDraw').style.width = `${Math.min(drawProb, 100)}%`;
+            document.getElementById('chartBarAway').style.width = `${Math.min(awayWinProb, 100)}%`;
+
+            // Confidence badge
+            const maxProb = Math.max(homeWinProb, drawProb, awayWinProb);
+            const overallBadge = document.getElementById('confidenceBadge');
+            const confidenceLevel = getConfidenceLevel(maxProb);
+            if (confidenceLevel === "High") {
+                overallBadge.className = "badge-prob badge-conf-high";
+                overallBadge.textContent = "High Confidence Simulation";
+            } else if (confidenceLevel === "Medium") {
+                overallBadge.className = "badge-prob badge-conf-med";
+                overallBadge.textContent = "Medium Confidence Simulation";
+            } else {
+                overallBadge.className = "badge-prob badge-conf-low";
+                overallBadge.textContent = "Low Confidence / Volatile";
+            }
+
+            // Market probabilities table
+            const marketBody = document.getElementById('marketTableBody');
+            // Find the most likely outcome
+            let outcomeType = "";
+            let outcomeVal = 0;
+            if (homeWinProb >= drawProb && homeWinProb >= awayWinProb) {
+                outcomeType = `${homeName} Victory`;
+                outcomeVal = homeWinProb;
+            } else if (drawProb >= homeWinProb && drawProb >= awayWinProb) {
+                outcomeType = "Draw Result";
+                outcomeVal = drawProb;
+            } else {
+                outcomeType = `${awayName} Victory`;
+                outcomeVal = awayWinProb;
+            }
+
+            marketBody.innerHTML = `
+                <tr>
+                    <td class="highlight-val">1X2 Outcome</td>
+                    <td>${homeName} Victory</td>
+                    <td><span class="badge-prob">${homeWinProb.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(homeWinProb)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">1X2 Outcome</td>
+                    <td>Draw Result</td>
+                    <td><span class="badge-prob">${drawProb.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(drawProb)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">1X2 Outcome</td>
+                    <td>${awayName} Victory</td>
+                    <td><span class="badge-prob">${awayWinProb.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(awayWinProb)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">Goal Markets</td>
+                    <td>Both Teams To Score - Yes</td>
+                    <td><span class="badge-prob">${bttsYesProb.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(bttsYesProb)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">Goal Markets</td>
+                    <td>Both Teams To Score - No</td>
+                    <td><span class="badge-prob">${bttsNoProb.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(bttsNoProb)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">Goal Markets</td>
+                    <td>Over 2.5 Total Goals</td>
+                    <td><span class="badge-prob">${over25Prob.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(over25Prob)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">Goal Markets</td>
+                    <td>Under 2.5 Total Goals</td>
+                    <td><span class="badge-prob">${under25Prob.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(under25Prob)}</td>
+                </tr>
+                <tr>
+                    <td class="highlight-val">Goal Markets</td>
+                    <td>Over 3.5 Total Goals</td>
+                    <td><span class="badge-prob">${over35Prob.toFixed(1)}%</span></td>
+                    <td>${getConfidenceBadgeHtml(over35Prob)}</td>
+                </tr>
+            `;
+
+            // Score matrix table (top 6 most likely scores)
+            const scoreBody = document.getElementById('scoreTableBody');
+            scoreBody.innerHTML = '';
+            scoreMatrix.slice(0, 6).forEach(item => {
+                scoreBody.innerHTML += `
+                    <tr>
+                        <td class="highlight-val">${item.score}</td>
+                        <td>${item.prob.toFixed(1)}%</td>
+                    </tr>
+                `;
+            });
+
+            // Strategic insight
+            let bestTip = "";
+            const topScore = scoreMatrix[0].score;
+            const topScoreProb = scoreMatrix[0].prob;
+            
+            if (homeWinProb > 55) {
+                bestTip = `🔥 High projection favoring ${homeName} to secure victory (${homeWinProb.toFixed(1)}% outcome probability). Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%.`;
+            } else if (awayWinProb > 55) {
+                bestTip = `🔥 High projection favoring ${awayName} to secure victory (${awayWinProb.toFixed(1)}% outcome probability). Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%.`;
+            } else if (drawProb > 40) {
+                bestTip = `⚖️ Competitive parity expected with draw at ${drawProb.toFixed(1)}%. Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%. Consider BTTS markets.`;
+            } else if (bttsYesProb > 60) {
+                bestTip = `📈 Strong attacking metrics suggest both teams will score (${bttsYesProb.toFixed(1)}% BTTS probability). Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%.`;
+            } else if (over25Prob > 60) {
+                bestTip = `⚡ High goal expectancy detected. Over 2.5 goals at ${over25Prob.toFixed(1)}%. Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%.`;
+            } else {
+                bestTip = `📊 Balanced matchup with ${confidenceLevel.toLowerCase()} confidence. Most likely score: ${topScore} at ${topScoreProb.toFixed(1)}%. Consider multiple markets.`;
+            }
+            document.getElementById('recommendedTipText').textContent = bestTip;
+
+            // Update sticky bar status
+            document.getElementById('stickyBarStatus').textContent = `✅ Prediction Complete: ${outcomeType} (${outcomeVal.toFixed(1)}%)`;
+
+            // Add to prediction history
+            const historyContainer = document.getElementById('historyContainer');
+            const newHistoryItem = document.createElement('div');
+            newHistoryItem.className = 'history-card';
+            newHistoryItem.innerHTML = `
+                <span>${homeName} vs ${awayName}</span>
+                <span style="color: var(--success); font-weight: 700;">${topScore}</span>
+            `;
+            historyContainer.prepend(newHistoryItem);
+
+            // Limit history to 5 items
+            while (historyContainer.children.length > 5) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>
