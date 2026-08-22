@@ -2704,6 +2704,13 @@ let signOutModalWasOpen = false;
 // render again with the correct data a moment later. This flag lets the manual flow own the
 // whole transition so the UI updates once, cleanly, instead of flickering through in-between states.
 let manualAuthFlow = false;
+// Resolves once Firebase's very first auth check completes (session restored or confirmed
+// signed-out). Deep-link openers (maybeOpenSharedChallenge, etc.) await this before checking
+// state.user, so a returning signed-in visitor isn't wrongly treated as signed-out just because
+// onAuthStateChanged hasn't fired yet on page load.
+let authReadyResolved = false;
+let authReadyResolve;
+const authReadyPromise = new Promise((res) => { authReadyResolve = res; });
 // Unsubscribe handle for the live users/{uid}/notifications listener — attached on
 // sign-in, detached on sign-out, so we never leak a listener onto the wrong account.
 let notifUnsub = null;
@@ -3618,6 +3625,7 @@ onAuthStateChanged(auth, async (user) => {
     state.activeChatUser = null;
     state.chatMessages = [];
   }
+  if (!authReadyResolved) { authReadyResolved = true; authReadyResolve(); }
   render();
 });
 
@@ -4983,6 +4991,7 @@ async function maybeOpenSharedChallenge() {
   const chid = params.get("ch");
   if (!chid) return;
   sharedChallengeOpened = true;
+  await authReadyPromise; // wait for Firebase to restore a persisted session before deciding gated vs. not
   try {
     const snap = await getDoc(doc(db, "challenges", chid));
     if (snap.exists()) {
