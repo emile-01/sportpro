@@ -66,6 +66,10 @@
 </script>
 <style>
 * { box-sizing: border-box; }
+/* ---- copy/selection deterrent ---- */
+html, body, .mn-app { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+input, textarea, [contenteditable="true"] { -webkit-user-select: text; user-select: text; } /* keep typing usable */
+img, video { -webkit-user-drag: none; user-drag: none; pointer-events: auto; }
 html, body { margin: 0; padding: 0; background: #EEF0F2; overflow-x: hidden; }
 body[data-theme="dark"] { background: #000000; }
 
@@ -598,6 +602,8 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-tab { position: relative; border: none; background: none; padding: 10px 1px; font-size: 13.5px; font-weight: 600; color: var(--ink-faint); cursor: pointer; transition: color .15s; }
 .mn-tab:hover { color: var(--ink-soft); }
 .mn-tab-active { color: var(--ink); }
+.mn-gift-tabs { gap: 14px; margin: 4px 0 4px; justify-content: space-between; }
+.mn-gift-tabs .mn-tab:disabled { opacity: .35; cursor: not-allowed; }
 .mn-tab-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ink); border-radius: 2px; }
 .mn-hometabs { gap: 26px; margin: 0 0 4px 0; }
 .mn-segment { display: flex; background: var(--paper-line); border-radius: 10px; padding: 3px; gap: 2px; margin: 12px 0 16px 0; position: relative; }
@@ -913,6 +919,31 @@ width: 100%; max-width: 480px; z-index: 100;
 }
 .mn-shell[data-theme="dark"] .mn-composer-send { color: #06231A; }
 .mn-composer-send:disabled { opacity: 0.35; }
+.mn-chat-send { background: var(--green); width: 42px; height: 42px; color: #fff; }
+
+/* ---------------- chat pill (WhatsApp-style grouped input) ---------------- */
+.mn-chat-pill {
+  flex: 1; display: flex; align-items: center; gap: 2px;
+  background: var(--paper-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 4px 4px 10px;
+  box-shadow: var(--shadow-sm);
+}
+.mn-chat-pill textarea {
+  flex: 1; border: none; background: transparent; box-shadow: none;
+  padding: 8px 4px; max-height: 80px; resize: none;
+  font-size: 13.5px; color: var(--ink);
+}
+.mn-chat-pill textarea:focus { outline: none; }
+.mn-chat-pill .mn-composer-attach { width: 30px; height: 30px; flex: 0 0 auto; }
+
+.mn-shell[data-screen="chat"] .mn-composer-bar.mn-chat-composer {
+  background: transparent; backdrop-filter: none; border-top: none;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) 10px;
+}
+
+/* ---------------- nav ---------------- */
 
 /* ---------------- nav ----------------
    4 destinations max (Miller's Law), evenly spaced across the thumb zone
@@ -1389,7 +1420,7 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-donate-banner {
   margin: 10px 12px; padding: 0; border: none; background: none;
 }
-mn-donate-simple {
+.mn-donate-simple {
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   font-size: 14px; color: var(--ink); cursor: pointer; background: none;
   border: none; padding: 0; text-align: left; font-family: inherit;
@@ -1815,7 +1846,7 @@ mn-donate-simple {
 .mn-msg-iconbtn:active { transform: scale(0.94); }
 
 /* chat header (back button + other person's avatar/name, tap to view profile) */
-.mn-chat-header { gap: 10px; box-shadow: 0 1px 0 var(--border); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(8px); }
+.mn-chat-header { gap: 10px; box-shadow: none; position: sticky; top: 0; z-index: 5; backdrop-filter: blur(8px); }
 .mn-chat-header .mn-avatar { width: 28px; height: 28px; font-size: 12px; flex: 0 0 auto; }
 
 /* chat thread — WhatsApp-style wallpaper + bubbles */
@@ -1897,6 +1928,51 @@ mn-donate-simple {
 }
 .mn-chat-bubble-row-mine .mn-chat-swipe-icon { left: auto; right: 6px; }
 .mn-chat-bubble-row[data-swipe-active="1"] .mn-chat-swipe-icon { opacity: 1; transform: translateY(-50%) scale(1); }
+.mn-gift-card-row { padding: 2px 10px; }
+.mn-gift-card {
+  position: relative; padding: 4px 2px; text-align: center; cursor: pointer; background: none; box-shadow: none;
+}
+.mn-gift-card-ribbon {
+  position: absolute; top: 12px; right: -30px; width: 110px; padding: 3px 0; transform: rotate(45deg);
+  background: rgba(0,0,0,.28); color: #fff; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.mn-gift-card {
+  min-width: 200px; max-width: 240px; padding: 14px 14px 12px; border-radius: 14px;
+  background: var(--blue-soft); box-shadow: var(--shadow-sm); text-align: center; cursor: default;
+}
+.mn-gift-card-icon { font-size: 56px; line-height: 1; margin: 4px 0 2px; }
+.mn-gift-card-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--ink); }
+.mn-gift-card-amount { margin: 10px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 17px; color: var(--ink); }
+.mn-gift-card-amount span { font-size: 11px; font-weight: 600; opacity: .7; margin-left: 2px; }
+.mn-gift-card-time { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink-faint); text-align: right; }
+.mn-gift-card-tail {
+  position: absolute; bottom: 8px; width: 12px; height: 12px;
+  background: inherit; border-radius: 3px;
+}
+.mn-chat-bubble-row-mine .mn-gift-card-tail { right: -5px; transform: rotate(45deg); }
+.mn-chat-bubble-row:not(.mn-chat-bubble-row-mine) .mn-gift-card-tail { left: -5px; transform: rotate(45deg); }
+.mn-gift-card-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--ink); }
+.mn-gift-card-amount { margin: 4px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 17px; color: var(--ink); }
+.mn-gift-card-amount span { font-size: 11px; font-weight: 600; opacity: .7; margin-left: 2px; }
+.mn-gift-card-time {
+  display: inline-block; margin-top: 6px; font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink-faint);
+}
+
+.mn-gift-group-card {
+  min-width: 220px; max-width: 260px; padding: 12px 14px; border-radius: 14px;
+  background: var(--blue-soft); box-shadow: var(--shadow-sm); cursor: pointer; text-align: left;
+}
+.mn-gift-group-total { margin: 0 0 4px; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; color: var(--ink); }
+.mn-gift-group-total span { font-size: 10.5px; font-weight: 600; opacity: .7; margin-left: 3px; }
+.mn-gift-group-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--ink); }
+.mn-gift-group-icons { display: flex; gap: 8px; margin: 10px 0 2px; flex-wrap: wrap; }
+.mn-gift-group-icon { font-size: 28px; line-height: 1; }
+.mn-gift-group-more {
+  font-size: 12px; font-weight: 700; color: var(--ink-soft); background: var(--paper-line);
+  border-radius: 999px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+}
+.mn-gift-group-time { display: block; margin-top: 4px; font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink-faint); text-align: right; }
 
 .mn-chat-quote {
   display: block; margin-bottom: 6px; padding: 5px 8px; border-radius: 8px;
@@ -2248,6 +2324,59 @@ mn-donate-simple {
 .mn-challenge-result { text-align: center; padding: 30px 10px 10px 10px; }
 .mn-challenge-result-score { font-size: 42px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
 .mn-challenge-result-sub { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px; }
+.mn-subtabs { margin-top: 4px; margin-bottom: 10px; }
+.mn-coins-panel { padding-top: 4px; }
+.mn-coins-balance-card {
+  display: flex; align-items: center; gap: 12px; padding: 16px;
+  border-radius: 16px; background: var(--green-soft); border: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.mn-coins-balance-icon {
+  width: 42px; height: 42px; border-radius: 50%; background: var(--paper-raised);
+  color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.mn-coins-balance-label { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+.mn-coins-balance-value { margin: 2px 0 0 0; font-size: 22px; font-weight: 800; color: var(--ink); }
+.mn-coins-actions-row { display: flex; gap: 10px; margin: 14px 0 20px 0; }
+.mn-coins-buy-btn, .mn-coins-withdraw-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; border-radius: 8px; }
+.mn-coins-withdraw-btn { background: var(--paper-raised); color: var(--ink); border: 1px solid var(--border); }
+.mn-shell[data-theme="dark"] .mn-coins-withdraw-btn { color: var(--ink); }
+.mn-coins-history-title { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin: 0 0 8px 0; }
+.mn-coins-history-list { display: flex; flex-direction: column; gap: 8px; }
+.mn-coins-history-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--paper-raised);
+}
+.mn-coins-history-pkg { margin: 0; font-weight: 700; font-size: 14px; }
+.mn-coins-history-sub { margin: 2px 0 0 0; font-size: 12px; color: var(--ink-soft); }
+.mn-coins-status { font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; flex-shrink: 0; }
+.mn-coins-status-pending { background: #fff3cd; color: #92700a; }
+.mn-coins-status-approved { background: var(--green-soft); color: var(--green); }
+.mn-coins-status-rejected { background: #fde2e2; color: #a3282f; }
+.mn-coins-price { font-weight: 700; color: var(--green); font-size: 13px; }
+.mn-gift-recipient { display:flex; align-items:center; gap:12px; margin:2px 0 20px; }
+.mn-gift-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); flex:0 0 auto; }
+.mn-gift-to-label { margin:0; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--ink-faint); }
+.mn-gift-to-name { margin:1px 0 0; font-family:'Inter',sans-serif; font-size:14.5px; font-weight:700; color:var(--ink); }
+
+.mn-gift-hero { display:flex; flex-direction:column; align-items:center; padding:4px 0 22px; }
+.mn-gift-coin-badge { width:56px; height:56px; border-radius:50%; background:var(--yellow-soft); color:var(--yellow-ink);
+  display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+.mn-gift-amount-display { margin:0; font-family:'Inter',sans-serif; font-size:34px; font-weight:800; letter-spacing:-0.01em; color:var(--ink); transition:transform .15s; }
+.mn-gift-amount-display.mn-gift-bump { transform:scale(1.08); }
+.mn-gift-balance { margin:5px 0 0; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--ink-faint); }
+
+.mn-gift-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.mn-gift-chip { flex:1 1 auto; min-width:56px; min-height:40px; border-radius:999px; border:1px solid var(--border);
+  background:var(--paper-raised); color:var(--ink); font-family:'Inter',sans-serif; font-weight:600; font-size:13px; cursor:pointer;
+  padding:8px 12px; transition:background-color .15s, border-color .15s, transform .1s; }
+.mn-gift-chip:active { transform:scale(0.95); }
+.mn-gift-chip-active { background:var(--green-soft); border-color:var(--green); color:var(--green); }
+.mn-gift-chip:disabled { opacity:.4; cursor:not-allowed; }
+
+.mn-gift-custom-input { text-align:center; font-family:'Inter',sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; }
+.mn-gift-error { font-family:'Inter',sans-serif; color:var(--red); font-size:12.5px; text-align:center; margin:0 0 12px; }
+.mn-gift-send-btn { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:10px; font-family:'Inter',sans-serif; }
 </style>
 </head>
 <body>
@@ -2305,7 +2434,8 @@ import {
      match /databases/{database}/documents {
        match /users/{userId} {
          allow read: if true;
-         allow write: if request.auth != null && request.auth.uid == userId;
+         allow write: if request.auth != null &&
+           (request.auth.uid == userId || request.auth.uid == "REPLACE_WITH_ADMIN_UID");
          match /notifications/{notifId} {
            // Anyone signed in can WRITE a notification into another user's inbox
            // (that's how "so-and-so followed/upvoted/answered you" gets delivered),
@@ -2323,6 +2453,22 @@ import {
        match /broadcasts/{broadcastId} {
          allow read: if true;
          allow write: if request.auth != null && request.auth.uid == "REPLACE_WITH_ADMIN_UID";
+       }
+       match /coinRequests/{reqId} {
+         allow read: if request.auth != null &&
+           (request.auth.uid == resource.data.userId || request.auth.uid == "REPLACE_WITH_ADMIN_UID");
+         allow create: if request.auth != null &&
+           request.auth.uid == request.resource.data.userId &&
+           request.resource.data.status == "pending";
+         allow update: if request.auth != null && request.auth.uid == "REPLACE_WITH_ADMIN_UID";
+       }
+       match /withdrawRequests/{reqId} {
+         allow read: if request.auth != null &&
+           (request.auth.uid == resource.data.userId || request.auth.uid == "REPLACE_WITH_ADMIN_UID");
+         allow create: if request.auth != null &&
+           request.auth.uid == request.resource.data.userId &&
+           request.resource.data.status == "pending";
+         allow update: if request.auth != null && request.auth.uid == "REPLACE_WITH_ADMIN_UID";
        }
        // Direct messages: a chat doc is only ever readable/writable by its two
        // participants. chatId is always the two uids sorted and joined with
@@ -2436,6 +2582,18 @@ import {
                                     // and only the returned https://files.catbox.moe/... link
                                     // is ever stored on the post doc.
      broadcasts/{id}        { title, body, link?, createdAt }
+     coinRequests/{id}     { userId, userName, coins, amountFrw, packageLabel,
+                              proofMessage,          // the SMS/confirmation text the user pasted
+                              status: 'pending'|'approved'|'rejected',
+                              coinsAwarded,           // set by admin on approval — lets admin award
+                                                       // a different amount than requested if the
+                                                       // sent money didn't match a clean package
+                              createdAt, reviewedAt }
+                                    // Written by the user when they submit payment proof.
+                                    // Reviewed manually by the admin (Firebase Console or
+                                    // admin.html): set status + coinsAwarded, then increment
+                                    // users/{uid}.coins by coinsAwarded. No cloud function —
+                                    // it's two manual writes, same pattern as broadcasts.
                                     // written by admin.html (a separate, admin-only page you
                                     // build against this same Firebase project) to push one
                                     // announcement to every signed-in user's Notifications screen
@@ -2467,6 +2625,22 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
+// ---- copy/selection deterrent (deters casual copying only; not foolproof) ----
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+document.addEventListener("selectstart", (e) => {
+  const tag = e.target.tagName;
+  if (tag !== "INPUT" && tag !== "TEXTAREA") e.preventDefault();
+});
+document.addEventListener("copy", (e) => e.preventDefault());
+document.addEventListener("cut", (e) => e.preventDefault());
+document.addEventListener("dragstart", (e) => e.preventDefault());
+document.addEventListener("keydown", (e) => {
+  const k = e.key.toLowerCase();
+  const blockCombo = (e.ctrlKey || e.metaKey) && ["c", "x", "u", "s", "p"].includes(k);
+  if (blockCombo || e.key === "F12" || (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(k))) {
+    e.preventDefault();
+  }
+});
 
 // ---------------- analytics ----------------
 // getAnalytics() throws in environments without it (ad-blockers, some
@@ -2627,6 +2801,22 @@ let state = {
   channelsLoaded: false,
 
   channelsTab: "discover", // 'discover' | 'mine' | 'myearn'
+  myEarnSubTab: "channels", // 'channels' | 'earn' — sub-tab shown inside the MyEarn tab
+  buyCoinsOpen: false,
+  buyCoinsStep: "package",  // 'package' -> 'pay' -> 'done'
+  buyCoinsBusy: false,
+  buyCoinsForm: { packageId: null, proofMessage: "" },
+  giftOpen: false,
+  giftBusy: false,
+  giftAmount: 100,
+  giftCustomOpen: false,
+  giftSent: false,
+  withdrawOpen: false,
+  withdrawStep: "form",
+  withdrawBusy: false,
+  withdrawForm: { phone: "", name: "" },
+  myCoinRequests: [],       // live list of this user's own coin purchase requests
+  myCoinRequestsLoaded: false,
   channelsSearch: "",
   channelsSection: null,   // when set (category name, or "__explore__"), shows the "See all" drill-in list
   channelsFrom: "home",    // screen to return to when backing out of the Channels list
@@ -2733,7 +2923,27 @@ let channelComposerSheetWasOpen = false;
 let channelDocUnsub = null;
 let channelPostsUnsub = null;
 
-function setState(patch) { state = { ...state, ...patch }; render(); }
+function anyOverlayOpen() {
+  return !!(state.authModal || state.shareModal || state.commentsOpen || state.reelsViewerOpen ||
+    state.signOutConfirmOpen || state.regionPickerOpen || state.categoryPickerOpen || state.newChatOpen ||
+    state.createChannelOpen || state.channelComposerOpen || state.donationSetupOpen || state.donationPopupChannel ||
+    state.buyCoinsOpen || state.withdrawOpen || state.giftOpen || state.profileStatsOpen ||
+    state.challengeCreateOpen || state.channelAvatarEditOpen);
+}
+function closeAllOverlays() {
+  state.authModal = null; state.shareModal = null; state.commentsOpen = false;
+  state.reelsViewerOpen = false; state.signOutConfirmOpen = false; state.regionPickerOpen = false;
+  state.categoryPickerOpen = false; state.newChatOpen = false; state.createChannelOpen = false;
+  state.channelComposerOpen = false; state.donationSetupOpen = false; state.donationPopupChannel = null;
+  state.buyCoinsOpen = false; state.withdrawOpen = false; state.giftOpen = false;
+  state.profileStatsOpen = false; state.challengeCreateOpen = false; state.channelAvatarEditOpen = false;
+}
+function setState(patch) {
+  const wasOpen = anyOverlayOpen();
+  state = { ...state, ...patch };
+  if (!suppressNav && !wasOpen && anyOverlayOpen()) pushNav();
+  render();
+}
 
 // ---------------- helpers ----------------
 function escapeHtml(str) {
@@ -3555,6 +3765,12 @@ history.replaceState(navSnapshot(), "", location.pathname + location.search);
 window.addEventListener("popstate", (e) => {
   const snap = e.state;
   suppressNav = true;
+  if (anyOverlayOpen()) {
+    closeAllOverlays();
+    render();
+    suppressNav = false;
+    return;
+  }
   if (!snap || !snap.screen) {
     state.screen = "home"; state.detailId = null; state.commentsOpen = false;
     state.viewedUserId = null; state.activeChannelId = null; state.activeChatId = null;
@@ -3593,6 +3809,7 @@ onAuthStateChanged(auth, async (user) => {
         username: user.displayName || user.email.split("@")[0],
         email: user.email, bio: "", place: "", photoURL: "",
         totalQuestions: 0, totalAnswers: 0, totalPoints: 0,
+        coins: 0,
         followersCount: 0, followedUsers: [],
       };
       await setDoc(doc(db, "users", user.uid), profile);
@@ -3608,6 +3825,7 @@ onAuthStateChanged(auth, async (user) => {
     loadNearbyUsers();
     attachNotifListener(user.uid);
     attachChatsListener(user.uid);
+    attachCoinsListener(user.uid);
   } else {
     state.user = null;
     state.profile = null;
@@ -3620,6 +3838,8 @@ onAuthStateChanged(auth, async (user) => {
     if (analytics) setUserId(analytics, null);
     detachNotifListener();
     detachChatsListener();
+    detachCoinsListener();
+    detachCoinRequestsListener();
     detachChatMessagesListener();
     state.activeChatId = null;
     state.activeChatUser = null;
@@ -3744,6 +3964,7 @@ async function submitSignUp() {
       username: username.trim(), email: email.trim(), bio: "", place: region, photoURL: "",
       dob, age: calcAge(dob), region,
       totalQuestions: 0, totalAnswers: 0, totalPoints: 0,
+      coins: 0,
       followersCount: 0, followedUsers: [],
     };
     await setDoc(doc(db, "users", cred.user.uid), profile);
@@ -3756,6 +3977,7 @@ async function submitSignUp() {
     if (analytics) setUserId(analytics, cred.user.uid);
     attachNotifListener(cred.user.uid);
     attachChatsListener(cred.user.uid);
+    attachCoinsListener(cred.user.uid);
     manualAuthFlow = false;
     await afterAuthSuccess();
     trackEvent("sign_up", { method: "email" });
@@ -3779,6 +4001,7 @@ async function submitSignIn() {
       username: cred.user.displayName || email.trim().split("@")[0],
       email: email.trim(), bio: "", place: "", photoURL: "",
       totalQuestions: 0, totalAnswers: 0, totalPoints: 0,
+      coins: 0,
       followersCount: 0, followedUsers: [],
     };
     state.user = { uid: cred.user.uid, email: cred.user.email };
@@ -3790,6 +4013,7 @@ async function submitSignIn() {
     loadNearbyUsers();
     attachNotifListener(cred.user.uid);
     attachChatsListener(cred.user.uid);
+    attachCoinsListener(cred.user.uid);
     manualAuthFlow = false;
     await afterAuthSuccess();
     trackEvent("login", { method: "email" });
@@ -3814,6 +4038,8 @@ async function signOutUser() {
   detachNotifListener();
   detachChatsListener();
   detachChatMessagesListener();
+  detachCoinsListener();
+  detachCoinRequestsListener();
   trackEvent("logout");
   setState({
     screen: "home", profileTab: "questions", signOutConfirmOpen: false,
@@ -5041,6 +5267,29 @@ function updateChatsBadgeDom() {
     sidebarLink.insertAdjacentHTML("beforeend", sidebarBadgeHtml);
   }
 }
+// A chat is permanently wiped once it's gone 2+ weeks with no new message.
+// Runs entirely off the chat list we already have in memory from the
+// listener below — no extra query, no composite index needed.
+const CHAT_EXPIRY_MS = 14 * 24 * 60 * 60 * 1000; // 2 weeks
+const chatsBeingPurged = new Set(); // guards against re-triggering mid-delete
+async function purgeStaleChat(chat) {
+  if (chatsBeingPurged.has(chat.id)) return;
+  chatsBeingPurged.add(chat.id);
+  try {
+    // Plain unindexed subcollection read — no orderBy/where, so no index needed.
+    const msgsSnap = await getDocs(collection(db, "chats", chat.id, "messages"));
+    await Promise.all(msgsSnap.docs.map((d) => deleteDoc(d.ref)));
+    await deleteDoc(doc(db, "chats", chat.id));
+  } catch (e) { console.error("purgeStaleChat failed for", chat.id, e); }
+  chatsBeingPurged.delete(chat.id);
+}
+function purgeStaleChats(chats) {
+  const now = Date.now();
+  (chats || []).forEach((c) => {
+    const ts = c.lastMessageAt && c.lastMessageAt.toMillis ? c.lastMessageAt.toMillis() : null;
+    if (ts && now - ts >= CHAT_EXPIRY_MS) purgeStaleChat(c);
+  });
+}
 function attachChatsListener(uid) {
   if (chatsUnsub) { chatsUnsub(); chatsUnsub = null; }
   const cq = query(collection(db, "chats"), where("participants", "array-contains", uid), orderBy("lastMessageAt", "desc"), limit(50));
@@ -5050,6 +5299,7 @@ function attachChatsListener(uid) {
       const other = otherParticipant(c);
       if (other) state.photoCache[other.id] = other.photoURL || "";
     });
+    purgeStaleChats(state.chats);
     computeChatsUnread();
     if (state.screen === "messages") render(); else updateChatsBadgeDom();
   }, (err) => { console.error(err); });
@@ -5303,10 +5553,96 @@ async function sendMessage() {
   state.messageBusy = false;
   if (sendBtn) {
     sendBtn.disabled = !(state.messageDraft.trim() || state.messageMediaUrl);
-    sendBtn.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2 15 22l-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    sendBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   }
   render();
 }
+function openGiftCoins() { setState({ giftOpen: true, giftAmount: 100, giftBusy: false, giftSent: false }); }
+function closeGiftCoins() { if (!suppressNav) { history.back(); return; } setState({ giftOpen: false }); }
+function setGiftAmount(v) {
+  const n = Math.max(0, parseInt(v, 10) || 0);
+  const coins = (state.profile && state.profile.coins) || 0;
+  state.giftAmount = n;
+
+  const inputEl = document.querySelector(".mn-auth-sheet .mn-input");
+  if (inputEl && document.activeElement !== inputEl) inputEl.value = n; // sync when a chip sets it
+
+  const overBalance = n > coins;
+  const canSend = n > 0 && !overBalance && !state.giftBusy;
+
+  const sendBtn = document.querySelector(".mn-auth-sheet .mn-postbtn");
+  if (sendBtn) {
+    sendBtn.disabled = !canSend;
+    sendBtn.innerHTML = `${iconGiftSmall()} Send ${n ? n.toLocaleString() : ""} coins`;
+  }
+
+  const fieldEl = document.querySelector(".mn-auth-sheet .mn-field");
+  if (fieldEl) {
+    let errEl = fieldEl.querySelector(".mn-field-error");
+    let hintEl = fieldEl.querySelector(".mn-field-hint");
+    if (overBalance) {
+      if (!errEl) { errEl = document.createElement("span"); errEl.className = "mn-field-error"; fieldEl.appendChild(errEl); }
+      errEl.textContent = `Not enough coins — you have ${coins.toLocaleString()}.`;
+      if (hintEl) hintEl.remove();
+      if (inputEl) inputEl.classList.add("mn-input-error");
+    } else {
+      if (errEl) errEl.remove();
+      if (!hintEl) { hintEl = document.createElement("span"); hintEl.className = "mn-field-hint"; hintEl.textContent = "Tap a quick amount or type your own"; fieldEl.appendChild(hintEl); }
+      if (inputEl) inputEl.classList.remove("mn-input-error");
+    }
+  }
+
+  document.querySelectorAll(".mn-gift-tabs .mn-tab").forEach(tab => {
+    const active = parseInt(tab.textContent, 10) === n;
+    tab.classList.toggle("mn-tab-active", active);
+    tab.setAttribute("aria-pressed", active);
+  });
+}
+function toggleGiftCustom() { state.giftCustomOpen = !state.giftCustomOpen; render(); }
+
+async function sendGiftCoins() {
+  if (!state.user || !state.activeChatId || !state.activeChatUser || state.giftBusy) return;
+  const amount = state.giftAmount;
+  const myCoins = (state.profile && state.profile.coins) || 0;
+  if (amount < 1 || myCoins < amount) { showToast("Not enough coins for that gift.", "error"); return; }
+  const chatId = state.activeChatId, other = state.activeChatUser;
+  const myId = state.user.uid, myName = state.profile.username;
+  state.giftBusy = true; render();
+  try {
+    await updateDoc(doc(db, "users", myId), { coins: increment(-amount), usedCoins: increment(amount) });
+    await updateDoc(doc(db, "users", other.id), { coins: increment(amount) });
+    state.profile.coins = myCoins - amount;
+    await setDoc(doc(db, "chats", chatId), {
+      participants: [myId, other.id],
+      participantNames: { [myId]: myName, [other.id]: other.username || "User" },
+      participantPhotos: { [myId]: state.profile.photoURL || "", [other.id]: other.photoURL || "" },
+      lastMessage: `🎁 Sent ${amount} coins`, lastMessageAt: serverTimestamp(), lastSenderId: myId,
+      ["unread_" + myId]: 0, ["unread_" + other.id]: increment(1),
+    }, { merge: true });
+    await addDoc(collection(db, "chats", chatId, "messages"), {
+      type: "gift", giftAmount: amount, senderId: myId, senderName: myName, createdAt: serverTimestamp(),
+    });
+    showToast(`Gift sent — ${amount} coins to ${other.username || "them"}!`);
+    state.giftBusy = false;
+    state.giftSent = true;
+    render();
+    setTimeout(() => {
+      if (!suppressNav) { state.giftSent = false; state.giftCustomOpen = false; history.back(); return; }
+      setState({ giftOpen: false, giftSent: false, giftCustomOpen: false });
+    }, 800);
+    return;
+  } catch (e) {
+    console.error(e);
+    showToast("Couldn't send gift. Try again.", "error");
+    state.giftBusy = false;
+    render();
+  }
+}
+window.openGiftCoins = openGiftCoins;
+window.closeGiftCoins = closeGiftCoins;
+window.setGiftAmount = setGiftAmount;
+window.toggleGiftCustom = toggleGiftCustom;
+window.sendGiftCoins = sendGiftCoins;
 
 let searchTrackTimer = null;
 function setSearchTerm(v) {
@@ -5991,6 +6327,7 @@ function iconMegaphone(active) { return `<svg width="20" height="20" viewBox="0 
 function iconPollSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 20V10M12 20V4M18 20v-7" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 function iconImageSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m5 18 5-5.5 3.5 3.5L18 11l3 5" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 function iconAttachSmall() { return `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.4 11.05 12.7 19.75a5 5 0 0 1-7.07-7.07l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.49" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+function iconGiftSmall() { return `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-1.5-3-6-3-6 0s4.5 1.5 6 0c1.5 1.5 6 0 6 0s-4.5-3-6 0z"/></svg>`; }
 function iconVideoSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="13" height="12" rx="2"/><path d="m21.5 8-6 4 6 4Z" stroke-linejoin="round"/></svg>`; }
 function iconMicSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6" stroke-linecap="round"/></svg>`; }
 function iconTextSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M5 12h14M5 18h9" stroke-linecap="round"/></svg>`; }
@@ -6403,8 +6740,8 @@ function renderHome() {
           </div>`
         : `<div class="mn-empty">
             <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <p class="mn-empty-title">No posts match</p>
-            <p class="mn-empty-sub">Try a different search, or be the first to post.</p>
+            <p class="mn-empty-title">Wait a bit</p>
+            <p class="mn-empty-sub">you're welcome to home for all individual.</p>
           </div>`)
     : feedListHtml(list);
 
@@ -6482,7 +6819,9 @@ function renderCreate() {
         <button class="mn-tab ${isLinkTab ? "mn-tab-active" : ""}" onclick="setCreateTab('link')">Link</button>
       </div>
       ${isLinkTab ? linkPane : writePane}
-      <button class="mn-postbtn" onclick="postQuestion()" ${canPost && !state.postBusy ? "" : "disabled"}>${state.postBusy ? `<span class="mn-spinner"></span> Posting...` : "Post"}</button>
+      <button class="mn-postbtn mn-coin-verify-btn" onclick="submitCoinVerify()" ${state.buyCoinsForm.proofMessage.trim() && !state.buyCoinsBusy ? "" : "disabled"}>
+        ${state.buyCoinsBusy ? `<span class="mn-spinner"></span> Submitting...` : "Verify"}
+      </button>
     </div>
   `;
 }
@@ -8011,6 +8350,7 @@ function channelShelfHtml(title, items, sectionKey) {
 function renderChannels() {
   const isMineTab = state.channelsTab === "mine";
   const isMyEarnTab = state.channelsTab === "myearn";
+  const isEarnSubTab = isMyEarnTab && state.myEarnSubTab === "earn";
   const hasSearch = state.channelsSearch.trim().length > 0;
 
   // Drilled into a section's "See all" — a plain full-length list with its
@@ -8047,6 +8387,13 @@ function renderChannels() {
         <button class="mn-tab ${isMineTab ? "mn-tab-active" : ""}" onclick="setChannelsTab('mine')">My channels</button>
         <button class="mn-tab ${isMyEarnTab ? "mn-tab-active" : ""}" onclick="setChannelsTab('myearn')">MyEarn</button>
       </div>
+      ${isMyEarnTab ? `
+        <div class="mn-tabs mn-subtabs">
+          <button class="mn-tab ${!isEarnSubTab ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('channels')">Channels</button>
+          <button class="mn-tab ${isEarnSubTab ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('earn')">Earn</button>
+        </div>
+      ` : ""}
+      ${isEarnSubTab ? coinsPanelHtml() : `
       <div class="mn-input-wrap mn-channels-search-wrap">
         <span class="mn-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input class="mn-input mn-input-has-icon" placeholder="Search channels..." value="${escapeHtml(state.channelsSearch)}" oninput="setChannelsSearch(this.value)" />
@@ -8069,10 +8416,31 @@ function renderChannels() {
                 `;
               })()
       }
+      `}
     </div>
   `;
 }
 // Accepts youtube.com/watch?v=, youtu.be/, youtube.com/shorts/, youtube.com/embed/ — returns the 11-char video id or null
+function coinsPanelHtml() {
+  const coins = (state.profile && state.profile.coins) || 0;
+  const used = (state.profile && state.profile.usedCoins) || 0;
+  const withdrawal = (state.profile && state.profile.withdrawalCoins) || 0;
+  const free = (state.profile && state.profile.freeCoins) || 0;
+  return `
+    <div class="mn-coins-panel">
+      <div class="mn-stats-grid">
+        <div class="mn-stat-card"><div class="mn-stat-card-label">Coins</div><div class="mn-stat-card-value">${coins.toLocaleString()}</div></div>
+        <div class="mn-stat-card"><div class="mn-stat-card-label">Used</div><div class="mn-stat-card-value">${used.toLocaleString()}</div></div>
+        <div class="mn-stat-card"><div class="mn-stat-card-label">Withdrawal</div><div class="mn-stat-card-value">${withdrawal.toLocaleString()}</div></div>
+        <div class="mn-stat-card"><div class="mn-stat-card-label">Free coins</div><div class="mn-stat-card-value">${free.toLocaleString()}</div></div>
+      </div>
+      <div class="mn-coins-actions-row">
+        <button class="mn-postbtn mn-coins-buy-btn" onclick="openBuyCoins()">${iconCoin()} Buy coins</button>
+        <button class="mn-postbtn mn-coins-withdraw-btn" onclick="openWithdraw()">Withdraw</button>
+      </div>
+    </div>
+  `;
+}
 
 function youTubeEmbedHtml(url) {
   const id = extractYouTubeId(url);
@@ -8484,11 +8852,59 @@ function renderChat() {
       <p class="mn-empty-sub">Say hello — start the conversation.</p>
     </div>`;
   }
-  return `<div class="mn-chat-messages">${msgs.map((m) => chatBubbleHtml(m)).join("")}</div>`;
+  return `<div class="mn-chat-messages">${groupGiftMessages(msgs).map((m) => (m.gifts ? giftGroupHtml(m.gifts) : chatBubbleHtml(m))).join("")}</div>`;
+}
+function groupGiftMessages(msgs) {
+  const out = []; let i = 0;
+  while (i < msgs.length) {
+    const m = msgs[i];
+    if (m.type === "gift") {
+      const run = [m]; let j = i + 1;
+      while (j < msgs.length && msgs[j].type === "gift" && msgs[j].senderId === m.senderId) { run.push(msgs[j]); j++; }
+      out.push(run.length > 1 ? { gifts: run } : m);
+      i = j;
+    } else { out.push(m); i++; }
+  }
+  return out;
+}
+function giftGroupHtml(gifts) {
+  const mine = state.user && gifts[0].senderId === state.user.uid;
+  const other = state.activeChatUser;
+  const senderName = mine ? "You" : escapeHtml(gifts[0].senderName || other?.username || "Someone");
+  const last = gifts[gifts.length - 1];
+  const total = gifts.reduce((sum, g) => sum + (g.giftAmount || 0), 0);
+  const shown = gifts.slice(0, 5);
+  const extra = gifts.length - shown.length;
+  const icons = shown.map(() => `<span class="mn-gift-group-icon">🎁</span>`).join("")
+    + (extra > 0 ? `<span class="mn-gift-group-icon mn-gift-group-more">+${extra}</span>` : "");
+  return `
+    <div class="mn-chat-bubble-row mn-gift-card-row ${mine ? "mn-chat-bubble-row-mine" : ""}" data-mid="${last.id}">
+      <div class="mn-gift-group-card">
+        <p class="mn-gift-group-total">${total.toLocaleString()} <span>coins total</span></p>
+        <p class="mn-gift-group-title">🎁 ${gifts.length} Gifts from ${senderName}</p>
+        <div class="mn-gift-group-icons">${icons}</div>
+        <span class="mn-gift-group-time">${timeAgo(last.createdAt)}</span>
+      </div>
+    </div>`;
 }
 function chatBubbleHtml(m) {
   const mine = state.user && m.senderId === state.user.uid;
-  // legacy messages only ever had `imageUrl`; newer ones use mediaUrl/mediaType
+  const other = state.activeChatUser;
+  if (m.type === "gift") {
+    const other = state.activeChatUser;
+    const otherName = mine ? "You" : escapeHtml(m.senderName || other?.username || "Someone");
+    return `
+      <div class="mn-chat-bubble-row mn-gift-card-row ${mine ? "mn-chat-bubble-row-mine" : ""}" data-mid="${m.id}">
+        <div class="mn-gift-card">
+          <p class="mn-gift-card-title">🎁 ${otherName} sent a Gift!</p>
+          <div class="mn-gift-card-icon">🎁</div>
+          <p class="mn-gift-card-amount">${(m.giftAmount || 0).toLocaleString()} <span>coins</span></p>
+          <span class="mn-gift-card-time">${timeAgo(m.createdAt)}</span>
+          <span class="mn-gift-card-tail"></span>
+        </div>
+      </div>`;
+  }
+  // ...existing mediaUrl / hasText code continues unchanged below
   const mediaUrl = m.mediaUrl || m.imageUrl || "";
   const mediaType = m.mediaUrl ? (m.mediaType || "file") : (m.imageUrl ? "image" : "");
   const hasMedia = !!mediaUrl;
@@ -8698,6 +9114,17 @@ function signOutConfirmHtml() {
     </div>
   `;
 }
+const COIN_PACKAGES = [
+  { id: "p1000", coins: 1000, frw: 1000, label: "1,000 coins" },
+  { id: "p500",  coins: 500,  frw: 500,  label: "500 coins" },
+  { id: "p200",  coins: 200,  frw: 200,  label: "200 coins" },
+];
+const COIN_PAYMENT_PHONE = "+250791450193";
+const COIN_PAYMENT_NAME = "Emile INEZA";
+function iconCoin() {
+  return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5c0 3-6 1.5-6 4.5 0 1.4 1.3 2.5 3 2.5s3-1.1 3-2.5"/></svg>`;
+}
+
 const DONATION_NETWORKS = ["MTN", "Airtel", "Vodafone", "Orange", "Other"];
 const NETWORK_LOGOS = {
   MTN: "https://commons.wikimedia.org/wiki/Special:FilePath/MTN_Logo.svg",
@@ -8726,6 +9153,157 @@ function donationNetworkPickerHtml() {
           `).join("")}
         </div>
         <button class="mn-sheet-cancel" onclick="closeDonationNetworkPicker()">Cancel</button>
+      </div>
+    </div>
+  `;
+}
+let buyCoinsModalWasOpen = false;
+function buyCoinsModalHtml() {
+  if (!state.buyCoinsOpen) { buyCoinsModalWasOpen = false; return ""; }
+  const justOpened = !buyCoinsModalWasOpen;
+  buyCoinsModalWasOpen = true;
+  const animClass = justOpened ? " mn-anim-in" : "";
+  const step = state.buyCoinsStep;
+  const pkg = COIN_PACKAGES.find((p) => p.id === state.buyCoinsForm.packageId);
+
+  let body = "";
+  if (step === "package") {
+    body = `
+      <p class="mn-sheet-title">Buy coins</p>
+      <p class="mn-sheet-subtitle">Choose a package</p>
+      <div class="mn-option-list">
+        ${COIN_PACKAGES.map((p) => `
+          <button class="mn-option-row" onclick="chooseCoinPackage('${p.id}')">
+            <span>${iconCoin()} ${p.label}</span>
+            <span class="mn-coins-price">${p.frw} RWF</span>
+          </button>
+        `).join("")}
+      </div>
+      <button class="mn-sheet-cancel" onclick="closeBuyCoins()">Cancel</button>
+    `;
+  } else if (step === "pay") {
+    body = `
+      <p class="mn-sheet-title">Pay for ${escapeHtml(pkg ? pkg.label : "")}</p>
+      <p class="mn-sheet-subtitle">Send ${pkg ? pkg.frw : ""} RWF via Mobile Money to:</p>
+      <div class="mn-donate-card" style="border-radius:16px;">
+        <p style="margin:0 0 4px 0;font-weight:700;font-size:16px;">${COIN_PAYMENT_NAME}</p>
+        <button class="mn-donate-simple" onclick="copyCoinPaymentNumber()">
+          <span class="mn-donate-simple-number">${COIN_PAYMENT_PHONE}</span>
+        </button>
+        <p class="mn-empty-sub" style="margin-top:6px;">Tap the number to copy it</p>
+      </div>
+      <p class="mn-sheet-subtitle" style="margin-top:14px;">Paste the confirmation message you received after sending</p>
+      <textarea class="mn-input" rows="3" placeholder="e.g. TxId 123456: You have sent 1,000 RWF to Emile INEZA..." oninput="setCoinProofMessage(this.value)">${escapeHtml(state.buyCoinsForm.proofMessage)}</textarea>
+      <button class="mn-postbtn mn-coin-verify-btn" onclick="submitCoinVerify()" ${state.buyCoinsForm.proofMessage.trim() && !state.buyCoinsBusy ? "" : "disabled"}>
+        ${state.buyCoinsBusy ? `<span class="mn-spinner"></span> Submitting...` : "Verify"}
+      </button>
+      <button class="mn-sheet-cancel" onclick="backToCoinPackages()">Back</button>
+    `;
+  } else if (step === "done") {
+    body = `
+      <div class="mn-confirm-icon">${iconCoin()}</div>
+      <p class="mn-sheet-title">Submitted!</p>
+      <p class="mn-confirm-body">Please wait up to 12 hours while we verify your payment. Your coins will appear automatically once approved.</p>
+      <button class="mn-postbtn" onclick="closeBuyCoins()">Done</button>
+    `;
+  }
+
+  return `
+    <div class="mn-sheet-overlay${animClass}" onclick="if(event.target===this) closeBuyCoins()">
+      <div class="mn-sheet${animClass}">
+        <div class="mn-sheet-handle"></div>
+        ${body}
+      </div>
+    </div>
+  `;
+}
+function giftModalHtml() {
+  if (!state.giftOpen) return "";
+  const other = state.activeChatUser;
+  const coins = (state.profile && state.profile.coins) || 0;
+  const overBalance = state.giftAmount > coins;
+  const canSend = state.giftAmount > 0 && !overBalance && !state.giftBusy;
+
+  if (state.giftSent) {
+    return `
+      <div class="mn-sheet-overlay">
+        <div class="mn-sheet mn-anim-in">
+          <div class="mn-sheet-handle"></div>
+          <div class="mn-confirm-icon">${iconGiftSmall()}</div>
+          <p class="mn-sheet-title">Gift sent!</p>
+          <p class="mn-sheet-subtitle">${state.giftAmount.toLocaleString()} coins to ${escapeHtml(other?.username||'')}</p>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="mn-sheet-overlay" onclick="if(event.target===this) closeGiftCoins()">
+      <div class="mn-sheet mn-auth-sheet">
+        <div class="mn-sheet-handle"></div>
+
+        <p class="mn-auth-title">Send a gift</p>
+        <p class="mn-auth-sub">To ${escapeHtml(other?.username||'')} · Balance: ${coins.toLocaleString()} coins</p>
+
+        <div class="mn-field">
+          <label>Amount</label>
+          <div class="mn-input-wrap">
+            <span class="mn-input-icon">${iconCoin()}</span>
+            <input class="mn-input mn-input-has-icon ${overBalance?'mn-input-error':''}" type="number" min="1" max="${coins}" inputmode="numeric"
+              placeholder="Enter amount" value="${state.giftAmount}" oninput="setGiftAmount(this.value)" />
+          </div>
+          ${overBalance
+            ? `<span class="mn-field-error">Not enough coins — you have ${coins.toLocaleString()}.</span>`
+            : `<span class="mn-field-hint">Tap a quick amount or type your own</span>`}
+        </div>
+
+        <div class="mn-tabs mn-gift-tabs" role="group" aria-label="Quick amounts">
+          ${[10,25,50,100].map(v => `
+            <button type="button" class="mn-tab ${state.giftAmount===v?'mn-tab-active':''}"
+              aria-pressed="${state.giftAmount===v}" onclick="setGiftAmount(${v})" ${v>coins?'disabled':''}>${v}</button>`).join("")}
+        </div>
+
+        <button class="mn-postbtn" onclick="sendGiftCoins()" ${canSend?"":"disabled"}>
+          ${state.giftBusy ? `<span class="mn-spinner"></span> Sending...` : `${iconGiftSmall()} Send ${state.giftAmount?state.giftAmount.toLocaleString():""} coins`}
+        </button>
+        <button class="mn-auth-close" onclick="closeGiftCoins()">Cancel</button>
+      </div>
+    </div>`;
+}
+let withdrawModalWasOpen = false;
+function withdrawModalHtml() {
+  if (!state.withdrawOpen) { withdrawModalWasOpen = false; return ""; }
+  const justOpened = !withdrawModalWasOpen;
+  withdrawModalWasOpen = true;
+  const animClass = justOpened ? " mn-anim-in" : "";
+  const step = state.withdrawStep;
+  const f = state.withdrawForm;
+
+  let body = "";
+  if (step === "form") {
+    body = `
+      <p class="mn-sheet-title">Withdraw coins</p>
+      <p class="mn-sheet-subtitle">Enter the number and registered name to receive your payout</p>
+      <input class="mn-input" placeholder="Phone number, e.g. 0791450193" value="${escapeHtml(f.phone)}" oninput="setWithdrawPhone(this.value)" />
+      <input class="mn-input" placeholder="Name registered on that number" value="${escapeHtml(f.name)}" oninput="setWithdrawName(this.value)" />
+      <button class="mn-postbtn mn-withdraw-submit-btn" onclick="submitWithdraw()" ${f.phone.trim() && f.name.trim() && !state.withdrawBusy ? "" : "disabled"}>
+        ${state.withdrawBusy ? `<span class="mn-spinner"></span> Sending...` : "Send to admin"}
+      </button>
+      <button class="mn-sheet-cancel" onclick="closeWithdraw()">Cancel</button>
+    `;
+  } else if (step === "done") {
+    body = `
+      <div class="mn-confirm-icon">${iconCoin()}</div>
+      <p class="mn-sheet-title">Request sent!</p>
+      <p class="mn-confirm-body">Your withdrawal request has been sent to admin for review. You'll be paid out once approved.</p>
+      <button class="mn-postbtn" onclick="closeWithdraw()">Done</button>
+    `;
+  }
+
+  return `
+    <div class="mn-sheet-overlay${animClass}" onclick="if(event.target===this) closeWithdraw()">
+      <div class="mn-sheet${animClass}">
+        <div class="mn-sheet-handle"></div>
+        ${body}
       </div>
     </div>
   `;
@@ -8846,6 +9424,124 @@ function closeDonationPopup() { setState({ donationPopupChannel: null }); }
 function copyDonationNumber(number) {
   navigator.clipboard.writeText(number).then(() => showToast("Number copied — go make that donation!"));
 }
+// ---------------- Coins (MyEarn → Earn tab) ----------------
+function setMyEarnSubTab(tab) {
+  setState({ myEarnSubTab: tab });
+  if (tab === "earn" && !state.myCoinRequestsLoaded) loadMyCoinRequests();
+}
+
+function openBuyCoins() {
+  setState({ buyCoinsOpen: true, buyCoinsStep: "package", buyCoinsForm: { packageId: null, proofMessage: "" } });
+}
+function closeBuyCoins() { setState({ buyCoinsOpen: false }); }
+function chooseCoinPackage(id) { setState({ buyCoinsForm: { ...state.buyCoinsForm, packageId: id }, buyCoinsStep: "pay" }); }
+function backToCoinPackages() { setState({ buyCoinsStep: "package" }); }
+function setCoinProofMessage(v) {
+  state.buyCoinsForm.proofMessage = v;
+  const btn = document.querySelector(".mn-coin-verify-btn");
+  if (btn) btn.disabled = !(v.trim() && !state.buyCoinsBusy);
+}
+function copyCoinPaymentNumber() {
+  navigator.clipboard.writeText(COIN_PAYMENT_PHONE).then(() => showToast("Number copied"));
+}
+
+async function submitCoinVerify() {
+  const pkg = COIN_PACKAGES.find((p) => p.id === state.buyCoinsForm.packageId);
+  const msg = state.buyCoinsForm.proofMessage.trim();
+  if (!state.user || !pkg || !msg || state.buyCoinsBusy) return;
+  state.buyCoinsBusy = true; render();
+  try {
+    await addDoc(collection(db, "coinRequests"), {
+      userId: state.user.uid,
+      userName: (state.profile && state.profile.username) || "",
+      coins: pkg.coins,
+      amountFrw: pkg.frw,
+      packageLabel: pkg.label,
+      proofMessage: msg,
+      status: "pending",
+      coinsAwarded: null,
+      createdAt: serverTimestamp(),
+      reviewedAt: null,
+    });
+    state.buyCoinsBusy = false;
+    setState({ buyCoinsStep: "done" });
+  } catch (e) {
+    state.buyCoinsBusy = false;
+    render();
+    showToast("Couldn't submit — check your connection and try again.");
+  }
+}
+
+function openWithdraw() { setState({ withdrawOpen: true, withdrawStep: "form", withdrawForm: { phone: "", name: "" } }); }
+function closeWithdraw() { setState({ withdrawOpen: false }); }
+function setWithdrawPhone(v) {
+  state.withdrawForm.phone = v;
+  const btn = document.querySelector(".mn-withdraw-submit-btn");
+  if (btn) btn.disabled = !(state.withdrawForm.phone.trim() && state.withdrawForm.name.trim() && !state.withdrawBusy);
+}
+function setWithdrawName(v) {
+  state.withdrawForm.name = v;
+  const btn = document.querySelector(".mn-withdraw-submit-btn");
+  if (btn) btn.disabled = !(state.withdrawForm.phone.trim() && state.withdrawForm.name.trim() && !state.withdrawBusy);
+}
+async function submitWithdraw() {
+  const phone = state.withdrawForm.phone.trim();
+  const name = state.withdrawForm.name.trim();
+  if (!state.user || !phone || !name || state.withdrawBusy) return;
+  state.withdrawBusy = true; render();
+  try {
+    const requestedCoins = (state.profile && state.profile.coins) || 0;
+    await addDoc(collection(db, "withdrawRequests"), {
+      userId: state.user.uid,
+      userName: (state.profile && state.profile.username) || "",
+      phone, name,
+      coins: requestedCoins,
+      status: "pending",
+      createdAt: serverTimestamp(),
+      reviewedAt: null,
+    });
+    // balance is untouched here — coins move to "Withdrawal" only once
+    // the admin actually confirms the payout (see admin.html confirmWithdraw)
+    state.withdrawBusy = false;
+    setState({ withdrawStep: "done" });
+  } catch (e) {
+    state.withdrawBusy = false;
+    render();
+    showToast("Couldn't submit — check your connection and try again.");
+  }
+}
+
+let coinRequestsUnsub = null;
+function loadMyCoinRequests() {
+  if (!state.user) return;
+  if (coinRequestsUnsub) coinRequestsUnsub();
+  const qy = query(collection(db, "coinRequests"), where("userId", "==", state.user.uid), orderBy("createdAt", "desc"), limit(20));
+  coinRequestsUnsub = onSnapshot(qy, (snap) => {
+    state.myCoinRequests = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    state.myCoinRequestsLoaded = true;
+    render();
+  });
+}
+function detachCoinRequestsListener() {
+  if (coinRequestsUnsub) { coinRequestsUnsub(); coinRequestsUnsub = null; }
+  state.myCoinRequestsLoaded = false;
+  state.myCoinRequests = [];
+}
+
+// Live balance — so the moment admin adds coins in Firestore, it updates here
+// without the user needing to refresh the page.
+let coinsBalanceUnsub = null;
+function attachCoinsListener(uid) {
+  if (coinsBalanceUnsub) coinsBalanceUnsub();
+  coinsBalanceUnsub = onSnapshot(doc(db, "users", uid), (snap) => {
+    if (snap.exists() && state.profile) {
+      const d = snap.data();
+      state.profile = { ...state.profile, coins: d.coins || 0, usedCoins: d.usedCoins || 0, withdrawalCoins: d.withdrawalCoins || 0 };
+      render();
+    }
+  });
+}
+function detachCoinsListener() { if (coinsBalanceUnsub) { coinsBalanceUnsub(); coinsBalanceUnsub = null; } }
 
 function shareModalHtml() {
   if (!state.shareModal) { shareModalWasOpen = false; return ""; }
@@ -9452,10 +10148,13 @@ function render() {
         </div>
       ` : ""}
       <div class="mn-composer-row">
-        <button class="mn-composer-attach" onclick="toggleMessageMediaPicker()" title="Attach a catbox.moe photo, video or audio link">${iconAttachSmall()}</button>
-        <textarea rows="1" placeholder="Message ${escapeHtml(state.activeChatUser.username || "")}..." oninput="setMessageDraft(this.value)">${escapeHtml(state.messageDraft)}</textarea>
+        <div class="mn-chat-pill">
+          <button class="mn-composer-attach" onclick="toggleMessageMediaPicker()" title="Attach a catbox.moe photo, video or audio link">${iconAttachSmall()}</button>
+          <button class="mn-composer-attach" onclick="openGiftCoins()" title="Gift coins">${iconGiftSmall()}</button>
+          <textarea rows="1" placeholder="Message ${escapeHtml(state.activeChatUser.username || "")}..." oninput="setMessageDraft(this.value)">${escapeHtml(state.messageDraft)}</textarea>
+        </div>
         <button class="mn-composer-send mn-chat-send" onclick="sendMessage()" ${(state.messageDraft.trim() || state.messageMediaUrl) && !state.messageBusy ? "" : "disabled"} title="Send">
-          ${state.messageBusy ? `<span class="mn-spinner"></span>` : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2 15 22l-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
+          ${state.messageBusy ? `<span class="mn-spinner"></span>` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
         </button>
       </div>
     </div>
@@ -9490,6 +10189,9 @@ function render() {
         ${donationSetupModalHtml()}
         ${donationPopupHtml()}
         ${donationNetworkPickerHtml()}
+        ${withdrawModalHtml()}
+        ${giftModalHtml()}
+        ${buyCoinsModalHtml()}
       </div>
       ${rightPanelHtml()}
     </div>
@@ -9500,8 +10202,7 @@ function render() {
   // momentum-scrolls through, common on mobile) moves the feed behind the
   // overlay; closing the sheet then lands you on a different post than the
   // one you opened it from, which reads as the feed "jumping".
-  const anyOverlayOpen = !!(state.authModal || state.shareModal || state.commentsOpen || state.reelsViewerOpen || state.signOutConfirmOpen || state.regionPickerOpen || state.categoryPickerOpen || state.newChatOpen || state.createChannelOpen || state.channelComposerOpen || state.donationSetupOpen || state.donationPopupChannel);
-  document.body.style.overflow = anyOverlayOpen ? "hidden" : "";
+  document.body.style.overflow = anyOverlayOpen() ? "hidden" : "";
   if (state.screen === "create") autoGrow(document.querySelector(".mn-compose-textarea"));
   if (state.screen === "home") { observeFeedSentinel(); observeFeedViews(); }
   if (state.screen === "chat") scrollChatToBottom();
@@ -9719,6 +10420,19 @@ window.setSortMode = setSortMode;
 window.openChannelsScreen = openChannelsScreen;
 window.closeChannelsScreen = closeChannelsScreen;
 window.setChannelsTab = setChannelsTab;
+window.setMyEarnSubTab = setMyEarnSubTab;
+window.openWithdraw = openWithdraw;
+window.closeWithdraw = closeWithdraw;
+window.setWithdrawPhone = setWithdrawPhone;
+window.setWithdrawName = setWithdrawName;
+window.submitWithdraw = submitWithdraw;
+window.openBuyCoins = openBuyCoins;
+window.closeBuyCoins = closeBuyCoins;
+window.chooseCoinPackage = chooseCoinPackage;
+window.backToCoinPackages = backToCoinPackages;
+window.setCoinProofMessage = setCoinProofMessage;
+window.copyCoinPaymentNumber = copyCoinPaymentNumber;
+window.submitCoinVerify = submitCoinVerify;
 window.setChannelsSearch = setChannelsSearch;
 window.openChannelsSection = openChannelsSection;
 window.closeChannelsSection = closeChannelsSection;
