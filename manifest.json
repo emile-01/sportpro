@@ -1,0 +1,11 @@
+{
+  "name": "MENYA — Ask. Share. Learn.",
+  "short_name": "MENYA",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#EEF0F2",
+  "theme_color": "#1F5C4C",
+  "lang": "en"
+}
