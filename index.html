@@ -36,6 +36,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="MENYA" />
+<link rel="apple-touch-icon" href="/icon-512.png" />
 
 <!-- Structured data: helps Google understand what this site is -->
 <script type="application/ld+json">
@@ -10943,19 +10944,58 @@ trackEvent("screen_view", { screen_name: "home" });
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
 }
+
+const mnBanner = document.querySelector('.mn-install-banner');
+const mnBannerText = mnBanner ? mnBanner.querySelector('span') : null;
+const mnBannerBtn = mnBanner ? mnBanner.querySelector('button') : null;
+
+// Already installed / running standalone? Never show the banner.
+const mnIsStandalone =
+  window.matchMedia('(display-mode: standalone)').matches ||
+  window.navigator.standalone === true;
+
+const mnIsIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+
 let deferredPrompt;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.querySelector('.mn-install-banner').classList.add('mn-install-banner-show');
+  if (!mnIsStandalone && mnBanner) {
+    mnBanner.classList.add('mn-install-banner-show');
+  }
 });
+
 function installApp() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt = null;
-  document.querySelector('.mn-install-banner').classList.remove('mn-install-banner-show');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+    mnBanner.classList.remove('mn-install-banner-show');
+    return;
+  }
+  // No native prompt available (iOS, or Chrome hasn't fired it yet) — show manual instructions instead.
+  if (mnIsIOS) {
+    alert('To install: tap the Share icon, then "Add to Home Screen".');
+  } else {
+    alert('To install: open the browser menu (⋮) and tap "Install app".');
+  }
 }
+
+// Fallback: if beforeinstallprompt never fires (iOS, or some Android/Chrome
+// versions delay it), still surface the banner after a short delay so the
+// user always sees an install message — installApp() falls back to manual
+// instructions in that case.
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (!mnIsStandalone && mnBanner && !mnBanner.classList.contains('mn-install-banner-show')) {
+      if (mnIsIOS && mnBannerText) {
+        mnBannerText.textContent = 'Install MENYA: tap Share, then "Add to Home Screen"';
+        if (mnBannerBtn) mnBannerBtn.style.display = 'none';
+      }
+      mnBanner.classList.add('mn-install-banner-show');
+    }
+  }, 2500);
+});
 </script>
-</body>
 </body>
 </html>
