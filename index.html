@@ -2530,7 +2530,7 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
 @media (prefers-color-scheme: dark) {
   .mn-splash { background: #000000; }
 }
-.mn-splash img { width: 96px; height: 96px; border-radius: 22px; }
+.mn-splash img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #1F5C4C; object-fit: cover; }
 .mn-splash-brand {
   margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 600;
   font-size: 13px; letter-spacing: 0.03em; color: #8A8F98;
@@ -2549,12 +2549,11 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
     </div>
   </div>
 </div>
-<div id="root">
-  <div class="mn-splash">
-    <img src="/favicon.png" alt="MENYA" />
-    <div class="mn-splash-brand">ALLIANCE CORPORATION</div>
-  </div>
+<div class="mn-splash" id="mn-splash">
+  <img src="/favicon.png" alt="MENYA" />
+  <div class="mn-splash-brand">ALLIANCE CORPORATION</div>
 </div>
+<div id="root"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -11353,6 +11352,8 @@ function scheduleMarkTruncated() {
 new MutationObserver(scheduleMarkTruncated).observe(document.getElementById("root"), { childList: true, subtree: true });
 
 render();
+const mnSplashEl = document.getElementById('mn-splash');
+if (mnSplashEl) mnSplashEl.remove();
 
 maybeOpenSharedChannel();
 maybeOpenSharedChallenge();
