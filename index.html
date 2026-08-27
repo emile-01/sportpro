@@ -9,6 +9,12 @@
 <title>MENYA — Ask. Share. Learn.</title>
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="manifest" href="/manifest.json">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+}
+</script>
 
 <!-- SEO: description + indexing -->
 <meta name="description" content="MENYA is a free global community where people share posts, follow each other, and discover ideas — all in one place." />
@@ -2513,6 +2519,19 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
   .mn-install-title { font-size: 17px; }
   .mn-install-sub { font-size: 13px; }
 }
+.mn-splash {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  .mn-splash { background: #000000; }
+}
+.mn-splash img { width: 96px; height: 96px; border-radius: 22px; }
+.mn-splash-brand {
+  margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 600;
+  font-size: 13px; letter-spacing: 0.03em; color: #8A8F98;
+}
 </style>
 </head>
 <body>
@@ -2528,29 +2547,9 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
   </div>
 </div>
 <div id="root">
-  <div class="mn-shell">
-    <aside class="mn-sidebar" aria-hidden="true">
-      <div class="mn-sidebar-brand"><div class="mn-boot-logo"></div><div class="mn-boot-line" style="width:70px;height:15px;"></div></div>
-    </aside>
-    <div class="mn-app mn-boot">
-      <header class="mn-header"><div class="mn-boot-line" style="width:120px;height:19px;"></div>
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
-<link rel="manifest" href="/manifest.json">
-
-      </header>
-      <main class="mn-main">
-        <div class="mn-boot-line" style="width:100%;height:38px;border-radius:10px;margin-bottom:16px;"></div>
-        <div class="mn-boot-card-row"><div class="mn-boot-logo"></div><div class="mn-boot-line" style="width:110px;height:13px;"></div></div>
-        <div class="mn-boot-card"></div>
-        <div class="mn-boot-card-row"><div class="mn-boot-logo"></div><div class="mn-boot-line" style="width:90px;height:13px;"></div></div>
-        <div class="mn-boot-card"></div>
-      </main>
-    </div>
-    <aside class="mn-rightpanel" aria-hidden="true">
-      <div class="mn-boot-card"></div>
-      <div class="mn-boot-card"></div>
-    </aside>
+  <div class="mn-splash">
+    <img src="favicon.png" alt="MENYA" />
+    <div class="mn-splash-brand">ALLIANCE CORPORATION</div>
   </div>
 </div>
 
