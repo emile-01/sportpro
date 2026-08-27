@@ -2521,8 +2521,11 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
 }
 .mn-splash {
   position: fixed; inset: 0; z-index: 9999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
   background: #ffffff;
+}
+@media (display-mode: standalone) {
+  .mn-splash { display: flex; }
 }
 @media (prefers-color-scheme: dark) {
   .mn-splash { background: #000000; }
@@ -11404,7 +11407,11 @@ window.addEventListener('load', async () => {
   if ('getInstalledRelatedApps' in navigator) {
     try {
       const related = await navigator.getInstalledRelatedApps();
-      if (related.length > 0) localStorage.setItem('mnAppInstalled', '1');
+      if (related.length > 0) {
+        localStorage.setItem('mnAppInstalled', '1');
+      } else {
+        localStorage.removeItem('mnAppInstalled');
+      }
     } catch (e) {}
   }
   setTimeout(() => {
