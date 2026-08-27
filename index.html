@@ -7,6 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta http-equiv="Save-Data" content="off">
 <title>MENYA — Ask. Share. Learn.</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
 
 <!-- SEO: description + indexing -->
 <meta name="description" content="MENYA is a free global community where people share posts, follow each other, and discover ideas — all in one place." />
@@ -30,13 +32,6 @@
 <meta name="twitter:image" content="https://menya.site/og-image.png" />
 
 <meta name="theme-color" content="#1F5C4C" />
-<meta name="theme-color" content="#1F5C4C" />
-
-<link rel="manifest" href="/manifest.json" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="MENYA" />
-<link rel="apple-touch-icon" href="/icon-512.png" />
 
 <!-- Structured data: helps Google understand what this site is -->
 <script type="application/ld+json">
@@ -368,6 +363,20 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-hashtag:hover { background: color-mix(in srgb, var(--blue-soft) 60%, var(--blue) 12%); }
 .mn-hashtag:active { transform: scale(0.95); }
 .mn-compose-hint { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-faint); margin: 6px 2px 0; }
+.mn-photo-status { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); color: #fff; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; }
+.mn-photo-status-done { background: var(--green); }
+.mn-photo-sizeinfo { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-faint); text-align: right; margin-top: 4px; }
+.mn-photo-progress-track { flex: 1; height: 6px; border-radius: 999px; background: var(--paper-line); overflow: hidden; }
+.mn-photo-progress-fill { height: 100%; background: var(--green); border-radius: 999px; transition: width 0.15s ease; }
+.mn-photo-progress-pct { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-faint); min-width: 32px; text-align: right; }
+.mn-photo-addbtn { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding: 10px 14px; border: 1px dashed var(--border-strong); border-radius: 10px; background: transparent; color: var(--ink-soft); font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; justify-content: center; }
+.mn-photo-addbtn:hover { background: var(--paper-line); color: var(--ink); }
+.mn-photo-preview { position: relative; margin-top: 10px; border-radius: 10px; overflow: hidden; }
+.mn-photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+.mn-photo-preview-grid .mn-photo-preview { margin-top: 0; }
+.mn-photo-preview img { display: block; width: 100%; max-height: 340px; object-fit: cover; }
+.mn-photo-preview-x { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 999px; border: none; background: rgba(0,0,0,0.6); color: #fff; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.mn-photo-uploading { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-faint); }
 .mn-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700; padding: 3.5px 8px; border-radius: 999px; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; }
 .mn-badge-hot { background: var(--yellow-soft); color: var(--yellow-ink); }
 .mn-badge-unanswered { background: var(--red-soft); color: var(--red); }
@@ -426,6 +435,7 @@ width: 100%; max-width: 480px; z-index: 100;
 }
 .mn-avatar svg { display: block; }
 .mn-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mn-avatar-default { background: transparent; }
 
 .mn-photo-edit-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
 .mn-photo-edit-preview.mn-avatar { width: 56px; height: 56px; font-size: 20px; flex: 0 0 auto; }
@@ -1768,7 +1778,7 @@ width: 100%; max-width: 480px; z-index: 100;
 
 /* ---------------- direct messages (mini messenger) ---------------- */
 .mn-messages-btn { position: relative; }
-.mn-msg-header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+.mn-msg-header-title { font-size: 14px; font-weight: 600; letter-spacing: normal; color: var(--ink); }
 .mn-msg-search { margin: 2px 0 14px 0; }
 .mn-newchat-btn {
   display: flex; align-items: center; gap: 8px; width: 100%; margin-bottom: 14px;
@@ -1814,10 +1824,10 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-chat-list { display: flex; flex-direction: column; }
 .mn-chat-list .mn-chat-row:first-child { padding-top: 6px; }
 .mn-chat-row {
-  display: flex; align-items: center; gap: 12px; padding: 11px 10px;
+  display: flex; align-items: center; gap: 12px; padding: 18px 12px;
   border-bottom: 1px solid var(--paper-line); cursor: pointer;
-  transition: background-color .15s ease, transform .1s ease;
-  border-radius: 10px; margin: 0 -10px;
+  transition: background-color .2s cubic-bezier(.2,.7,.3,1);
+  border-radius: 12px; margin: 0 -12px;
 }
 .mn-chat-row:active { transform: scale(0.99); }
 .mn-chat-list .mn-chat-row:last-child { border-bottom: none; }
@@ -1826,13 +1836,13 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-chat-row-unread { background: var(--paper-line); }
 .mn-chat-row-unread:hover { background: var(--border); }
 .mn-chat-row-avatar-wrap { position: relative; flex: 0 0 auto; }
-.mn-chat-row .mn-avatar { width: 50px; height: 50px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper); }
+.mn-chat-row .mn-avatar { width: 40px; height: 40px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper); }
 .mn-chat-row-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.mn-chat-row-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); }
-.mn-chat-row-time { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: var(--ink-faint); flex: 0 0 auto; white-space: nowrap; }
+.mn-chat-row-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-chat-row-time { font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--ink-faint); flex: 0 0 auto; white-space: nowrap; }
 .mn-chat-row-bottom { display: flex; align-items: center; gap: 0; min-width: 0; }
 .mn-chat-row-preview {
-  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; line-height: 1.3; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 1.55; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; flex: 1 1 auto; min-width: 0;
 }
 .mn-chat-row-unread .mn-chat-row-preview,
@@ -2417,6 +2427,24 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-coins-buy-btn, .mn-coins-withdraw-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; border-radius: 8px; }
 .mn-coins-withdraw-btn { background: var(--paper-raised); color: var(--ink); border: 1px solid var(--border); }
 .mn-shell[data-theme="dark"] .mn-coins-withdraw-btn { color: var(--ink); }
+.mn-elig-card { text-align: center; padding: 18px 0 10px; }
+.mn-elig-card-label { margin: 0; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-faint); }
+.mn-elig-card-percent { margin: 4px 0; font-family: 'Inter', sans-serif; font-size: 40px; font-weight: 800; color: var(--green); }
+.mn-elig-maintrack, .mn-elig-row-track { height: 8px; border-radius: 999px; background: var(--paper-line); overflow: hidden; }
+.mn-elig-mainfill, .mn-elig-row-fill { height: 100%; background: var(--green); border-radius: 999px; }
+.mn-elig-card-sub { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink-faint); margin: 8px 0 0; }
+.mn-elig-summary { margin: 14px 0; border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; }
+.mn-elig-summary-row { display: flex; justify-content: space-between; padding: 5px 0; font-family: 'Inter', sans-serif; font-size: 13.5px; }
+.mn-elig-section-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; margin: 18px 0 8px; }
+.mn-elig-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.mn-elig-row-label { flex: 0 0 110px; font-family: 'Inter', sans-serif; font-size: 12.5px; }
+.mn-elig-row-track { flex: 1; }
+.mn-elig-row-pct { width: 36px; text-align: right; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-faint); }
+.mn-elig-weak-item { padding: 8px 0; border-bottom: 1px solid var(--paper-line); }
+.mn-elig-weak-item p { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-faint); }
+.mn-elig-activity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.mn-elig-levels div { display: flex; justify-content: space-between; padding: 6px 0; font-family: 'Inter', sans-serif; font-size: 12.5px; border-bottom: 1px solid var(--paper-line); }
+.mn-elig-levels span { color: var(--ink-faint); }
 .mn-coins-history-title { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin: 0 0 8px 0; }
 .mn-coins-history-list { display: flex; flex-direction: column; gap: 8px; }
 .mn-coins-history-row {
@@ -2453,22 +2481,51 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-gift-custom-input { text-align:center; font-family:'Inter',sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; }
 .mn-gift-error { font-family:'Inter',sans-serif; color:var(--red); font-size:12.5px; text-align:center; margin:0 0 12px; }
 .mn-gift-send-btn { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:10px; font-family:'Inter',sans-serif; }
-.mn-install-banner {
-  position: fixed; left: 50%; bottom: -100px; transform: translateX(-50%);
-  width: 100%; max-width: 440px; z-index: 999;
-  background: var(--paper-raised); border-top: 1px solid var(--border);
-  box-shadow: var(--shadow-md); padding: 14px 16px;
-  display: flex; align-items: center; gap: 12px;
-  transition: bottom .3s ease;
+.mn-install-overlay {
+  position: fixed; inset: 0; background: var(--overlay); z-index: 999;
+  display: none; align-items: flex-end; justify-content: center;
 }
-.mn-install-banner-show { bottom: 0; }
-.mn-install-banner button { margin-left: auto; }
+.mn-install-overlay.mn-install-show { display: flex; animation: mn-fade-in .15s ease; }
+.mn-install-sheet {
+  width: 100%; max-width: 480px; background: #000; color: #fff;
+  border-radius: 22px 22px 0 0; text-align: center;
+  padding: 10px 26px calc(30px + env(safe-area-inset-bottom, 0px)) 26px;
+  box-shadow: var(--shadow-md);
+  animation: mn-sheet-up .25s cubic-bezier(.2,.8,.3,1.05);
+}
+body[data-theme="dark"] .mn-install-sheet { background: #fff; color: #000; }
+.mn-install-sheet .mn-sheet-handle { background: rgba(255,255,255,0.3); }
+body[data-theme="dark"] .mn-install-sheet .mn-sheet-handle { background: var(--border-strong); }
+.mn-install-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 19px; margin: 6px 0 8px 0; }
+.mn-install-sub { font-size: 14px; line-height: 1.5; opacity: 0.75; margin: 0 0 22px 0; }
+.mn-install-btns { display: flex; flex-direction: column; gap: 10px; }
+.mn-install-btn-primary {
+  background: #fff; color: #000; border: none; border-radius: 999px;
+  padding: 14px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer;
+}
+body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff; }
+.mn-install-btn-ghost {
+  background: none; color: inherit; opacity: 0.7; border: none;
+  padding: 8px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13.5px; cursor: pointer;
+}
+@media (max-width: 360px) {
+  .mn-install-sheet { padding: 10px 18px calc(24px + env(safe-area-inset-bottom, 0px)) 18px; }
+  .mn-install-title { font-size: 17px; }
+  .mn-install-sub { font-size: 13px; }
+}
 </style>
 </head>
 <body>
-<div class="mn-install-banner">
-  <span>Install MENYA for a faster experience</span>
-  <button onclick="installApp()">Install</button>
+<div class="mn-install-overlay" id="mn-install-overlay">
+  <div class="mn-install-sheet">
+    <div class="mn-sheet-handle"></div>
+    <p class="mn-install-title">Install MENYA</p>
+    <p class="mn-install-sub">Get the app for a faster, full-screen experience — no browser bars, quicker loading.</p>
+    <div class="mn-install-btns">
+      <button class="mn-install-btn-primary" onclick="installApp()">Install</button>
+      <button class="mn-install-btn-ghost" onclick="dismissInstallPrompt()">Not now</button>
+    </div>
+  </div>
 </div>
 <div id="root">
   <div class="mn-shell">
@@ -2479,6 +2536,7 @@ width: 100%; max-width: 480px; z-index: 100;
       <header class="mn-header"><div class="mn-boot-line" style="width:120px;height:19px;"></div>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
+<link rel="manifest" href="/manifest.json">
 
       </header>
       <main class="mn-main">
@@ -2505,7 +2563,7 @@ import {
 import {
   getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection, collectionGroup, addDoc,
   query, orderBy, onSnapshot, serverTimestamp, increment, arrayUnion, arrayRemove,
-  where, getDocs, limit, startAfter, getCountFromServer, Timestamp
+  where, getDocs, limit, startAfter, getCountFromServer, Timestamp, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   getAnalytics, logEvent, isSupported as analyticsIsSupported, setUserId
@@ -2523,9 +2581,11 @@ import {
    service cloud.firestore {
      match /databases/{database}/documents {
        match /users/{userId} {
-         allow read: if true;
-         allow write: if request.auth != null &&
-           (request.auth.uid == userId || request.auth.uid == "REPLACE_WITH_ADMIN_UID");
+        allow read: if true;
+        allow write: if request.auth != null &&
+          (request.auth.uid == userId || request.auth.uid == "REPLACE_WITH_ADMIN_UID");
+        allow update: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['momentum']);
          match /notifications/{notifId} {
            // Anyone signed in can WRITE a notification into another user's inbox
            // (that's how "so-and-so followed/upvoted/answered you" gets delivered),
@@ -2712,6 +2772,89 @@ const firebaseConfig = {
   measurementId: "G-8KSBHHXKHQ",
 };
 
+// ---- Cloudinary (unsigned upload — safe to keep client-side) ----
+const CLOUDINARY_CLOUD_NAME = "jxm0ud0g";
+const CLOUDINARY_UPLOAD_PRESET = "unsigned_preset";
+function uploadImageToCloudinary(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
+      try {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const data = JSON.parse(xhr.responseText);
+          if (!data.secure_url) throw new Error("No secure_url in response");
+          resolve({ url: data.secure_url, width: data.width, height: data.height });
+        } else {
+          let msg = `Upload failed (${xhr.status})`;
+          try { msg = JSON.parse(xhr.responseText)?.error?.message || msg; } catch (_) {}
+          reject(new Error(msg));
+        }
+      } catch (err) {
+        reject(new Error("Bad response from Cloudinary: " + err.message));
+      }
+    };
+    xhr.onerror = () => reject(new Error("Network/CORS error contacting Cloudinary"));
+    xhr.send(fd);
+  });
+}
+
+const MAX_TOTAL_IMAGE_BYTES = 160 * 1024;
+
+// Shrinks quality first, then dimensions, until the image is under maxBytes.
+function compressImageToLimit(file, maxBytes = 160 * 1024) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Read failed"));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Bad image"));
+      img.onload = () => {
+        let width = img.width, height = img.height, quality = 0.9;
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("Canvas not supported on this browser")); return; }
+        const attempt = () => {
+          try {
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => {
+              if (!blob) return reject(new Error("Compression failed"));
+              if (blob.size <= maxBytes || (quality <= 0.35 && width <= 360)) {
+                resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
+              } else if (quality > 0.35) {
+                quality -= 0.15;
+                attempt();
+              } else if (width > 360 || height > 360) {
+                width = Math.round(width * 0.8);
+                height = Math.round(height * 0.8);
+                quality = 0.7;
+                attempt();
+              } else if (blob.size <= maxBytes) {
+                resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
+              } else {
+                reject(new Error("TOO_LARGE"));
+              }
+            }, "image/jpeg", quality);
+          } catch (err) {
+            reject(new Error("Compression failed: " + err.message));
+          }
+        };
+        attempt();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
@@ -2776,7 +2919,7 @@ let state = {
   sortMode: "foryou",   // 'foryou' | 'following'
   searchTerm: "",
   createTab: "write",   // 'write' | 'link' — which composer mode is showing on the Create screen
-  form: { body: "", link: "" },
+  form: { body: "", link: "", images: [], imageUploading: false, uploadProgress: 0 },
   postBusy: false,       // true while a question is being submitted — blocks double-taps on the post button
   toast: null,
   toastKind: "success",
@@ -5003,11 +5146,13 @@ channelPostsUnsub = onSnapshot(pq, (snap) => {
   // point is "unread" again only on the *next* open.
   markChannelReadNow(channelId);
   purgeOldChannelPosts(channelId).catch((e) => console.error("purgeOldChannelPosts failed", e));
+  startChannelDwell();
   pushNav();
 }
 function setChannelFeedFilter(mode) { setState({ channelFeedFilter: mode === "all" ? "all" : "unread" }); }
 function dismissChannelLivePill() { setState({ channelLiveNewIds: [] }); }
 function closeChannel() {
+  flushChannelDwell();
   detachChannelListeners();
   if (!suppressNav) { history.back(); return; }
   setState({ screen: state.channelFrom || "channels", activeChannelId: null, activeChannel: null });
@@ -5177,6 +5322,7 @@ async function submitCreateChannel() {
       subscriberIds: [state.user.uid],
     });
     trackEvent("channel_create", { item_id: ref.id });
+    recordChannelCreated();
     state.createChannelOpen = false;
     state.createChannelBusy = false;
     state.channelsLoaded = false; // force a fresh list next time Channels is opened
@@ -5265,6 +5411,7 @@ async function submitChannelPost() {
     await addDoc(collection(db, "channels", channelId, "posts"), postDoc);
     await updateDoc(doc(db, "channels", channelId), { postsCount: increment(1), lastPostAt: serverTimestamp() });
     trackEvent("channel_post_create", { item_id: channelId, content_type: f.type });
+    // channel activity is now measured by time spent in the channel — see startChannelDwell/flushChannelDwell
     state.channelComposerOpen = false;
     showToast("Posted to " + (state.activeChannel.name || "channel") + "!");
   } catch (e) {
@@ -5848,8 +5995,9 @@ async function sendGiftCoins() {
   state.giftBusy = true; render();
   try {
     await updateDoc(doc(db, "users", myId), { coins: increment(-amount), usedCoins: increment(amount) });
-    await updateDoc(doc(db, "users", other.id), { coins: increment(amount) });
+    await updateDoc(doc(db, "users", other.id), { coins: increment(amount), giftsReceivedCoins: increment(amount) });
     state.profile.coins = myCoins - amount;
+    recordParticipation("gift_sent");
     await setDoc(doc(db, "chats", chatId), {
       participants: [myId, other.id],
       participantNames: { [myId]: myName, [other.id]: other.username || "User" },
@@ -5898,6 +6046,54 @@ function refreshPostBtn() {
 }
 function setFormBody(v) { state.form.body = v; refreshPostBtn(); }
 function setFormLink(v) { state.form.link = v; refreshPostBtn(); }
+function pickFormImage() { document.getElementById("mn-form-image-input").click(); }
+async function onFormImageSelected(input) {
+  const files = Array.from(input.files || []);
+  input.value = "";
+  if (!files.length) return;
+
+  const file = files[0]; // single image only
+
+  state.form.images = [{ url: URL.createObjectURL(file), size: 0, pending: true }];
+  state.form.imageUploading = true;
+  render();
+
+  try {
+    const compressed = await compressImageToLimit(file, MAX_TOTAL_IMAGE_BYTES);
+    state.form.uploadProgress = 0;
+    const result = await uploadImageToCloudinary(compressed, (pct) => {
+      state.form.uploadProgress = pct;
+      const bar = document.querySelector(".mn-photo-progress-fill");
+      if (bar) bar.style.width = pct + "%";
+      const label = document.querySelector(".mn-photo-progress-pct");
+      if (label) label.textContent = pct + "%";
+    });
+    if (state.form.imageUploading) {
+      state.form.images = [{ url: result.url, size: compressed.size, width: result.width, height: result.height }];
+    }
+  } catch (e) {
+    console.error("upload error:", e);
+    state.form.images = [];
+    if (e.message === "TOO_LARGE") {
+      showToast("That photo won't fit in the 160KB limit. Try a smaller one.", "error");
+    } else {
+      showToast(e.message || "Photo upload failed. Try again.", "error");
+    }
+  }
+
+  state.form.imageUploading = false;
+  render();
+}
+function clearFormImage(index) {
+  const removed = state.form.images[index];
+  if (removed && removed.url && removed.url.startsWith("blob:")) URL.revokeObjectURL(removed.url);
+  state.form.images.splice(index, 1);
+  state.form.imageUploading = false;
+  render();
+}
+window.pickFormImage = pickFormImage;
+window.onFormImageSelected = onFormImageSelected;
+window.clearFormImage = clearFormImage;
 function setCreateTab(tab) {
   if (state.createTab === tab) return;
   trackEvent("select_content", { content_type: "create_tab", item_id: tab });
@@ -5906,7 +6102,8 @@ function setCreateTab(tab) {
 // "Write" posts need body text; "Link" posts just need a link (a caption is optional) —
 // mirrors how sharing a link works on other social apps.
 function canPostForm() {
-  return state.createTab === "link" ? !!state.form.link.trim() : !!state.form.body.trim();
+  if (state.form.imageUploading) return false;
+  return state.createTab === "link" ? !!state.form.link.trim() : (!!state.form.body.trim() || state.form.images.length > 0);
 }
 // There's no separate title field in the composer anymore (see renderCreate) — this
 // derives a short label from what the person actually wrote, purely for places that
@@ -5937,11 +6134,16 @@ async function postQuestion() {
   if (!canPostForm()) return;
   if (state.postBusy) return; // guard against a double tap firing this twice and creating duplicate posts
   setState({ postBusy: true });
-  const tags = extractHashtags(state.form.body + " " + (state.form.link || ""));
-  const { mediaWidth, mediaHeight } = await getMediaDimsFromText(state.form.body + " " + (state.form.link || ""));
+  const imagesText = state.form.images.map((img) => img.url).join("\n");
+  const fullBody = imagesText ? (state.form.body.trim() + "\n" + imagesText) : state.form.body.trim();
+  const tags = extractHashtags(fullBody + " " + (state.form.link || ""));
+  const uploadedImg = state.form.images[0];
+  const { mediaWidth, mediaHeight } = uploadedImg && uploadedImg.width
+    ? { mediaWidth: uploadedImg.width, mediaHeight: uploadedImg.height }
+    : await getMediaDimsFromText(fullBody + " " + (state.form.link || ""));
   const payload = {
     title: deriveTitleFromForm(),
-    body: state.form.body.trim(),
+    body: fullBody,
     linkUrl: state.createTab === "link" && state.form.link.trim() ? state.form.link.trim() : null,
     tags,
     authorId: state.user.uid,
@@ -5960,6 +6162,7 @@ async function postQuestion() {
   try {
     await addDoc(collection(db, "questions"), payload);
     await updateDoc(doc(db, "users", state.user.uid), { totalQuestions: increment(1) });
+    recordWeeklyPost(/catbox\.moe/i.test(fullBody + " " + (payload.linkUrl || "")));
   } catch (e) {
     setState({ postBusy: false });
     showToast("Couldn't post. Please try again.", "error");
@@ -5974,7 +6177,7 @@ async function postQuestion() {
   hapticTap(12);
   recordTagInterest(tags, 5); // posting with a tag is the strongest interest signal
   await new Promise((res) => setTimeout(res, 320));
-  state.form = { body: "", link: "" };
+  state.form = { body: "", link: "", images: [], imageUploading: false };
   state.createTab = "write";
   state.screen = "home";
   state.myQuestionsLoaded = false;
@@ -6016,7 +6219,7 @@ function trackViewOnce(id) {
   if (viewedThisSession.has(id)) return;
   viewedThisSession.add(id);
   const q = findQuestionById(id);
-  if (q) { q.views = (q.views || 0) + 1; recordTagInterest(q.tags, 1); }
+  if (q) { q.views = (q.views || 0) + 1; recordTagInterest(q.tags, 1); recordWeeklyView(q.authorId); }
   updateDoc(doc(db, "questions", id), { views: increment(1) }).catch(() => {});
 }
 
@@ -6036,10 +6239,13 @@ function openComments(id, ev) {
   render();
   loadAnswers(id);
   trackViewOnce(id);
+  const _q = findQuestionById(id);
+  startContentDwell(_q && _q.authorId);
   trackEvent("select_content", { content_type: "question", item_id: id });
   pushNav();
 }
 function closeComments() {
+  flushContentDwell();
   state.commentsOpen = false;
   state.detailId = null;
   commentsSheetWasOpen = false;
@@ -6050,7 +6256,7 @@ function closeComments() {
   }
   render();
 }
-// True while the comments sheet is open and mounted — used everywhere the
+// True while the comments sheet is open and mounted
 // detail screen used to check state.screen === "detail" for partial refresh,
 // so posting/upvoting/replying inside the sheet doesn't remount the whole app.
 function commentsSheetMounted() {
@@ -6111,6 +6317,7 @@ async function submitAnswer(qid) {
     });
     await updateDoc(doc(db, "questions", qid), { answersCount: increment(1) });
     await updateDoc(doc(db, "users", state.user.uid), { totalAnswers: increment(1) });
+    recordWeeklyAnswer();
   } catch (e) {
     console.error(e);
     state.answerBusy = false;
@@ -6311,6 +6518,7 @@ function shareTo(platform) {
     const q = findQuestionById(id);
     if (q) q.sharesCount = (q.sharesCount || 0) + 1;
     updateDoc(doc(db, "questions", id), { sharesCount: increment(1) }).catch(() => {});
+    recordParticipation("share");
   }
   if (platform === "whatsapp") window.open("https://wa.me/?text=" + encodeURIComponent(shareMessage), "_blank");
   else if (platform === "telegram") window.open("https://t.me/share/url?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(hookLine), "_blank");
@@ -6539,7 +6747,7 @@ function ensurePhotoCached(uid) {
 }
 function avatarImgError(el) {
   if (!el || !el.parentElement) return;
-  el.parentElement.innerHTML = iconPersonSilhouette();
+  el.parentElement.innerHTML = `<img class="mn-avatar-img" src="https://www.gravatar.com/avatar/000000000000000000000000000000?d=mp&f=y&s=200" alt="" />`;
 }
 function avatarHtml(name, uid, knownPhoto) {
   const label = `${escapeHtml(name || "User")} avatar`;
@@ -6563,10 +6771,11 @@ function avatarHtml(name, uid, knownPhoto) {
     ensurePhotoCached(uid);
   }
   if (photo) photo = normalizeWikimediaUrl(photo, 240);
+  const isDefault = !photo && !(uid && uid.startsWith("chan_"));
   const inner = photo
     ? `<img class="mn-avatar-img" src="${escapeHtml(photo)}" alt="" loading="lazy" onerror="avatarImgError(this)" />`
-    : (uid && uid.startsWith("chan_")) ? `<img class="mn-avatar-img" src="favicon.png" alt="MENYA" />` : iconPersonSilhouette();
-  return `<div class="mn-avatar" role="img" aria-label="${label}">${inner}</div>`;
+    : (uid && uid.startsWith("chan_")) ? `<img class="mn-avatar-img" src="favicon.png" alt="MENYA" />` : `<img class="mn-avatar-img" src="https://www.gravatar.com/avatar/000000000000000000000000000000?d=mp&f=y&s=200" alt="" loading="lazy" />`;
+  return `<div class="mn-avatar${isDefault ? " mn-avatar-default" : ""}" role="img" aria-label="${label}">${inner}</div>`;
 }
 function iconShare() { return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4" stroke-linecap="round"/></svg>`; }
 function iconGridSmall() { return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>`; }
@@ -7094,6 +7303,30 @@ function renderCreate() {
     <textarea class="mn-textarea mn-compose-textarea" rows="5" placeholder="What's on your mind?" oninput="setFormBody(this.value); autoGrow(this);">${escapeHtml(state.form.body)}</textarea>
     ${hashtagPillsHtml(extractHashtags(state.form.body))}
     <p class="mn-compose-hint">Add #hashtags so people can discover this post.</p>
+   <input id="mn-form-image-input" type="file" accept="image/*" style="display:none" onchange="onFormImageSelected(this)" />
+    ${state.form.imageUploading ? `
+      <div class="mn-photo-uploading">
+        <div class="mn-photo-progress-track"><div class="mn-photo-progress-fill" style="width:${state.form.uploadProgress}%"></div></div>
+        <span class="mn-photo-progress-pct">${state.form.uploadProgress}%</span>
+      </div>
+    ` : ""}
+    ${state.form.images.length ? `
+      <div class="mn-photo-preview-grid">
+        ${state.form.images.map((img, i) => `
+          <div class="mn-photo-preview">
+            <img src="${escapeHtml(img.url)}" alt="" ${img.width && img.height ? `style="aspect-ratio:${img.width} / ${img.height};"` : ""} />
+            ${state.form.imageUploading ? `<span class="mn-photo-status">Uploading…</span>` : `<span class="mn-photo-status mn-photo-status-done">Uploaded ✓</span>`}
+            <button type="button" class="mn-photo-preview-x" onclick="clearFormImage(${i})" title="Remove photo">✕</button>
+          </div>
+        `).join("")}
+      </div>
+    ` : ""}
+    ${state.form.images.length ? `
+      <div class="mn-photo-sizeinfo">${Math.round(state.form.images.reduce((s,i)=>s+i.size,0)/1024)}KB / ${Math.round(MAX_TOTAL_IMAGE_BYTES/1024)}KB used</div>
+    ` : ""}
+    ${!state.form.images.length ? `
+      <button type="button" class="mn-photo-addbtn" onclick="pickFormImage()">${iconImageSmall()} Add Photo</button>
+    ` : ""}
     ${mediaEmbedHtml(state.form.body)}
   `;
 
@@ -7127,8 +7360,8 @@ function renderCreate() {
         <button class="mn-tab ${isLinkTab ? "mn-tab-active" : ""}" onclick="setCreateTab('link')">Link</button>
       </div>
       ${isLinkTab ? linkPane : writePane}
-      <button class="mn-postbtn mn-coin-verify-btn" onclick="submitCoinVerify()" ${state.buyCoinsForm.proofMessage.trim() && !state.buyCoinsBusy ? "" : "disabled"}>
-        ${state.buyCoinsBusy ? `<span class="mn-spinner"></span> Submitting...` : "Verify"}
+      <button class="mn-postbtn" onclick="postQuestion()" ${canPost && !state.postBusy ? "" : "disabled"}>
+        ${state.postBusy ? `<span class="mn-spinner"></span> Posting...` : "Post"}
       </button>
     </div>
   `;
@@ -8142,6 +8375,7 @@ async function submitChallenge() {
     });
     state.challengesLoaded = false; // force a fresh list next time Challenges is opened
     state.challengeSubmitBusy = false;
+    recordWeeklyChallenge();
     setState({ challengeCreateOpen: false });
     showToast("Challenge published!", "success");
   } catch (e) {
@@ -8158,6 +8392,7 @@ async function recordChallengeAttempt(challengeId) {
     await updateDoc(doc(db, "challenges", challengeId), { attemptedBy: arrayUnion(state.user.uid) });
     const local = state.challenges.find((c) => c.id === challengeId);
     if (local) { local.attemptedBy = local.attemptedBy || []; if (!local.attemptedBy.includes(state.user.uid)) local.attemptedBy.push(state.user.uid); }
+    // attempting a challenge no longer counts toward eligibility — only creating one does
   } catch (e) { console.error(e); }
 }
 
@@ -8697,11 +8932,12 @@ function renderChannels() {
       </div>
       ${isMyEarnTab ? `
         <div class="mn-tabs mn-subtabs">
-          <button class="mn-tab ${!isEarnSubTab ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('channels')">Channels</button>
+          <button class="mn-tab ${!isEarnSubTab && state.myEarnSubTab !== "eligibility" ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('channels')">Channels</button>
           <button class="mn-tab ${isEarnSubTab ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('earn')">Earn</button>
+          <button class="mn-tab ${state.myEarnSubTab === "eligibility" ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('eligibility')">Eligibility</button>
         </div>
       ` : ""}
-      ${isEarnSubTab ? coinsPanelHtml() : `
+      ${state.myEarnSubTab === "eligibility" ? eligibilityPanelHtml() : isEarnSubTab ? coinsPanelHtml() : `
       <div class="mn-input-wrap mn-channels-search-wrap">
         <span class="mn-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input class="mn-input mn-input-has-icon" placeholder="Search channels..." value="${escapeHtml(state.channelsSearch)}" oninput="setChannelsSearch(this.value)" />
@@ -8728,6 +8964,186 @@ function renderChannels() {
     </div>
   `;
 }
+
+// --- Weekly Eligibility config (internal — not exposed in the UI) ---
+// Calendar week = real-world Mon–Sun, keyed by that week's Monday date (UTC),
+// not "days since you were last active" — so it resets on the actual calendar,
+// the same for every user, regardless of when they personally last opened the app.
+const MAX_ELIGIBILITY_PERCENT = 75;
+const ELIG_TARGETS = {
+  posts: 2,                 // posts containing a catbox.moe link
+  answers: 12,
+  challenges: 1,             // challenges CREATED, not attempted
+  channelSeconds: 8 * 60,    // time spent posting/commenting inside a channel — OR createdChannel below
+  views: 100,                // views received on your own content
+  dwellSeconds: 15 * 60,     // time other people spend viewing your content
+};
+const ELIG_CRITERIA_COUNT = 6;
+
+function getCalendarWeekKey(d = new Date()) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = date.getUTCDay() || 7;          // Mon=1 ... Sun=7
+  date.setUTCDate(date.getUTCDate() - day + 1); // back up to that week's Monday
+  return date.toISOString().slice(0, 10);      // e.g. "2026-08-24"
+}
+function blankWeeklyProgress() {
+  return { weekKey: getCalendarWeekKey(), posts: 0, answers: 0, challenges: 0, channelSeconds: 0, createdChannel: false, views: 0, dwellSeconds: 0 };
+}
+
+// Applies patchFn to `uid`'s weeklyProgress, auto-resetting it first if the
+// stored weekKey isn't this calendar week. Used for both self-actions
+// (posting, answering...) and crediting another user (views/dwell on their content).
+async function bumpWeeklyProgressFor(uid, patchFn) {
+  if (!uid) return;
+  const ref = doc(db, "users", uid);
+  const weekKey = getCalendarWeekKey();
+  try {
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(ref);
+      const data = snap.exists() ? snap.data() : {};
+      let wp = data.weeklyProgress && data.weeklyProgress.weekKey === weekKey ? data.weeklyProgress : blankWeeklyProgress();
+      wp = patchFn(wp);
+      tx.set(ref, { weeklyProgress: wp }, { merge: true });
+    });
+  } catch (e) { console.error("bumpWeeklyProgressFor failed", e); }
+}
+
+function recordWeeklyPost(hasCatboxLink) {
+  if (!state.user || !hasCatboxLink) return;
+  bumpWeeklyProgressFor(state.user.uid, (wp) => ({ ...wp, posts: wp.posts + 1 }));
+}
+function recordWeeklyAnswer() {
+  if (!state.user) return;
+  bumpWeeklyProgressFor(state.user.uid, (wp) => ({ ...wp, answers: wp.answers + 1 }));
+}
+function recordWeeklyChallenge() {
+  if (!state.user) return;
+  bumpWeeklyProgressFor(state.user.uid, (wp) => ({ ...wp, challenges: wp.challenges + 1 }));
+}
+function recordChannelCreated() {
+  if (!state.user) return;
+  bumpWeeklyProgressFor(state.user.uid, (wp) => ({ ...wp, createdChannel: true }));
+}
+function recordChannelSeconds(sec) {
+  if (!state.user || sec <= 0) return;
+  bumpWeeklyProgressFor(state.user.uid, (wp) => ({ ...wp, channelSeconds: wp.channelSeconds + sec }));
+}
+function recordWeeklyView(authorId) {
+  if (!authorId) return;
+  bumpWeeklyProgressFor(authorId, (wp) => ({ ...wp, views: wp.views + 1 }));
+}
+function recordDwellSeconds(authorId, sec) {
+  if (!authorId || sec <= 0) return;
+  bumpWeeklyProgressFor(authorId, (wp) => ({ ...wp, dwellSeconds: wp.dwellSeconds + sec }));
+}
+// Deprecated no-op kept so any leftover calls elsewhere don't throw.
+function recordParticipation() {}
+
+function computeWeeklyEligibilityPercent(rawWp) {
+  const weekKey = getCalendarWeekKey();
+  const wp = rawWp && rawWp.weekKey === weekKey ? rawWp : blankWeeklyProgress();
+  const channelDone = wp.createdChannel || wp.channelSeconds >= ELIG_TARGETS.channelSeconds;
+  const ratios = [
+    Math.min(1, wp.posts / ELIG_TARGETS.posts),
+    Math.min(1, wp.answers / ELIG_TARGETS.answers),
+    Math.min(1, wp.challenges / ELIG_TARGETS.challenges),
+    channelDone ? 1 : Math.min(1, wp.channelSeconds / ELIG_TARGETS.channelSeconds),
+    Math.min(1, wp.views / ELIG_TARGETS.views),
+    Math.min(1, wp.dwellSeconds / ELIG_TARGETS.dwellSeconds),
+  ];
+  const percent = Math.round((ratios.reduce((a, b) => a + b, 0) / ELIG_CRITERIA_COUNT) * MAX_ELIGIBILITY_PERCENT);
+  return { percent: Math.min(MAX_ELIGIBILITY_PERCENT, percent), wp };
+}
+
+async function loadEligibilityStats() {
+  if (!state.user) return;
+  state.eligibilityLoading = true; render();
+  try {
+    const snap = await getDoc(doc(db, "users", state.user.uid));
+    const data = snap.exists() ? snap.data() : {};
+    const prevPercent = state.eligibilityPercent;
+    const { percent, wp } = computeWeeklyEligibilityPercent(data.weeklyProgress);
+    state.eligibilityWeekly = wp;
+    state.eligibilityTrend = prevPercent == null ? "flat" : percent > prevPercent ? "up" : percent < prevPercent ? "down" : "flat";
+    state.eligibilityPercent = percent;
+  } catch (e) { console.error(e); }
+  state.eligibilityLoading = false; render();
+}
+
+// ---- Basic dwell timers (no libraries, no stickers) ----
+// Content dwell: how long a viewer stays on a post's detail view — credited
+// to that post's AUTHOR, since "15 min staying on your content" is about
+// readers, not the reader's own activity.
+let contentDwellStart = null, contentDwellAuthorId = null;
+function startContentDwell(authorId) { contentDwellStart = Date.now(); contentDwellAuthorId = authorId || null; }
+function flushContentDwell() {
+  if (!contentDwellStart || !contentDwellAuthorId) { contentDwellStart = null; contentDwellAuthorId = null; return; }
+  const seconds = Math.min(600, Math.round((Date.now() - contentDwellStart) / 1000)); // cap 10 min/visit
+  const authorId = contentDwellAuthorId;
+  contentDwellStart = null; contentDwellAuthorId = null;
+  if (seconds >= 3) recordDwellSeconds(authorId, seconds);
+}
+// Channel dwell: time the signed-in user spends inside a channel (where
+// posting/commenting happens) — credited to themselves.
+let channelDwellStart = null;
+function startChannelDwell() { channelDwellStart = Date.now(); }
+function flushChannelDwell() {
+  if (!channelDwellStart) return;
+  const seconds = Math.min(1800, Math.round((Date.now() - channelDwellStart) / 1000)); // cap 30 min/visit
+  channelDwellStart = null;
+  if (seconds >= 5) recordChannelSeconds(seconds);
+}
+
+function consistencyLabel(wp) {
+  const pct = state.eligibilityPercent || 0;
+  if (pct >= 60) return "Excellent";
+  if (pct >= 35) return "Good";
+  if (pct > 0) return "Building";
+  return "Just starting";
+}
+function recentActivityLabel(wp) {
+  const isCurrentWeek = wp && wp.weekKey === getCalendarWeekKey();
+  if (!isCurrentWeek) return "Quiet";
+  const anyActivity = (wp.posts || wp.answers || wp.challenges || wp.channelSeconds || wp.views || wp.dwellSeconds);
+  return anyActivity ? "Healthy" : "Quiet";
+}
+
+function eligibilityPanelHtml() {
+  const percent = state.eligibilityPercent || 0;
+  const wp = state.eligibilityWeekly || blankWeeklyProgress();
+  const coins = (state.profile && state.profile.coins) || 0;
+  const withdrawable = Math.round(coins * (percent / 100));
+  const platformShare = coins - withdrawable;
+  const trendArrow = state.eligibilityTrend === "up" ? "↗ Growing" : state.eligibilityTrend === "down" ? "↘ Easing" : "→ Steady";
+
+  return `
+    <div class="mn-elig-card">
+      <p class="mn-elig-card-label">Your eligibility</p>
+      <p class="mn-elig-card-percent">${percent}%</p>
+      <div class="mn-elig-maintrack"><div class="mn-elig-mainfill" style="width:${(percent/MAX_ELIGIBILITY_PERCENT)*100}%"></div></div>
+      <p class="mn-elig-card-sub">Maximum is ${MAX_ELIGIBILITY_PERCENT}% — you can currently withdraw up to ${percent}% of your eligible earnings.</p>
+
+      <p class="mn-elig-momentum-label">This week's progress</p>
+      <div class="mn-elig-summary-row"><span>Posts (w/ link)</span><strong>${wp.posts}/${ELIG_TARGETS.posts}</strong></div>
+      <div class="mn-elig-summary-row"><span>Answers</span><strong>${wp.answers}/${ELIG_TARGETS.answers}</strong></div>
+      <div class="mn-elig-summary-row"><span>Challenges</span><strong>${wp.challenges}/${ELIG_TARGETS.challenges}</strong></div>
+      <div class="mn-elig-summary-row"><span>Channel activity</span><strong>${wp.createdChannel ? "Created" : Math.round(wp.channelSeconds/60) + "/" + Math.round(ELIG_TARGETS.channelSeconds/60) + " min"}</strong></div>
+      <div class="mn-elig-summary-row"><span>Views received</span><strong>${wp.views}/${ELIG_TARGETS.views}</strong></div>
+      <div class="mn-elig-summary-row"><span>Dwell time on your content</span><strong>${Math.round(wp.dwellSeconds/60)}/${Math.round(ELIG_TARGETS.dwellSeconds/60)} min</strong></div>
+
+      <div class="mn-elig-summary-row"><span>Consistency</span><strong>${consistencyLabel(wp)}</strong></div>
+      <div class="mn-elig-summary-row"><span>Recent activity</span><strong>${recentActivityLabel(wp)}</strong></div>
+      <div class="mn-elig-summary-row"><span>Trend</span><strong>${trendArrow}</strong></div>
+    </div>
+    <div class="mn-elig-summary">
+      <div class="mn-elig-summary-row"><span>Eligible earnings</span><strong>${coins.toLocaleString()} RWF</strong></div>
+      <div class="mn-elig-summary-row"><span>You can withdraw</span><strong>${withdrawable.toLocaleString()} RWF</strong></div>
+      <div class="mn-elig-summary-row"><span>MENYA platform share</span><strong>${platformShare.toLocaleString()} RWF</strong></div>
+    </div>
+    <p class="mn-elig-explain">Your eligibility resets every calendar week (Mon–Sun) based on posts, answers, challenges, channel activity, views, and time readers spend on your content.</p>
+  `;
+}
+
 // Accepts youtube.com/watch?v=, youtu.be/, youtube.com/shorts/, youtube.com/embed/ — returns the 11-char video id or null
 function coinsPanelHtml() {
   const coins = (state.profile && state.profile.coins) || 0;
@@ -9743,6 +10159,7 @@ function copyDonationNumber(number) {
 function setMyEarnSubTab(tab) {
   setState({ myEarnSubTab: tab });
   if (tab === "earn" && !state.myCoinRequestsLoaded) loadMyCoinRequests();
+  if (tab === "eligibility") loadEligibilityStats();
 }
 
 function openBuyCoins() {
@@ -10940,28 +11357,33 @@ maybeOpenSharedChallenge();
 trackEvent("screen_view", { screen_name: "home" });
 </script>
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
-}
+const mnOverlay = document.getElementById('mn-install-overlay');
+const mnSub = mnOverlay ? mnOverlay.querySelector('.mn-install-sub') : null;
+const mnPrimaryBtn = mnOverlay ? mnOverlay.querySelector('.mn-install-btn-primary') : null;
 
-const mnBanner = document.querySelector('.mn-install-banner');
-const mnBannerText = mnBanner ? mnBanner.querySelector('span') : null;
-const mnBannerBtn = mnBanner ? mnBanner.querySelector('button') : null;
-
-// Already installed / running standalone? Never show the banner.
 const mnIsStandalone =
   window.matchMedia('(display-mode: standalone)').matches ||
-  window.navigator.standalone === true;
+  window.navigator.standalone === true ||
+  localStorage.getItem('mnAppInstalled') === '1';
+
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('mnAppInstalled', '1');
+  dismissInstallPrompt();
+});
 
 const mnIsIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
 
 let deferredPrompt;
 
+function dismissInstallPrompt() {
+  if (mnOverlay) mnOverlay.classList.remove('mn-install-show');
+}
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  if (!mnIsStandalone && mnBanner) {
-    mnBanner.classList.add('mn-install-banner-show');
+  if (!mnIsStandalone && mnOverlay) {
+    mnOverlay.classList.add('mn-install-show');
   }
 });
 
@@ -10969,10 +11391,9 @@ function installApp() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt = null;
-    mnBanner.classList.remove('mn-install-banner-show');
+    dismissInstallPrompt();
     return;
   }
-  // No native prompt available (iOS, or Chrome hasn't fired it yet) — show manual instructions instead.
   if (mnIsIOS) {
     alert('To install: tap the Share icon, then "Add to Home Screen".');
   } else {
@@ -10980,18 +11401,20 @@ function installApp() {
   }
 }
 
-// Fallback: if beforeinstallprompt never fires (iOS, or some Android/Chrome
-// versions delay it), still surface the banner after a short delay so the
-// user always sees an install message — installApp() falls back to manual
-// instructions in that case.
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  if ('getInstalledRelatedApps' in navigator) {
+    try {
+      const related = await navigator.getInstalledRelatedApps();
+      if (related.length > 0) localStorage.setItem('mnAppInstalled', '1');
+    } catch (e) {}
+  }
   setTimeout(() => {
-    if (!mnIsStandalone && mnBanner && !mnBanner.classList.contains('mn-install-banner-show')) {
-      if (mnIsIOS && mnBannerText) {
-        mnBannerText.textContent = 'Install MENYA: tap Share, then "Add to Home Screen"';
-        if (mnBannerBtn) mnBannerBtn.style.display = 'none';
+    if (!mnIsStandalone && localStorage.getItem('mnAppInstalled') !== '1' && mnOverlay && !mnOverlay.classList.contains('mn-install-show')) {
+      if (mnIsIOS && mnSub) {
+        mnSub.textContent = 'Tap the Share icon, then "Add to Home Screen".';
+        if (mnPrimaryBtn) mnPrimaryBtn.style.display = 'none';
       }
-      mnBanner.classList.add('mn-install-banner-show');
+      mnOverlay.classList.add('mn-install-show');
     }
   }, 2500);
 });
