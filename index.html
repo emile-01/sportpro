@@ -2521,16 +2521,19 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
 }
 .mn-splash {
   position: fixed; inset: 0; z-index: 9999;
-  display: none; align-items: center; justify-content: center;
-  background: #000000;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  background: #ffffff;
 }
-@media (display-mode: standalone) { .mn-splash { display: flex; } }
-.mn-splash img { width: 140px; height: 140px; object-fit: contain; }
-.mn-splash-light { display: none; }
-@media (prefers-color-scheme: light) {
-  .mn-splash { background: #ffffff; }
-  .mn-splash-dark { display: none; }
-  .mn-splash-light { display: block; }
+@media (display-mode: standalone) {
+  .mn-splash { display: flex; }
+}
+@media (prefers-color-scheme: dark) {
+  .mn-splash { background: #000000; }
+}
+.mn-splash img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #1F5C4C; object-fit: cover; }
+.mn-splash-brand {
+  margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 600;
+  font-size: 13px; letter-spacing: 0.03em; color: #8A8F98;
 }
 </style>
 </head>
@@ -2547,9 +2550,8 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
   </div>
 </div>
 <div class="mn-splash" id="mn-splash">
-  <img src="/favicon-dark.png" class="mn-splash-dark" alt="MENYA" />
-  <img src="/favicon-light.png" class="mn-splash-light" alt="MENYA" />
-</div>
+  <img src="/favicon.png" alt="MENYA" />
+  <div class="mn-splash-brand">ALLIANCE CORPORATION</div>
 </div>
 <div id="root"></div>
 
@@ -4365,7 +4367,6 @@ onSnapshot(qRef, async (snap) => {
   if (!firstFeedPagePainted) {
     await Promise.all([preloadFeedDims(state.questions), loadTopContributors()]);
     firstFeedPagePainted = true;
-    hideSplash();
   }
   const feedChanged = reconcileCommittedFeed();
   if (state.screen === "home" && document.querySelector(".mn-home")) {
@@ -4900,7 +4901,7 @@ async function markNotificationsRead() {
   const unreadBroadcastIds = state.broadcasts.filter((b) => !isBroadcastRead(b.id)).map((b) => b.id);
   if (unreadBroadcastIds.length) markBroadcastsReadLocally(unreadBroadcastIds);
   if (!unread.length && !unreadBroadcastIds.length) return;
-  state.notifUnread = 0; render(); // clear the badge immediately, don't wait on the network
+  state.notifUnread = 0; updateNotifBadgeDom(); // clear the badge immediately, don't wait on the network
   try {
     if (unread.length) await Promise.all(unread.map((n) => updateDoc(doc(db, "users", state.user.uid, "notifications", n.id), { read: true })));
   } catch (e) { console.error(e); }
@@ -4935,11 +4936,13 @@ async function toggleFollowUser(authorId, authorName, ev) {
   const next = isFollowing ? current.filter((id) => id !== authorId) : [...current, authorId];
   state.profile.followedUsers = next;
   await updateDoc(doc(db, "users", state.user.uid), { followedUsers: next });
-  // Keep a denormalized follower count on the followed person's own doc so
-  // their profile screen can show "N followers" without everyone having to
-  // query/count every follower's followedUsers array.
   updateDoc(doc(db, "users", authorId), { followersCount: increment(isFollowing ? -1 : 1) }).catch((e) => { /* ignore */ });
-  render();
+  if (ev && ev.currentTarget) {
+    ev.currentTarget.classList.toggle("mn-follow-btn-active", !isFollowing);
+    ev.currentTarget.textContent = !isFollowing ? "Following" : "Follow";
+  } else {
+    render();
+  }
   trackEvent(isFollowing ? "unfollow_user" : "follow_user", { item_id: authorId });
   if (!isFollowing) createNotification(authorId, { type: "follow" });
   showToast(isFollowing ? "Unfollowed " + (authorName || "user") + "." : "You're now following " + (authorName || "this user") + ".");
@@ -5263,7 +5266,12 @@ async function toggleSubscribeChannel(channelId, ev) {
   const nextIds = subscribed ? (channel.subscriberIds || []).filter((id) => id !== state.user.uid) : [...(channel.subscriberIds || []), state.user.uid];
   channel.subscriberIds = nextIds;
   channel.subscriberCount = (channel.subscriberCount || 0) + (subscribed ? -1 : 1);
-  render();
+  if (ev && ev.currentTarget) {
+    ev.currentTarget.classList.toggle("mn-follow-btn-active", !subscribed);
+    ev.currentTarget.textContent = !subscribed ? "Subscribed" : "Subscribe";
+  } else {
+    render();
+  }
   try {
     await updateDoc(doc(db, "channels", channelId), {
       subscriberIds: subscribed ? arrayRemove(state.user.uid) : arrayUnion(state.user.uid),
@@ -5443,6 +5451,12 @@ function updateChannelVoteBtnsOnly(postId) {
   el.textContent = score;
   el.className = "mn-channel-vote-score" + (score > 0 ? " mn-channel-vote-score-pos" : score < 0 ? " mn-channel-vote-score-neg" : "");
 }
+function updatePollOptionsOnly(postId) {
+  const post = (state.channelPosts || []).find((p) => p.id === postId);
+  const wrap = document.querySelector(`.mn-poll[data-post-id="${postId}"]`);
+  if (!post || !wrap) { render(); return; }
+  wrap.outerHTML = channelPollHtml(post);
+}
 function updateChannelCommentsListOnly(postId) {
   const wrap = document.querySelector(".mn-channel-comments-section .mn-comments");
   if (!wrap) { render(); return; }
@@ -5475,7 +5489,7 @@ async function voteChannelPost(postId, dir, ev) {
   post.upvoteCount = Math.max(0, (post.upvoteCount || 0) + (patch.upvoteCount ? (up.has(uid) ? 1 : -1) : 0));
   post.downvoteCount = Math.max(0, (post.downvoteCount || 0) + (patch.downvoteCount ? (down.has(uid) ? 1 : -1) : 0));
   if (ev && ev.currentTarget) popEl(ev.currentTarget);
-  render();
+  updateChannelVoteBtnsOnly(postId);
   try {
     await updateDoc(doc(db, "channels", state.activeChannel.id, "posts", postId), patch);
   } catch (e) { console.error(e); }
@@ -5489,7 +5503,7 @@ async function voteChannelPost(postId, dir, ev) {
 async function loadChannelPostComments(channelId, postId) {
   const snap = await getDocs(query(collection(db, "channels", channelId, "posts", postId, "comments"), orderBy("createdAt", "asc")));
   state.channelPostComments = { ...state.channelPostComments, [postId]: snap.docs.map((d) => ({ id: d.id, ...d.data() })) };
-  render();
+  updateChannelCommentsListOnly(postId);
 }
 function setChannelCommentDraft(v) {
   state.channelCommentDraft = v;
@@ -5529,7 +5543,6 @@ async function submitChannelComment(postId) {
   const ta = document.querySelector(".mn-channel-comment-box textarea");
   if (ta) ta.value = "";
   await loadChannelPostComments(c.id, postId);
-  await loadChannelPostComments(c.id, postId);
   trackEvent("select_content", { content_type: "channel_post_comment", item_id: postId });
 }
 function openChannelPostDetail(id, ev) {
@@ -5557,7 +5570,7 @@ async function votePollOption(postId, optionId, ev) {
   if (!post || !post.poll || (post.poll.voterIds || []).includes(state.user.uid)) return;
   const nextOptions = post.poll.options.map((o) => o.id === optionId ? { ...o, votes: (o.votes || 0) + 1 } : o);
   post.poll = { options: nextOptions, voterIds: [...(post.poll.voterIds || []), state.user.uid] };
-  render();
+  updatePollOptionsOnly(postId);
   try {
     await updateDoc(doc(db, "channels", state.activeChannel.id, "posts", postId), {
       poll: post.poll,
@@ -5908,7 +5921,6 @@ async function sendMessage() {
   const textarea = document.querySelector(".mn-chat-composer textarea");
   if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = `<span class="mn-spinner"></span>`; }
   if (textarea) textarea.value = "";
-  render();
   try {
     const mediaLabel = mediaType === "video" ? "🎬 Video" : mediaType === "audio" ? "🎵 Audio" : mediaType === "image" ? "📷 Photo" : mediaType ? "📎 File" : "";
     // setDoc(..., {merge:true}) both creates the chat the very first time and
@@ -5940,7 +5952,6 @@ async function sendMessage() {
     sendBtn.disabled = !(state.messageDraft.trim() || state.messageMediaUrl);
     sendBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   }
-  render();
 }
 function openGiftCoins() { setState({ giftOpen: true, giftAmount: 100, giftBusy: false, giftSent: false }); }
 function closeGiftCoins() { if (!suppressNav) { history.back(); return; } setState({ giftOpen: false }); }
@@ -6351,10 +6362,16 @@ async function upvoteAnswer(qid, aid, ev) {
   const a = answers.find((a) => a.id === aid);
   if (!a || (a.upvoterIds || []).includes(state.user.uid)) return;
   celebrateUpvote(ev && ev.currentTarget);
-  await updateDoc(doc(db, "questions", qid, "answers", aid), { points: increment(1), upvoterIds: arrayUnion(state.user.uid) });
-  if (a.authorId) await updateDoc(doc(db, "users", a.authorId), { totalPoints: increment(1) }).catch(() => {});
+  a.points = (a.points || 0) + 1;
+  a.upvoterIds = [...(a.upvoterIds || []), state.user.uid];
+  if (ev && ev.currentTarget) {
+    ev.currentTarget.classList.add("mn-comment-upvoted");
+    const countEl = ev.currentTarget.querySelector(".mn-count");
+    if (countEl) countEl.textContent = a.points;
+  }
+  updateDoc(doc(db, "questions", qid, "answers", aid), { points: increment(1), upvoterIds: arrayUnion(state.user.uid) }).catch((e) => console.error(e));
+  if (a.authorId) updateDoc(doc(db, "users", a.authorId), { totalPoints: increment(1) }).catch(() => {});
   createNotification(a.authorId, { type: "upvote_answer", questionId: qid, answerId: aid, preview: (a.body || "").slice(0, 90) });
-  await loadAnswers(qid);
   trackEvent("upvote", { content_type: "answer", item_id: aid });
 }
 
@@ -6454,9 +6471,15 @@ async function upvoteReply(qid, aid, rid, ev) {
   const r = replies.find((r) => r.id === rid);
   if (!r || (r.upvoterIds || []).includes(state.user.uid)) return;
   celebrateUpvote(ev && ev.currentTarget);
-  await updateDoc(doc(db, "questions", qid, "answers", aid, "replies", rid), { points: increment(1), upvoterIds: arrayUnion(state.user.uid) });
+  r.points = (r.points || 0) + 1;
+  r.upvoterIds = [...(r.upvoterIds || []), state.user.uid];
+  if (ev && ev.currentTarget) {
+    ev.currentTarget.classList.add("mn-comment-upvoted");
+    const countEl = ev.currentTarget.querySelector(".mn-count");
+    if (countEl) countEl.textContent = r.points;
+  }
+  updateDoc(doc(db, "questions", qid, "answers", aid, "replies", rid), { points: increment(1), upvoterIds: arrayUnion(state.user.uid) }).catch((e) => console.error(e));
   createNotification(r.authorId, { type: "upvote_reply", questionId: qid, answerId: aid, replyId: rid, preview: (r.body || "").slice(0, 90) });
-  await loadReplies(qid, aid);
   trackEvent("upvote", { content_type: "reply", item_id: rid });
 }
 
@@ -9183,7 +9206,7 @@ function channelPollHtml(p) {
   const voted = state.user && (poll.voterIds || []).includes(state.user.uid);
   const total = poll.options.reduce((s, o) => s + (o.votes || 0), 0);
   return `
-    <div class="mn-poll">
+    <div class="mn-poll" data-post-id="${p.id}">
       ${poll.options.map((o) => {
         const pct = total > 0 ? Math.round(((o.votes || 0) / total) * 100) : 0;
         return `
@@ -10950,20 +10973,70 @@ function render() {
   if (state.screen === "chat") scrollChatToBottom();
   bindChallengeLongPress();
 }
-// lightweight partial refresh for the search box so it doesn't lose focus while typing
+// Partial refresh for the feed — used for search typing, the "New posts"
+// pill, post deletions, and the suggestion module loading/updating. Rather
+// than nuking and rebuilding all visible cards (which reflows the page,
+// re-decodes every image, and drops any in-progress state like an open
+// reply box), this reconciles: cards that stay in the list are never
+// touched at all, cards that left are removed, cards that are new are
+// created — same pattern as a keyed virtual-DOM diff, keyed on "q-<id>".
 function renderFeedOnly() {
   const homeEl = document.querySelector(".mn-home");
   if (!homeEl || state.screen !== "home") { render(); return; }
-  const feedWrap = homeEl.querySelector(".mn-feed, .mn-empty");
   const list = filteredQuestions();
-  const newHtml = list.length === 0
-    ? `<div class="mn-empty">
+  const feedEl = homeEl.querySelector(".mn-feed");
+
+  if (list.length === 0) {
+    const feedWrap = homeEl.querySelector(".mn-feed, .mn-empty");
+    const emptyHtml = `<div class="mn-empty">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         <p class="mn-empty-title">No questions match</p>
         <p class="mn-empty-sub">Try a different topic, or be the first to ask.</p>
-      </div>`
-    : feedListHtml(list);
-  if (feedWrap) feedWrap.outerHTML = newHtml;
+      </div>`;
+    if (feedWrap) feedWrap.outerHTML = emptyHtml;
+    else homeEl.insertAdjacentHTML("afterbegin", emptyHtml);
+  } else if (!feedEl) {
+    // Coming from the empty state, or first paint this session — nothing to
+    // diff against yet, so build it once the normal way.
+    const emptyEl = homeEl.querySelector(".mn-empty");
+    const html = feedListHtml(list);
+    if (emptyEl) emptyEl.outerHTML = html;
+    else homeEl.insertAdjacentHTML("afterbegin", html);
+  } else {
+    const byId = new Map(list.map((q) => [q.id, q]));
+    const existing = new Map();
+    Array.from(feedEl.children).forEach((el) => {
+      if (el.id && el.id.startsWith("q-")) existing.set(el.id.slice(2), el);
+    });
+    existing.forEach((el, id) => { if (!byId.has(id)) el.remove(); });
+    let refNode = feedEl.firstChild;
+    list.forEach((q) => {
+      let el = existing.get(q.id);
+      if (el) {
+        patchQuestionCardStats(el, q); // reused card — keep its numbers current
+      } else {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = questionCardHtml(q);
+        el = wrap.firstElementChild;
+      }
+      if (el !== refNode) feedEl.insertBefore(el, refNode);
+      else refNode = refNode.nextSibling;
+    });
+    // The suggestion module isn't keyed to a post — reposition/refresh it
+    // separately so it never disturbs the post cards around it.
+    const moduleHtml = suggestModuleHtml();
+    let moduleEl = feedEl.querySelector(".mn-suggest-module");
+    if (!moduleHtml) {
+      if (moduleEl) moduleEl.remove();
+    } else {
+      if (moduleEl) moduleEl.outerHTML = moduleHtml;
+      const cardsNow = Array.from(feedEl.children).filter((el) => el.id && el.id.startsWith("q-"));
+      const refCard = cardsNow[Math.min(4, cardsNow.length)] || null;
+      moduleEl = feedEl.querySelector(".mn-suggest-module");
+      if (moduleEl && moduleEl.nextSibling !== refCard && moduleEl !== refCard) feedEl.insertBefore(moduleEl, refCard);
+    }
+  }
+
   const sentinelEl = homeEl.querySelector("#mn-feed-sentinel");
   if (sentinelEl) sentinelEl.remove();
   if (list.length > 0 && questionsHasMore) {
@@ -11351,11 +11424,8 @@ function scheduleMarkTruncated() {
 new MutationObserver(scheduleMarkTruncated).observe(document.getElementById("root"), { childList: true, subtree: true });
 
 render();
-function hideSplash() {
-  const mnSplashEl = document.getElementById('mn-splash');
-  if (mnSplashEl) mnSplashEl.remove();
-}
-window.hideSplash = hideSplash;
+const mnSplashEl = document.getElementById('mn-splash');
+if (mnSplashEl) mnSplashEl.remove();
 
 maybeOpenSharedChannel();
 maybeOpenSharedChallenge();
