@@ -2521,19 +2521,16 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
 }
 .mn-splash {
   position: fixed; inset: 0; z-index: 9999;
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  background: #ffffff;
+  display: none; align-items: center; justify-content: center;
+  background: #000000;
 }
-@media (display-mode: standalone) {
-  .mn-splash { display: flex; }
-}
-@media (prefers-color-scheme: dark) {
-  .mn-splash { background: #000000; }
-}
-.mn-splash img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #1F5C4C; object-fit: cover; }
-.mn-splash-brand {
-  margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 600;
-  font-size: 13px; letter-spacing: 0.03em; color: #8A8F98;
+@media (display-mode: standalone) { .mn-splash { display: flex; } }
+.mn-splash img { width: 140px; height: 140px; object-fit: contain; }
+.mn-splash-light { display: none; }
+@media (prefers-color-scheme: light) {
+  .mn-splash { background: #ffffff; }
+  .mn-splash-dark { display: none; }
+  .mn-splash-light { display: block; }
 }
 </style>
 </head>
@@ -2550,8 +2547,9 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
   </div>
 </div>
 <div class="mn-splash" id="mn-splash">
-  <img src="/favicon.png" alt="MENYA" />
-  <div class="mn-splash-brand">ALLIANCE CORPORATION</div>
+  <img src="/favicon-dark.png" class="mn-splash-dark" alt="MENYA" />
+  <img src="/favicon-light.png" class="mn-splash-light" alt="MENYA" />
+</div>
 </div>
 <div id="root"></div>
 
@@ -4367,6 +4365,7 @@ onSnapshot(qRef, async (snap) => {
   if (!firstFeedPagePainted) {
     await Promise.all([preloadFeedDims(state.questions), loadTopContributors()]);
     firstFeedPagePainted = true;
+    hideSplash();
   }
   const feedChanged = reconcileCommittedFeed();
   if (state.screen === "home" && document.querySelector(".mn-home")) {
@@ -11352,8 +11351,11 @@ function scheduleMarkTruncated() {
 new MutationObserver(scheduleMarkTruncated).observe(document.getElementById("root"), { childList: true, subtree: true });
 
 render();
-const mnSplashEl = document.getElementById('mn-splash');
-if (mnSplashEl) mnSplashEl.remove();
+function hideSplash() {
+  const mnSplashEl = document.getElementById('mn-splash');
+  if (mnSplashEl) mnSplashEl.remove();
+}
+window.hideSplash = hideSplash;
 
 maybeOpenSharedChannel();
 maybeOpenSharedChallenge();
