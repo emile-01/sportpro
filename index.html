@@ -2860,12 +2860,19 @@ const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 // ---- copy/selection deterrent (deters casual copying only; not foolproof) ----
-document.addEventListener("contextmenu", (e) => e.preventDefault());
-document.addEventListener("selectstart", (e) => {
-  const tag = e.target.tagName;
-  if (tag !== "INPUT" && tag !== "TEXTAREA") e.preventDefault();
+function isEditable(el) {
+  const tag = el.tagName;
+  return tag === "INPUT" || tag === "TEXTAREA" || el.isContentEditable;
+}
+document.addEventListener("contextmenu", (e) => {
+  if (!isEditable(e.target)) e.preventDefault();
 });
-document.addEventListener("copy", (e) => e.preventDefault());
+document.addEventListener("selectstart", (e) => {
+  if (!isEditable(e.target)) e.preventDefault();
+});
+document.addEventListener("copy", (e) => {
+  if (!isEditable(e.target)) e.preventDefault();
+});
 document.addEventListener("cut", (e) => e.preventDefault());
 document.addEventListener("dragstart", (e) => e.preventDefault());
 document.addEventListener("keydown", (e) => {
