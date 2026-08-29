@@ -7459,7 +7459,7 @@ function renderProfile() {
       : state.myQuestions.length === 0
         ? `<div class="mn-empty"><p class="mn-empty-title">You haven't posted anything yet</p><p class="mn-empty-sub">Tap the + button below to ask your first question.</p></div>`
         // Same card component as the Home feed, so a post looks identical everywhere it appears.
-        : `<div class="mn-feed">${state.myQuestions.map((q) => questionCardHtml(q)).join("")}</div>`;
+        : `<div class="mn-feed">${state.myQuestions.slice(0, 10).map((q) => questionCardHtml(q)).join("")}</div>`;
   } else {
     historyBody = !state.myQuestionsLoaded
       ? `<p class="mn-empty-sub" style="text-align:center;padding:24px 0;">Loading...</p>`
