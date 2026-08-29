@@ -1784,6 +1784,7 @@ width: 100%; max-width: 480px; z-index: 100;
 
 /* ---------------- direct messages (mini messenger) ---------------- */
 .mn-messages-btn { position: relative; }
+.mn-channels-btn { position: relative; }
 .mn-msg-header-title { font-size: 14px; font-weight: 600; letter-spacing: normal; color: var(--ink); }
 .mn-msg-search { margin: 2px 0 14px 0; }
 .mn-newchat-btn {
@@ -4428,6 +4429,7 @@ async function loadMoreQuestions() {
     // De-dupe against posts the live first page may have already streamed in.
     const seenIds = new Set(state.questions.map((q) => q.id));
     const freshDocs = nextDocs.filter((q) => !seenIds.has(q.id));
+    await preloadFeedDims(freshDocs);
     state.questions = state.questions.concat(freshDocs);
     // Older posts loaded by scrolling to the bottom are appended straight
     // into the committed feed — this is expected, reader-initiated growth,
@@ -4863,6 +4865,10 @@ function channelHasUnread(channel) {
   if (!channel || !channel.lastPostAt) return false;
   if (state.user && channel.ownerId === state.user.uid) return false; // owners don't get an "unread" dot on their own channel
   return notifSortMillis(channel.lastPostAt) > getChannelLastRead(channel.id);
+}
+function channelsUnreadCount() {
+  if (!state.user) return 0;
+  return (state.channels || []).filter((c) => (isSubscribedChannel(c) || isOwnChannel(c)) && channelHasUnread(c)).length;
 }
 // Personal notifications + admin broadcasts, merged into one time-sorted
 // list — this is what the Notifications screen and its category tabs read from.
@@ -7101,7 +7107,10 @@ function committedFeedList() {
   return committedFeedIds.map((id) => byId.get(id)).filter(Boolean);
 }
 // Reader tapped the "New posts" pill: adopt the latest order and hop to the top.
-function mergeNewPosts() {
+async function mergeNewPosts() {
+  const previouslyCommitted = new Set(committedFeedIds || []);
+  const newlyAdded = idealFeedList().filter((q) => !previouslyCommitted.has(q.id));
+  await preloadFeedDims(newlyAdded);
   resetCommittedFeed();
   if (state.screen === "home" && document.querySelector(".mn-home")) renderFeedOnly();
   else updateNewPostsPill();
@@ -10720,7 +10729,10 @@ function headerHtml() {
           ${state.notifUnread > 0 ? `<span class="mn-notif-count">${state.notifUnread > 9 ? "9+" : state.notifUnread}</span>` : ""}
         </button>
       ` : ""}
-      <button class="mn-iconbtn ${state.screen === "channels" || state.screen === "channelDetail" || state.screen === "channelPostDetail" ? "mn-iconbtn-active" : ""}" onclick="openChannelsScreen()" title="Channels">${iconMegaphone()}</button>
+      <button class="mn-iconbtn mn-channels-btn ${state.screen === "channels" || state.screen === "channelDetail" || state.screen === "channelPostDetail" ? "mn-iconbtn-active" : ""}" onclick="openChannelsScreen()" title="Channels">
+  ${iconMegaphone()}
+  ${channelsUnreadCount() > 0 ? `<span class="mn-notif-count">${channelsUnreadCount() > 9 ? "9+" : channelsUnreadCount()}</span>` : ""}
+</button>
       <button class="mn-iconbtn mn-header-discover-btn ${state.screen === "discover" ? "mn-iconbtn-active" : ""}" onclick="selectScreen('discover')" title="Discover creators">${iconCompass(state.screen === "discover")}</button>
       <button class="mn-iconbtn" onclick="toggleTheme()" title="Toggle theme">${state.theme === "dark" ? iconSun() : iconMoon()}</button>
       ${state.screen === "profile" && state.user ? `<button class="mn-iconbtn mn-iconbtn-signout" onclick="confirmSignOut()" title="Sign out">${iconLogout()}</button>` : ""}
