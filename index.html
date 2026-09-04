@@ -56,7 +56,7 @@ if ('serviceWorker' in navigator) {
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" />
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" />
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" id="mn-inter-font" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=optional" id="mn-inter-font" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" /></noscript>
 <script>
   window.addEventListener("load", () => {
@@ -153,12 +153,12 @@ body[data-theme="dark"] { background: #000000; }
 
 /* ---------------- header ---------------- */
 .mn-header {
-  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateZ(0);
 width: 100%; max-width: 480px; z-index: 100;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 13px 16px; min-height: 58px;
   background: color-mix(in srgb, var(--paper-raised) 94%, transparent);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border);
 }
 .mn-shell[data-screen="chat"] .mn-main {
@@ -312,8 +312,36 @@ width: 100%; max-width: 480px; z-index: 100;
 /* ---------------- feed — Threads-style rows: generous padding, minimal
    chrome, only what a reader actually needs (who, when, what, follow) ---------------- */
 .mn-feed { display: flex; flex-direction: column; }
+html { scroll-behavior: smooth; }
 /* Infinite-scroll sentinel at the bottom of the feed — see observeFeedSentinel() */
 .mn-feed-sentinel { display: flex; align-items: center; justify-content: center; padding: 18px 0; min-height: 40px; }
+.mn-see-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 18px 12px 28px;
+}
+
+.mn-see-more-btn {
+  min-width: 130px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.mn-see-more-btn:disabled {
+  opacity: .7;
+  cursor: wait;
+}
 .mn-feed-spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--ink-soft); animation: mn-spin .6s linear infinite; }
 
 /* "New posts" pill — floats below the header once fresh posts arrive while the
@@ -334,6 +362,7 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-feed-newpost-pill-visible { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; }
 .mn-feed-newpost-pill svg { display: block; }
 .mn-feed-newpost-pill:active { transform: translate(-50%, 0) scale(0.96); }
+.mn-post, .mn-img-embed, .mn-yt-embed { contain: layout style; }
 
 .mn-post {
   display: flex; align-items: flex-start; gap: 12px;
@@ -447,6 +476,17 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-photo-edit-preview.mn-avatar { width: 56px; height: 56px; font-size: 20px; flex: 0 0 auto; }
 .mn-photo-edit-status { font-size: 11.5px; color: var(--red); margin: 6px 0 0 0; min-height: 14px; }
 .mn-photo-edit-hint { font-size: 11.5px; color: var(--ink-faint); margin: 4px 0 0 0; line-height: 1.4; }
+.mn-loader { position: relative; width: 32px; height: 32px; margin: 20px auto; }
+.mn-loader div { position: absolute; top: 14px; left: 14px; width: 4px; height: 4px; border-radius: 50%; background: var(--green); animation: mn-loader-fade 1s linear infinite; }
+.mn-loader div:nth-child(1) { transform: rotate(0deg) translate(12px); animation-delay: -0.875s; }
+.mn-loader div:nth-child(2) { transform: rotate(45deg) translate(12px); animation-delay: -0.75s; }
+.mn-loader div:nth-child(3) { transform: rotate(90deg) translate(12px); animation-delay: -0.625s; }
+.mn-loader div:nth-child(4) { transform: rotate(135deg) translate(12px); animation-delay: -0.5s; }
+.mn-loader div:nth-child(5) { transform: rotate(180deg) translate(12px); animation-delay: -0.375s; }
+.mn-loader div:nth-child(6) { transform: rotate(225deg) translate(12px); animation-delay: -0.25s; }
+.mn-loader div:nth-child(7) { transform: rotate(270deg) translate(12px); animation-delay: -0.125s; }
+.mn-loader div:nth-child(8) { transform: rotate(315deg) translate(12px); animation-delay: 0s; }
+@keyframes mn-loader-fade { 0% { opacity: 1; } 100% { opacity: 0.15; } }
 
 .mn-empty { text-align: center; padding: 56px 20px; }
 .mn-empty svg { color: var(--ink-faint); margin-bottom: 10px; }
@@ -521,6 +561,26 @@ width: 100%; max-width: 480px; z-index: 100;
   white-space: nowrap; margin-bottom: 8px;
 }
 .mn-suggest-card-btn { display: block; width: 100%; margin-left: 0; text-align: center; padding: 6px 0; }
+.mn-depeople-bar {
+  display: flex; gap: 12px; overflow-x: auto; padding: 10px 12px 14px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.mn-depeople-bar::-webkit-scrollbar { display: none; }
+.mn-depeople-card {
+  flex: 0 0 168px; background: var(--paper-raised); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.mn-depeople-card-photo { height: 164px; display: block; background: linear-gradient(155deg, var(--border), var(--paper-line)); }
+.mn-depeople-card-photo .mn-avatar { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+.mn-depeople-card-photo .mn-avatar svg { width: 54px; height: 54px; }
+.mn-depeople-card-body { padding: 10px 10px 11px; }
+.mn-depeople-card-name {
+  display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 8px;
+}
+.mn-depeople-card-actions { display: flex; gap: 6px; }
+.mn-depeople-card-actions button { flex: 1; text-align: center; padding: 6px 0; font-size: 12px; }
+.mn-depeople-card-remove { background: var(--paper-line); color: var(--ink-soft); border: none; border-radius: 999px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 700; }
 
 
 
@@ -543,6 +603,7 @@ width: 100%; max-width: 480px; z-index: 100;
 }
 .mn-shell[data-theme="dark"] .mn-postbtn, .mn-shell[data-theme="dark"] .mn-primary-btn { color: #06231A; }
 .mn-postbtn:disabled, .mn-primary-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.mn-postbtn.mn-btn-loading:disabled, .mn-primary-btn.mn-btn-loading:disabled { opacity: 1; }
 .mn-postbtn:not(:disabled):active, .mn-primary-btn:not(:disabled):active { transform: scale(0.985); }
 
 .mn-hint-box { display: flex; gap: 10px; align-items: flex-start; background: var(--green-soft); border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: var(--green); line-height: 1.5; margin-bottom: 4px; }
@@ -925,7 +986,7 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-composer-bar {
   position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 480px;
-  background: color-mix(in srgb, var(--paper) 95%, transparent); backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--paper) 95%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transform: translateX(-50%) translateZ(0);
   border-top: 1px solid var(--border); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)) 16px; z-index: 6;
 }
 .mn-composer-bar-col { display: flex; flex-direction: column; gap: 8px; }
@@ -942,7 +1003,8 @@ width: 100%; max-width: 480px; z-index: 100;
 }
 .mn-shell[data-theme="dark"] .mn-composer-send { color: #06231A; }
 .mn-composer-send:disabled { opacity: 0.35; }
-.mn-chat-send { background: var(--green); width: 42px; height: 42px; color: #fff; }
+.mn-chat-send { background: var(--green); width: 38px; height: 38px; color: #fff; box-shadow: 0 2px 6px rgba(22,121,79,0.35); transition: transform .12s ease; }
+.mn-chat-send:active { transform: scale(0.92); }
 
 /* ---------------- chat pill (WhatsApp-style grouped input) ---------------- */
 .mn-chat-pill {
@@ -950,8 +1012,13 @@ width: 100%; max-width: 480px; z-index: 100;
   background: var(--paper-raised);
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 4px 4px 4px 10px;
-  box-shadow: var(--shadow-sm);
+  padding: 4px 4px 4px 12px;
+  box-shadow: 0 2px 10px rgba(20,23,28,0.08), 0 1px 2px rgba(20,23,28,0.06);
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.mn-chat-pill:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 2px 12px rgba(20,23,28,0.1), 0 0 0 3px var(--green-soft);
 }
 .mn-chat-pill textarea {
   flex: 1; border: none; background: transparent; box-shadow: none;
@@ -962,8 +1029,8 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-chat-pill .mn-composer-attach { width: 30px; height: 30px; flex: 0 0 auto; }
 
 .mn-shell[data-screen="chat"] .mn-composer-bar.mn-chat-composer {
-  background: transparent; backdrop-filter: none; border-top: none;
-  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) 10px;
+  background: linear-gradient(to top, var(--paper) 60%, transparent); backdrop-filter: none; border-top: none;
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px)) 10px;
 }
 
 /* ---------------- nav ---------------- */
@@ -975,11 +1042,11 @@ width: 100%; max-width: 480px; z-index: 100;
    (hierarchy), and the whole bar following the familiar bottom-tab-bar
    pattern most apps already use (Jakob's Law). */
 .mn-nav {
-  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateZ(0);
   width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(4, 1fr);
   align-items: center; justify-items: center;
   background: color-mix(in srgb, var(--paper-raised) 95%, transparent);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   border-top: 1px solid var(--border);
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)) 8px; z-index: 20;
   box-shadow: 0 -10px 26px rgba(20,23,28,0.07);
@@ -1003,7 +1070,7 @@ width: 100%; max-width: 480px; z-index: 100;
 }
 .mn-navbtn svg { transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
 .mn-navbtn:active { transform: scale(0.92); }
-.mn-navbtn-active { color: var(--green); background: var(--green-soft); }
+.mn-navbtn-active { color: var(--green); }
 .mn-navbtn-active svg { transform: scale(1.06); }
 .mn-navbtn > span:not(.mn-fab) { display: none; }
 .mn-navbtn { gap: 0; }
@@ -1082,7 +1149,7 @@ width: 100%; max-width: 480px; z-index: 100;
 
 /* ---------------- auth sheet (opens like the share sheet: slides up from the bottom) ---------------- */
 @keyframes mn-fade-in { from { opacity: 0; } to { opacity: 1; } }
-.mn-auth-overlay { position: fixed; inset: 0; background: var(--overlay); display: flex; align-items: flex-end; justify-content: center; z-index: 30; backdrop-filter: blur(3px); }
+.mn-auth-overlay { position: fixed; inset: 0; background: var(--overlay); display: flex; align-items: flex-end; justify-content: center; z-index: 500; backdrop-filter: blur(3px); }
 .mn-auth-overlay.mn-anim-in { animation: mn-fade-in .15s ease; }
 .mn-auth-sheet {
   position: relative; width: 100%; max-width: 480px;
@@ -1164,8 +1231,6 @@ width: 100%; max-width: 480px; z-index: 100;
 
 .mn-auth-submit {
   margin-top: 18px; width: 100%;
-  background: linear-gradient(135deg, var(--green) 0%, color-mix(in srgb, var(--green) 62%, black) 100%);
-  box-shadow: 0 12px 22px -10px color-mix(in srgb, var(--green) 65%, transparent);
 }
 .mn-auth-terms { font-size: 11px; color: var(--ink-faint); text-align: center; line-height: 1.5; margin: 12px 0 0 0; }
 .mn-auth-close { display: block; margin: 14px auto 0 auto; background: none; border: none; color: var(--ink-soft); font-size: 12.5px; cursor: pointer; padding: 4px; }
@@ -1178,6 +1243,7 @@ width: 100%; max-width: 480px; z-index: 100;
 
 /* ---------------- share sheet ---------------- */
 .mn-sheet-overlay { position: fixed; inset: 0; background: var(--overlay); display: flex; align-items: flex-end; justify-content: center; z-index: 35; }
+.mn-auth-overlay ~ .mn-sheet-overlay { z-index: 510; }
 .mn-sheet-overlay.mn-anim-in { animation: mn-fade-in .15s ease; }
 .mn-sheet {
   width: 100%; max-width: 480px; background: var(--paper); border-radius: 20px 20px 0 0;
@@ -1620,6 +1686,17 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-trend-rank { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 12px; color: var(--ink-faint); width: 14px; flex: 0 0 auto; }
 .mn-trend-label { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--ink); }
 .mn-trend-score { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; flex: 0 0 auto; }
+.mn-newsrow-list { display: flex; flex-direction: column; }
+.mn-newsrow { padding: 14px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.mn-newsrow-source { display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; }
+.mn-newsrow-source img, .mn-newsrow-source .mn-avatar { width: 18px; height: 18px; border-radius: 4px; }
+.mn-newsrow-body { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.mn-newsrow-main { flex: 1 1 auto; min-width: 0; }
+.mn-newsrow-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13.5px; line-height: 1.5; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.mn-newsrow-thumbwrap { flex: 0 0 auto; width: 92px; height: 92px; border-radius: 8px; overflow: hidden; background: var(--paper-line); }
+.mn-newsrow-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mn-newsrow-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-faint); }
+.mn-newsrow-kebab { background: none; border: none; color: var(--ink-faint); font-size: 18px; line-height: 1; cursor: pointer; padding: 4px 8px; }
 .mn-discover-intro { font-size: 13px; color: var(--ink-soft); margin: 0 0 18px 0; line-height: 1.5; }
 .mn-discover-section { margin-bottom: 24px; }
 .mn-discover-title {
@@ -1780,7 +1857,7 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-boot-card-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 @keyframes mn-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
 
-@media (prefers-reduced-motion: reduce) { .mn-app * { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .mn-app *:not(.mn-loader div) { animation: none !important; transition: none !important; } }
 
 /* ---------------- direct messages (mini messenger) ---------------- */
 .mn-messages-btn { position: relative; }
@@ -1936,75 +2013,69 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-msg-iconbtn:active { transform: scale(0.94); }
 
 /* chat header (back button + other person's avatar/name, tap to view profile) */
-.mn-chat-header { gap: 10px; box-shadow: none; position: sticky; top: 0; z-index: 5; backdrop-filter: blur(8px); }
+.mn-chat-header { gap: 10px; box-shadow: none; position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transform: translateZ(0); }
+.mn-chat-header .mn-avatar { width: 32px; height: 32px; font-size: 13px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 3px var(--green); border-radius: 50%; }
+.mn-chat-header-sub { font-size: 11px; color: var(--ink-faint); font-weight: 500; }
 .mn-chat-header .mn-avatar { width: 28px; height: 28px; font-size: 12px; flex: 0 0 auto; }
 
 /* chat thread — WhatsApp-style wallpaper + bubbles */
 .mn-chat-messages {
   display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; padding: 10px 8px 84px 8px; margin: 0 -16px;
   min-height: calc(100vh - 180px);
-  background-color: #0B141A;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1.6px, transparent 1.6px),
-    radial-gradient(circle at 68% 42%, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1.4px, transparent 1.4px),
-    radial-gradient(circle at 38% 78%, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1.5px, transparent 1.5px),
-    radial-gradient(circle at 88% 85%, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1.3px, transparent 1.3px);
-  background-size: 140px 140px, 160px 160px, 130px 130px, 170px 170px;
+  background-color: #000000;
 }
 .mn-shell:not([data-theme="dark"]) .mn-chat-messages {
-  background-color: #E5DDD5;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(0,0,0,0.03) 0, rgba(0,0,0,0.03) 1.6px, transparent 1.6px),
-    radial-gradient(circle at 68% 42%, rgba(0,0,0,0.025) 0, rgba(0,0,0,0.025) 1.4px, transparent 1.4px),
-    radial-gradient(circle at 38% 78%, rgba(0,0,0,0.025) 0, rgba(0,0,0,0.025) 1.5px, transparent 1.5px),
-    radial-gradient(circle at 88% 85%, rgba(0,0,0,0.02) 0, rgba(0,0,0,0.02) 1.3px, transparent 1.3px);
-  background-size: 140px 140px, 160px 160px, 130px 130px, 170px 170px;
+  background-color: #FFFFFF;
 }
 /* paint the same wallpaper on .mn-main itself so there's no bare black
    gap below short conversations or around the fixed header/composer */
 .mn-shell[data-screen="chat"] .mn-main {
-  background-color: #0B141A;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1.6px, transparent 1.6px),
-    radial-gradient(circle at 68% 42%, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1.4px, transparent 1.4px),
-    radial-gradient(circle at 38% 78%, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1.5px, transparent 1.5px),
-    radial-gradient(circle at 88% 85%, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1.3px, transparent 1.3px);
-  background-size: 140px 140px, 160px 160px, 130px 130px, 170px 170px;
+  background-color: #000000;
 }
 .mn-shell:not([data-theme="dark"])[data-screen="chat"] .mn-main {
-  background-color: #E5DDD5;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(0,0,0,0.03) 0, rgba(0,0,0,0.03) 1.6px, transparent 1.6px),
-    radial-gradient(circle at 68% 42%, rgba(0,0,0,0.025) 0, rgba(0,0,0,0.025) 1.4px, transparent 1.4px),
-    radial-gradient(circle at 38% 78%, rgba(0,0,0,0.025) 0, rgba(0,0,0,0.025) 1.5px, transparent 1.5px),
-    radial-gradient(circle at 88% 85%, rgba(0,0,0,0.02) 0, rgba(0,0,0,0.02) 1.3px, transparent 1.3px);
-  background-size: 140px 140px, 160px 160px, 130px 130px, 170px 170px;
+  background-color: #FFFFFF;
 }
 .mn-shell[data-screen="chat"] .mn-main { animation: mnChatIn .22s cubic-bezier(.32,.72,0,1); }
 @keyframes mnChatIn {
   from { opacity: 0; transform: translateX(16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-.mn-chat-bubble-row { display: flex; justify-content: flex-start; padding: 1px 10px; scroll-margin-bottom: 84px; animation: mnBubbleIn .18s ease-out; }
+.mn-chat-start { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 28px 20px 18px; text-align: center; }
+.mn-chat-start .mn-avatar { width: 56px; height: 56px; box-shadow: 0 0 0 3px rgba(255,255,255,0.15); }
+.mn-chat-start-name { margin: 2px 0 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; color: #fff; }
+.mn-chat-start-sub { margin: 0; font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); }
+.mn-shell:not([data-theme="dark"]) .mn-chat-start-name { color: var(--ink); }
+.mn-shell:not([data-theme="dark"]) .mn-chat-start-sub { color: var(--ink-faint); }
+.mn-chat-bubble-row { display: flex; justify-content: flex-start; padding: 0 10px; scroll-margin-bottom: 84px; animation: mnBubbleIn .18s ease-out; }
 @keyframes mnBubbleIn {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .mn-chat-bubble-row-mine { justify-content: flex-end; }
 .mn-chat-bubble {
-  max-width: 75%; padding: 6px 9px 8px 9px; margin: 2px 0; border-radius: 7.5px 7.5px 7.5px 2px;
-  background: var(--paper-raised); box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+  max-width: 78%; padding: 6px 9px 8px 9px; margin: 1px 0 1px 8px; border-radius: 7.5px 7.5px 7.5px 2px;
+  background: #EDEDED; box-shadow: 0 1px 0.5px rgba(0,0,0,0.1); position: relative;
+}
+.mn-chat-bubble::before {
+  content: ""; position: absolute; top: 0; left: -7px; width: 8px; height: 13px;
+  background: #EDEDED; clip-path: polygon(100% 0, 100% 100%, 0 0);
 }
 .mn-chat-bubble-mine {
   background: #DCF8C6; border-radius: 7.5px 7.5px 2px 7.5px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+  margin: 1px 8px 1px 0;
 }
-.mn-shell[data-theme="dark"] .mn-chat-bubble { background: #202C33; box-shadow: none; }
+.mn-chat-bubble-mine::before {
+  left: auto; right: -7px; background: #DCF8C6; clip-path: polygon(0 0, 0 100%, 100% 0);
+}
+.mn-shell[data-theme="dark"] .mn-chat-bubble::before { background: #262D31; }
+.mn-shell[data-theme="dark"] .mn-chat-bubble-mine::before { background: #005C4B; }
+.mn-shell[data-theme="dark"] .mn-chat-bubble { background: #262D31; box-shadow: none; }
 .mn-shell[data-theme="dark"] .mn-chat-bubble-mine { background: #005C4B; box-shadow: none; }
-.mn-chat-bubble p { margin: 0; font-family: 'Inter', sans-serif; font-size: 14.2px; line-height: 19px; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+.mn-chat-bubble p { margin: 0; font-family: 'Inter', sans-serif; font-size: 14.2px; line-height: 19px; color: var(--ink); white-space: pre-wrap; word-break: break-word; padding-right: 46px; }
 .mn-shell[data-theme="dark"] .mn-chat-bubble p,
 .mn-shell[data-theme="dark"] .mn-chat-bubble-mine p { color: #E9EDEF; }
 .mn-chat-bubble-mine p { color: var(--ink); }
-.mn-chat-bubble-time { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-faint); text-align: right; opacity: 0.75; letter-spacing: 0.01em; }
+.mn-chat-bubble-time { position: absolute; right: 9px; bottom: 5px; margin-top: 0; font-size: 11px; color: var(--ink-faint); text-align: right; opacity: 0.75; letter-spacing: 0.01em; }
 .mn-chat-bubble-mine .mn-chat-bubble-time { color: var(--ink-faint); }
 .mn-unread-divider { display: flex; align-items: center; gap: 10px; margin: 10px 10px 4px; }
 .mn-unread-divider::before, .mn-unread-divider::after { content: ""; flex: 1; height: 1px; background: var(--red, #e63946); opacity: 0.5; }
@@ -2031,12 +2102,13 @@ width: 100%; max-width: 480px; z-index: 100;
   letter-spacing: .04em; text-transform: uppercase;
 }
 .mn-gift-card {
-  min-width: 200px; max-width: 240px; padding: 14px 14px 12px; border-radius: 14px;
+  min-width: 140px; max-width: 170px; padding: 8px 10px 8px; border-radius: 12px;
   background: var(--blue-soft); box-shadow: var(--shadow-sm); text-align: center; cursor: default;
+  display: flex; flex-direction: column; align-items: center;
 }
-.mn-gift-card-icon { font-size: 56px; line-height: 1; margin: 4px 0 2px; }
+.mn-gift-card-icon { font-size: 22px; line-height: 1; margin: 0 0 2px; }
 .mn-gift-card-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--ink); }
-.mn-gift-card-amount { margin: 10px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 17px; color: var(--ink); }
+.mn-gift-card-amount { margin: 3px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; color: var(--ink); }
 .mn-gift-card-amount span { font-size: 11px; font-weight: 600; opacity: .7; margin-left: 2px; }
 .mn-gift-card-time { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink-faint); text-align: right; }
 .mn-gift-card-tail {
@@ -2085,6 +2157,12 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-chat-reply-bar-close { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: 15px; padding: 2px 4px; flex: 0 0 auto; }
 .mn-chat-composer textarea { max-height: 100px; }
 .mn-chat-composer textarea { max-height: 100px; }
+.mn-chat-limit-notice {
+  text-align: center; font-size: 11.5px; color: var(--ink-faint);
+  margin: 10px auto 4px; padding: 5px 12px; width: fit-content;
+  background: color-mix(in srgb, var(--paper-raised) 88%, transparent);
+  border-radius: 999px;
+}
 
 /* --- chat media messages (catbox.moe embeds: photo / video / audio) --- */
 .mn-chat-bubble-media { padding: 4px 4px 6px 4px; }
@@ -2230,10 +2308,10 @@ width: 100%; max-width: 480px; z-index: 100;
    right, always sitting at the top of the feed instead of a separate "+ New
    post" button. */
 .mn-channel-writebar {
-  position: fixed; bottom: 92px; left: 50%; transform: translateX(-50%); z-index: 21;
+  position: fixed; bottom: 92px; left: 50%; transform: translateX(-50%) translateZ(0); z-index: 21;
   display: flex; align-items: center; gap: 10px; width: calc(100% - 28px); max-width: 452px; margin: 0;
   padding: 10px 10px 10px 14px; border-radius: 999px;
-  background: color-mix(in srgb, var(--paper-raised) 95%, transparent); backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--paper-raised) 95%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   border: 1px solid var(--border); cursor: pointer; text-align: left; transition: border-color .15s, background-color .15s;
 }
 .mn-shell[data-screen="channelDetail"] .mn-channel-writebar {
@@ -2260,6 +2338,13 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-channel-filter-chip-active { color: #fff; background: var(--green); }
 .mn-shell[data-theme="dark"] .mn-channel-filter-chip-active { color: #06231A; }
 .mn-channel-filter-count { font-weight: 700; }
+
+.mn-shell[data-screen="chat"] .mn-channel-filterbar {
+  padding: 10px 14px; background: var(--paper-raised);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 74px; z-index: 4;
+}
+.mn-shell[data-screen="chat"] .mn-channel-filter-chip { padding: 6px 13px; font-size: 12.5px; }
 /* ---- unread divider inside an open channel's "All" feed ---- */
 .mn-channel-newdivider {
   display: flex; align-items: center; gap: 10px;
@@ -2417,6 +2502,45 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-challenge-result { text-align: center; padding: 30px 10px 10px 10px; }
 .mn-challenge-result-score { font-size: 42px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
 .mn-challenge-result-sub { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px; }
+/* ---------------- 16:9 cover cards for Explore/Attended challenge lists ---------------- */
+.mn-challenge-gridlist { display: flex; flex-direction: column; }
+.mn-challenge-gridcard { border-radius: 16px; overflow: hidden; background: var(--paper); border: 1px solid var(--border); cursor: pointer; }
+.mn-challenge-gridcard-cover { position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; }
+.mn-challenge-gridcard-cover-shapes { position: absolute; inset: 0; overflow: hidden; }
+.mn-challenge-gridcard-cover-shapes::before,
+.mn-challenge-gridcard-cover-shapes::after {
+  content: ""; position: absolute; border-radius: 50%; filter: blur(2px); opacity: 0.5;
+}
+.mn-challenge-gridcard-cover-shapes::before { width: 140px; height: 140px; top: -50px; right: -30px; background: rgba(255,255,255,0.16); }
+.mn-challenge-gridcard-cover-shapes::after { width: 90px; height: 90px; bottom: -35px; left: 20px; background: rgba(255,255,255,0.10); }
+.mn-cover-p0 { background: linear-gradient(135deg, #1F5C4C, #0d6b4a); }
+.mn-cover-p1 { background: linear-gradient(135deg, #1668A3, #0d3f66); }
+.mn-cover-p2 { background: linear-gradient(135deg, #7c3aed, #4c1d95); }
+.mn-cover-p3 { background: linear-gradient(135deg, #C1790C, #7a4a06); }
+.mn-cover-p4 { background: linear-gradient(135deg, #D8342A, #7a1a14); }
+.mn-cover-p5 { background: linear-gradient(135deg, #0891b2, #0e4f5c); }
+.mn-challenge-gridcard-noimg { display: flex; align-items: flex-start; justify-content: flex-end; height: 100%; padding: 12px; position: relative; z-index: 1; }
+.mn-challenge-gridcard-noimg-badge { width: 34px; height: 34px; border-radius: 10px; background: rgba(255,255,255,0.18); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; color: #fff; }
+.mn-challenge-gridcard-noimg-badge svg { width: 18px; height: 18px; }
+.mn-challenge-gridcard-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mn-challenge-gridcard-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.68) 100%); }
+.mn-challenge-gridcard-noimg { display: flex; align-items: center; justify-content: center; height: 100%; color: rgba(255,255,255,0.9); font-size: 40px; }
+.mn-challenge-gridcard-titlewrap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 12px 14px; color: #fff; }
+.mn-challenge-gridcard-title { font-size: 14px; font-weight: 700; line-height: 1.25; margin-bottom: 4px; }
+.mn-challenge-gridcard-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; opacity: .95; }
+.mn-challenge-gridcard-actions { display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+.mn-challenge-gridcard-actions .mn-challenge-outline-btn { margin-left: auto; }
+.mn-newscard { display: flex; align-items: flex-start; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.mn-newscard:last-of-type { border-bottom: none; }
+.mn-newscard-body { flex: 1; min-width: 0; }
+.mn-newscard-source { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+.mn-newscard-source img { width: 16px; height: 16px; border-radius: 3px; }
+.mn-newscard-title { font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--ink); margin-bottom: 6px; }
+.mn-newscard-meta { font-size: 12px; color: var(--ink-faint); }
+.mn-newscard-actions { display: flex; gap: 16px; margin-top: 8px; }
+.mn-newscard-action { font-size: 12px; font-weight: 600; color: var(--blue); }
+.mn-newscard-thumb { flex: 0 0 90px; width: 90px; height: 90px; border-radius: 10px; overflow: hidden; }
+.mn-newscard-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .mn-subtabs { margin-top: 4px; margin-bottom: 10px; }
 .mn-coins-panel { padding-top: 4px; }
 .mn-coins-balance-card {
@@ -2807,6 +2931,38 @@ function uploadImageToCloudinary(file, onProgress) {
   });
 }
 
+// ---- Cloudinary (messages/profile/channels/challenges — unsigned) ----
+const CLOUDINARY_MEDIA_CLOUD_NAME = "mw9sdwwg";
+const CLOUDINARY_MEDIA_UPLOAD_PRESET = "message_free";
+function uploadFileToCloudinary(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", CLOUDINARY_MEDIA_UPLOAD_PRESET);
+    const resourceType = file.type.startsWith("video/") ? "video"
+      : file.type.startsWith("audio/") ? "video"
+      : "image";
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `https://api.cloudinary.com/v1_1/${CLOUDINARY_MEDIA_CLOUD_NAME}/${resourceType}/upload`);
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100)); };
+    xhr.onload = () => {
+      try {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const data = JSON.parse(xhr.responseText);
+          if (!data.secure_url) throw new Error("No secure_url in response");
+          resolve({ url: data.secure_url, width: data.width, height: data.height });
+        } else {
+          let msg = `Upload failed (${xhr.status})`;
+          try { msg = JSON.parse(xhr.responseText)?.error?.message || msg; } catch (_) {}
+          reject(new Error(msg));
+        }
+      } catch (err) { reject(new Error("Bad response from Cloudinary: " + err.message)); }
+    };
+    xhr.onerror = () => reject(new Error("Network/CORS error contacting Cloudinary"));
+    xhr.send(fd);
+  });
+}
+
 const MAX_TOTAL_IMAGE_BYTES = 160 * 1024;
 
 // Shrinks quality first, then dimensions, until the image is under maxBytes.
@@ -2855,6 +3011,14 @@ function compressImageToLimit(file, maxBytes = 160 * 1024) {
     };
     reader.readAsDataURL(file);
   });
+}
+
+// Images only, 100KB cap, for channels/messages/challenges uploads.
+// Video/audio files are returned as-is — never compressed, never touched.
+const MAX_MEDIA_IMAGE_BYTES = 100 * 1024;
+function maybeCompressImage(file) {
+  if (!file.type.startsWith("image/")) return Promise.resolve(file);
+  return compressImageToLimit(file, MAX_MEDIA_IMAGE_BYTES);
 }
 
 const fbApp = initializeApp(firebaseConfig);
@@ -2973,16 +3137,25 @@ let state = {
   myAnswersLoaded: false,
   challenges: [],
   challengesTab: "explore",
-  challengeCreateOpen: false,
+  challengesSearch: "",
+ challengeCreateOpen: false,
+  challengeEditId: null,
+  challengeInsightsId: null,
+  challengeInsightsData: null,
+  challengeInsightsLoading: false,
   challengeForm: { title: "", coverUrl: "", totalTimeLimit: "", questions: [{ text: "", options: ["", ""], correct: 0, timeLimit: "", points: 1 }] },
+  newChallengeCode: null,
   topContributors: [],
   topAnswers: [],
-  nearbyUsers: [],       // other users who share the logged-in user's sign-up region — powers
-                         // "People near you" (Discover + right rail) so people can find and
-                         // follow/meet others from their own area
-
-  // ---- viewing someone else's profile ----
+  nearbyUsers: [], // other users who share the logged-in user's sign-up region — powers
+  // "People near you" (Discover + right rail) so people can find and
+  // follow/meet others from their own area
+  myFollowers: [], // people who follow the signed-in user — feeds the Depeople mix
+  siteSortUsers: [], // general site-ranking pool (by totalPoints) — feeds the Depeople mix
+  myFollowers: [], // people who follow the signed-in user — feeds the Depeople mix
+  siteSortUsers: [], // general site-ranking pool (by totalPoints) — feeds the Depeople mixe else's profile ----
   viewedUserId: null,
+    viewedUserCompact: false,
   viewedUser: null,
   viewedUserQuestions: [],
   viewedUserQuestionsLoaded: false,
@@ -3165,6 +3338,7 @@ let broadcastUnsub = null;
 // Chat screen (re-attached every time a different chat is opened).
 let chatsUnsub = null;
 let chatMessagesUnsub = null;
+let activeChatUserUnsub = null;
 let newChatSheetWasOpen = false; // animation guard, same pattern as regionPickerWasOpen etc.
 let createChannelSheetWasOpen = false;
 let categoryPickerWasOpen = false;
@@ -3176,30 +3350,83 @@ let channelDocUnsub = null;
 let channelPostsUnsub = null;
 
 function anyOverlayOpen() {
-  return !!(state.authModal || state.shareModal || state.commentsOpen || state.reelsViewerOpen ||
+  return !!(state.authModal || state.shareModal || state.newChallengeCode || state.commentsOpen || state.reelsViewerOpen ||
     state.signOutConfirmOpen || state.regionPickerOpen || state.categoryPickerOpen || state.newChatOpen ||
     state.createChannelOpen || state.channelComposerOpen || state.donationSetupOpen || state.donationPopupChannel ||
     state.buyCoinsOpen || state.withdrawOpen || state.giftOpen || state.profileStatsOpen ||
-    state.challengeCreateOpen || state.channelAvatarEditOpen);
+    state.challengeCreateOpen || state.channelAvatarEditOpen || state.challengeInsightsId || state.challengePlay);
 }
 function closeAllOverlays() {
-  state.authModal = null; state.shareModal = null; state.commentsOpen = false;
+  state.authModal = null; state.shareModal = null; state.newChallengeCode = null; state.commentsOpen = false;
   state.reelsViewerOpen = false; state.signOutConfirmOpen = false; state.regionPickerOpen = false;
   state.categoryPickerOpen = false; state.newChatOpen = false; state.createChannelOpen = false;
   state.channelComposerOpen = false; state.donationSetupOpen = false; state.donationPopupChannel = null;
   state.buyCoinsOpen = false; state.withdrawOpen = false; state.giftOpen = false;
   state.profileStatsOpen = false; state.challengeCreateOpen = false; state.channelAvatarEditOpen = false;
+  state.challengeInsightsId = null; state.challengeInsightsData = null; state.challengePlay = null;
 }
 function setState(patch) {
   const wasOpen = anyOverlayOpen();
+  const prevScreen = state.screen;
+
+  // Never let the auth modal inherit a stale authBusy=true from a previous
+  // sign-in/sign-up attempt when it's (re)opened or switched.
+  if ("authModal" in patch && patch.authModal !== state.authModal && !("authBusy" in patch)) {
+    patch = { ...patch, authBusy: false };
+  }
+
   state = { ...state, ...patch };
-  if (!suppressNav && !wasOpen && anyOverlayOpen()) pushNav();
+
+// Force every screen switch to land scrolled to the top — no more
+// arriving on Messages/Notifications/etc. still scrolled from wherever
+// the previous screen was left.
+if (patch.screen && patch.screen !== prevScreen) {
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+}
+
+if (!suppressNav && !wasOpen && anyOverlayOpen()) {
+  pushNav();
+}
+
+  /*
+   * Feed protection:
+   * If we are already on Home, don't destroy/recreate the entire app
+   * for feed-only state changes.
+   */
+  if (
+    !wasOpen &&
+    state.screen === "home" &&
+    document.querySelector(".mn-home") &&
+    !patch.screen &&
+    !patch.sortMode &&
+    !patch.detailId &&
+    !patch.viewedUserId &&
+    !patch.activeChannelId &&
+    !patch.activeChatId &&
+    !("authModal" in patch) &&
+    !("theme" in patch)
+  ) {
+    renderFeedOnly();
+    return;
+  }
+
   render();
 }
 
 // ---------------- helpers ----------------
+const DEFAULT_CHALLENGE_COVER = "https://files.catbox.moe/uetbfc.jpeg";
 function escapeHtml(str) {
   return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+// Escapes text, then turns any http(s)/www links inside it into clickable
+// anchors. Escape first so we never inject real HTML from message text —
+// the URL regex only matches plain, already-escaped characters.
+function linkifyText(str) {
+  const escaped = escapeHtml(str);
+  return escaped.replace(/\b((?:https?:\/\/|www\.)[^\s<]+)/gi, (match) => {
+    const href = match.startsWith("http") ? match : `https://${match}`;
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${match}</a>`;
+  });
 }
 // Strips raw URLs (http/https/www links and bare youtube.com / youtu.be links) out of
 // post text before it's shown on the main feed card. Links like YouTube ones already get
@@ -3351,17 +3578,18 @@ function linkEmbedHtml(url) {
 // page counts). Keyed by a type-prefixed cache key; value is `undefined` (never tried),
 // `null` (fetch in flight), the fetched data, or `"error"` (fetch failed — fall back).
 const mediaCache = {};
-let imgDimCache = JSON.parse(localStorage.getItem("menya-imgdims") || "{}");
+let imgDimCache; try { imgDimCache = JSON.parse(localStorage.getItem("menya-imgdims") || "{}"); } catch (e) { imgDimCache = {}; localStorage.removeItem("menya-imgdims"); }
 function probeImageDims(url) {
   if (imgDimCache[url] !== undefined) return;
   imgDimCache[url] = null;
   const im = new Image();
   im.onload = () => {
+    // Cache only — do NOT touch already-rendered boxes. Resizing a card the
+    // reader is currently looking at (or has scrolled past) is what caused
+    // the jump. The correct ratio gets used automatically next time this
+    // post is rendered (e.g. after a refresh), not live.
     imgDimCache[url] = { w: im.naturalWidth, h: im.naturalHeight };
     try { localStorage.setItem("menya-imgdims", JSON.stringify(imgDimCache)); } catch (e) {}
-    document.querySelectorAll(".mn-img-embed[data-img-src]").forEach((el) => {
-      if (el.dataset.imgSrc === url) el.style.aspectRatio = `${im.naturalWidth} / ${im.naturalHeight}`;
-    });
   };
   im.onerror = () => { imgDimCache[url] = "error"; };
   im.src = url;
@@ -3370,7 +3598,7 @@ function probeImageDims(url) {
 // that already carry mediaWidth/mediaHeight (see postQuestion, patch #2)
 // resolve instantly; older posts without them get probed and awaited here,
 // capped by a timeout so one slow/dead URL can't block the whole feed.
-function preloadFeedDims(questions, timeoutMs = 1500) {
+function preloadFeedDims(questions, timeoutMs = 3500) {
   const toProbe = questions
     .filter(q => !(q.mediaWidth && q.mediaHeight))
     .map(q => extractImageUrl(q.body))
@@ -3493,8 +3721,6 @@ function mediaEmbedHtml(text, mediaWidth, mediaHeight) {
   if (!text) return "";
   const ytId = extractYouTubeId(text);
   if (ytId) return isYouTubeShortUrl(text) ? ytShortEmbedHtmlById(ytId) : ytEmbedHtmlById(ytId);
-  const sp = extractSpotify(text);
-  if (sp) return spotifyEmbedHtml(sp.type, sp.id);
   const fbVid = extractFacebookVideo(text);
   if (fbVid) return fbVideoEmbedHtml(fbVid);
   const fbPost = extractFacebookPost(text);
@@ -3564,11 +3790,11 @@ async function fetchWikiSummary(lang, title, key) {
       url: (data.content_urls && data.content_urls.desktop && data.content_urls.desktop.page) || `https://${lang}.wikipedia.org/wiki/${encodeURIComponent(title)}`,
     };
   } catch (e) {
-    mediaCache[key] = "error";
-  }
-  render();
+  mediaCache[key] = "error";
 }
-function wikiCardSkeletonHtml() {
+render();
+}
+function wikiCardSkeletonHtml(key) {
   return `
     <div class="mn-wiki-card mn-wiki-card-banner mn-wiki-card-loading">
       <div class="mn-wiki-card-banner-img-wrap mn-wiki-skel" style="aspect-ratio:16/9;border-radius:0;"></div>
@@ -3580,13 +3806,13 @@ function wikiCardSkeletonHtml() {
     </div>
   `;
 }
-function wikiCardHtml(data) {
+function wikiCardHtml(data, key) {
   const extract = data.extract.length > 220 ? data.extract.slice(0, 217).trim() + "…" : data.extract;
   // Full-width banner image on top (when Wikipedia has one) instead of a small
   // 76x76 thumbnail, so the embed reads like a real preview card.
   return `
     <a class="mn-wiki-card mn-wiki-card-banner" href="${data.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
-      ${data.image ? `<div class="mn-wiki-card-banner-img-wrap"><img class="mn-wiki-card-banner-img" src="${data.image}" alt="${escapeHtml(data.title)}" loading="lazy" /></div>` : ""}
+${data.image ? `<div class="mn-wiki-card-banner-img-wrap"><img class="mn-wiki-card-banner-img" src="${data.image}" alt="${escapeHtml(data.title)}" loading="lazy" /></div>` : ""}
       <div class="mn-wiki-card-body">
         <span class="mn-wiki-card-kicker">Wikipedia</span>
         <span class="mn-wiki-card-title">${escapeHtml(data.title)}</span>
@@ -3613,7 +3839,7 @@ function wikiFileEmbedHtml(lang, title) {
   if (cached === undefined) {
     mediaCache[key] = null;
     fetchWikiFileUrl(lang, title, key);
-    return `<div class="mn-img-embed"><div class="mn-wiki-skel" style="width:100%;height:200px;"></div></div>`;
+    return `<div class="mn-img-embed"><div class="mn-wiki-skel" style="width:100%;height:100%;"></div></div>`;
   }
   if (cached === null) return `<div class="mn-img-embed"><div class="mn-wiki-skel" style="width:100%;height:200px;"></div></div>`;
   const filePageUrl = lang === "commons"
@@ -3657,7 +3883,7 @@ function imageEmbedHtml(url, knownDims) {
   const ratio = dims && dims.w && dims.h ? `aspect-ratio:${dims.w} / ${dims.h};` : "";
   return `
     <div class="mn-img-embed" data-img-src="${escapeHtml(url)}" style="${ratio}">
-      <img src="${url}" alt="Shared image" loading="lazy" decoding="async" onclick="event.stopPropagation()" onerror="mediaLoadError(this, '${escapeJsString(url)}')" />
+      <img src="${url}" alt="Shared image" loading="lazy" decoding="async" onclick="event.stopPropagation()" onload="mediaImgLoaded(this, '${escapeJsString(url)}')" onerror="mediaLoadError(this, '${escapeJsString(url)}')" />
     </div>
   `;
 }
@@ -3708,10 +3934,21 @@ function audioEmbedHtml(url) {
 // URL, swaps in a small inline fallback instead of leaving a broken-image
 // icon, and never throws — a bad URL in one post/reel must not take down
 // the rest of the feed or the Reels stack.
+function mediaImgLoaded(el, url) {
+  if (!el.naturalWidth || !el.naturalHeight) return;
+  // Cache only. Never mutate the box's aspect-ratio after it's on screen —
+  // object-fit: contain already displays the image fully inside whatever
+  // box size we picked, so a mismatched ratio just means slight letterboxing,
+  // not a layout jump.
+  imgDimCache[url] = { w: el.naturalWidth, h: el.naturalHeight };
+  try { localStorage.setItem("menya-imgdims", JSON.stringify(imgDimCache)); } catch (e) {}
+}
 function mediaLoadError(el, url) {
   console.error("MENYA media failed to load:", url);
   if (!el || el.dataset.mnFailed) return;
   el.dataset.mnFailed = "1";
+  const imagetokItem = el.closest(".mn-imagetok-item");
+  if (imagetokItem) { imagetokItem.remove(); return; } // broken image: drop it from ImageTok entirely instead of showing a placeholder
   const inReels = !!el.closest(".mn-reels-image-wrap");
   const wrap = el.closest(".mn-img-embed") || el.closest(".mn-reels-image-wrap") || el.parentElement;
   if (wrap) {
@@ -3965,6 +4202,19 @@ function initialsOf(name) {
   const parts = name.trim().split(/\s+/);
   return ((parts[0]?.[0] || "") + (parts[1]?.[0] || "")).toUpperCase() || name[0].toUpperCase();
 }
+function formatCurrentDateTime() {
+  const d = new Date();
+  const datePart = d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+  const timePart = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  return datePart + " · " + timePart;
+}
+function formatActiveStatus(ts) {
+  if (!ts) return "";
+  const ms = ts.seconds ? ts.seconds * 1000 : ts;
+  const diffMin = (Date.now() - ms) / 60000;
+  if (diffMin < 5) return "Active now";
+  return "Active " + timeAgo(ts);
+}
 function timeAgo(ts) {
   if (!ts) return "just now";
   const date = ts.toDate ? ts.toDate() : new Date(ts);
@@ -4108,9 +4358,9 @@ onAuthStateChanged(auth, async (user) => {
         email: user.email, bio: "", place: "", photoURL: "",
         totalQuestions: 0, totalAnswers: 0, totalPoints: 0,
         coins: 0,
-        followersCount: 0, followedUsers: [],
-      };
-      await setDoc(doc(db, "users", user.uid), profile);
+        followersCount: 0, followedUsers: [], boostedSuggestions: [],
+};
+await setDoc(doc(db, "users", user.uid), profile);
     } else {
       profile = profileSnap.data();
     }
@@ -4120,10 +4370,13 @@ onAuthStateChanged(auth, async (user) => {
     state.photoCache[user.uid] = profile.photoURL || "";
     if (analytics) setUserId(analytics, user.uid);
     if (state.screen === "profile") loadMyQuestions();
-    loadNearbyUsers();
+loadNearbyUsers();
+ensureBoostedUsersLoaded();
+loadMyFollowers();
     attachNotifListener(user.uid);
-    attachChatsListener(user.uid);
-    attachCoinsListener(user.uid);
+attachChatsListener(user.uid);
+attachCoinsListener(user.uid);
+attachChannelsLiveListener(user.uid);
   } else {
     state.user = null;
     state.profile = null;
@@ -4132,13 +4385,17 @@ onAuthStateChanged(auth, async (user) => {
     state.myQuestions = [];
     state.myAnswers = [];
     state.nearbyUsers = [];
-    nearbyUsersLoadedFor = null;
+nearbyUsersLoadedFor = null;
+state.myFollowers = [];
+myFollowersLoadedFor = null;
     if (analytics) setUserId(analytics, null);
     detachNotifListener();
-    detachChatsListener();
-    detachCoinsListener();
+detachChatsListener();
+detachCoinsListener();
+detachChannelsLiveListener();
     detachCoinRequestsListener();
     detachChatMessagesListener();
+detachActiveChatUserListener();
     state.activeChatId = null;
     state.activeChatUser = null;
     state.chatMessages = [];
@@ -4327,6 +4584,9 @@ function friendlyAuthError(err) {
   if (code === "auth/invalid-email") return "That email doesn't look right.";
   if (code === "auth/weak-password") return "Password should be at least 6 characters.";
   if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") return "Incorrect email or password.";
+  if (code === "auth/too-many-requests") return "Too many attempts. Please wait a moment and try again.";
+  if (code === "auth/network-request-failed") return "No internet connection. Check your network and try again.";
+  if (code === "auth/user-disabled") return "This account has been disabled.";
   return "Something went wrong. Please try again.";
 }
 function confirmSignOut() { setState({ signOutConfirmOpen: true }); }
@@ -4336,6 +4596,7 @@ async function signOutUser() {
   detachNotifListener();
   detachChatsListener();
   detachChatMessagesListener();
+detachActiveChatUserListener();
   detachCoinsListener();
   detachCoinRequestsListener();
   trackEvent("logout");
@@ -4361,20 +4622,169 @@ async function signOutUser() {
 // "the query requires an index" error containing a direct link to create it
 // in the Firebase Console (Firestore Database > Indexes).
 const QUESTIONS_PAGE_SIZE = 20;
+
+// ---------------- "For You" feed cap + composition ----------------
+const FOR_YOU_FEED_SIZE = 50;
+const FOR_YOU_QUOTAS = {
+  interacted:  0.20, // topics/authors you've engaged with before
+  following:   0.30, // people you follow
+  popular:     0.10, // all-time top engagement
+  trending:    0.10, // hot right now (engagement decayed by age)
+  newest:      0.10, // most recent
+  hotThisWeek: 0.10, // high likes/comments/shares, posted in the last 7 days
+  regional:    0.10  // same region as you
+};
+
+// Persists which posts have already been served in a "For You" load, so the
+// next visit shows a different set instead of repeating the same 50.
+const FOR_YOU_SEEN_KEY = "mn_foryou_seen_ids";
+function getForYouSeenIds() {
+  try { return new Set(JSON.parse(localStorage.getItem(FOR_YOU_SEEN_KEY) || "[]")); }
+  catch (e) { return new Set(); }
+}
+function addForYouSeenIds(ids) {
+  const seen = getForYouSeenIds();
+  ids.forEach((id) => seen.add(id));
+  const trimmed = Array.from(seen).slice(-500); // cap so storage doesn't grow forever
+  try { localStorage.setItem(FOR_YOU_SEEN_KEY, JSON.stringify(trimmed)); } catch (e) {}
+}
+let forYouExhausted = false; // true when fewer than 50 unseen posts were available
+
+// "For You" needs up to 50 candidates to draw from, but the live listener
+// above only keeps QUESTIONS_PAGE_SIZE (20) loaded. Silently fetches more
+// pages in the background (reusing loadMoreQuestions) until state.questions
+// has enough, or Firestore genuinely has no more, then re-settles the order.
+let forYouPoolLoading = false;
+async function ensureForYouPool() {
+  if (forYouPoolLoading || state.sortMode !== "foryou") return;
+  forYouPoolLoading = true;
+  try {
+    while (state.sortMode === "foryou" && state.questions.length < FOR_YOU_FEED_SIZE && questionsHasMore) {
+      await loadMoreQuestions();
+    }
+  } finally {
+    forYouPoolLoading = false;
+  }
+  if (state.sortMode === "foryou") {
+    refreshForYouOrder();
+    resetCommittedFeed();
+    if (state.screen === "home" && document.querySelector(".mn-home")) renderFeedOnly();
+  }
+}
+
+// Dedicated Following-feed state.
+// Following must not depend on the global Home feed's 20-post page.
+let followingQuestions = [];
+let followingLastVisible = null;
+let followingHasMore = true;
+let followingLoading = false;
+let followingRequestId = 0;
+
+async function loadFollowingQuestions(reset = false) {
+  if (!state.user || !state.profile) return;
+
+  const followed = Array.isArray(state.profile.followedUsers)
+    ? state.profile.followedUsers.filter(Boolean)
+    : [];
+
+  if (!followed.length) {
+    followingQuestions = [];
+    followingLastVisible = null;
+    followingHasMore = false;
+    renderFeedOnly();
+    return;
+  }
+
+  if (followingLoading) return;
+  if (!reset && !followingHasMore) return;
+
+  followingLoading = true;
+  const requestId = ++followingRequestId;
+
+  try {
+    // Firestore 'in' supports a maximum of 30 values.
+    // Load followed users in chunks so Following doesn't break
+    // when a user follows more than 30 people.
+    const chunks = [];
+    for (let i = 0; i < followed.length; i += 30) {
+      chunks.push(followed.slice(i, i + 30));
+    }
+
+    const results = await Promise.all(
+      chunks.map(async (ids) => {
+        const ref = query(
+          collection(db, "questions"),
+          where("authorId", "in", ids),
+          orderBy("createdAt", "desc")
+        );
+
+        return getDocs(ref);
+      })
+    );
+
+    if (requestId !== followingRequestId) return;
+
+    const map = new Map();
+
+    results.forEach((snap) => {
+      snap.docs.forEach((d) => {
+        map.set(d.id, {
+          id: d.id,
+          ...d.data()
+        });
+      });
+    });
+
+    const posts = Array.from(map.values());
+
+    posts.sort((a, b) => {
+      const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return tb - ta;
+    });
+
+    if (reset) {
+      followingQuestions = posts;
+    } else {
+      const existing = new Set(followingQuestions.map(q => q.id));
+      followingQuestions = followingQuestions.concat(
+        posts.filter(q => !existing.has(q.id))
+      );
+    }
+
+    followingHasMore = false; // followed users' whole post history comes in one shot, same as profile
+
+    await preloadFeedDims(posts);
+
+    renderFeedOnly();
+
+  } catch (e) {
+    console.error("Following feed error:", e);
+
+    followingHasMore = false;
+
+    if (state.screen === "home" && state.sortMode === "following") {
+      renderFeedOnly();
+    }
+  } finally {
+    followingLoading = false;
+  }
+}
 let questionsLastVisible = null;   // last doc snapshot from the most recent page, used as the startAfter() cursor
 let questionsHasMore = true;       // false once a page comes back smaller than the page size
 let questionsLoadingMore = false;  // guards against firing multiple loads at once
 let feedSentinelObserver = null;   // IntersectionObserver watching the loader element at the bottom of the feed
 
-const qRef = query(collection(db, "questions"), orderBy("createdAt", "desc"), limit(QUESTIONS_PAGE_SIZE));
+const qRef = query(collection(db, "questions"), orderBy("createdAt", "desc"));
 let firstFeedPagePainted = false;
 onSnapshot(qRef, async (snap) => {
   state.questions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   questionsLastVisible = snap.docs.length ? snap.docs[snap.docs.length - 1] : null;
-  questionsHasMore = snap.docs.length === QUESTIONS_PAGE_SIZE;
+  questionsHasMore = false; // whole feed comes in one shot now, same as profile's own-posts load
   if (!firstFeedPagePainted) {
     await Promise.all([preloadFeedDims(state.questions), loadTopContributors()]);
     firstFeedPagePainted = true;
+    ensureForYouPool();
   }
   const feedChanged = reconcileCommittedFeed();
   if (state.screen === "home" && document.querySelector(".mn-home")) {
@@ -4387,10 +4797,12 @@ onSnapshot(qRef, async (snap) => {
   } else if (state.screen === "detail" && document.querySelector(".mn-detail-post")) {
     updateDetailStatsOnly();
   } else if (commentsSheetMounted()) {
-    updateDetailStatsOnly();
-  } else {
-    render();
-  }
+  updateDetailStatsOnly();
+} else if (state.screen === "userProfile" && document.querySelector(".mn-profile .mn-feed")) {
+  patchProfileStatsOnly();
+} else {
+  render();
+}
   // Reels sits as an overlay on top of Home and is intentionally left out of
   // renderFeedOnly()/render() above — rebuilding it here would destroy and
   // recreate the current <img>/<video>, restarting playback. Instead, patch
@@ -4406,10 +4818,11 @@ onSnapshot(qRef, async (snap) => {
 const LOAD_MORE_TIMEOUT_MS = 5000; // don't make the reader wait more than this for the next page
 let loadMoreRequestId = 0;
 
+window.loadMoreQuestions = loadMoreQuestions;
 async function loadMoreQuestions() {
   if (questionsLoadingMore || !questionsHasMore || !questionsLastVisible) return;
   questionsLoadingMore = true;
-  setSentinelSpinner(true);
+setSeeMoreLoading(true);
   const myRequestId = ++loadMoreRequestId;
   try {
     const nextRef = query(
@@ -4447,10 +4860,15 @@ async function loadMoreQuestions() {
 
 // Turns the sentinel's spinner on/off in place (no re-render at all), so
 // reaching the bottom of the feed doesn't touch anything else on the page.
-function setSentinelSpinner(on) {
-  const sentinel = document.getElementById("mn-feed-sentinel");
-  if (!sentinel) return;
-  sentinel.innerHTML = on ? `<span class="mn-feed-spinner"></span>` : "";
+function setSeeMoreLoading(on) {
+  const btn = document.getElementById("mn-see-more");
+  if (!btn) return;
+
+  btn.disabled = on;
+
+  btn.innerHTML = on
+    ? `<span class="mn-feed-spinner"></span><span>Loading…</span>`
+    : `<span>See more</span>`;
 }
 
 // Appends the newly-loaded page of questions to the existing feed DOM instead
@@ -4491,8 +4909,10 @@ function appendLoadedQuestions() {
   }
 
   const feedEl = homeEl.querySelector(".mn-feed");
-  const sentinel = document.getElementById("mn-feed-sentinel");
-  if (!feedEl || !sentinel) { render(); return; }
+if (!feedEl) {
+  render();
+  return;
+}
 
   const list = filteredQuestions();
   // Cards are identified by id="q-<id>" (set in questionCardHtml) — only
@@ -4506,12 +4926,18 @@ function appendLoadedQuestions() {
     .join("");
   if (newCardsHtml) feedEl.insertAdjacentHTML("beforeend", newCardsHtml);
 
-  if (questionsHasMore) {
-    sentinel.innerHTML = "";
-  } else {
-    sentinel.remove();
+  const oldBtn = document.getElementById("mn-see-more");
+
+if (!questionsHasMore) {
+  if (oldBtn) {
+    oldBtn.closest(".mn-see-more-wrap")?.remove();
   }
-  observeFeedSentinel();
+} else if (oldBtn) {
+  oldBtn.disabled = false;
+  oldBtn.innerHTML = `<span>See more</span>`;
+}
+
+setSeeMoreLoading(false);
 }
 // Finds the id of the post sitting at the halfway point of the channel's
 // current *unread* list — same cutoff logic used to build the Unread tab
@@ -4573,9 +4999,13 @@ function observeFeedSentinel() {
   if (feedSentinelObserver) feedSentinelObserver.disconnect();
   const sentinel = document.getElementById("mn-feed-sentinel");
   if (!sentinel) return;
+  const hasMoreNow = state.sortMode === "following" ? followingHasMore : questionsHasMore;
+  if (!hasMoreNow || state.sortMode === "foryou") return;
   feedSentinelObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) loadMoreQuestions();
-  }, { rootMargin: "600px" }); // start fetching before the user actually hits bottom
+    if (!entries[0].isIntersecting) return;
+    if (state.sortMode === "following") loadFollowingQuestions(false);
+    else loadMoreQuestions();
+  }, { root: null, rootMargin: "600px" });
   feedSentinelObserver.observe(sentinel);
 }
 let imagetokSentinelObserver = null;
@@ -4658,6 +5088,49 @@ async function loadTopContributors() {
 // which makes the feed's first paint wait for this alongside media dims.
 loadTopContributors();
 
+let myFollowersLoadedFor = null;
+async function loadMyFollowers() {
+  if (!state.user) { state.myFollowers = []; return; }
+  if (myFollowersLoadedFor === state.user.uid) return;
+  myFollowersLoadedFor = state.user.uid;
+  try {
+    const snap = await getDocs(query(collection(db, "users"), where("followedUsers", "array-contains", state.user.uid), limit(20)));
+    state.myFollowers = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter((u) => u.id !== state.user.uid);
+    state.myFollowers.forEach((u) => { state.photoCache[u.id] = u.photoURL || ""; });
+  } catch (e) { console.error(e); myFollowersLoadedFor = null; }
+}
+
+let siteSortUsersLoaded = false;
+async function loadSiteSortUsers() {
+  if (siteSortUsersLoaded) return;
+  siteSortUsersLoaded = true;
+  try {
+    const snap = await getDocs(query(collection(db, "users"), orderBy("totalPoints", "desc"), limit(20)));
+    state.siteSortUsers = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    state.siteSortUsers.forEach((u) => { state.photoCache[u.id] = u.photoURL || ""; });
+  } catch (e) { console.error(e); }
+}
+loadSiteSortUsers();
+
+// Builds the Depeople mix: 50% top contributors, 20% same region,
+// 10% people who follow you, 10% general site ranking. Shortfall in
+// any bucket is backfilled from top contributors so the bar stays full.
+function depeopleCandidates(count, extraExcludeIds) {
+  const me = state.user && state.user.uid;
+  const followed = (state.profile && state.profile.followedUsers) || [];
+  const used = new Set([me, ...(extraExcludeIds || [])]);
+  const eligible = (arr) => (arr || []).filter((u) => u && !used.has(u.id) && !followed.includes(u.id));
+  const take = (arr, n) => { const picked = eligible(arr).slice(0, n); picked.forEach((u) => used.add(u.id)); return picked; };
+  const total = count || 20;
+  const region = take(state.nearbyUsers, Math.round(total * 0.20));
+  const top = take(state.topContributors, Math.round(total * 0.50));
+  const followers = take(state.myFollowers, Math.round(total * 0.10));
+  const site = take(state.siteSortUsers, Math.round(total * 0.10));
+  let mix = [...region, ...top, ...followers, ...site];
+  if (mix.length < total) mix = mix.concat(take(state.topContributors, total - mix.length));
+  return mix;
+}
+
 // ---------------- people near you ----------------
 // Surfaces other users who share the signed-in user's sign-up region, so
 // people can find and follow/meet others from their own area — the same
@@ -4730,7 +5203,7 @@ function selectScreen(screen) {
   if (screen === "discover") { loadTopContributors(); loadTopAnswers(); loadNearbyUsers(); }
   if (screen === "challenges") loadChallengesList();
   trackEvent("screen_view", { screen_name: screen });
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   setState({ screen });
   pushNav();
 }
@@ -4790,6 +5263,28 @@ async function createNotification(toUserId, data) {
       read: false,
     });
   } catch (e) { console.error("notification write failed", e); /* never block the underlying action */ }
+}
+let channelsLiveUnsub = null;
+function attachChannelsLiveListener(uid) {
+  if (channelsLiveUnsub) { channelsLiveUnsub(); channelsLiveUnsub = null; }
+  const cq = query(collection(db, "channels"), where("subscriberIds", "array-contains", uid));
+  channelsLiveUnsub = onSnapshot(cq, (snap) => {
+    const byId = new Map((state.channels || []).map((c) => [c.id, c]));
+    snap.docs.forEach((d) => byId.set(d.id, { ...byId.get(d.id), id: d.id, ...d.data() }));
+    state.channels = Array.from(byId.values());
+    if (state.screen === "channels") { render(); } else { updateChannelsBadgeDom(); }
+  }, (err) => { console.error(err); });
+}
+function detachChannelsLiveListener() {
+  if (channelsLiveUnsub) { channelsLiveUnsub(); channelsLiveUnsub = null; }
+}
+function updateChannelsBadgeDom() {
+  document.querySelectorAll(".mn-channels-btn .mn-notif-count").forEach((el) => el.remove());
+  const n = channelsUnreadCount();
+  if (n > 0) {
+    const btn = document.querySelector(".mn-channels-btn");
+    if (btn) btn.insertAdjacentHTML("beforeend", `<span class="mn-notif-count">${n > 9 ? "9+" : n}</span>`);
+  }
 }
 function attachNotifListener(uid) {
   if (notifUnsub) { notifUnsub(); notifUnsub = null; }
@@ -4964,13 +5459,14 @@ async function toggleFollowUser(authorId, authorName, ev) {
 // Tapping any name/avatar across the app (leaderboard, podium, a post, an
 // answer...) lands here instead of just toggling Follow — so anyone can see
 // a person's bio, stats, follower count and everything they've posted.
-async function openUserProfile(userId, name, ev) {
+async function openUserProfile(userId, name, ev, compact) {
   if (ev) ev.stopPropagation();
   if (!userId) return;
   if (state.user && userId === state.user.uid) { selectScreen("profile"); return; }
   setState({
     screen: "userProfile", viewedUserFrom: state.screen === "userProfile" ? state.viewedUserFrom : state.screen,
     viewedUserId: userId, viewedUser: { id: userId, username: name || "" }, viewedUserQuestions: [], viewedUserQuestionsLoaded: false,
+    viewedUserCompact: !!compact,
   });
   trackEvent("screen_view", { screen_name: "user_profile" });
   pushNav();
@@ -4982,7 +5478,7 @@ async function openUserProfile(userId, name, ev) {
   } catch (e) { console.error(e); }
   try {
     const qsnap = await getDocs(query(collection(db, "questions"), where("authorId", "==", userId)));
-    state.viewedUserQuestions = sortByCreatedDesc(qsnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+    state.viewedUserQuestions = sortByCreatedDesc(qsnap.docs.map((d) => ({ id: d.id, ...d.data() }))).slice(0, 15);
     state.viewedUserQuestionsLoaded = true;
     render();
   } catch (e) { console.error(e); state.viewedUserQuestionsLoaded = true; render(); }
@@ -5078,8 +5574,9 @@ function filteredChannels() {
   const term = state.channelsSearch.trim().toLowerCase();
   let list = state.channels || [];
   if (state.channelsTab === "mine") {
-    list = list.filter((c) => isOwnChannel(c) || isSubscribedChannel(c));
-  } else if (state.channelsTab === "myearn") {
+  list = list.filter((c) => isOwnChannel(c) || isSubscribedChannel(c));
+  list = [...list].sort((a, b) => (channelHasUnread(b) ? 1 : 0) - (channelHasUnread(a) ? 1 : 0));
+} else if (state.channelsTab === "myearn") {
     list = list.filter((c) => isOwnChannel(c));
   } else {
     list = list.filter((c) => !isOwnChannel(c) && !isSubscribedChannel(c));
@@ -5224,6 +5721,16 @@ function openChannelAvatarEdit() {
   setState({ channelAvatarEditOpen: true, channelAvatarEditUrl: state.activeChannel.avatarUrl || "" });
 }
 function closeChannelAvatarEdit() { setState({ channelAvatarEditOpen: false }); }
+async function onChannelAvatarFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  try {
+    const toUpload = await maybeCompressImage(file);
+const result = await uploadFileToCloudinary(toUpload);
+setChannelAvatarEditUrl(result.url);
+  } catch (e) { console.error(e); showToast(e.message || "Upload failed. Try again.", "error"); }
+}
 function setChannelAvatarEditUrl(v) { state.channelAvatarEditUrl = v.trim(); render(); }
 async function saveChannelAvatarEdit() {
   const url = state.channelAvatarEditUrl;
@@ -5316,6 +5823,17 @@ function setCreateChannelAvatar(v) {
   refreshCreateChannelBtn();
 }
 function commitCreateChannelAvatar() { render(); }
+async function onChannelCreateAvatarFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  try {
+    const toUpload = await maybeCompressImage(file);
+const result = await uploadFileToCloudinary(toUpload);
+setCreateChannelAvatar(result.url);
+    commitCreateChannelAvatar();
+  } catch (e) { console.error(e); showToast(e.message || "Upload failed. Try again.", "error"); }
+}
 function canCreateChannel() {
   const f = state.createChannelForm;
   return f.name.trim().length >= 3 && isCatboxUrl(f.avatarUrl) && !state.createChannelBusy;
@@ -5396,6 +5914,17 @@ function setChannelPostMediaUrl(v) { state.channelPostForm.mediaUrl = v.trim(); 
 // Full re-render once the link field loses focus, so the image/video/audio preview
 // appears — done on blur rather than on every keystroke so typing never loses focus.
 function commitChannelPostMediaUrl() { render(); }
+async function onChannelPostFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  try {
+    const toUpload = await maybeCompressImage(file);
+const result = await uploadFileToCloudinary(toUpload);
+setChannelPostMediaUrl(result.url);
+    commitChannelPostMediaUrl();
+  } catch (e) { console.error(e); showToast(e.message || "Upload failed. Try again.", "error"); }
+}
 function clearChannelPostMedia() { state.channelPostForm.mediaUrl = ""; render(); }
 function canSubmitChannelPost() {
   const f = state.channelPostForm;
@@ -5624,6 +6153,15 @@ async function maybeOpenSharedChallenge() {
     }
   } catch (e) { console.error(e); }
 }
+let sharedProfileOpened = false;
+function maybeOpenSharedProfile() {
+  if (sharedProfileOpened) return;
+  const params = new URLSearchParams(location.search);
+  const uid = params.get("u");
+  if (!uid) return;
+  sharedProfileOpened = true;
+  openUserProfile(uid);
+}
 // ---------------- direct messages (mini messenger) ----------------
 // chatId is deterministic — the two participants' uids, sorted, joined with
 // "_" — so both sides always land on the same conversation doc without a
@@ -5714,6 +6252,7 @@ function closeMessages() { if (!suppressNav) { history.back(); return; } setStat
 function openNewChat() { setState({ newChatOpen: true, newChatSearch: "", newChatResults: [] }); }
 function closeNewChat() { setState({ newChatOpen: false, newChatSearch: "", newChatResults: [] }); }
 function setMessagesFilter(filter) { setState({ messagesFilter: filter }); }
+function setChatFeedFilter(filter) { setState({ chatFeedFilter: filter }); }
 function setMessagesSearch(value) {
   state.messagesSearch = value;
   const selStart = document.activeElement && document.activeElement.selectionStart;
@@ -5761,18 +6300,21 @@ function renderNewChatResultsOnly() {
 function openChat(chatId, otherUser) {
   if (!state.user || !chatId || !otherUser) return;
   detachChatMessagesListener();
+detachActiveChatUserListener();
   trackEvent("screen_view", { screen_name: "chat" });
   const chatRow = (state.chats || []).find((c) => c.id === chatId);
   const unreadOnOpen = (chatRow && chatRow["unread_" + state.user.uid]) || 0;
-  setState({
+ setState({
     screen: "chat",
     chatFrom: state.screen === "chat" ? state.chatFrom : (state.screen === "messages" ? "messages" : state.screen),
     activeChatId: chatId, activeChatUser: otherUser,
     chatMessages: [], chatMessagesLoaded: false, messageDraft: "", replyTarget: null,
     messageMediaUrl: "", messageMediaType: "", messageMediaError: "", messageMediaPicker: false,
     chatUnreadOnOpen: unreadOnOpen, chatDividerShown: false, unreadDividerId: null,
-  });
-  attachChatMessagesListener(chatId);
+  chatFeedFilter: unreadOnOpen > 0 ? "unread" : "all",
+  chatStickToBottom: true,
+});
+attachChatMessagesListener(chatId);
   markChatRead(chatId);
   pushNav();
 }
@@ -5782,27 +6324,37 @@ function openChatFromRow(chatId) {
   const other = otherParticipant(c);
   if (!c || !other) return;
   openChat(chatId, other);
+attachActiveChatUserListener(chatId, other.id);
 }
-// Used from anywhere someone can be discovered — Discover screen, a user's
+// Used from anywhere someone can be discovered
 // profile, "People near you"/"People to follow" rows, the New message sheet.
 function startChatWithUser(userId, name, photoURL, ev) {
   if (ev) ev.stopPropagation();
   if (!state.user) { setState({ pendingScreen: "messages", authModal: "signin" }); return; }
   if (!userId || userId === state.user.uid) return;
   state.newChatOpen = false;
-  openChat(chatIdFor(userId), { id: userId, username: name || "User", photoURL: photoURL || "" });
+  const chatId = chatIdFor(userId);
+  openChat(chatId, { id: userId, username: name || "User", photoURL: photoURL || "" });
+attachActiveChatUserListener(chatId, userId);
 }
 function closeChat() {
   detachChatMessagesListener();
+detachActiveChatUserListener();
   if (!suppressNav) { history.back(); return; }
   setState({ screen: state.chatFrom || "messages", activeChatId: null, activeChatUser: null, chatMessages: [], messageMediaUrl: "", messageMediaType: "", messageMediaError: "", messageMediaPicker: false, replyTarget: null, chatUnreadOnOpen: 0, chatDividerShown: false, unreadDividerId: null });
 }
 function attachChatMessagesListener(chatId) {
   if (chatMessagesUnsub) { chatMessagesUnsub(); chatMessagesUnsub = null; }
-  const mq = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"), limit(200));
-  chatMessagesUnsub = onSnapshot(mq, (snap) => {
-    state.chatMessages = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    state.chatMessagesLoaded = true;
+  const mq = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "desc"), limit(20));
+chatMessagesUnsub = onSnapshot(mq, (snap) => {
+      const wasNearBottom = isNearChatBottom();
+      const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (a.createdAt?.seconds ?? Infinity) - (b.createdAt?.seconds ?? Infinity));
+      const newest = docs[docs.length - 1];
+      const isOwnMessage = newest && state.user && newest.senderId === state.user.uid;
+      state.chatMessages = docs;
+      state.chatMessagesLoaded = true;
+      if (wasNearBottom || isOwnMessage) state.chatStickToBottom = true;
     if (state.chatUnreadOnOpen > 0 && !state.chatDividerShown) {
       const msgs = state.chatMessages;
       const idx = Math.max(0, msgs.length - state.chatUnreadOnOpen);
@@ -5816,6 +6368,22 @@ function attachChatMessagesListener(chatId) {
 }
 function detachChatMessagesListener() {
   if (chatMessagesUnsub) { chatMessagesUnsub(); chatMessagesUnsub = null; }
+}
+function attachActiveChatUserListener(chatId, otherUserId) {
+  if (activeChatUserUnsub) { activeChatUserUnsub(); activeChatUserUnsub = null; }
+  activeChatUserUnsub = onSnapshot(doc(db, "users", otherUserId), (snap) => {
+    if (snap.exists() && state.activeChatId === chatId) {
+      state.activeChatUser = { ...state.activeChatUser, lastActive: snap.data().lastActive };
+      render();
+    }
+  }, (e) => showToast("lastActive error: " + e.message, "error"));
+}
+function detachActiveChatUserListener() {
+  if (activeChatUserUnsub) { activeChatUserUnsub(); activeChatUserUnsub = null; }
+}
+function isNearChatBottom() {
+  const threshold = 140; // px of slack from the true bottom
+  return (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - threshold);
 }
 function scrollChatToBottom() {
   requestAnimationFrame(() => {
@@ -5861,7 +6429,7 @@ function closeMessageMediaPicker() {
 function isCatboxUrl(url) {
   try {
     const u = new URL(url);
-    if (u.protocol !== "https:" || !/(^|\.)catbox\.moe$/i.test(u.hostname)) return false;
+    if (u.protocol !== "https:" || !(/(^|\.)catbox\.moe$/i.test(u.hostname) || /(^|\.)res\.cloudinary\.com$/i.test(u.hostname))) return false;
     // catbox.moe/c/xxxx album/share pages are HTML, not images — only a direct
     // file link (files.catbox.moe/xxxx.jpg) actually renders in an <img>. Require
     // a real file extension so a pasted page link is rejected here instead of
@@ -5896,6 +6464,22 @@ function commitMessageMediaUrl(rawUrl) {
   const btn = document.querySelector(".mn-chat-send");
   if (btn) btn.disabled = !((state.messageDraft.trim() || state.messageMediaUrl) && !state.messageBusy);
 }
+async function onMessageFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  state.messageMediaError = "";
+  render();
+  try {
+    const toUpload = await maybeCompressImage(file);
+const result = await uploadFileToCloudinary(toUpload);
+commitMessageMediaUrl(result.url);
+  } catch (e) {
+    console.error(e);
+    state.messageMediaError = e.message || "Upload failed. Try again.";
+    render();
+  }
+}
 function clearMessageMedia(ev) {
   if (ev) ev.stopPropagation();
   state.messageMediaUrl = "";
@@ -5926,31 +6510,32 @@ async function sendMessage() {
   const myName = state.profile.username;
   const myPhoto = state.profile.photoURL || "";
   state.messageBusy = true;
-  state.messageDraft = "";
-  state.messageMediaUrl = "";
-  state.messageMediaType = "";
-  state.replyTarget = null;
-  const sendBtn = document.querySelector(".mn-chat-send");
+state.messageDraft = "";
+state.messageMediaUrl = "";
+state.messageMediaType = "";
+state.replyTarget = null;
+state.chatFeedFilter = "all";
+const sendBtn = document.querySelector(".mn-chat-send");
   const textarea = document.querySelector(".mn-chat-composer textarea");
   if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = `<span class="mn-spinner"></span>`; }
   if (textarea) textarea.value = "";
   try {
     const mediaLabel = mediaType === "video" ? "🎬 Video" : mediaType === "audio" ? "🎵 Audio" : mediaType === "image" ? "📷 Photo" : mediaType ? "📎 File" : "";
-    // setDoc(..., {merge:true}) both creates the chat the very first time and
-    // keeps it updated after — one write path for "new conversation" and
-    // "existing conversation", no separate create-vs-update branching.
-    await setDoc(doc(db, "chats", chatId), {
-      participants: [myId, other.id],
-      participantNames: { [myId]: myName, [other.id]: other.username || "User" },
-      participantPhotos: { [myId]: myPhoto, [other.id]: other.photoURL || "" },
-      lastMessage: text || mediaLabel || "Message", lastMessageAt: serverTimestamp(), lastSenderId: myId,
-      ["unread_" + myId]: 0,
-      ["unread_" + other.id]: increment(1),
-    }, { merge: true });
     const payload = { text, senderId: myId, senderName: myName, createdAt: serverTimestamp() };
     if (mediaUrl) { payload.mediaUrl = mediaUrl; payload.mediaType = mediaType || "file"; }
     if (replyTo) payload.replyTo = { id: replyTo.id, text: replyTo.text, senderName: replyTo.senderName };
-    await addDoc(collection(db, "chats", chatId, "messages"), payload);
+    const newMsgRef = doc(collection(db, "chats", chatId, "messages"));
+    await runTransaction(db, async (tx) => {
+      tx.set(newMsgRef, payload);
+      tx.set(doc(db, "chats", chatId), {
+        participants: [myId, other.id],
+        participantNames: { [myId]: myName, [other.id]: other.username || "User" },
+        participantPhotos: { [myId]: myPhoto, [other.id]: other.photoURL || "" },
+        lastMessage: text || mediaLabel || "Message", lastMessageAt: serverTimestamp(), lastSenderId: myId,
+        ["unread_" + myId]: 0,
+        ["unread_" + other.id]: increment(1),
+      }, { merge: true });
+    });
     trackEvent("send_message", { item_id: chatId });
   } catch (e) {
     console.error(e);
@@ -6055,11 +6640,12 @@ window.toggleGiftCustom = toggleGiftCustom;
 window.sendGiftCoins = sendGiftCoins;
 
 let searchTrackTimer = null;
+let searchRenderTimer = null;
 function setSearchTerm(v) {
   state.searchTerm = v;
-  renderFeedOnly();
+  clearTimeout(searchRenderTimer);
+  searchRenderTimer = setTimeout(renderFeedOnly, 200);
   clearTimeout(searchTrackTimer);
-  // debounced so we log once the user pauses typing, not on every keystroke
   searchTrackTimer = setTimeout(() => { if (v.trim()) trackEvent("search", { search_term: v.trim() }); }, 600);
 }
 
@@ -6222,9 +6808,9 @@ function openDetail(id, from) {
   state.replyDrafts = {};
   state.expandedThreads = {};
   state.replyingTo = null;
-  state.quoteTarget = null;
-  render();
-  loadAnswers(id);
+state.quoteTarget = null;
+mountCommentsSheetOnly();
+loadAnswers(id);
   trackViewOnce(id);
   trackEvent("select_content", { content_type: "question", item_id: id });
   pushNav();
@@ -6274,11 +6860,19 @@ function closeComments() {
   state.detailId = null;
   commentsSheetWasOpen = false;
   if (!suppressNav && window.history.state && window.history.state.commentsOpen) {
-    suppressNav = true;
-    history.back();
     suppressNav = false;
-  }
-  render();
+}
+mountCommentsSheetOnly();
+}
+// Mounts/unmounts just the comments sheet overlay in place, without touching
+// whatever screen is showing underneath (home feed, profile posts, etc).
+// Falls back to a full render() only if .mn-app isn't on the page yet.
+function mountCommentsSheetOnly() {
+  const appEl = document.querySelector(".mn-app");
+  if (!appEl) { render(); return; }
+  const existing = appEl.querySelector(".mn-comments-overlay");
+  if (existing) existing.remove();
+  if (state.commentsOpen) appEl.insertAdjacentHTML("beforeend", commentsSheetHtml());
 }
 // True while the comments sheet is open and mounted
 // detail screen used to check state.screen === "detail" for partial refresh,
@@ -6287,8 +6881,8 @@ function commentsSheetMounted() {
   return state.commentsOpen && document.querySelector(".mn-comments-sheet-inner");
 }
 async function loadAnswers(id) {
-  const snap = await getDocs(query(collection(db, "questions", id, "answers"), orderBy("createdAt", "asc")));
-  state.answersByQuestion[id] = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const snap = await getDocs(query(collection(db, "questions", id, "answers"), orderBy("createdAt", "desc"), limit(50)));
+  state.answersByQuestion[id] = snap.docs.map((d) => ({ id: d.id, ...d.data() })).reverse();
   if ((state.screen === "detail" && document.querySelector(".mn-detail-post")) || commentsSheetMounted()) updateAnswersListOnly(id);
   else render();
 }
@@ -6564,7 +7158,6 @@ function shareTo(platform) {
 
 // ---------------- Reels: viewer interactions ----------------
 function openReelsViewer(index) {
-  return; // Reels disabled
   const reels = getReelPosts();
   if (!reels.length) return;
   state.reelsIndex = Math.max(0, Math.min(index, reels.length - 1));
@@ -6623,7 +7216,9 @@ async function loadMyQuestions() {
     // NOTE: filtering only (no orderBy) avoids needing a composite Firestore
     // index — we sort client-side instead, so this always works out of the box.
     const snap = await getDocs(query(collection(db, "questions"), where("authorId", "==", state.user.uid)));
-    state.myQuestions = sortByCreatedDesc(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+const all = sortByCreatedDesc(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+state.myQuestionsAll = all;
+state.myQuestions = all.slice(0, 30);
     state.myQuestionsLoaded = true;
     render();
   } catch (err) {
@@ -6735,6 +7330,18 @@ function previewImgError(el) {
   if (status) status.textContent = "Couldn't load that image — double check the link.";
 }
 function setProfileField(field, v) { state.profileForm[field] = v; if (field === "photoUrl") updatePhotoPreviewOnly(); }
+async function onProfilePhotoFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  try {
+    const toUpload = await maybeCompressImage(file);
+const result = await uploadFileToCloudinary(toUpload);
+setChallengeCoverUrl(result.url);
+    render();
+    showToast("Photo uploaded — tap Save to keep it.");
+  } catch (e) { console.error(e); showToast(e.message || "Photo upload failed. Try again.", "error"); }
+}
 async function saveProfile() {
   const rawInput = (state.profileForm.photoUrl || "").trim();
   if (rawInput && !isWikimediaPhotoUrl(rawInput)) {
@@ -6962,6 +7569,67 @@ function forYouScore(q) {
   score += Math.min(tagAffinityScore(q), 400);     // learns from what you interact with, via hashtags
   return score;
 }
+// Likes + comments + shares, unweighted by age — used for the "hot this week" bucket.
+function engagementScore(q) {
+  return (q.points || 0) + (q.answersCount || 0) * 1.5 + (q.sharesCount || 0) * 2;
+}
+// Builds the 50-post "For You" feed out of fixed quotas (see FOR_YOU_QUOTAS)
+// instead of one flat ranked list, and never reshows a post already served in
+// a previous load — so coming back later surfaces a different set of posts.
+function composeForYouFeed(list) {
+  const seen = getForYouSeenIds();
+  const pool = list.filter((q) => !seen.has(q.id));
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const millis = (q) => (q.createdAt && q.createdAt.toMillis ? q.createdAt.toMillis() : 0);
+
+  const buckets = {
+    interacted: pool.filter((q) => tagAffinityScore(q) > 0).sort((a, b) => tagAffinityScore(b) - tagAffinityScore(a)),
+    following: pool.filter((q) => isFollowedAuthor(q.authorId)).sort((a, b) => topScore(b) - topScore(a)),
+    popular: [...pool].sort((a, b) => topScore(b) - topScore(a)),
+    trending: [...pool].sort((a, b) => hotScore(b) - hotScore(a)),
+    newest: [...pool].sort((a, b) => millis(b) - millis(a)),
+    hotThisWeek: pool.filter((q) => millis(q) >= weekAgo).sort((a, b) => engagementScore(b) - engagementScore(a)),
+    regional: pool.filter((q) => isNearbyPost(q)).sort((a, b) => topScore(b) - topScore(a))
+  };
+
+  const picked = new Map();
+  Object.entries(FOR_YOU_QUOTAS).forEach(([key, pct]) => {
+    let taken = 0;
+    const quota = Math.round(FOR_YOU_FEED_SIZE * pct);
+    for (const q of buckets[key]) {
+      if (taken >= quota) break;
+      if (picked.has(q.id)) continue;
+      picked.set(q.id, q);
+      taken++;
+    }
+  });
+
+  // Top up from the rest of today's unseen pool first...
+  if (picked.size < FOR_YOU_FEED_SIZE) {
+    for (const q of buckets.trending) {
+      if (picked.size >= FOR_YOU_FEED_SIZE) break;
+      if (!picked.has(q.id)) picked.set(q.id, q);
+    }
+  }
+
+  // ...and if the unseen pool itself is smaller than 50, reuse the
+  // highest-scoring posts already seen rather than under-filling the feed.
+  // 50 is a hard floor AND ceiling whenever at least 50 posts exist at all.
+  if (picked.size < FOR_YOU_FEED_SIZE) {
+    const alreadySeen = list
+      .filter((q) => !picked.has(q.id))
+      .sort((a, b) => forYouScore(b) - forYouScore(a));
+    for (const q of alreadySeen) {
+      if (picked.size >= FOR_YOU_FEED_SIZE) break;
+      picked.set(q.id, q);
+    }
+  }
+
+  // Only truly "exhausted" (nothing fresh left anywhere) when the whole
+  // platform has fewer than 50 posts to draw from in the first place.
+  forYouExhausted = list.length < FOR_YOU_FEED_SIZE;
+  return weightedShuffle(Array.from(picked.values()), (q) => forYouScore(q) + 1).slice(0, FOR_YOU_FEED_SIZE);
+}
 // Small "why you're seeing this" pill for the For You feed, mirroring the
 // context Facebook shows under a post ("Because you follow X").
 function feedReason(q) {
@@ -6982,17 +7650,13 @@ function feedReason(q) {
 // and only reshuffle on an explicit refresh or when genuinely new posts arrive.
 let forYouOrderSignature = null;
 function computeForYouOrder(list) {
-  // forYouScore() sets each post's WEIGHT rather than its fixed rank — see
-  // weightedShuffle(). Posts already opened this session (trackViewOnce /
-  // viewedThisSession) get their weight cut sharply so a re-settle surfaces
-  // what's new first instead of showing the same already-read post again;
-  // it isn't removed outright, so a genuinely great post can still resurface.
-  const ordered = weightedShuffle(list, (q) => {
-    const base = forYouScore(q) + 1;
-    return viewedThisSession.has(q.id) ? base * 0.12 : base;
-  });
+  // Composes a fixed-quota, 50-post feed (see composeForYouFeed) instead of
+  // ranking the whole list — excluding posts already served in a previous
+  // load so coming back later gets a different set.
+  const ordered = composeForYouFeed(list);
   state.forYouOrderIds = ordered.map((q) => q.id);
   forYouOrderSignature = list.map((q) => q.id).sort().join(",");
+  addForYouSeenIds(state.forYouOrderIds);
 }
 // Call this to intentionally re-settle the "For You" order — on a deliberate
 // navigation into the tab (not a passive re-render triggered by a follow
@@ -7007,22 +7671,34 @@ function sortQuestions(list, mode) {
     return state.forYouOrderIds.map((id) => byId.get(id)).filter(Boolean);
   }
   if (mode === "following") {
-    // Twitter/Threads-style "Following" tab: only posts from people you follow,
-    // newest engagement first — no algorithmic surfacing of strangers' posts.
-    const onlyFollowed = list.filter((q) => isFollowedAuthor(q.authorId));
-    const scored = onlyFollowed.map((q) => ({ q, score: hotScore(q) }));
-    scored.sort((a, b) => b.score - a.score);
-    return scored.map((s) => s.q);
-  }
+  // Following is handled by the dedicated Firestore loader.
+  // Never use the global Home list as the source for Following.
+  return list.filter((q) => isFollowedAuthor(q.authorId));
+}
   const scored = list.map((q) => ({ q, score: mode === "top" ? topScore(q) : mode === "new" ? (q.createdAt && q.createdAt.toMillis ? q.createdAt.toMillis() : 0) : hotScore(q) }));
   scored.sort((a, b) => b.score - a.score);
   return scored.map((s) => s.q);
 }
+// Flags a post that links to Wikipedia/Wikimedia in its body or link field.
+// The wiki embed renderer is currently unreliable, so posts like this are
+// quarantined from the feed (not deleted) until an admin reviews/removes
+// them — see hiddenWikiPostIds below for how to surface the hidden list.
+function hasWikiLink(q) {
+const text = ((q.body || "") + " " + (q.linkUrl || "")).toLowerCase();
+return /(^|[^a-z0-9])(?:[a-z]{2,3}\.)?wikipedia\.org\//.test(text) ||
+/(^|[^a-z0-9])(?:commons|upload)\.wikimedia\.org\//.test(text);
+}
+// Populated by idealFeedList() every time it runs, so you can inspect which
+// posts are currently being hidden (e.g. from the browser console: copy the
+// array, or paste it somewhere to hand off to an admin for deletion).
+let hiddenWikiPostIds = [];
 // The "ideal" list per the active tab/search right now — same computation
 // filteredQuestions() used to return directly. Kept separate so the committed-
 // feed logic below can compare against it without triggering it itself.
 function idealFeedList() {
-  let list = state.questions;
+let list = state.sortMode === "following"
+    ? followingQuestions
+    : state.questions;
   const term = state.searchTerm.trim().toLowerCase();
   if (term) {
     // "#coffee" (from a hashtag pill or typed directly) filters to an exact
@@ -7039,7 +7715,11 @@ function idealFeedList() {
       );
     }
   }
-  return sortQuestions(list, state.sortMode);
+  const wikiHidden = list.filter(hasWikiLink);
+if (wikiHidden.length) hiddenWikiPostIds = wikiHidden.map((q) => q.id);
+list = list.filter((q) => !hasWikiLink(q));
+
+return sortQuestions(list, state.sortMode);
 }
 
 // ---------------- feed stability: frozen "committed" order + New-posts pill ----------------
@@ -7131,14 +7811,49 @@ function filteredQuestions() {
 }
 function setSortMode(mode) {
   if (state.sortMode === mode) return;
-  if (mode === "foryou") { refreshForYouOrder(); refreshReelsOrder(); }
-  trackEvent("select_content", { content_type: "feed_sort", item_id: mode });
-  setState({ sortMode: mode });
-  // Entering ImageTok pushes a real back-stack entry (so the hardware/browser
-  // back button exits it); switching between any other tabs just keeps the
-  // current entry accurate instead, so nothing stale is left for a later
-  // history.back() (closing Comments, closing a post) to fall back onto.
-  if (mode === "imagetok") pushNav(); else replaceNav();
+
+  if (mode === "foryou") {
+    refreshForYouOrder();
+    resetCommittedFeed();
+    ensureForYouPool();
+  }
+
+  if (mode === "following") {
+    resetCommittedFeed();
+
+    // Show the Following UI immediately.
+    setState({
+      screen: "home",
+      sortMode: "following"
+    });
+
+    // Then load the actual followed-user posts.
+    loadFollowingQuestions(true);
+
+    replaceNav();
+    return;
+  }
+
+  if (mode === "imagetok") {
+    refreshReelsOrder();
+    resetCommittedFeed();
+  }
+
+  trackEvent("select_content", {
+    content_type: "feed_sort",
+    item_id: mode
+  });
+
+  setState({
+    screen: "home",
+    sortMode: mode
+  });
+
+  if (mode === "imagetok") {
+    pushNav();
+  } else {
+    replaceNav();
+  }
 }
 
 // ---------------- Reels: render ----------------
@@ -7278,6 +7993,18 @@ function imageTokItemHtml(r, i) {
       </div>
     </div>`;
 }
+function universalizeCounts() {
+  document.querySelectorAll(".mn-count, .mn-stats-card-num").forEach((el) => {
+    const n = parseInt(el.textContent.replace(/[^\d]/g, ""), 10);
+    if (!isNaN(n)) el.textContent = formatFollowerCount(n);
+  });
+}
+function universalizeLoaders() {
+  document.querySelectorAll(".mn-empty-sub, .mn-empty-title").forEach((el) => {
+    if (/^Loading/i.test(el.textContent.trim())) el.innerHTML = mnLoaderHtml();
+  });
+}
+function mnLoaderHtml() { return `<div class="mn-loader">${"<div></div>".repeat(8)}</div>`; }
 
 // ---------------- render: screens ----------------
 function renderHome() {
@@ -7286,7 +8013,9 @@ function renderHome() {
   // narrows the feed down to just the people you follow (see sortQuestions).
   const isFollowingTab = state.sortMode === "following";
   const isImageTokTab = state.sortMode === "imagetok";
-  const list = filteredQuestions();
+  const list = state.sortMode === "following"
+  ? followingQuestions
+  : filteredQuestions();
   const feed = list.length === 0
     ? (isFollowingTab
         ? `<div class="mn-empty">
@@ -7294,18 +8023,34 @@ function renderHome() {
             <p class="mn-empty-title">${state.user ? "Nothing here yet" : "Sign in to see this"}</p>
             <p class="mn-empty-sub">${state.user ? "Follow people to see their posts here." : "Follow people to build a feed of just their posts."}</p>
           </div>`
-        : `<div class="mn-empty">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <p class="mn-empty-title">Wait a bit</p>
-            <p class="mn-empty-sub">you're welcome to home for all individual.</p>
-          </div>`)
+        : !firstFeedPagePainted
+          ? `<div class="mn-empty">${mnLoaderHtml()}</div>`
+          : `<div class="mn-empty">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <p class="mn-empty-title">Wait a bit</p>
+              <p class="mn-empty-sub">you're welcome to home for all individual.</p>
+            </div>`)
     : feedListHtml(list);
 
-  // Infinite-scroll sentinel: rendered only when there's a next page to fetch.
-  // observeFeedSentinel() (called from render()) attaches an IntersectionObserver
-  // to it, which triggers loadMoreQuestions() when it scrolls into view.
-  const sentinel = (list.length > 0 && questionsHasMore)
-    ? `<div id="mn-feed-sentinel" class="mn-feed-sentinel">${questionsLoadingMore ? `<span class="mn-feed-spinner"></span>` : ""}</div>`
+    // Manual pagination: Home loads more only when the user taps "See more".
+  // "For You" is a fixed 50-post batch (composeForYouFeed) — it never
+  // paginates further; a "come back later" note shows instead (below).
+  const isForYouTab = state.sortMode === "foryou";
+  const seeMore = list.length > 0
+    ? `<div id="mn-feed-sentinel" class="mn-feed-sentinel">${
+        !isForYouTab && (state.sortMode === "following" ? followingHasMore : questionsHasMore)
+          ? `<span class="mn-feed-spinner"></span>`
+          : ""
+      }</div>`
+    : "";
+
+  const forYouComeBack = (isForYouTab && list.length > 0)
+    ? `
+      <div class="mn-empty" style="padding:28px 16px;">
+        <p class="mn-empty-title">You're all caught up</p>
+        <p class="mn-empty-sub">${forYouExhausted ? "Come back later for fresh posts." : "That's your 50 for now — come back later for a new set."}</p>
+      </div>
+    `
     : "";
 
   return `
@@ -7325,7 +8070,7 @@ function renderHome() {
         <button class="mn-tab ${isImageTokTab ? "mn-tab-active" : ""}" onclick="setSortMode('imagetok')">ImageTok</button>
       </div>
 
-      ${isImageTokTab ? imageTokHtml() : `${feed}${sentinel}`}
+      ${isImageTokTab ? imageTokHtml() : `${feed}${seeMore}${forYouComeBack}${depeopleModuleHtml()}`}
     </div>
   `;
 }
@@ -7435,6 +8180,8 @@ function renderProfile() {
               : iconPersonSilhouette()}
           </div>
           <input class="mn-input" style="flex:1;" placeholder="Paste an image link (e.g. from catbox.moe)" value="${escapeHtml(state.profileForm.photoUrl)}" oninput="setProfileField('photoUrl', this.value)" />
+          <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-profile-photo-input').click()" title="Upload a photo">${iconImageSmall()}</button>
+          <input id="mn-profile-photo-input" type="file" accept="image/*" style="display:none" onchange="onProfilePhotoFileSelected(this)" />
         </div>
         <p class="mn-photo-edit-status">${(state.profileForm.photoUrl || "").trim() && !isWikimediaPhotoUrl(state.profileForm.photoUrl) ? "That's not a valid link." : ""}</p>
         <p class="mn-photo-edit-hint">Paste a link from catbox.moe or a wikimedia commons link here,.</p>
@@ -7472,7 +8219,7 @@ function renderProfile() {
   } else {
     historyBody = !state.myQuestionsLoaded
       ? `<p class="mn-empty-sub" style="text-align:center;padding:24px 0;">Loading...</p>`
-      : renderProfileStats(state.myQuestions, p);
+      : renderProfileStats(state.myQuestionsAll || state.myQuestions, p);
   }
 
   const followerCount = p.followersCount || 0;
@@ -7655,8 +8402,8 @@ function renderUserProfile() {
   const followerCount = p.followersCount || 0;
   const nameEsc = escapeHtml(p.username || "").replace(/'/g, "\\'");
 
-  const bioHtml = p.bio ? `<p class="mn-profile-bio">${escapeHtml(p.bio)}</p>` : "";
-  const placeHtml = p.place ? `
+  const bioHtml = (!state.viewedUserCompact && p.bio) ? `<p class="mn-profile-bio">${escapeHtml(p.bio)}</p>` : "";
+  const placeHtml = (!state.viewedUserCompact && p.place) ? `
     <div class="mn-profile-meta">
       <div class="mn-profile-meta-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg><span>${escapeHtml(p.place)}</span></div>
     </div>
@@ -7681,6 +8428,7 @@ function renderUserProfile() {
       </div>
       ${bioHtml}
       ${placeHtml}
+      ${state.viewedUserCompact ? "" : `
       <div class="mn-profile-statline">
         <span><strong>${followerCount}</strong> follower${followerCount === 1 ? "" : "s"}</span>
         <span class="mn-profile-statline-dot">&#9679;</span>
@@ -7691,6 +8439,7 @@ function renderUserProfile() {
         <span><strong>${p.totalPoints || 0}</strong> point${(p.totalPoints || 0) === 1 ? "" : "s"}</span>
       </div>
       ${payoutHtml}
+      `}
       <div class="mn-profile-actions">
         <button class="mn-profile-btn ${following ? "mn-profile-btn-ghost" : "mn-profile-btn-primary"}" onclick="toggleFollowUser('${p.id}', '${nameEsc}', event)">${following ? "Following" : "Follow"}</button>
         <button class="mn-profile-btn mn-profile-btn-ghost" onclick="startChatWithUser('${p.id}', '${nameEsc}', '${(p.photoURL || "").replace(/'/g, "\\'")}', event)">${iconChat()}<span>Message</span></button>
@@ -7698,9 +8447,10 @@ function renderUserProfile() {
       </div>
       ${topicsHtml}
       <div class="mn-tabs">
-        <button class="mn-tab mn-tab-active">Posts</button>
+        <button class="mn-tab mn-tab-active">User posts</button>
       </div>
       ${postsBody}
+      ${state.viewedUserQuestionsLoaded ? depeopleModuleHtml(p.id) : ""}
     </div>
   `;
 }
@@ -7747,10 +8497,40 @@ function suggestedUserRowHtml(u) {
 // Candidates for the "People to follow" panel: top contributors, minus the
 // signed-in user and anyone already followed — same idea as Substack's
 // "Recommended for you" module on the reader's homepage.
+let boostedUserCache = {};
+async function ensureBoostedUsersLoaded() {
+const ids = (state.profile && state.profile.boostedSuggestions) || [];
+const missing = ids.filter((id) => !boostedUserCache[id]);
+if (!missing.length) return;
+await Promise.all(missing.map(async (id) => {
+try {
+const snap = await getDoc(doc(db, "users", id));
+if (snap.exists()) boostedUserCache[id] = { id: snap.id, ...snap.data() };
+} catch (e) { /* ignore */ }
+}));
+if (state.screen === "home") renderFeedOnly();
+}
+async function riseUser(uid, name, ev) {
+if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+if (!state.user) { setState({ pendingScreen: "home", authModal: "signin" }); return; }
+const followed = (state.profile.followedUsers || []).filter((id) => id !== uid);
+if (!followed.length) { showToast("Follow a few people first, then you can rise others."); return; }
+const targets = followed.slice().sort(() => Math.random() - 0.5).slice(0, 2);
+try {
+await Promise.all(targets.map((t) => updateDoc(doc(db, "users", t), { boostedSuggestions: arrayUnion(uid) })));
+showToast("Risen — now showing to " + targets.length + " people you follow.");
+trackEvent("rise_user", { item_id: uid, target_count: targets.length });
+} catch (e) { showToast("Couldn't rise right now — try again."); }
+}
 function suggestedUsers(count) {
-  const followed = (state.profile && state.profile.followedUsers) || [];
-  const pool = (state.topContributors || []).filter((u) => u.id !== (state.user && state.user.uid) && !followed.includes(u.id));
-  return pool.slice(0, count || 5);
+const followed = (state.profile && state.profile.followedUsers) || [];
+const boostedIds = (state.profile && state.profile.boostedSuggestions) || [];
+const boosted = boostedIds
+.map((id) => boostedUserCache[id])
+.filter((u) => u && u.id !== (state.user && state.user.uid) && !followed.includes(u.id));
+const rest = (state.topContributors || []).filter((u) => u.id !== (state.user && state.user.uid) && !followed.includes(u.id) && !boostedIds.includes(u.id));
+const pool = [...boosted, ...rest];
+return pool.slice(0, count || 5);
 }
 function creatorTagline(u) {
   // Bio doubles as the creator's "beat" (e.g. "Science writer") — the same
@@ -7767,14 +8547,39 @@ function creatorTagline(u) {
 // are remembered in localStorage so an "x" tap sticks across sessions,
 // mirroring the creator-affinity pattern already used for feed ranking.
 let dismissedSuggestions = [];
-try { dismissedSuggestions = JSON.parse(localStorage.getItem("mn_dismissed_suggestions") || "[]"); } catch (e) { dismissedSuggestions = []; }
+try { dismissedSuggestions = JSON.parse(sessionStorage.getItem("mn_dismissed_suggestions") || "[]"); } catch (e) { dismissedSuggestions = []; }
+function saveDismissedSuggestions() {
+  try { sessionStorage.setItem("mn_dismissed_suggestions", JSON.stringify(dismissedSuggestions)); } catch (e) { /* ignore */ }
+}
+// Removes just the tapped card from the DOM directly (fade + shrink out),
+// instead of a full render() — so scroll position is never touched.
 function dismissSuggestedUser(uid, ev) {
   if (ev) { ev.stopPropagation(); ev.preventDefault(); }
-  if (!dismissedSuggestions.includes(uid)) {
-    dismissedSuggestions.push(uid);
-    try { localStorage.setItem("mn_dismissed_suggestions", JSON.stringify(dismissedSuggestions)); } catch (e) { /* ignore */ }
+  if (!dismissedSuggestions.includes(uid)) { dismissedSuggestions.push(uid); saveDismissedSuggestions(); }
+  const card = ev && ev.target.closest(".mn-suggest-card");
+  if (card) {
+    card.style.transition = "opacity .18s ease, transform .18s ease";
+    card.style.opacity = "0";
+    card.style.transform = "scale(0.9)";
+    setTimeout(() => card.remove(), 180);
+  } else {
+    renderFeedOnly();
   }
-  renderFeedOnly();
+}
+function markDepeopleViewed(uid) {
+if (!dismissedSuggestions.includes(uid)) { dismissedSuggestions.push(uid); saveDismissedSuggestions(); }
+}
+function removeDepeopleUser(uid, ev) {
+  if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+  if (!dismissedSuggestions.includes(uid)) { dismissedSuggestions.push(uid); saveDismissedSuggestions(); }
+  const card = ev && ev.target.closest(".mn-depeople-card");
+  if (card) {
+    card.style.transition = "opacity .18s ease, transform .18s ease";
+    card.style.opacity = "0";
+    card.style.transform = "scale(0.9)";
+    setTimeout(() => card.remove(), 180);
+  }
+  showToast("Removed — you'll see them again next time.");
 }
 function suggestCardHtml(u) {
   const following = isFollowedAuthor(u.id);
@@ -7808,6 +8613,40 @@ function suggestModuleHtml() {
       </div>
     </div>
   `;
+}
+// "Depeople" bar: horizontal row of profile photos — tap View to jump
+// straight into that person's profile and their latest posts.
+function depeopleModuleHtml(excludeId) {
+const me = state.user && state.user.uid;
+const followed = (state.profile && state.profile.followedUsers) || [];
+const boostedIds = (state.profile && state.profile.boostedSuggestions) || [];
+const boosted = boostedIds.map((id) => boostedUserCache[id]).filter((u) => u && u.id !== me && !followed.includes(u.id));
+let users = [...boosted, ...depeopleCandidates(20, boostedIds)].filter((u) => !dismissedSuggestions.includes(u.id) && u.id !== excludeId);
+if (users.length === 0) {
+dismissedSuggestions = [];
+saveDismissedSuggestions();
+users = [...boosted, ...depeopleCandidates(20, boostedIds)].filter((u) => u.id !== excludeId);
+}
+if (users.length === 0) return "";
+return `
+<div class="mn-depeople-bar">
+  ${users.map((u) => {
+  const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
+  return `
+  <div class="mn-depeople-card">
+    <div class="mn-depeople-card-photo">${avatarHtml(u.username, u.id, u.photoURL)}</div>
+    <div class="mn-depeople-card-body">
+      <span class="mn-depeople-card-name">${escapeHtml(u.username || "")}</span>
+      <div class="mn-depeople-card-actions">
+        <button class="mn-follow-btn" onclick="markDepeopleViewed('${u.id}'); openUserProfile('${u.id}', '${nameEsc}', event, true)">View</button>
+        <button class="mn-depeople-card-remove" onclick="riseUser('${u.id}', '${nameEsc}', event)">Rise</button>
+      </div>
+    </div>
+  </div>
+  `;
+  }).join("")}
+</div>
+`;
 }
 
 // Splices the suggestion module into the post list Facebook-style: a few
@@ -7844,8 +8683,8 @@ function creatorCardHtml(u, rank, opts) {
       ${avatarHtml(u.username, u.id, u.photoURL)}
       <div class="mn-creator-info">
         <div class="mn-creator-name-row">
-          <span class="mn-creator-name">${escapeHtml(u.username || "")}</span>
-        </div>
+  <span class="mn-creator-name">${isOwn ? "You" : escapeHtml(u.username || "")}</span>
+</div>
         <span class="mn-creator-tagline">${escapeHtml(creatorTagline(u))}</span>
         <div class="mn-creator-stats">
           <span>${iconStarSmall()} ${u.totalPoints || 0} pts</span>
@@ -7944,35 +8783,141 @@ function postRailHtml(title, icon, posts) {
     </section>
   `;
 }
+// Google News-style row: small source line on top, headline + thumbnail
+// side by side, meta line below. Used for Best Videos/Images/Word Posts.
+function discoverNewsRowHtml(q) {
+const media = getPostMedia(q)[0];
+const thumb = media
+? (media.type === "video"
+? `<video class="mn-newsrow-thumb" src="${escapeHtml(media.url)}" muted playsinline preload="metadata"></video>`
+: `<img class="mn-newsrow-thumb" src="${escapeHtml(media.poster || media.url)}" alt="" loading="lazy" />`)
+: "";
+const headline = q.title && !titleIsRedundant(q) ? q.title : stripUrlsForFeed(q.body).slice(0, 120);
+return `
+<div class="mn-newsrow" onclick="openDetail('${q.id}')">
+  <div class="mn-newsrow-source">
+    ${avatarHtml(q.authorName, q.authorId, q.authorPhoto)}
+    <span>${escapeHtml(q.authorName || "Someone")}</span>
+  </div>
+  <div class="mn-newsrow-body">
+    <div class="mn-newsrow-main">
+      <h4 class="mn-newsrow-title">${escapeHtml(headline)}</h4>
+    </div>
+    ${thumb ? `<div class="mn-newsrow-thumbwrap">${thumb}</div>` : ""}
+  </div>
+  <div class="mn-newsrow-meta">
+    <span>${timeAgo(q.createdAt)}</span>
+    <button class="mn-newsrow-kebab" onclick="openShare('${q.id}','${escapeHtml(q.title || "").replace(/'/g, " \\'")}', event)" title="Share">⋮</button>
+  </div>
+</div>
+`;
+}
+function discoverNewsListHtml(title, icon, posts) {
+if (!posts.length) return "";
+return `
+<section class="mn-discover-section">
+  <h3 class="mn-discover-title">${icon}<span>${title}</span></h3>
+  <div class="mn-newsrow-list">
+    ${posts.map(discoverNewsRowHtml).join("")}
+  </div>
+</section>
+`;
+}
+// "Hot" score, same decay shape used for trending questions (Reddit-style):
+// participants matter, but age drags the score down — so an old challenge
+// needs proportionally more participants than a fresh one to stay on top.
+// It can no longer coast forever on a big lifetime total.
+function challengeTrendScore(c) {
+const participants = (c.attemptedBy || []).length;
+const ageDays = ageInHours(c.createdAt) / 24;
+return (participants + 1) / Math.pow(ageDays + 2, 1.5);
+}
 function popularChallenges(list) {
-  return [...list].sort((a, b) => (b.attemptedBy || []).length - (a.attemptedBy || []).length).slice(0, 6);
+  const uid = state.user && state.user.uid;
+  const notYetDone = list.filter((c) => !uid || !(c.attemptedBy || []).includes(uid));
+
+  // Reserve 2 of the 6 slots for genuinely new challenges (posted in the
+  // last 48h), so they're guaranteed a first look instead of competing
+  // purely on trend score against challenges that already have a head start.
+  const isBrandNew = (c) => ageInHours(c.createdAt) <= 48;
+  const fresh = notYetDone.filter(isBrandNew).sort((a, b) => ageInHours(a.createdAt) - ageInHours(b.createdAt)).slice(0, 2);
+  const freshIds = new Set(fresh.map((c) => c.id));
+
+  const rest = notYetDone.filter((c) => !freshIds.has(c.id))
+    .sort((a, b) => challengeTrendScore(b) - challengeTrendScore(a))
+    .slice(0, 6 - fresh.length);
+
+  return [...fresh, ...rest];
 }
 function challengeCardHtml(c) {
   const n = (c.attemptedBy || []).length;
   return `
     <div class="mn-challenge-card" data-challenge-id="${c.id}" data-challenge-title="${escapeHtml(c.title).replace(/"/g, '&quot;')}" onclick="openChallengePlay ? openChallengePlay('${c.id}') : null" role="button">
-      ${isCatboxUrl(c.coverUrl) ? `<img src="${escapeHtml(c.coverUrl)}" alt="" />` : ""}
+      <img src="${isCatboxUrl(c.coverUrl) ? escapeHtml(c.coverUrl) : DEFAULT_CHALLENGE_COVER}" alt="" />
       <div class="mn-challenge-card-body">
         <div class="mn-challenge-card-title">${escapeHtml(c.title)}</div>
-        <div class="mn-challenge-card-meta">🔥 ${n}+ participant${n === 1 ? "" : "s"}</div>
+<div class="mn-challenge-card-meta">by ${escapeHtml(c.ownerName || "Someone")} · 🔥 ${n}+ participant${n === 1 ? "" : "s"}</div>
       </div>
     </div>`;
 }
-function challengeRowHtml(c) {
-  const desc = c.description ? escapeHtml(c.description) : `${(c.questions || []).length} question${(c.questions || []).length === 1 ? "" : "s"}`;
-  const done = (c.attemptedBy || []).includes(state.user && state.user.uid);
-  const cta = done ? "Played" : (c.ctaLabel ? escapeHtml(c.ctaLabel) : "Play");
-  return `
-    <div class="mn-channel-row" onclick="openChallengePlay ? openChallengePlay('${c.id}') : null" role="button">
-      <span class="mn-channel-row-avatarwrap mn-challenge-icon">${isCatboxUrl(c.coverUrl) ? `<img src="${escapeHtml(c.coverUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />` : iconChallenges(false)}</span>
-      <div class="mn-channel-row-main">
-        <div class="mn-channel-row-name">${escapeHtml(c.title)}</div>
-        <div class="mn-channel-row-sub">${desc}</div>
-      </div>
-      <button class="mn-iconbtn" onclick="shareChallenge('${c.id}', '${escapeHtml(c.title).replace(/'/g, "\\'")}', event)">${iconShare()}</button>
-      <button class="mn-challenge-outline-btn" onclick="event.stopPropagation(); openChallengePlay ? openChallengePlay('${c.id}') : null">${cta}</button>
-    </div>
-  `;
+function generateChallengeCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+async function generateUniqueChallengeCode() {
+  for (let i = 0; i < 5; i++) {
+    const code = generateChallengeCode();
+    const snap = await getDocs(query(collection(db, "challenges"), where("challengeCode", "==", code), limit(1)));
+    if (snap.empty) return code;
+  }
+  return generateChallengeCode();
+}
+async function joinChallengeByCode(code) {
+  code = String(code || "").trim();
+  if (!/^\d{6}$/.test(code)) { showToast("Enter a valid 6-digit code", "error"); return; }
+  try {
+    const snap = await getDocs(query(collection(db, "challenges"), where("challengeCode", "==", code), limit(1)));
+    if (snap.empty) { showToast("No challenge found for that code", "error"); return; }
+    const challenge = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    state.challenges = state.challenges || [];
+    if (!state.challenges.find((c) => c.id === challenge.id)) state.challenges.unshift(challenge);
+    if (!state.user) { setState({ pendingScreen: "challenges", pendingChallengeId: challenge.id, authModal: "signin" }); return; }
+    openChallengePlay(challenge.id);
+  } catch (e) { console.error(e); showToast("Couldn't look that up — try again.", "error"); }
+}
+function copyChallengeCode(code, ev) {
+  if (ev) ev.stopPropagation();
+  navigator.clipboard.writeText(code).then(() => showToast("Code copied: " + code)).catch(() => showToast("Code: " + code));
+}
+function challengeCoverPalette(c) {
+const s = String(c.id || c.title || "");
+let hash = 0;
+for (let i = 0; i < s.length; i++) hash=(hash * 31 + s.charCodeAt(i))>>> 0;
+  return "mn-cover-p" + (hash % 6);
+  }
+  function challengeRowHtml(c) {
+const qCount = (c.questions || []).length;
+const desc = c.description ? escapeHtml(c.description) : `${qCount} question${qCount === 1 ? "" : "s"}`;
+const joined = (c.attemptedBy || []).length;
+const done = (c.attemptedBy || []).includes(state.user && state.user.uid);
+const cta = done ? "Played" : (c.ctaLabel ? escapeHtml(c.ctaLabel) : "Play");
+const isOwner = !!(state.user && c.ownerId === state.user.uid);
+const nameEsc = escapeHtml(c.title).replace(/'/g, "\\'");
+return `
+<div class="mn-newscard" data-challenge-id="${c.id}" data-challenge-title="${escapeHtml(c.title).replace(/"/g, '&quot;')}" onclick="openChallengePlay ? openChallengePlay('${c.id}') : null" role="button">
+  <div class="mn-newscard-body">
+    <div class="mn-newscard-source"><span class="mn-newscard-source-badge">Challenge</span></div>
+<div class="mn-newscard-title">${escapeHtml(c.title)}</div>
+<div class="mn-newscard-meta">by ${escapeHtml(c.ownerName || "Someone")} · ${desc} · ${joined} joined</div>
+${isOwner ? `<div class="mn-newscard-actions">
+  <span class="mn-newscard-action" onclick="openChallengeInsights('${c.id}', event)">Stats</span>
+  <span class="mn-newscard-action" onclick="editChallenge('${c.id}', event)">Edit</span>
+</div>` : ""}
+</div>
+  <div class="mn-newscard-thumb">
+    <img src="${isCatboxUrl(c.coverUrl) ? escapeHtml(c.coverUrl) : DEFAULT_CHALLENGE_COVER}" alt="" />
+  </div>
+</div>
+`;
 }
 
 function renderDiscover() {
@@ -7988,9 +8933,9 @@ function renderDiscover() {
     <div class="mn-discover">
       <p class="mn-discover-intro">Follow the people and questions shaping MENYA right now.</p>
 
-      ${postRailHtml("Best Videos", iconPlayFilled(15), bestVideos)}
-      ${postRailHtml("Best Images", iconGridSmall(), bestImages)}
-      ${postRailHtml("Best Word Posts", iconSortHot(), bestWords)}
+      ${discoverNewsListHtml("Best Videos", iconPlayFilled(15), bestVideos)}
+${discoverNewsListHtml("Best Images", iconGridSmall(), bestImages)}
+${discoverNewsListHtml("Best Word Posts", iconSortHot(), bestWords)}
 
       ${state.user && region ? `
       <section class="mn-discover-section">
@@ -8040,16 +8985,51 @@ function setChallengesTab(tab) {
   if (tab === "stats") loadChallengeStats(challengeStatsPeriod);
   if (tab === "leaderboard") loadChallengesLeaderboard(challengesLeaderboardPeriod);
   setState({ challengesTab: tab });
-  
-  setState({ challengesTab: tab });
 }
 function setChallengesLeaderboardPeriod(period) { loadChallengesLeaderboard(period); }
+function challengeSuggestionRowHtml(c) {
+  return `
+    <button class="mn-newchat-row" style="border:none;background:none;text-align:left;width:100%;" onclick="openChallengePlay('${c.id}')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:0 0 auto;color:var(--ink-faint);"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+      <span class="mn-newchat-row-main">
+        <span class="mn-newchat-row-name">${escapeHtml(c.title || "")}</span>
+        <span class="mn-newchat-row-sub" style="display:block;font-size:12px;color:var(--ink-faint);">by ${escapeHtml(c.ownerName || "Someone")}</span>
+      </span>
+    </button>
+  `;
+}
+function challengeSuggestionsHtml(matches) {
+  if (!matches.length) {
+    return `<div class="mn-empty"><p class="mn-empty-title">No challenges found</p><p class="mn-empty-sub">Try a different name.</p></div>`;
+  }
+  return `<div class="mn-newchat-list">${matches.slice(0, 20).map((c) => challengeSuggestionRowHtml(c)).join("")}</div>`;
+}
+function setChallengesSearch(v) {
+  state.challengesSearch = v;
+  const selStart = document.activeElement && document.activeElement.selectionStart;
+  const selEnd = document.activeElement && document.activeElement.selectionEnd;
+  render();
+  const input = document.querySelector(".mn-challenge-search-wrap input");
+  if (input) { input.focus(); if (selStart != null) input.setSelectionRange(selStart, selEnd); }
+}
+function searchChallengesEnter(ev) {
+  if (ev.key !== "Enter") return;
+  const term = state.challengesSearch.trim().toLowerCase();
+  if (!term) return;
+  const matches = filteredChallenges();
+  if (matches.length === 1) { openChallengePlay(matches[0].id); return; }
+  const exact = matches.find((c) => (c.title || "").trim().toLowerCase() === term);
+  if (exact) openChallengePlay(exact.id);
+}
 function filteredChallenges() {
   const list = state.challenges || [];
   const uid = state.user && state.user.uid;
-  if (state.challengesTab === "mine") return list.filter((c) => c.ownerId === uid);
-  if (state.challengesTab === "attended") return list.filter((c) => (c.attemptedBy || []).includes(uid));
-  return list;
+  let base = list;
+  if (state.challengesTab === "mine") base = list.filter((c) => c.ownerId === uid);
+  else if (state.challengesTab === "attended") base = list.filter((c) => (c.attemptedBy || []).includes(uid));
+  const term = (state.challengesSearch || "").trim().toLowerCase();
+  if (!term) return base;
+  return base.filter((c) => (c.title || "").toLowerCase().includes(term));
 }
 function challengeStatsHtml() {
   if (!state.user) return "";
@@ -8068,7 +9048,7 @@ function challengeStatsHtml() {
 async function loadChallengesList(force) {
   if (state.challengesLoaded && !force) return;
   try {
-    const snap = await getDocs(query(collection(db, "challenges"), orderBy("createdAt", "desc"), limit(60)));
+    const snap = await getDocs(query(collection(db, "challenges"), orderBy("createdAt", "desc"), limit(500)));
     state.challenges = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   } catch (e) { console.error(e); }
   state.challengesLoaded = true;
@@ -8100,14 +9080,16 @@ async function loadChallengesLeaderboard(period) {
   render();
 }
 function renderChallenges() {
-  if (state.challengeCreateOpen) return renderChallengeForm();
+if (state.challengeCreateOpen) return renderChallengeForm();
+if (state.challengeInsightsId) return renderChallengeInsights();
   const tab = state.challengesTab;
-  if (tab === "leaderboard") return renderChallengesLeaderboard();
-  if (tab === "stats") return renderChallengeStats();
-  const list = filteredChallenges();
-  const popular = tab === "explore" ? popularChallenges(list) : [];
-  const popularIds = new Set(popular.map((c) => c.id));
-  const available = list.filter((c) => !popularIds.has(c.id)).slice(0, 20);
+if (tab === "leaderboard") return renderChallengesLeaderboard();
+if (tab === "stats") return renderChallengeStats();
+const searching = tab === "explore" && state.challengesSearch.trim().length > 0;
+const list = filteredChallenges();
+const popular = tab === "explore" && !searching ? popularChallenges(list) : [];
+const popularIds = new Set(popular.map((c) => c.id));
+const available = list.filter((c) => !popularIds.has(c.id)).slice(0, 20);
   const emptyTitle = tab === "mine" ? "You haven't created any" : tab === "attended" ? "You haven't attended any" : "No challenges yet";
   const emptySub = tab === "mine" ? "Tap Create a challenge to publish your first one." : tab === "attended" ? "Play a challenge from Explore to see it here." : "Be the first to create one.";
   return `
@@ -8125,19 +9107,29 @@ function renderChallenges() {
         <button class="mn-tab ${tab === "stats" ? "mn-tab-active" : ""}" onclick="setChallengesTab('stats')">Stats</button>
       </div>
       ${tab === "mine" ? `<button class="mn-postbtn mn-channels-create-btn" style="margin:12px 0;" onclick="openCreateChallenge()">${iconPlusCircle()} Create a challenge</button>` : ""}
-      ${!list.length
-        ? `<div class="mn-empty"><p class="mn-empty-title">${emptyTitle}</p><p class="mn-empty-sub">${emptySub}</p></div>`
-        : `
-          ${popular.length ? `
-            <span class="mn-challenge-shelf-title">Popular Challenges</span>
-            <div class="mn-challenge-cardrow">${popular.map((c) => challengeCardHtml(c)).join("")}</div>
-          ` : ""}
-          ${available.length ? `
-            <span class="mn-challenge-shelf-title">${tab === "explore" ? "Available Challenges" : ""}</span>
-            <div class="mn-channel-list">${available.map((c) => challengeRowHtml(c)).join("")}</div>
-          ` : ""}
-        `}
-    </div>`;
+${tab === "explore" ? `
+      <div class="mn-search mn-challenge-search-wrap" style="margin:4px 0 14px 0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+        <input placeholder="Search a challenge by name..." value="${escapeHtml(state.challengesSearch)}" oninput="setChallengesSearch(this.value)" onkeydown="searchChallengesEnter(event)" />
+        
+      </div>` : ""}
+      ${searching
+        ? challengeSuggestionsHtml(list)
+        : !state.challengesLoaded
+          ? `<div class="mn-empty">${mnLoaderHtml()}</div>`
+          : !list.length
+          ? `<div class="mn-empty"><p class="mn-empty-title">${emptyTitle}</p><p class="mn-empty-sub">${emptySub}</p></div>`
+          : `
+            ${popular.length ? `
+              <span class="mn-challenge-shelf-title">Popular Challenges</span>
+              <div class="mn-challenge-cardrow">${popular.map((c) => challengeCardHtml(c)).join("")}</div>
+            ` : ""}
+            ${available.length ? `
+<span class="mn-challenge-shelf-title">${tab === "explore" ? "Available Challenges" : ""}</span>
+<div class="mn-challenge-gridlist">${available.map((c) => challengeRowHtml(c)).join("")}</div>
+` : ""}
+`}
+</div>`;
 }
 function challengeLeaderboardRowHtml(u, rank) {
   const isOwn = state.user && u.id === state.user.uid;
@@ -8148,7 +9140,7 @@ function challengeLeaderboardRowHtml(u, rank) {
       ${isTop3 ? `<span style="width:22px;height:22px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:11px;background:${medalGradient(rank)};">${rank}</span>` : `<span class="mn-creator-rank">${rank}</span>`}
       ${avatarHtml(u.name, u.id, u.photoURL)}
       <div class="mn-creator-info">
-        <div class="mn-creator-name-row"><span class="mn-creator-name">${escapeHtml(u.name || "")}</span></div>
+        <div class="mn-creator-name-row"><span class="mn-creator-name">${isOwn ? "You" : escapeHtml(u.name || "")}</span></div>
         <div class="mn-creator-stats"><span>${iconStarSmall()} ${u.score || 0} pts</span></div>
       </div>
     </div>
@@ -8325,6 +9317,49 @@ function renderChallengeStats() {
       </div>
     </div>`;
 }
+function fmtSeconds(s) {
+  if (s == null) return "—";
+  const m = Math.floor(s / 60), r = s % 60;
+  return m ? `${m}m ${r}s` : `${r}s`;
+}
+function challengeInsightTopRowHtml(u, rank) {
+  const nameEsc = escapeHtml(u.name || "").replace(/'/g, "\\'");
+  return `
+    <div class="mn-creator-row" onclick="openUserProfile('${u.id}', '${nameEsc}', event)" role="button">
+      <span style="width:22px;height:22px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:11px;background:${medalGradient(rank)};">${rank}</span>
+      ${avatarHtml(u.name, u.id, u.photoURL)}
+      <div class="mn-creator-info">
+        <div class="mn-creator-name-row"><span class="mn-creator-name">${escapeHtml(u.name || "")}</span></div>
+        <div class="mn-creator-stats"><span>${iconStarSmall()} ${u.score}/${u.total} · ${fmtSeconds(u.timeUsedSeconds)}</span></div>
+      </div>
+    </div>`;
+}
+function renderChallengeInsights() {
+  const c = (state.challenges || []).find((x) => x.id === state.challengeInsightsId);
+  const d = state.challengeInsightsData;
+  return `
+    <div class="mn-channels-screen">
+      <div class="mn-channels-section-back">
+  <button class="mn-iconbtn" onclick="closeChallengeInsights()">${iconBack()}</button>
+  <span class="mn-channels-section-back-title">${escapeHtml((c && c.title) || "Challenge stats")}</span>
+</div>
+
+      ${state.challengeInsightsLoading || !d
+        ? `<div class="mn-empty"><p class="mn-empty-title">Loading…</p></div>`
+        : `
+        <div class="mn-cstats">
+          <div class="mn-cstat"><div class="mn-cstat-num">${d.joined}</div><div class="mn-cstat-label">Joined</div></div>
+          <div class="mn-cstat"><div class="mn-cstat-num">${d.won}</div><div class="mn-cstat-label">Won</div></div>
+          <div class="mn-cstat"><div class="mn-cstat-num">${d.lost}</div><div class="mn-cstat-label">Lost</div></div>
+        </div>
+        <p class="mn-empty-sub" style="text-align:center;margin:6px 0 16px;">Avg. time used: ${fmtSeconds(d.avgSeconds)}</p>
+        <span class="mn-challenge-shelf-title">Top 3 players</span>
+        ${!d.top3.length
+          ? `<div class="mn-empty"><p class="mn-empty-title">No plays yet</p></div>`
+          : `<div class="mn-creator-list">${d.top3.map((u, i) => challengeInsightTopRowHtml(u, i + 1)).join("")}</div>`}
+        `}
+    </div>`;
+}
 function renderChallengeForm() {
   const f = state.challengeForm;
   return `
@@ -8343,6 +9378,8 @@ function renderChallengeForm() {
           ${isCatboxUrl(f.coverUrl) ? `<img src="${escapeHtml(f.coverUrl)}" alt="" onerror="this.parentElement.innerHTML=''" />` : iconImageSmall()}
         </div>
         <input class="mn-input" placeholder="Paste a catbox.moe image link..." value="${escapeHtml(f.coverUrl)}" oninput="setChallengeCoverUrl(this.value)" onchange="commitChallengeCover()" />
+        <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-challenge-cover-input').click()" title="Upload a cover image">${iconImageSmall()}</button>
+        <input id="mn-challenge-cover-input" type="file" accept="image/*" style="display:none" onchange="onChallengeCoverFileSelected(this)" />
       </div>
       ${f.questions.map((q, i) => `
         <div class="mn-challenge-qcard">
@@ -8369,12 +9406,68 @@ function renderChallengeForm() {
         <label>Total challenge time limit (min, optional)</label>
         <input class="mn-input" type="number" min="0.5" step="0.5" placeholder="No overall limit" value="${escapeHtml(f.totalTimeLimit || "")}" oninput="setChallengeTotalTimeLimit(this.value)" />
       </div>
-      <button class="mn-primary-btn" onclick="submitChallenge()" ${state.challengeSubmitBusy ? "disabled" : ""}>${state.challengeSubmitBusy ? "Publishing…" : "Publish challenge"}</button>
+      <button class="mn-primary-btn" onclick="submitChallenge()" ${state.challengeSubmitBusy ? "disabled" : ""}>${state.challengeSubmitBusy ? "Saving…" : (state.challengeEditId ? "Save changes" : "Publish challenge")}</button>
     </div>`;
 }
 
-function openCreateChallenge() { setState({ challengeCreateOpen: true, challengeForm: { title: "", coverUrl: "", totalTimeLimit: "", questions: [{ text: "", options: ["", ""], correct: 0, timeLimit: "" }] } }); }
-function closeCreateChallenge() { setState({ challengeCreateOpen: false }); }
+function openCreateChallenge() { setState({ challengeCreateOpen: true, challengeEditId: null, challengeForm: { title: "", coverUrl: "", totalTimeLimit: "", questions: [{ text: "", options: ["", ""], correct: 0, timeLimit: "" }] } }); }
+function closeCreateChallenge() { if (!suppressNav) { history.back(); return; } setState({ challengeCreateOpen: false, challengeEditId: null }); }
+async function openChallengeInsights(id, ev) {
+if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+const challengeDef = (state.challenges || []).find((x) => x.id === id);
+const qTotalFallback = challengeDef && challengeDef.questions ? challengeDef.questions.length : 0;
+setState({ challengeInsightsId: id, challengeInsightsData: null, challengeInsightsLoading: true });
+try {
+const snap = await getDocs(query(collection(db, "challengeAttempts"), where("challengeId", "==", id), limit(10000)));
+const raw = snap.docs.map((d) => d.data()).filter((a) => a.uid);
+    // Keep only each player's best attempt (highest score, then fastest time) —
+    // stops repeat/legacy plays from inflating counts or duplicating Top 3.
+    const byUid = {};
+    raw.forEach((a) => {
+      const existing = byUid[a.uid];
+      if (!existing || a.score > existing.score || (a.score === existing.score && (a.timeUsedSeconds || 1e9) < (existing.timeUsedSeconds || 1e9))) {
+        byUid[a.uid] = a;
+      }
+    });
+    const attempts = Object.values(byUid);
+    const joined = attempts.length;
+// Won = at least 50% correct. Computed straight from score/total so it
+// works even on attempts saved before "won" was a stored field.
+const qTotalFallback = (state.challenges || []).find((x) => x.id === id)?.questions?.length || 0;
+const scored = attempts
+.map((a) => (a.total > 0 ? a : { ...a, total: qTotalFallback }))
+.filter((a) => a.total > 0);
+const won = scored.filter((a) => (a.score / a.total) > 0.5).length;
+const lost = scored.filter((a) => (a.score / a.total) < 0.5).length;
+    const timed = attempts.filter((a) => a.timeUsedSeconds != null);
+    const avgSeconds = timed.length ? Math.round(timed.reduce((sum, a) => sum + a.timeUsedSeconds, 0) / timed.length) : null;
+    const top3 = attempts
+      .sort((a, b) => (b.score - a.score) || ((a.timeUsedSeconds || 1e9) - (b.timeUsedSeconds || 1e9)))
+      .slice(0, 3)
+      .map((a) => ({ id: a.uid, name: a.userName, photoURL: a.photoURL, score: a.score, total: a.total, timeUsedSeconds: a.timeUsedSeconds }));
+top3.forEach((u) => { state.photoCache[u.id] = u.photoURL || ""; });
+setState({ challengeInsightsData: { joined, won, lost, avgSeconds, top3 }, challengeInsightsLoading: false });
+} catch (e) {
+console.error(e);
+setState({ challengeInsightsLoading: false });
+}
+}
+function closeChallengeInsights() { if (!suppressNav) { history.back(); return; } setState({ challengeInsightsId: null, challengeInsightsData: null }); }
+function editChallenge(id, ev) {
+if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+const c = (state.challenges || []).find((x) => x.id === id);
+if (!c) return;
+setState({
+challengeCreateOpen: true,
+challengeEditId: id,
+challengeForm: {
+title: c.title || "",
+coverUrl: c.coverUrl || "",
+totalTimeLimit: c.totalTimeLimit != null ? String(c.totalTimeLimit) : "",
+questions: (c.questions || []).map((q) => ({ ...q, options: [...(q.options || [])] })),
+},
+});
+}
 function setChallengeTitle(v) { state.challengeForm.title = v; }
 function addChallengeQuestion() { state.challengeForm.questions.push({ text: "", options: ["", ""], correct: 0, timeLimit: "", points: 1 }); render(); }
 function removeChallengeQuestion(i) { state.challengeForm.questions.splice(i, 1); render(); }
@@ -8391,6 +9484,16 @@ function removeChallengeOption(i, oi) {
 }
 function setChallengeCoverUrl(v) { state.challengeForm.coverUrl = v.trim(); }
 function commitChallengeCover() { render(); }
+async function onChallengeCoverFileSelected(input) {
+  const file = (input.files || [])[0];
+  input.value = "";
+  if (!file) return;
+  try {
+    const result = await uploadFileToCloudinary(file);
+    setChallengeCoverUrl(result.url);
+    commitChallengeCover();
+  } catch (e) { console.error(e); showToast(e.message || "Upload failed. Try again.", "error"); }
+}
 function setChallengeQuestionTimeLimit(i, v) { state.challengeForm.questions[i].timeLimit = v; }
 function setChallengeTotalTimeLimit(v) { state.challengeForm.totalTimeLimit = v; }
 async function submitChallenge() {
@@ -8403,20 +9506,30 @@ async function submitChallenge() {
   if (state.challengeSubmitBusy) return;
   state.challengeSubmitBusy = true; render();
   try {
-    const ref = await addDoc(collection(db, "challenges"), {
-      title: f.title.trim(),
-      coverUrl: f.coverUrl || "",
-      totalTimeLimit: f.totalTimeLimit ? Number(f.totalTimeLimit) : null,
-      questions: f.questions.map(q => ({ ...q, timeLimit: q.timeLimit ? Number(q.timeLimit) : null })),
-      ownerId: state.user.uid,
-      ownerName: state.profile.username,
-      createdAt: serverTimestamp(),
-    });
-    state.challengesLoaded = false; // force a fresh list next time Challenges is opened
-    state.challengeSubmitBusy = false;
-    recordWeeklyChallenge();
-    setState({ challengeCreateOpen: false });
-    showToast("Challenge published!", "success");
+    const payload = {
+title: f.title.trim(),
+coverUrl: f.coverUrl || "",
+totalTimeLimit: f.totalTimeLimit ? Number(f.totalTimeLimit) : null,
+questions: f.questions.map(q => ({ ...q, timeLimit: q.timeLimit ? Number(q.timeLimit) : null })),
+};
+const wasEdit = !!state.challengeEditId;
+if (wasEdit) {
+await updateDoc(doc(db, "challenges", state.challengeEditId), payload);
+const local = state.challenges.find((c) => c.id === state.challengeEditId);
+if (local) Object.assign(local, payload);
+} else {
+await addDoc(collection(db, "challenges"), {
+...payload,
+ownerId: state.user.uid,
+ownerName: state.profile.username,
+createdAt: serverTimestamp(),
+});
+recordWeeklyChallenge();
+}
+state.challengeSubmitBusy = false;
+setState({ challengeCreateOpen: false, challengeEditId: null });
+loadChallengesList(true);
+if (wasEdit) showToast("Challenge updated!", "success");
   } catch (e) {
     console.error(e);
     state.challengeSubmitBusy = false;
@@ -8444,15 +9557,14 @@ function openChallengePlay(id) {
     return;
   }
   stopChallengeTimers();
-  state.challengePlay = {
-    challenge, index: 0, picked: null, score: 0, finished: false,
-    answers: new Array(challenge.questions.length).fill(null),
-    secondsLeft: challenge.questions[0].timeLimit ? Math.round(challenge.questions[0].timeLimit * 60) : null,
-    totalSecondsLeft: challenge.totalTimeLimit ? Math.round(challenge.totalTimeLimit * 60) : null,
-  };
-  startQuestionTimer();
-  startTotalTimer();
-  render();
+setState({ challengePlay: {
+challenge, index: 0, picked: null, score: 0, finished: false, startedAt: Date.now(),
+answers: new Array(challenge.questions.length).fill(null),
+secondsLeft: challenge.questions[0].timeLimit ? Math.round(challenge.questions[0].timeLimit * 60) : null,
+totalSecondsLeft: challenge.totalTimeLimit ? Math.round(challenge.totalTimeLimit * 60) : null,
+}});
+startQuestionTimer();
+startTotalTimer();
 }
 function stopChallengeTimers() {
   if (state.challengeQTimer) { clearInterval(state.challengeQTimer); state.challengeQTimer = null; }
@@ -8503,28 +9615,34 @@ function advanceChallengeQuestion() {
   render();
 }
 function finishChallengePlay() {
-  const p = state.challengePlay;
-  if (!p || p.finished) return;
-  stopChallengeTimers();
-  p.finished = true;
-  recordChallengeAttempt(p.challenge.id);
-  if (state.user) {
-    addDoc(collection(db, "challengeAttempts"), {
-      uid: state.user.uid,
-      userName: (state.profile && state.profile.username) || "Someone",
-      photoURL: (state.profile && state.profile.photoURL) || "",
-      score: p.score,
-      total: p.challenge.questions.length,
-      challengeId: p.challenge.id,
-      createdAt: serverTimestamp(),
-    }).catch((e) => console.error(e));
-  }
-  render();
+const p = state.challengePlay;
+if (!p || p.finished) return;
+stopChallengeTimers();
+p.finished = true;
+recordChallengeAttempt(p.challenge.id);
+const isOwner = !!(state.user && p.challenge.ownerId === state.user.uid);
+const total = p.challenge.questions.length;
+const timeUsedSeconds = p.startedAt ? Math.round((Date.now() - p.startedAt) / 1000) : null;
+if (state.user && !isOwner) {
+addDoc(collection(db, "challengeAttempts"), {
+uid: state.user.uid,
+userName: (state.profile && state.profile.username) || "Someone",
+photoURL: (state.profile && state.profile.photoURL) || "",
+score: p.score,
+total,
+won: total > 0 && (p.score / total) >= 0.5,
+timeUsedSeconds,
+challengeId: p.challenge.id,
+createdAt: serverTimestamp(),
+}).catch((e) => console.error(e));
+}
+render();
 }
 function closeChallengePlay() {
-  stopChallengeTimers();
-  state.challengePlay = null;
-  render();
+if (!suppressNav) { history.back(); return; }
+stopChallengeTimers();
+state.challengePlay = null;
+render();
 }
 function renderChallengePlay() {
   const p = state.challengePlay;
@@ -8533,9 +9651,9 @@ function renderChallengePlay() {
     return `
       <div class="mn-channels-screen">
         <div class="mn-channels-section-back">
-          <button class="mn-iconbtn" onclick="closeChallengePlay()">${iconBack()}</button>
-          <span class="mn-channels-section-back-title">${escapeHtml(p.challenge.title)}</span>
-        </div>
+  <button class="mn-iconbtn" onclick="closeCreateChallenge()">${iconBack()}</button>
+  <span class="mn-channels-section-back-title">${state.challengeEditId ? "Edit Challenge" : "New Challenge"}</span>
+</div>
         <div class="mn-challenge-result">
           <div class="mn-challenge-result-score">${p.score}/${total}</div>
           <p class="mn-challenge-result-sub">You got ${p.score} out of ${total} question${total === 1 ? "" : "s"} correct.</p>
@@ -8976,7 +10094,7 @@ function renderChannels() {
           <button class="mn-tab ${state.myEarnSubTab === "eligibility" ? "mn-tab-active" : ""}" onclick="setMyEarnSubTab('eligibility')">Eligibility</button>
         </div>
       ` : ""}
-      ${state.myEarnSubTab === "eligibility" ? eligibilityPanelHtml() : isEarnSubTab ? coinsPanelHtml() : `
+      ${isMyEarnTab && state.myEarnSubTab === "eligibility" ? eligibilityPanelHtml() : isEarnSubTab ? coinsPanelHtml() : `
       <div class="mn-input-wrap mn-channels-search-wrap">
         <span class="mn-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input class="mn-input mn-input-has-icon" placeholder="Search channels..." value="${escapeHtml(state.channelsSearch)}" oninput="setChannelsSearch(this.value)" />
@@ -9246,7 +10364,7 @@ function channelPostCardHtml(p, channel, clickable) {
       <div class="mn-post-headrow">
         <span class="mn-time">${timeAgoOrNow(p.createdAt)}</span>
         <span class="mn-post-headspacer"></span>
-        ${isOwner ? `<button class="mn-iconbtn mn-channel-post-delete" onclick="deleteChannelPost('${p.id}', event)" title="Delete">✕</button>` : ""}
+        ${""}
       </div>
       ${p.type === "poll" ? `${channelPollHtml(p)}${p.body ? `<p class="mn-post-desc">${escapeHtml(p.body)}</p>` : ""}`
         : `${channelPostMediaHtml(p)}${p.body ? `<p class="mn-post-desc">${escapeHtml(p.body)}</p>` : ""}`}
@@ -9331,7 +10449,9 @@ function renderChannelDetail() {
       <button class="mn-postbtn mn-channel-hero-subbtn" onclick="toggleSubscribeChannel('${c.id}', event)">Subscribe</button>
     </div>
   ` : "";
-  const emptyHtml = allPosts.length === 0
+  const emptyHtml = !state.channelPostsLoaded
+    ? `<div class="mn-empty">${mnLoaderHtml()}</div>`
+    : allPosts.length === 0
     ? `<div class="mn-empty"><p class="mn-empty-title">No posts yet</p><p class="mn-empty-sub">${isOwner ? "Share something with your subscribers." : "Check back soon."}</p></div>`
     : `<div class="mn-empty">
         <p class="mn-empty-title">You're all caught up</p>
@@ -9448,6 +10568,8 @@ function channelAvatarEditSheetHtml() {
         <div class="mn-sheet-handle"></div>
         <p class="mn-sheet-title">Edit channel photo</p>
         <input class="mn-input" placeholder="Paste a catbox.moe photo link..." value="${escapeHtml(url)}" oninput="setChannelAvatarEditUrl(this.value)" />
+        <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-channel-avatar-input').click()" title="Upload a photo">${iconImageSmall()}</button>
+        <input id="mn-channel-avatar-input" type="file" accept="image/*" style="display:none" onchange="onChannelAvatarFileSelected(this)" />
         ${url && isCatboxUrl(url) ? `<img src="${escapeHtml(url)}" alt="" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:8px auto;display:block;" onerror="this.insertAdjacentHTML('afterend','<p class=&quot;mn-channel-avatar-edit-error&quot;>That link didn\\'t load — try opening it in a new tab to confirm it shows a real image.</p>')" />` : ""}
         <button class="mn-postbtn" onclick="saveChannelAvatarEdit()" ${isCatboxUrl(url) ? "" : "disabled"}>Save</button>
         <button class="mn-postbtn" onclick="saveChannelAvatarEdit()" ${isCatboxUrl(url) ? "" : "disabled"}>Save</button>
@@ -9475,6 +10597,8 @@ function createChannelSheetHtml() {
           <div class="mn-input-wrap" style="flex:1;">
             <span class="mn-input-icon">${iconImageSmall()}</span>
             <input class="mn-input mn-input-has-icon" placeholder="Paste a catbox.moe photo link..." value="${escapeHtml(f.avatarUrl)}" oninput="setCreateChannelAvatar(this.value)" onchange="commitCreateChannelAvatar()" />
+            <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-create-channel-avatar-input').click()" title="Upload a photo">${iconImageSmall()}</button>
+            <input id="mn-create-channel-avatar-input" type="file" accept="image/*" style="display:none" onchange="onChannelCreateAvatarFileSelected(this)" />
           </div>
         </div>
         <p class="mn-uploadguide-title" style="margin:2px 0 12px;">Channel photo is required — upload an image at <a href="https://catbox.moe/" target="_blank" rel="noopener noreferrer">catbox.moe</a>, then paste the link here.</p>
@@ -9513,6 +10637,10 @@ function channelComposerSheetHtml() {
     <div class="mn-input-wrap">
       <span class="mn-input-icon">${f.type === "image" ? iconImageSmall() : f.type === "video" ? iconVideoSmall() : iconMicSmall()}</span>
       <input class="mn-input mn-input-has-icon" placeholder="${f.type === "video" ? "Paste a YouTube link..." : `Paste a catbox.moe ${f.type} link...`}" value="${escapeHtml(f.mediaUrl)}" oninput="setChannelPostMediaUrl(this.value)" onchange="commitChannelPostMediaUrl()" />
+      ${f.type !== "video" ? `
+      <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-channel-post-input').click()" title="Upload a ${f.type} file">${iconImageSmall()}</button>
+      <input id="mn-channel-post-input" type="file" accept="${f.type}/*" style="display:none" onchange="onChannelPostFileSelected(this)" />
+      ` : ""}
     </div>
     <p class="mn-uploadguide-title" style="margin:2px 0 0;">${f.type === "video"
       ? `Paste any YouTube video, Shorts, or youtu.be link — it'll embed with full playback controls, including picture-in-picture.`
@@ -9615,11 +10743,35 @@ function renderChat() {
       <p class="mn-empty-sub">Say hello — start the conversation.</p>
     </div>`;
   }
-  return `<div class="mn-chat-messages">${groupGiftMessages(msgs).map((m) => {
-    const mid = m.gifts ? m.gifts[0].id : m.id;
-    const divider = mid === state.unreadDividerId ? unreadDividerHtml() : "";
-    return divider + (m.gifts ? giftGroupHtml(m.gifts) : chatBubbleHtml(m));
-  }).join("")}</div>`;
+  const unreadCount = state.chatUnreadOnOpen || 0;
+  const idx = Math.max(0, msgs.length - unreadCount);
+  const unreadMsgs = unreadCount > 0 ? msgs.slice(idx) : [];
+  const showChatTabs = true;
+  const filterMode = showChatTabs ? (state.chatFeedFilter === "all" ? "all" : "unread") : "all";
+  const visibleMsgs = filterMode === "unread" ? unreadMsgs : msgs;
+  const chatFilterBar = showChatTabs ? `
+    <div class="mn-channel-filterbar" role="tablist">
+      <button class="mn-channel-filter-chip ${filterMode === "unread" ? "mn-channel-filter-chip-active" : ""}" onclick="setChatFeedFilter('unread')" role="tab" aria-selected="${filterMode === "unread"}">
+        Unread <span class="mn-channel-filter-count">${unreadMsgs.length}</span>
+      </button>
+      <button class="mn-channel-filter-chip ${filterMode === "all" ? "mn-channel-filter-chip-active" : ""}" onclick="setChatFeedFilter('all')" role="tab" aria-selected="${filterMode === "all"}">All</button>
+    </div>
+  ` : "";
+  if (!visibleMsgs.length) {
+    return chatFilterBar + `<div class="mn-empty" style="padding:40px 20px;">
+      <p class="mn-empty-title">You're all caught up</p>
+      <p class="mn-empty-sub">No new messages since your last visit.</p>
+      <button class="mn-channel-catchup-btn" onclick="setChatFeedFilter('all')">View all messages</button>
+    </div>`;
+  }
+  const startMarker = filterMode === "all" ? chatStartMarkerHtml(other) : "";
+return chatFilterBar + `<div class="mn-chat-messages">${startMarker}${groupGiftMessages(visibleMsgs).map((m) => {
+  const mid = m.gifts ? m.gifts[0].id : m.id;
+  const divider = mid === state.unreadDividerId ? unreadDividerHtml() : "";
+  return divider + (m.gifts ? giftGroupHtml(m.gifts) : chatBubbleHtml(m));
+  }).join("")}
+  <p class="mn-chat-limit-notice">You're seeing up to 20 messages. Older messages beyond that are hidden.</p>
+</div>`;
 }
 function unreadDividerHtml() {
   return `<div class="mn-unread-divider"><span>Unread messages</span></div>`;
@@ -9657,6 +10809,14 @@ function giftGroupHtml(gifts) {
       </div>
     </div>`;
 }
+function chatStartMarkerHtml(other) {
+return `
+<div class="mn-chat-start">
+  ${avatarHtml(other.username, other.id, other.photoURL)}
+  <p class="mn-chat-start-name">${escapeHtml(other.username || "User")}</p>
+  <p class="mn-chat-start-sub">This is the beginning of your conversation</p>
+</div>`;
+}
 function chatBubbleHtml(m) {
   const mine = state.user && m.senderId === state.user.uid;
   const other = state.activeChatUser;
@@ -9690,7 +10850,7 @@ function chatBubbleHtml(m) {
           </div>
         ` : ""}
         ${hasMedia ? chatMediaHtml(mediaUrl, mediaType) : ""}
-        ${hasText ? `<p ${hasMedia ? 'style="margin-top:6px;"' : ""}>${escapeHtml(m.text || "")}</p>` : ""}
+        ${hasText ? `<p ${hasMedia ? 'style="margin-top:6px;"' : ""}>${linkifyText(m.text || "")}</p>` : ""}
         <span class="mn-chat-bubble-time">${timeAgo(m.createdAt)}</span>
       </div>
     </div>
@@ -10288,10 +11448,10 @@ function loadMyCoinRequests() {
   if (coinRequestsUnsub) coinRequestsUnsub();
   const qy = query(collection(db, "coinRequests"), where("userId", "==", state.user.uid), orderBy("createdAt", "desc"), limit(20));
   coinRequestsUnsub = onSnapshot(qy, (snap) => {
-    state.myCoinRequests = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    state.myCoinRequestsLoaded = true;
-    render();
-  });
+state.myCoinRequests = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+state.myCoinRequestsLoaded = true;
+if (state.screen === "profile" || state.withdrawModalOpen) render();
+});
 }
 function detachCoinRequestsListener() {
   if (coinRequestsUnsub) { coinRequestsUnsub(); coinRequestsUnsub = null; }
@@ -10305,15 +11465,43 @@ let coinsBalanceUnsub = null;
 function attachCoinsListener(uid) {
   if (coinsBalanceUnsub) coinsBalanceUnsub();
   coinsBalanceUnsub = onSnapshot(doc(db, "users", uid), (snap) => {
-    if (snap.exists() && state.profile) {
-      const d = snap.data();
-      state.profile = { ...state.profile, coins: d.coins || 0, usedCoins: d.usedCoins || 0, withdrawalCoins: d.withdrawalCoins || 0 };
-      render();
-    }
-  });
+if (snap.exists() && state.profile) {
+const d = snap.data();
+state.profile = { ...state.profile, coins: d.coins || 0, usedCoins: d.usedCoins || 0, withdrawalCoins: d.withdrawalCoins || 0 };
+const coinScreenActive = state.screen === "profile" || state.buyCoinsModalOpen || state.withdrawModalOpen || state.giftModalOpen;
+if (coinScreenActive) render();
+}
+});
 }
 function detachCoinsListener() { if (coinsBalanceUnsub) { coinsBalanceUnsub(); coinsBalanceUnsub = null; } }
 
+function closeNewChallengeCodeSheet() { setState({ newChallengeCode: null }); }
+function copyNewChallengeCode() {
+navigator.clipboard.writeText(state.newChallengeCode)
+.then(() => showToast("Code copied: " + state.newChallengeCode))
+.catch(() => showToast("Code: " + state.newChallengeCode));
+}
+function newChallengeCodeSheetHtml() {
+return "";
+if (!state.newChallengeCode) { return ""; }
+const code = state.newChallengeCode;
+return `
+<div class="mn-sheet-overlay mn-anim-in" onclick="if(event.target===this) closeNewChallengeCodeSheet()">
+  <div class="mn-sheet mn-anim-in mn-donate-sheet">
+    <div class="mn-sheet-handle"></div>
+    <p class="mn-sheet-title">Challenge published!</p>
+    <p class="mn-sheet-subtitle">Share this code — anyone who enters it jumps straight to your challenge.</p>
+    <div class="mn-donate-card" style="margin-top:16px;">
+      <div class="mn-donate-card-row" style="justify-content:center;">
+        <span class="mn-donate-number" style="font-size:26px;letter-spacing:2px;">${escapeHtml(code)}</span>
+        <button class="mn-donate-copy-btn" onclick="copyNewChallengeCode()" title="Copy code">${iconLink()}</button>
+      </div>
+    </div>
+    <button class="mn-sheet-cancel" onclick="closeNewChallengeCodeSheet()">Done</button>
+  </div>
+</div>
+`;
+}
 function shareModalHtml() {
   if (!state.shareModal) { shareModalWasOpen = false; return ""; }
   const justOpened = !shareModalWasOpen;
@@ -10535,15 +11723,16 @@ function authModalHtml() {
   const bodyHtml = !isSignUp ? signInFields : (step === 1 ? step1Fields : step2Fields);
 
   const actionsHtml = !isSignUp ? `
-    <button class="mn-primary-btn mn-auth-submit" ${state.authBusy ? "disabled" : ""} onclick="submitSignIn()">
+    <button class="mn-primary-btn mn-auth-submit ${state.authBusy ? "mn-btn-loading" : ""}" ${state.authBusy ? "disabled" : ""} onclick="submitSignIn()">
       ${state.authBusy ? `<span class="mn-spinner"></span><span>Please wait...</span>` : "Sign in"}
+    </button>
     </button>
   ` : step === 1 ? `
     <button class="mn-primary-btn mn-auth-submit" onclick="goToAuthStep2()">Continue</button>
   ` : `
     <div class="mn-auth-actions">
       <button type="button" class="mn-auth-btn-back" ${state.authBusy ? "disabled" : ""} onclick="goToAuthStep1()">Back</button>
-      <button class="mn-primary-btn mn-auth-submit" ${state.authBusy ? "disabled" : ""} onclick="submitSignUp()">
+      <button class="mn-primary-btn mn-auth-submit ${state.authBusy ? "mn-btn-loading" : ""}" ${state.authBusy ? "disabled" : ""} onclick="submitSignUp()">
         ${state.authBusy ? `<span class="mn-spinner"></span><span>Please wait...</span>` : "Create account"}
       </button>
     </div>
@@ -10710,7 +11899,10 @@ function headerHtml() {
       <div class="mn-detail-header mn-chat-header" ${other ? `onclick="openUserProfile('${other.id}', '${nameEsc}', event)"` : ""}>
         <button class="mn-iconbtn" onclick="closeChat(); event.stopPropagation();" title="Back">${iconBack()}</button>
         ${other ? avatarHtml(other.username, other.id, other.photoURL) : ""}
-        <span class="mn-detail-header-title">${other ? escapeHtml(other.username || "User") : "Chat"}</span>
+<div class="mn-detail-header-titlewrap">
+  <span class="mn-detail-header-title">${other ? escapeHtml(other.username || "User") : "Chat"}</span>
+  <span class="mn-chat-header-sub">${other ? "" : ""}</span>
+</div>
       </div>
     `;
   }
@@ -10864,8 +12056,10 @@ let lastRenderedFeedKey = null; // screen+sortMode from the previous render — 
 function render() {
   if (typeof closeVideoMini === "function") closeVideoMini();
   const imagetokEl = document.getElementById("mn-imagetok-scroll");
-  const imagetokScrollTop = imagetokEl ? imagetokEl.scrollTop : 0;
-  const savedScrollY = window.scrollY;
+const imagetokScrollTop = imagetokEl ? imagetokEl.scrollTop : 0;
+const savedScrollY = window.scrollY;
+const challengeRailEl = document.querySelector(".mn-challenge-cardrow");
+const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0;
   const feedKey = state.screen + ":" + state.sortMode;
   const sameFeed = lastRenderedFeedKey === feedKey;
   const screenHtml = state.screen === "home" ? renderHome()
@@ -10927,9 +12121,20 @@ function render() {
           <button class="mn-media-preview-remove" onclick="clearMessageMedia(event)" title="Remove attachment">✕</button>
         </div>
       ` : ""}
-      <div class="mn-composer-row">
-        <div class="mn-chat-pill">
-          <button class="mn-composer-attach" onclick="toggleMessageMediaPicker()" title="Attach a catbox.moe photo, video or audio link">${iconAttachSmall()}</button>
+      ${state.replyTarget ? `
+<div class="mn-chat-reply-bar">
+  <div class="mn-chat-reply-bar-main">
+    <span class="mn-chat-reply-bar-name">${escapeHtml(state.replyTarget.senderName)}</span>
+    <span class="mn-chat-reply-bar-text">${escapeHtml(state.replyTarget.text)}</span>
+  </div>
+  <button class="mn-chat-reply-bar-close" onclick="clearReplyTarget()">✕</button>
+</div>
+` : ""}
+<div class="mn-composer-row">
+  <div class="mn-chat-pill">
+    <button class="mn-composer-attach" onclick="toggleMessageMediaPicker()" title="Attach a catbox.moe photo, video or audio link">${iconAttachSmall()}</button>
+<button class="mn-composer-attach" onclick="document.getElementById('mn-message-file-input').click()" title="Upload a photo, video or audio file">${iconImageSmall()}</button>
+<input id="mn-message-file-input" type="file" accept="image/*,video/*,audio/*" style="display:none" onchange="onMessageFileSelected(this)" />
           <button class="mn-composer-attach" onclick="openGiftCoins()" title="Gift coins">${iconGiftSmall()}</button>
           <textarea rows="1" placeholder="Message ${escapeHtml(state.activeChatUser.username || "")}..." oninput="setMessageDraft(this.value)">${escapeHtml(state.messageDraft)}</textarea>
         </div>
@@ -10957,6 +12162,7 @@ function render() {
         </nav>
         ${authModalHtml()}
         ${shareModalHtml()}
+${newChallengeCodeSheetHtml()}
         ${regionPickerHtml()}
         ${signOutConfirmHtml()}
         ${reelsViewerHtml()}
@@ -10977,8 +12183,10 @@ function render() {
     </div>
   `;
   const newImagetokEl = document.getElementById("mn-imagetok-scroll");
-  if (newImagetokEl && imagetokScrollTop) newImagetokEl.scrollTop = imagetokScrollTop;
-  if (sameFeed) window.scrollTo(0, savedScrollY);
+if (newImagetokEl && imagetokScrollTop) newImagetokEl.scrollTop = imagetokScrollTop;
+const newChallengeRailEl = document.querySelector(".mn-challenge-cardrow");
+if (newChallengeRailEl && challengeRailScrollLeft) newChallengeRailEl.scrollLeft = challengeRailScrollLeft;
+  if (sameFeed) window.scrollTo({ top: savedScrollY, left: 0, behavior: "instant" });
   lastRenderedFeedKey = feedKey;
   document.body.setAttribute("data-theme", state.theme);
   // While any sheet/modal is open, stop the feed underneath from scrolling.
@@ -10988,9 +12196,17 @@ function render() {
   // one you opened it from, which reads as the feed "jumping".
   document.body.style.overflow = anyOverlayOpen() ? "hidden" : "";
   if (state.screen === "create") autoGrow(document.querySelector(".mn-compose-textarea"));
-  if (state.screen === "home") { observeFeedSentinel(); observeFeedViews(); observeImageTok(); observeImageTokSentinel(); }
-  if (state.screen === "chat") scrollChatToBottom();
-  bindChallengeLongPress();
+  if (state.screen === "home") {
+  observeFeedViews();
+  observeImageTok();
+}
+  if (state.screen === "chat" && state.chatStickToBottom) {
+ scrollChatToBottom();
+ state.chatStickToBottom = false;
+ }
+bindChallengeLongPress();
+universalizeLoaders();
+universalizeCounts();
 }
 // Partial refresh for the feed — used for search typing, the "New posts"
 // pill, post deletions, and the suggestion module loading/updating. Rather
@@ -10999,75 +12215,155 @@ function render() {
 // reply box), this reconciles: cards that stay in the list are never
 // touched at all, cards that left are removed, cards that are new are
 // created — same pattern as a keyed virtual-DOM diff, keyed on "q-<id>".
+function isForYouTabNow() { return state.sortMode === "foryou"; }
 function renderFeedOnly() {
-  const homeEl = document.querySelector(".mn-home");
-  if (!homeEl || state.screen !== "home") { render(); return; }
+universalizeCounts();
+const homeEl = document.querySelector(".mn-home");
+  if (!homeEl || state.screen !== "home") {
+    render();
+    return;
+  }
+
   const list = filteredQuestions();
   const feedEl = homeEl.querySelector(".mn-feed");
 
+  // First paint / empty state: safe to build normally.
   if (list.length === 0) {
     const feedWrap = homeEl.querySelector(".mn-feed, .mn-empty");
     const emptyHtml = `<div class="mn-empty">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
         <p class="mn-empty-title">No questions match</p>
         <p class="mn-empty-sub">Try a different topic, or be the first to ask.</p>
       </div>`;
+
     if (feedWrap) feedWrap.outerHTML = emptyHtml;
     else homeEl.insertAdjacentHTML("afterbegin", emptyHtml);
-  } else if (!feedEl) {
-    // Coming from the empty state, or first paint this session — nothing to
-    // diff against yet, so build it once the normal way.
+
+    observeFeedSentinel();
+    observeFeedViews();
+    updateNewPostsPill();
+    return;
+  }
+
+  if (!feedEl) {
     const emptyEl = homeEl.querySelector(".mn-empty");
     const html = feedListHtml(list);
+
     if (emptyEl) emptyEl.outerHTML = html;
     else homeEl.insertAdjacentHTML("afterbegin", html);
-  } else {
-    const byId = new Map(list.map((q) => [q.id, q]));
-    const existing = new Map();
-    Array.from(feedEl.children).forEach((el) => {
-      if (el.id && el.id.startsWith("q-")) existing.set(el.id.slice(2), el);
-    });
-    existing.forEach((el, id) => { if (!byId.has(id)) el.remove(); });
-    let refNode = feedEl.firstChild;
-    list.forEach((q) => {
-      let el = existing.get(q.id);
-      if (el) {
-        patchQuestionCardStats(el, q); // reused card — keep its numbers current
-      } else {
-        const wrap = document.createElement("div");
-        wrap.innerHTML = questionCardHtml(q);
-        el = wrap.firstElementChild;
-      }
-      if (el !== refNode) feedEl.insertBefore(el, refNode);
-      else refNode = refNode.nextSibling;
-    });
-    // The suggestion module isn't keyed to a post — reposition/refresh it
-    // separately so it never disturbs the post cards around it.
-    const moduleHtml = suggestModuleHtml();
-    let moduleEl = feedEl.querySelector(".mn-suggest-module");
-    if (!moduleHtml) {
-      if (moduleEl) moduleEl.remove();
-    } else {
-      if (moduleEl) moduleEl.outerHTML = moduleHtml;
-      const cardsNow = Array.from(feedEl.children).filter((el) => el.id && el.id.startsWith("q-"));
-      const refCard = cardsNow[Math.min(4, cardsNow.length)] || null;
-      moduleEl = feedEl.querySelector(".mn-suggest-module");
-      if (moduleEl && moduleEl.nextSibling !== refCard && moduleEl !== refCard) feedEl.insertBefore(moduleEl, refCard);
+
+    observeFeedSentinel();
+    observeFeedViews();
+    updateNewPostsPill();
+    return;
+  }
+
+  /*
+   * IMPORTANT:
+   * Do NOT reorder existing cards here.
+   *
+   * reconcileCommittedFeed() already controls which IDs are committed.
+   * Existing cards stay exactly where the reader is seeing them.
+   */
+
+  const byId = new Map(list.map((q) => [String(q.id), q]));
+
+  const existing = new Map();
+
+  Array.from(feedEl.children).forEach((el) => {
+    if (el.id && el.id.startsWith("q-")) {
+      existing.set(el.id.slice(2), el);
+    }
+  });
+
+  // Remove cards that no longer belong to the committed list.
+  existing.forEach((el, id) => {
+    if (!byId.has(String(id))) {
+      el.remove();
+    }
+  });
+
+  // Update existing cards only.
+  list.forEach((q) => {
+    const id = String(q.id);
+    const existingEl = existing.get(id);
+
+    if (existingEl) {
+      patchQuestionCardStats(existingEl, q);
+    }
+  });
+
+  /*
+   * Only append a card if it is genuinely missing.
+   * Never insert an existing card before another card.
+   */
+  const currentIds = new Set(
+    Array.from(feedEl.children)
+      .filter((el) => el.id && el.id.startsWith("q-"))
+      .map((el) => el.id.slice(2))
+  );
+
+  list.forEach((q) => {
+    const id = String(q.id);
+
+    if (currentIds.has(id)) return;
+
+    const wrap = document.createElement("div");
+    wrap.innerHTML = questionCardHtml(q);
+
+    const el = wrap.firstElementChild;
+
+    if (el) {
+      feedEl.appendChild(el);
+      currentIds.add(id);
+    }
+  });
+
+  /*
+   * Keep the suggestion module stable.
+   * Do not rebuild it during ordinary feed updates.
+   */
+  const moduleEl = feedEl.querySelector(".mn-suggest-module");
+
+  if (moduleEl) {
+    const cardsNow = Array.from(feedEl.children)
+      .filter((el) => el.id && el.id.startsWith("q-"));
+
+    const desiredPosition = cardsNow[Math.min(4, cardsNow.length)] || null;
+
+    const moduleAlreadyPassed = moduleEl.getBoundingClientRect().bottom < 0;
+    if (desiredPosition && moduleEl.nextSibling !== desiredPosition && !moduleAlreadyPassed) {
+      // Only move the suggestion module when necessary, and never once the
+      // reader has already scrolled past it — moving it there would yank
+      // content around under them.
+      feedEl.insertBefore(moduleEl, desiredPosition);
     }
   }
 
-  const sentinelEl = homeEl.querySelector("#mn-feed-sentinel");
-  if (sentinelEl) sentinelEl.remove();
-  if (list.length > 0 && questionsHasMore) {
+ const sentinelEl = homeEl.querySelector("#mn-feed-sentinel");
+const stillHasMore = !isForYouTabNow() && (state.sortMode === "following" ? followingHasMore : questionsHasMore);
+
+if (list.length > 0) {
+  if (!sentinelEl) {
     homeEl.insertAdjacentHTML(
       "beforeend",
-      `<div id="mn-feed-sentinel" class="mn-feed-sentinel">${questionsLoadingMore ? `<span class="mn-feed-spinner"></span>` : ""}</div>`
+      `<div id="mn-feed-sentinel" class="mn-feed-sentinel">${stillHasMore ? `<span class="mn-feed-spinner"></span>` : ""}</div>`
     );
+  } else {
+    sentinelEl.innerHTML = stillHasMore ? `<span class="mn-feed-spinner"></span>` : "";
   }
-  observeFeedSentinel();
-  observeFeedViews();
-  updateNewPostsPill();
+} else if (sentinelEl) {
+  sentinelEl.remove();
 }
+
+observeFeedViews();
+updateNewPostsPill();
+}
+
+// Refreshes just the numbers (points/answers/upvoted state) on every post card
 
 // Refreshes just the numbers (points/answers/upvoted state) on every post card
 // currently in the feed, without touching card structure or media elements at
@@ -11083,6 +12379,25 @@ function patchFeedStatsOnly() {
     if (q) patchQuestionCardStats(el, q);
   });
 }
+// Same idea as patchFeedStatsOnly(), but for a viewed user's profile post
+// list. state.viewedUserQuestions is a one-time snapshot that never updates
+// on its own, so we sync it from the live state.questions data first, then
+// patch the DOM in place — no reload, no reordering, no stale counts.
+function patchProfileStatsOnly() {
+const feedEl = document.querySelector(".mn-profile .mn-feed");
+if (!feedEl) return;
+const byId = new Map(state.questions.map((q) => [q.id, q]));
+state.viewedUserQuestions.forEach((q) => {
+const fresh = byId.get(q.id);
+if (fresh) { q.points = fresh.points; q.upvoterIds = fresh.upvoterIds; q.answersCount = fresh.answersCount; }
+});
+Array.from(feedEl.children).forEach((el) => {
+if (!el.id || !el.id.startsWith("q-")) return;
+const q = byId.get(el.id.slice(2));
+if (q) patchQuestionCardStats(el, q);
+});
+}
+
 // Updates one feed card's answers/upvote counts and upvoted state in place.
 // Shared by patchFeedStatsOnly() above.
 function patchQuestionCardStats(el, q) {
@@ -11228,6 +12543,9 @@ function updateAnswersListOnly(id) {
 
 window.selectScreen = selectScreen;
 window.openCreateChallenge = openCreateChallenge;
+window.editChallenge = editChallenge;
+window.openChallengeInsights = openChallengeInsights;
+window.closeChallengeInsights = closeChallengeInsights;
 window.closeCreateChallenge = closeCreateChallenge;
 window.setChallengeTitle = setChallengeTitle;
 window.addChallengeQuestion = addChallengeQuestion;
@@ -11235,6 +12553,8 @@ window.removeChallengeQuestion = removeChallengeQuestion;
 window.addChallengeOption = addChallengeOption;
 window.removeChallengeOption = removeChallengeOption;
 window.setChallengesTab = setChallengesTab;
+window.setChallengesSearch = setChallengesSearch;
+window.searchChallengesEnter = searchChallengesEnter;
 window.setChallengesLeaderboardPeriod = setChallengesLeaderboardPeriod;
 window.setChallengeStatsPeriod = setChallengeStatsPeriod;
 window.setChallengeCoverUrl = setChallengeCoverUrl;
@@ -11318,6 +12638,8 @@ window.setChannelCommentDraft = setChannelCommentDraft;
 window.submitChannelComment = submitChannelComment;
 window.votePollOption = votePollOption;
 window.dismissSuggestedUser = dismissSuggestedUser;
+window.riseUser = riseUser;
+window.markDepeopleViewed = markDepeopleViewed;
 window.openTagFeed = openTagFeed;
 window.toggleFollowUser = toggleFollowUser;
 window.openUserProfile = openUserProfile;
@@ -11385,6 +12707,7 @@ window.toggleReelCaption = toggleReelCaption;
 window.reelsTouchStart = reelsTouchStart;
 window.reelsTouchEnd = reelsTouchEnd;
 window.mediaLoadError = mediaLoadError;
+window.mediaImgLoaded = mediaImgLoaded;
 window.avatarImgError = avatarImgError;
 window.previewImgError = previewImgError;
 window.openMessages = openMessages;
@@ -11392,6 +12715,7 @@ window.closeMessages = closeMessages;
 window.openNewChat = openNewChat;
 window.closeNewChat = closeNewChat;
 window.setMessagesFilter = setMessagesFilter;
+window.setChatFeedFilter = setChatFeedFilter;
 window.setMessagesSearch = setMessagesSearch;
 window.setNewChatSearch = setNewChatSearch;
 window.openChatFromRow = openChatFromRow;
@@ -11403,6 +12727,12 @@ window.openMessageMediaPicker = openMessageMediaPicker;
 window.toggleMessageMediaPicker = toggleMessageMediaPicker;
 window.closeMessageMediaPicker = closeMessageMediaPicker;
 window.commitMessageMediaUrl = commitMessageMediaUrl;
+window.onMessageFileSelected = onMessageFileSelected;
+window.onProfilePhotoFileSelected = onProfilePhotoFileSelected;
+window.onChannelAvatarFileSelected = onChannelAvatarFileSelected;
+window.onChannelCreateAvatarFileSelected = onChannelCreateAvatarFileSelected;
+window.onChannelPostFileSelected = onChannelPostFileSelected;
+window.onChallengeCoverFileSelected = onChallengeCoverFileSelected;
 window.clearMessageMedia = clearMessageMedia;
 window.chatMediaLoadError = chatMediaLoadError;
 
@@ -11421,7 +12751,12 @@ function toggleReadMore(btn, ev) {
 window.toggleReadMore = toggleReadMore;
 
 function markTruncatedPosts() {
-  document.querySelectorAll(".mn-post-desc").forEach((p) => {
+  // Only ever measure a post ONCE, the first time it appears. Re-measuring
+  // every post on every unrelated DOM change (e.g. 20 new cards landing from
+  // "See more") could add/remove a Read-more button on a card you already
+  // scrolled past, changing its height under you — that was the "goes
+  // upper" jump.
+  document.querySelectorAll(".mn-post-desc:not([data-mn-checked])").forEach((p) => {
     if (p.classList.contains("mn-post-desc-expanded")) return;
     const next = p.nextElementSibling;
     const hasBtn = next && next.classList && next.classList.contains("mn-read-more");
@@ -11430,6 +12765,7 @@ function markTruncatedPosts() {
     } else if (hasBtn) {
       next.remove();
     }
+    p.setAttribute("data-mn-checked", "1");
   });
 }
 let markTruncatedRaf = null;
@@ -11441,6 +12777,73 @@ function scheduleMarkTruncated() {
 // scroll) and re-checks truncation, so "Read more" stays correct everywhere
 // questionCardHtml() is used without having to hook every render call site.
 new MutationObserver(scheduleMarkTruncated).observe(document.getElementById("root"), { childList: true, subtree: true });
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    document.querySelectorAll(".mn-post-desc[data-mn-checked]").forEach(p => p.removeAttribute("data-mn-checked"));
+    scheduleMarkTruncated();
+  });
+}
+
+if (state.user) updateDoc(doc(db, "users", state.user.uid), { lastActive: serverTimestamp() }).catch((e) => showToast("heartbeat error: " + e.message, "error"));
+setInterval(() => {
+if (state.user) updateDoc(doc(db, "users", state.user.uid), { lastActive: serverTimestamp() }).catch((e) => showToast("heartbeat error: " + e.message, "error"));
+}, 60000);
+
+// ================= ONE-SHOT STABILITY PATCH =================
+(function () {
+let lastChatId = null;
+let forceNextScroll = false;
+
+const originalScrollChatToBottom = scrollChatToBottom;
+scrollChatToBottom = function () {
+const openedNewChat = state.activeChatId !== lastChatId;
+lastChatId = state.activeChatId;
+const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 140);
+if (openedNewChat || forceNextScroll || nearBottom) {
+forceNextScroll = false;
+originalScrollChatToBottom();
+}
+};
+
+const originalSendMessage = window.sendMessage;
+window.sendMessage = function (...args) {
+forceNextScroll = true;
+return originalSendMessage.apply(this, args);
+};
+
+function mnFormatNow() {
+const d = new Date();
+return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }) + " · " +
+d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+}
+function mnPaintClock() {
+if (state.screen !== "chat") return;
+const sub = document.querySelector(".mn-chat-header-sub");
+if (sub) sub.textContent = mnFormatNow();
+}
+const originalRender = render;
+render = function (...args) {
+const r = originalRender.apply(this, args);
+mnPaintClock();
+return r;
+};
+setInterval(mnPaintClock, 1000);
+
+const focusComposer = () => requestAnimationFrame(() => {
+const ta = document.querySelector(".mn-chat-composer textarea");
+if (ta && document.activeElement !== ta) ta.focus({ preventScroll: true });
+});
+["closeMessageMediaPicker", "commitMessageMediaUrl", "clearMessageMedia"].forEach((name) => {
+const orig = window[name];
+if (typeof orig !== "function") return;
+window[name] = function (...args) {
+const r = orig.apply(this, args);
+focusComposer();
+return r;
+};
+});
+})();
+// ================= END STABILITY PATCH =================
 
 render();
 const mnSplashEl = document.getElementById('mn-splash');
@@ -11448,6 +12851,7 @@ if (mnSplashEl) mnSplashEl.remove();
 
 maybeOpenSharedChannel();
 maybeOpenSharedChallenge();
+maybeOpenSharedProfile();
 trackEvent("screen_view", { screen_name: "home" });
 </script>
 <script>
@@ -11517,6 +12921,5 @@ window.addEventListener('load', async () => {
   }, 2500);
 });
 </script>
-<script src="menya-stability.js"></script>
 </body>
 </html>
