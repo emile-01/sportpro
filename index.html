@@ -5434,18 +5434,27 @@ async function maybeOpenSharedQuestion() {
       if (snap.exists()) { q = { id: snap.id, ...snap.data() }; state.questions.unshift(q); }
     } catch (e) { console.error(e); }
   }
-  if (q) { state.singlePostId = qid; setState({ screen: "home" }); }
+  if (q) pinPost(qid);
   else showToast("This post isn't available anymore.");}
 
-function selectScreen(screen) {   state.singlePostId = null;
+function selectScreen(screen) {
+  const hadSinglePost = !!state.singlePostId;
+  state.singlePostId = null;
   if ((screen === "profile" || screen === "create") && !state.user) {
     setState({ pendingScreen: screen, authModal: "signin", authError: null });
     return;
   }
-  // Deliberately returning to Home from elsewhere: re-settle both orders
-  // (see refreshForYouOrder/refreshReelsOrder) so what's on screen isn't an
-  // identical replay of the last visit.
-  if (screen === "home" && state.screen !== "home") { refreshForYouOrder(); refreshReelsOrder(); resetCommittedFeed(); }
+  // Deliberately returning to Home from elsewhere, OR leaving a single-post
+  // view opened via a shared link: force the feed to rebuild so the FULL
+  // feed shows, not just the one shared post.
+  if (screen === "home" && (state.screen !== "home" || hadSinglePost)) {
+    refreshForYouOrder(); refreshReelsOrder(); resetCommittedFeed();
+  }
+  if (screen === "home" && hadSinglePost) {
+    const url = new URL(location.href);
+    url.searchParams.delete("q");
+    history.replaceState(history.state, "", url.pathname + url.search);
+  }
   if (screen === "profile" && state.user && !state.myQuestionsLoaded) loadMyQuestions();
   if (screen === "discover") { loadTopContributors(); loadTopAnswers(); loadNearbyUsers(); }
   if (screen === "challenges") loadChallengesList();
@@ -5674,7 +5683,7 @@ function openNotification(n) {
   if (!n) return;
   if (n.type === "admin") { if (n.link) window.open(n.link, "_blank"); return; }
   if (n.type === "follow") { openUserProfile(n.fromUserId, n.fromUserName); return; }
-  if (n.questionId) { openDetail(n.questionId, "notifications"); return; }
+  if (n.questionId) { pinPost(n.questionId); return; }
 }
 function openNotificationById(id) { openNotification(getMergedNotifications().find((n) => n.id === id)); }
 
@@ -7295,6 +7304,10 @@ async function postQuestion() {
 }
 
 // ---------------- detail / answers ----------------
+function pinPost(id) {
+  state.singlePostId = id;
+  setState({ screen: "home" });
+}
 function openDetail(id, from) {
   state.detailId = id;
   state.detailFrom = from || state.screen;
@@ -8830,7 +8843,7 @@ function renderProfileStats(myQuestions, p) {
   const showAllPosts = !!state.profileStatsOpen;
   const visiblePosts = showAllPosts ? posts : posts.slice(0, 3);
   const postRows = visiblePosts.map((q) => `
-    <div class="mn-stats-postrow" onclick="openDetail('${q.id}','profile')">
+    <div class="mn-stats-postrow" onclick="pinPost('${q.id}')">
       <p class="mn-stats-postrow-title">${escapeHtml(q.title)}</p>
       <div class="mn-stats-postrow-nums">
         <span title="Views">${iconEye()}${q.views || 0}</span>
@@ -13528,6 +13541,7 @@ window.autoGrow = autoGrow;
 window.postQuestion = postQuestion;
 window.openDetail = openDetail;
 window.closeDetail = closeDetail;
+window.pinPost = pinPost;
 window.openComments = openComments;
 window.closeComments = closeComments;
 window.upvoteQuestion = upvoteQuestion;
@@ -13822,6 +13836,7 @@ return r;
     return r;
   };
   window.openDetail = openDetail;
+window.pinPost = pinPost;
 
   // 8) render(): keep Home alive when leaving it, put it back when returning,
   //    and never let a background render eat a tap
