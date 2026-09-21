@@ -3298,6 +3298,7 @@ let state = {
   screen: "home",
   sortMode: "foryou",   // 'foryou' | 'following'
   searchTerm: "",
+  singlePostId: null, // when set, the home feed shows only this one post
   createTab: "write",   // 'write' | 'link' — which composer mode is showing on the Create screen
   form: { body: "", link: "", images: [], imageUploading: false, uploadProgress: 0 },
   postBusy: false,       // true while a question is being submitted — blocks double-taps on the post button
@@ -5433,11 +5434,10 @@ async function maybeOpenSharedQuestion() {
       if (snap.exists()) { q = { id: snap.id, ...snap.data() }; state.questions.unshift(q); }
     } catch (e) { console.error(e); }
   }
-  if (q) openDetail(qid, "home");
-  else showToast("This post isn't available anymore.");
-}
+  if (q) { state.singlePostId = qid; setState({ screen: "home" }); }
+  else showToast("This post isn't available anymore.");}
 
-function selectScreen(screen) {
+function selectScreen(screen) {   state.singlePostId = null;
   if ((screen === "profile" || screen === "create") && !state.user) {
     setState({ pendingScreen: screen, authModal: "signin", authError: null });
     return;
@@ -8209,8 +8209,11 @@ let hiddenWikiPostIds = [];
 // feed logic below can compare against it without triggering it itself.
 function idealFeedList() {
 let list = state.sortMode === "following"
-    ? followingQuestions
-    : state.questions;
+? followingQuestions
+: state.questions;
+if (state.singlePostId) {
+list = list.filter((q) => q.id === state.singlePostId);
+}
   const term = state.searchTerm.trim().toLowerCase();
   if (term) {
     // "#coffee" (from a hashtag pill or typed directly) filters to an exact
@@ -8253,7 +8256,7 @@ let committedFeedSortMode = null; // the tab+search key committedFeedIds was bui
 let pendingNewCount = 0;          // new posts known to exist but withheld from view
 
 function committedFeedKey() {
-  return state.sortMode + "|" + state.searchTerm.trim().toLowerCase();
+return state.sortMode + "|" + state.searchTerm.trim().toLowerCase() + "|" + (state.singlePostId || "");
 }
 // Re-settles the committed feed to exactly match the ideal order right now —
 // used on first load and whenever the tab or search term changes (a deliberate
