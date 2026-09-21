@@ -52,6 +52,7 @@ if ('serviceWorker' in navigator) {
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://files.catbox.moe" crossorigin />
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" />
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" />
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" />
@@ -161,9 +162,20 @@ width: 100%; max-width: 480px; z-index: 100;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border);
 }
+.mn-shell[data-screen="chat"] .mn-header {
+  border-bottom: none;
+  background: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
 .mn-shell[data-screen="chat"] .mn-main {
   padding-top: 74px;
   padding-bottom: 84px;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 .mn-shell[data-screen="chat"] .mn-main {
   padding-top: 74px;
@@ -185,6 +197,12 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-iconbtn-signout:hover { color: var(--red); background: var(--red-soft); }
 .mn-iconbtn-active { color: var(--green); background: var(--green-soft); }
 .mn-iconbtn:active { transform: scale(0.94); }
+.mn-iconbtn, .mn-iconbtn:hover, .mn-iconbtn:active, .mn-iconbtn-active, .mn-iconbtn-signout:hover { background: transparent !important; box-shadow: none !important; }
+.mn-notif-btn {
+  background: transparent !important; border: none !important; box-shadow: none !important;
+  width: 26px; height: 26px; color: var(--ink);
+}
+.mn-notif-btn:hover, .mn-notif-btn:active { background: transparent !important; opacity: 0.7; }
 .mn-header-avatar-btn { background: none; border: none; padding: 0; cursor: pointer; flex: 0 0 auto; }
 
 /* ---------------- notifications: bell + unread badge ---------------- */
@@ -196,23 +214,26 @@ width: 100%; max-width: 480px; z-index: 100;
   box-shadow: 0 0 0 2px var(--paper-raised);
 }
 .mn-notif-count-sidebar { position: static; margin-left: auto; box-shadow: none; }
+.mn-navbtn > .mn-notif-count { display: block !important; top: 4px; right: calc(50% - 22px); }
 
 /* ---------------- notifications: plain list, no cards ---------------- */
 .mn-notif-list { display: flex; flex-direction: column; }
 .mn-notif-row {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 4px; border-bottom: 1px solid var(--paper-line);
+  padding: 10px 4px; border-bottom: none;
   cursor: pointer; transition: background-color .15s ease;
 }
-.mn-notif-list .mn-notif-row:first-child { padding-top: 6px; }
-.mn-notif-list .mn-notif-row:last-child { border-bottom: none; }
+.mn-notif-list .mn-notif-row:first-child { padding-top: 4px; }
+.mn-notif-section-label { margin: 18px 0 6px; font: 600 13px Inter, sans-serif; color: var(--ink-faint); }
+.mn-notif-section:first-child .mn-notif-section-label { margin-top: 2px; }
 .mn-notif-row:hover { background: var(--paper-line); }
 .mn-notif-row:active { background: var(--border); }
 .mn-notif-row-unread { background: var(--paper-line); }
 .mn-notif-row-unread:hover { background: var(--border); }
 
 .mn-notif-avatar-wrap { position: relative; flex: 0 0 auto; }
-.mn-notif-avatar-wrap .mn-avatar { width: 38px; height: 38px; }
+.mn-notif-avatar-wrap .mn-avatar { width: 48px; height: 48px; }
+.mn-admin-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .mn-admin-avatar {
   background: linear-gradient(155deg, var(--green) 0%, #0F4A3B 100%);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
@@ -232,7 +253,7 @@ width: 100%; max-width: 480px; z-index: 100;
   box-shadow: 0 0 0 2px var(--paper-raised);
 }
 .mn-notif-follow { background: var(--green); }
-.mn-notif-upvote { background: var(--red); }
+.mn-notif-upvote { background: #FE2C55; }
 .mn-notif-chat { background: var(--blue); }
 .mn-notif-admin { background: #fff; box-shadow: 0 0 0 1px var(--border); }
 
@@ -252,7 +273,8 @@ width: 100%; max-width: 480px; z-index: 100;
 .mn-notif-tab-active { background: var(--green); color: #fff; }
 
 .mn-notif-main { flex: 1 1 auto; min-width: 0; }
-.mn-notif-text { margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4; color: var(--ink); }
+.mn-notif-text { margin: 0; font-family: 'Inter', sans-serif; font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+.mn-notif-time { font-weight: 400; color: var(--ink-faint); font-size: 13.5px; margin-left: 2px; }
 .mn-notif-text strong { font-weight: 700; }
 .mn-notif-preview {
   margin: 3px 0 0 0; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.4;
@@ -532,55 +554,79 @@ html { scroll-behavior: smooth; }
 2}
 .mn-suggest-scroll::-webkit-scrollbar { display: none; }
 .mn-suggest-card {
-  flex: 0 0 134px; background: var(--paper-raised); border: 1px solid var(--border);
-  border-radius: 14px; overflow: hidden; position: relative; box-shadow: var(--shadow-sm);
+  flex: 0 0 160px; background: var(--paper-raised); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden; position: relative; box-shadow: var(--shadow-sm);
   cursor: pointer; transition: transform .15s cubic-bezier(.2,.7,.3,1);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 16px 12px 14px;
 }
 .mn-suggest-card:active { transform: scale(0.97); }
 .mn-suggest-card-dismiss {
-  position: absolute; top: 6px; right: 6px; z-index: 2; width: 22px; height: 22px; border-radius: 50%;
-  background: rgba(17,19,23,0.55); color: #fff; border: none; cursor: pointer;
+  position: absolute; top: 8px; right: 8px; z-index: 2; width: 24px; height: 24px; border-radius: 50%;
+  background: transparent; color: var(--ink-faint); border: 1px solid var(--border); cursor: pointer;
   display: flex; align-items: center; justify-content: center; padding: 0;
 }
 .mn-suggest-card-dismiss:active { transform: scale(0.9); }
-.mn-suggest-card-photo {
-  height: 130px; display: block;
-  background: linear-gradient(155deg, var(--border), var(--paper-line));
-}
+.mn-suggest-card-photo { display: block; margin-bottom: 10px; }
 .mn-suggest-card-photo .mn-avatar {
-  width: 100%; height: 100%; border-radius: 0; box-shadow: none;
+  width: 72px; height: 72px; border-radius: 50%; box-shadow: 0 0 0 2px var(--paper);
 }
-.mn-suggest-card-photo .mn-avatar svg { width: 46px; height: 46px; }
-.mn-suggest-card-body { padding: 9px 9px 10px; }
+.mn-suggest-card-photo .mn-avatar svg { width: 30px; height: 30px; }
+.mn-suggest-card-body { display: flex; flex-direction: column; align-items: center; width: 100%; }
 .mn-suggest-card-name {
-  display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--ink);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;
+  display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; margin-bottom: 2px;
 }
 .mn-suggest-card-tagline {
-  display: block; font-size: 11px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
-  white-space: nowrap; margin-bottom: 8px;
+  display: block; font-size: 11.5px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; max-width: 100%; margin-bottom: 10px;
 }
-.mn-suggest-card-btn { display: block; width: 100%; margin-left: 0; text-align: center; padding: 6px 0; }
+.mn-suggest-card-btn { display: block; width: 100%; margin-left: 0; text-align: center; padding: 8px 0; border-radius: 999px; font-weight: 700; }
+.mn-depeople-section { padding: 6px 0 8px; }
+.mn-depeople-header { padding: 0 14px 10px; }
+.mn-depeople-title { display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; color: var(--ink); margin: 0; }
+.mn-depeople-title svg { color: var(--green); }
+.mn-depeople-sub { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-faint); margin: 2px 0 0; }
 .mn-depeople-bar {
-  display: flex; gap: 12px; overflow-x: auto; padding: 10px 12px 14px;
+  display: flex; gap: 12px; overflow-x: auto; padding: 2px 14px 14px;
   scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity; scroll-padding-left: 14px;
+  overscroll-behavior-x: contain; touch-action: pan-x;
 }
 .mn-depeople-bar::-webkit-scrollbar { display: none; }
 .mn-depeople-card {
-  flex: 0 0 168px; background: var(--paper-raised); border: 1px solid var(--border);
-  border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm);
+  flex: 0 0 150px; height: 212px; position: relative; border-radius: 18px; overflow: hidden;
+  scroll-snap-align: start; box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+  transition: transform .18s cubic-bezier(.2,.7,.3,1);
+  transform: translateZ(0); backface-visibility: hidden; will-change: transform;
+  -webkit-tap-highlight-color: transparent;
 }
-.mn-depeople-card-photo { height: 164px; display: block; background: linear-gradient(155deg, var(--border), var(--paper-line)); }
+.mn-depeople-card:active { transform: translateZ(0) scale(0.97); }
+.mn-depeople-card-photo { position: absolute; inset: 0; background: linear-gradient(155deg, var(--border), var(--paper-line)); }
 .mn-depeople-card-photo .mn-avatar { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
-.mn-depeople-card-photo .mn-avatar svg { width: 54px; height: 54px; }
-.mn-depeople-card-body { padding: 10px 10px 11px; }
+.mn-depeople-card-photo .mn-avatar svg { width: 46px; height: 46px; }
+.mn-depeople-card-scrim {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 78%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+.mn-depeople-card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 10px 12px; z-index: 1; }
 .mn-depeople-card-name {
-  display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--ink);
+  display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px; color: #fff;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 8px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 .mn-depeople-card-actions { display: flex; gap: 6px; }
-.mn-depeople-card-actions button { flex: 1; text-align: center; padding: 6px 0; font-size: 12px; }
-.mn-depeople-card-remove { background: var(--paper-line); color: var(--ink-soft); border: none; border-radius: 999px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 700; }
+.mn-depeople-card-actions button {
+  flex: 1; text-align: center; padding: 7px 0; font-size: 12px; font-weight: 700;
+  font-family: 'Inter', sans-serif; border-radius: 999px; border: none; cursor: pointer; transition: transform .1s;
+}
+.mn-depeople-card-actions button:active { transform: scale(0.95); }
+.mn-depeople-card-view { background: var(--green); color: #fff; }
+.mn-depeople-card-remove {
+  background: rgba(255,255,255,0.18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  color: #fff; border: 1px solid rgba(255,255,255,0.35);
+}
 
 
 
@@ -797,6 +843,18 @@ html { scroll-behavior: smooth; }
 }
 /* Shorts get a vertical 9:16 player, capped in width so it doesn't dominate the feed */
 .mn-yt-embed-vertical { aspect-ratio: 9 / 16; max-width: 300px; margin-left: auto; margin-right: auto; }
+/* Inside a chat bubble, .mn-chat-bubble is a flex item that shrinks to fit its
+   content — so a 100%-width child (the embed) has nothing real to size against
+   and collapses. Giving it a fixed width here breaks that circular dependency. */
+.mn-chat-bubble .mn-yt-embed { width: 260px; max-width: 72vw; margin: 0; }
+.mn-chat-jumpdown {
+  position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%) translateY(10px);
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--paper-raised); color: var(--ink); box-shadow: var(--shadow-md);
+  display: flex; align-items: center; justify-content: center; z-index: 40;
+  opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+}
+.mn-chat-jumpdown-show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
 .mn-detail-actions-row { display: flex; align-items: center; gap: 2px; margin: 4px 0 2px -10px; }
 
 /* ---------------- Spotify embed ---------------- */
@@ -842,6 +900,12 @@ html { scroll-behavior: smooth; }
 .mn-img-embed { margin: 8px 0 12px 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: var(--paper-line); width: 100%; aspect-ratio: 16 / 9; }
 .mn-img-embed img { display: block; width: 100%; height: 100%; object-fit: contain; margin: 0 auto; cursor: zoom-in; image-rendering: -webkit-optimize-contrast; }
 .mn-video-embed video { display: block; width: 100%; height: auto; background: #000; cursor: default; }
+.mn-video-embed-loading::after {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 28px; height: 28px;
+  margin: -14px 0 0 -14px; border: 3px solid rgba(255,255,255,0.35); border-top-color: #fff;
+  border-radius: 50%; animation: mn-spin 0.7s linear infinite; pointer-events: none;
+}
+@keyframes mn-spin { to { transform: rotate(360deg); } }
 .mn-video-embed-yt { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
 .mn-yt-facade { position: absolute; inset: 0; cursor: pointer; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; }
 .mn-yt-facade-play { width: 56px; height: 56px; border-radius: 50%; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; }
@@ -852,6 +916,14 @@ html { scroll-behavior: smooth; }
   font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600; text-decoration: none;
 }
 .mn-video-embed-invalid { padding: 16px; text-align: center; font-size: 13px; color: var(--ink-faint); background: var(--paper-line); border-radius: 14px; }
+.mn-video-embed-static { position: relative; cursor: pointer; }
+.mn-video-play-sm {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(17,19,23,0.68); border: 2px solid rgba(255,255,255,0.85);
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.mn-video-embed-playing .mn-video-play-sm { display: none; }
 
 .mn-media-fallback { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; color: var(--sub); font-family: 'Inter', sans-serif; font-size: 12.5px; }
 .mn-reels-image-wrap .mn-media-fallback { color: rgba(255,255,255,0.75); }
@@ -967,6 +1039,19 @@ html { scroll-behavior: smooth; }
 .mn-reply .mn-comment-body { margin-left: 26px; }
 .mn-reply .mn-answer-actions { margin-left: 26px; }
 .mn-reply .mn-comment-author .mn-avatar { width: 19px; height: 19px; font-size: 8.5px; }
+.mn-reply .mn-comment-author .mn-avatar { width: 19px; height: 19px; font-size: 8.5px; }
+.mn-comment-row { display: flex; align-items: flex-start; gap: 10px; }
+.mn-comment-main { flex: 1 1 auto; min-width: 0; }
+.mn-comment-topline { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.mn-comment-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.mn-comment-creator-badge { font-size: 11.5px; font-weight: 600; color: var(--blue); }
+.mn-comment-row .mn-comment-body { margin: 0 0 4px 0; }
+.mn-comment-meta { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--ink-faint); }
+.mn-comment-reply-link { background: none; border: none; padding: 0; font-size: 12px; font-weight: 600; color: var(--ink-faint); cursor: pointer; }
+.mn-comment-like-col { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; padding: 2px 0 0 0; color: var(--ink-faint); cursor: pointer; flex: 0 0 auto; }
+.mn-comment-like-col.mn-comment-upvoted { color: var(--yellow-ink); }
+.mn-comment-like-col.mn-comment-upvoted svg { stroke-width: 2.8; }
+.mn-comment-like-col .mn-count { font-size: 11px; }
 .mn-reply-mention { color: var(--blue); font-weight: 600; }
 
 .mn-reply-box { margin: 8px 0 4px 26px; display: flex; flex-direction: column; gap: 6px; }
@@ -994,8 +1079,9 @@ html { scroll-behavior: smooth; }
 .mn-composer-quote { display: flex; align-items: flex-start; gap: 8px; }
 .mn-quote-cancel { flex: 0 0 auto; background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: 13px; padding: 4px; }
 .mn-composer-bar textarea {
-  flex: 1; font-size: 13.5px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
-  background: var(--paper-raised); color: var(--ink); resize: none; max-height: 80px;
+  flex: 1; font-size: 13.5px; padding: 10px 12px; border-radius: 18px; border: 1px solid var(--border);
+  background: var(--paper-raised); color: var(--ink); resize: none; max-height: 160px;
+  transition: height .1s ease, border-radius .1s ease;
 }
 .mn-composer-send {
   flex: 0 0 auto; width: 40px; height: 40px; border-radius: 999px; background: var(--green); border: none;
@@ -1008,10 +1094,10 @@ html { scroll-behavior: smooth; }
 
 /* ---------------- chat pill (WhatsApp-style grouped input) ---------------- */
 .mn-chat-pill {
-  flex: 1; display: flex; align-items: center; gap: 2px;
+  flex: 1; display: flex; align-items: flex-end; gap: 2px;
   background: var(--paper-raised);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 16px;
   padding: 4px 4px 4px 12px;
   box-shadow: 0 2px 10px rgba(20,23,28,0.08), 0 1px 2px rgba(20,23,28,0.06);
   transition: box-shadow .15s ease, border-color .15s ease;
@@ -1273,6 +1359,74 @@ html { scroll-behavior: smooth; }
   background: transparent; backdrop-filter: none;
   flex: 0 0 auto; padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px)) 16px; border-top: 1px solid var(--border);
 }
+
+/* ===== TikTok-style comments sheet ===== */
+.mn-comments-sheet { border-radius: 22px 22px 0 0; padding-top: 8px; }
+.mn-comments-sheet .mn-sheet-handle { display: none; }
+
+/* header: centered "22 comments", X on the right, no line */
+.mn-comments-sheet .mn-comments-sheet-head { position: relative; justify-content: center; border: 0; padding: 12px 16px 8px; }
+.mn-comments-sheet .mn-comments-sheet-head .mn-sheet-title { font-size: 14px; font-weight: 700; margin: 0; }
+.mn-comments-sheet .mn-comments-close { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; color: var(--ink); }
+
+/* remove the post preview + "N answers" row + all dividers */
+.mn-comments-sheet .mn-comments-post-preview,
+.mn-comments-sheet .mn-answers-head { display: none; }
+.mn-comments-sheet .mn-comments-sheet-scroll { padding: 6px 16px 12px; }
+
+/* comment rows */
+.mn-comments-sheet .mn-comment { padding: 10px 0; border: 0; }
+.mn-comments-sheet .mn-comment-row { gap: 12px; }
+.mn-comments-sheet .mn-comment-row > [role="button"] .mn-avatar { width: 40px; height: 40px; }
+.mn-comments-sheet .mn-comment-row > [role="button"] .mn-avatar svg { width: 55%; height: 55%; }
+.mn-comments-sheet .mn-comment-name { font-size: 13px; font-weight: 600; color: var(--ink-faint); }
+.mn-comments-sheet .mn-comment-topline { margin-bottom: 1px; }
+.mn-comments-sheet .mn-comment-creator-badge { color: #12b5cb; font-weight: 600; }
+.mn-comments-sheet .mn-comment-creator-badge::before { content: "·"; color: var(--ink-faint); margin-right: 6px; }
+.mn-comments-sheet .mn-comment-body { font-size: 15px; line-height: 1.4; margin: 0 0 6px; }
+.mn-comments-sheet .mn-comment-meta { gap: 16px; font-size: 13px; color: var(--ink-faint); }
+.mn-comments-sheet .mn-comment-meta .mn-time { font-size: 13px; }
+.mn-comments-sheet .mn-comment-reply-link { font-size: 13px; font-weight: 600; color: var(--ink-faint); }
+
+/* like column */
+.mn-comments-sheet .mn-comment-like-col { gap: 2px; padding: 4px 0 0 6px; min-width: 34px; }
+.mn-comments-sheet .mn-comment-like-col svg { width: 22px; height: 22px; }
+.mn-comments-sheet .mn-comment-like-col .mn-count { font-size: 12.5px; color: var(--ink-faint); }
+
+/* replies: indented, smaller avatar, no vertical line */
+.mn-comments-sheet .mn-thread { margin: 4px 0 0 52px; padding-left: 0; border: 0; gap: 0; }
+.mn-comments-sheet .mn-reply { padding: 8px 0; }
+.mn-comments-sheet .mn-reply .mn-comment-row > [role="button"] .mn-avatar { width: 26px; height: 26px; }
+.mn-comments-sheet .mn-reply .mn-comment-body { font-size: 14.5px; }
+.mn-comments-sheet .mn-reply-box { margin: 6px 0 4px 0; }
+.mn-comments-sheet .mn-reply-box textarea { background: var(--paper-line); border: 0; border-radius: 16px; padding: 10px 14px; }
+
+/* composer: gray pill, no top line */
+.mn-comments-sheet .mn-comments-composer.mn-composer-bar { border: 0; padding: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+.mn-comments-sheet .mn-composer-bar textarea { background: var(--paper-line); border: 0; border-radius: 999px; padding: 12px 18px; font-size: 15px; }
+.mn-comments-sheet .mn-composer-row { align-items: center; }
+.mn-comments-sheet .mn-composer-send { width: 42px; height: 42px; }
+
+/* ===== Upvote: quick, marked, no leftover shadow ===== */
+@keyframes mn-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.16); }
+  100% { transform: scale(1); }
+}
+.mn-pop-anim { animation: mn-pop .18s ease-out; }
+
+/* no gray "stuck hover" blob / focus ring / tap flash after tapping */
+.mn-stat, .mn-comment-like-col { -webkit-tap-highlight-color: transparent; outline: none; box-shadow: none; }
+.mn-stat:focus, .mn-stat:focus-visible, .mn-comment-like-col:focus, .mn-comment-like-col:focus-visible { outline: none; box-shadow: none; }
+@media (hover: none) {
+  .mn-stat:hover { background: none; color: inherit; }
+  .mn-stat.mn-stat-upvoted:hover { color: var(--yellow-ink); }
+}
+
+/* marked (upvoted) state: colored, bold arrow + bold count, stays after refresh */
+.mn-stat-upvoted, .mn-comment-like-col.mn-comment-upvoted { color: var(--yellow-ink); }
+.mn-stat-upvoted svg, .mn-comment-upvoted svg { stroke-width: 2.8; }
+.mn-stat-upvoted .mn-count, .mn-comment-upvoted .mn-count { color: var(--yellow-ink); font-weight: 700; }
 
 /* ---------------- Reels: tray (lives inside Home only) ---------------- */
 .mn-reels-tray { padding: 2px 16px 16px 16px; margin-bottom: 4px; border-bottom: 1px solid var(--paper-line); }
@@ -1585,6 +1739,7 @@ html { scroll-behavior: smooth; }
 .mn-option-check { color: var(--green); display: flex; flex: 0 0 auto; }
 
 /* ---------------- desktop shell / sidebar ---------------- */
+[onclick="selectScreen('discover')"] { display: none !important; }
 .mn-sidebar { display: none; }
 
 /* Below the desktop breakpoint, Discover already lives in the bottom tab bar —
@@ -1863,6 +2018,8 @@ html { scroll-behavior: smooth; }
 .mn-messages-btn { position: relative; }
 .mn-channels-btn { position: relative; }
 .mn-msg-header-title { font-size: 14px; font-weight: 600; letter-spacing: normal; color: var(--ink); }
+.mn-header-title-lg { font-size: 16px !important; font-weight: 700 !important; }
+.mn-header-title-lg { font-size: 19px !important; font-weight: 700 !important; }
 .mn-msg-search { margin: 2px 0 14px 0; }
 .mn-newchat-btn {
   display: flex; align-items: center; gap: 8px; width: 100%; margin-bottom: 14px;
@@ -1906,32 +2063,54 @@ html { scroll-behavior: smooth; }
 .mn-msg-tab-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 .mn-chat-list { display: flex; flex-direction: column; }
-.mn-chat-list .mn-chat-row:first-child { padding-top: 6px; }
+.mn-chat-list .mn-chat-row:first-child { padding-top: 4px; }
 .mn-chat-row {
-  display: flex; align-items: center; gap: 12px; padding: 18px 12px;
-  border-bottom: 1px solid var(--paper-line); cursor: pointer;
+  display: flex; align-items: flex-start; gap: 12px; padding: 10px 4px;
+  border-bottom: none; cursor: pointer;
   transition: background-color .2s cubic-bezier(.2,.7,.3,1);
-  border-radius: 12px; margin: 0 -12px;
+  border-radius: 0; margin: 0;
 }
 .mn-chat-row:active { transform: scale(0.99); }
 .mn-chat-list .mn-chat-row:last-child { border-bottom: none; }
 .mn-chat-row:hover { background: var(--paper-line); }
 .mn-chat-row:active { background: var(--border); }
-.mn-chat-row-unread { background: var(--paper-line); }
-.mn-chat-row-unread:hover { background: var(--border); }
+.mn-chat-row-unread { background: none; }
+.mn-chat-row-unread:hover { background: var(--paper-line); }
 .mn-chat-row-avatar-wrap { position: relative; flex: 0 0 auto; }
-.mn-chat-row .mn-avatar { width: 40px; height: 40px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper); }
+.mn-chat-row .mn-avatar { width: 48px; height: 48px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper); }
+
 .mn-chat-row-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.mn-chat-row-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mn-chat-row-time { font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--ink-faint); flex: 0 0 auto; white-space: nowrap; }
+.mn-chat-row-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: normal; line-height: 1.4; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-chat-row-time { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 400; color: var(--ink-faint); flex: 0 0 auto; white-space: nowrap; }
 .mn-chat-row-bottom { display: flex; align-items: center; gap: 0; min-width: 0; }
 .mn-chat-row-preview {
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 1.55; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; line-height: 1.4; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; flex: 1 1 auto; min-width: 0;
 }
 .mn-chat-row-unread .mn-chat-row-preview,
 .mn-chat-row-unread .mn-chat-row-time { color: var(--ink); font-weight: 600; }
 .mn-chat-row-badge, .mn-chat-count { position: static; box-shadow: none; flex: 0 0 auto; }
+
+/* ---------------- Messages: "Suggested accounts" (TikTok-style) ---------------- */
+.mn-inbox-suggest-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--paper-line); }
+.mn-inbox-suggest-header { display: flex; align-items: center; gap: 5px; padding: 0 4px 10px; font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600; color: var(--ink-faint); }
+.mn-inbox-suggest-header svg { flex: 0 0 auto; }
+.mn-inbox-suggest-row { display: flex; align-items: center; gap: 12px; padding: 10px 4px; cursor: pointer; }
+.mn-inbox-suggest-avatar { flex: 0 0 auto; }
+.mn-inbox-suggest-avatar .mn-avatar { width: 52px; height: 52px; }
+.mn-inbox-suggest-info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mn-inbox-suggest-name { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-inbox-suggest-sub { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-inbox-suggest-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
+.mn-inbox-suggest-btn {
+  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; color: #fff;
+  background: var(--green); border: none; border-radius: 6px; padding: 8px 20px; cursor: pointer;
+  white-space: nowrap; transition: transform .1s;
+}
+.mn-inbox-suggest-btn:active { transform: scale(0.95); }
+.mn-inbox-suggest-btn-active { background: var(--paper-line); color: var(--ink-soft); }
+.mn-inbox-suggest-dismiss { flex: 0 0 auto; color: var(--ink-faint); background: none; border: none; cursor: pointer; padding: 4px; }
+.mn-inbox-suggest-dismiss:active { transform: scale(0.9); }
 
 /* new-message sheet */
 .mn-newchat-input {
@@ -2014,7 +2193,7 @@ html { scroll-behavior: smooth; }
 
 /* chat header (back button + other person's avatar/name, tap to view profile) */
 .mn-chat-header { gap: 10px; box-shadow: none; position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transform: translateZ(0); }
-.mn-chat-header .mn-avatar { width: 32px; height: 32px; font-size: 13px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 3px var(--green); border-radius: 50%; }
+.mn-chat-header .mn-avatar { width: 32px; height: 32px; font-size: 13px; flex: 0 0 auto; box-shadow: 0 0 0 2px var(--paper-raised); border-radius: 50%; }
 .mn-chat-header-sub { font-size: 11px; color: var(--ink-faint); font-weight: 500; }
 .mn-chat-header .mn-avatar { width: 28px; height: 28px; font-size: 12px; flex: 0 0 auto; }
 
@@ -2046,6 +2225,16 @@ html { scroll-behavior: smooth; }
 .mn-chat-start-sub { margin: 0; font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); }
 .mn-shell:not([data-theme="dark"]) .mn-chat-start-name { color: var(--ink); }
 .mn-shell:not([data-theme="dark"]) .mn-chat-start-sub { color: var(--ink-faint); }
+
+.mn-chat-intro { display:flex; flex-direction:column; align-items:center; text-align:center; padding:32px 20px 24px; }
+.mn-chat-intro .mn-avatar { width:96px; height:96px; margin-bottom:14px; }
+.mn-chat-intro-name { font-family:'Inter',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0; display:flex; align-items:center; gap:6px; }
+.mn-chat-intro-handle { font-size:14px; color:var(--ink-faint); margin:4px 0 2px; }
+.mn-chat-intro-stats { font-size:14px; color:var(--ink-faint); }
+
+.mn-reqbanner { background:var(--paper-line); padding:18px 24px calc(18px + env(safe-area-inset-bottom, 0px)); text-align:center; }
+.mn-reqbanner-title { font-weight:700; font-size:16px; color:var(--ink); margin:0 0 6px; }
+.mn-reqbanner-sub { font-size:13.5px; color:var(--ink-faint); margin:0; line-height:1.4; }
 .mn-chat-bubble-row { display: flex; justify-content: flex-start; padding: 0 10px; scroll-margin-bottom: 84px; animation: mnBubbleIn .18s ease-out; }
 @keyframes mnBubbleIn {
   from { opacity: 0; transform: translateY(6px); }
@@ -2053,37 +2242,35 @@ html { scroll-behavior: smooth; }
 }
 .mn-chat-bubble-row-mine { justify-content: flex-end; }
 .mn-chat-bubble {
-  max-width: 78%; padding: 6px 9px 8px 9px; margin: 1px 0 1px 8px; border-radius: 7.5px 7.5px 7.5px 2px;
-  background: #EDEDED; box-shadow: 0 1px 0.5px rgba(0,0,0,0.1); position: relative;
-}
-.mn-chat-bubble::before {
-  content: ""; position: absolute; top: 0; left: -7px; width: 8px; height: 13px;
-  background: #EDEDED; clip-path: polygon(100% 0, 100% 100%, 0 0);
+  max-width: 78%; padding: 8px 14px; margin: 3px 0 3px 8px; border-radius: 20px;
+  background: #EDEDED; position: relative;
 }
 .mn-chat-bubble-mine {
-  background: #DCF8C6; border-radius: 7.5px 7.5px 2px 7.5px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
-  margin: 1px 8px 1px 0;
+  background: var(--green); border-radius: 20px;
+  margin: 3px 8px 3px 0;
 }
-.mn-chat-bubble-mine::before {
-  left: auto; right: -7px; background: #DCF8C6; clip-path: polygon(0 0, 0 100%, 100% 0);
-}
-.mn-shell[data-theme="dark"] .mn-chat-bubble::before { background: #262D31; }
-.mn-shell[data-theme="dark"] .mn-chat-bubble-mine::before { background: #005C4B; }
+
 .mn-shell[data-theme="dark"] .mn-chat-bubble { background: #262D31; box-shadow: none; }
-.mn-shell[data-theme="dark"] .mn-chat-bubble-mine { background: #005C4B; box-shadow: none; }
-.mn-chat-bubble p { margin: 0; font-family: 'Inter', sans-serif; font-size: 14.2px; line-height: 19px; color: var(--ink); white-space: pre-wrap; word-break: break-word; padding-right: 46px; }
+.mn-shell[data-theme="dark"] .mn-chat-bubble-mine { background: #0B6E4F; box-shadow: none; }
+.mn-chat-bubble p { margin: 0; font-family: 'Inter', sans-serif; font-size: 14.2px; line-height: 19px; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
 .mn-shell[data-theme="dark"] .mn-chat-bubble p,
 .mn-shell[data-theme="dark"] .mn-chat-bubble-mine p { color: #E9EDEF; }
-.mn-chat-bubble-mine p { color: var(--ink); }
+.mn-chat-bubble-mine p { color: #fff; }
 .mn-chat-bubble-time { position: absolute; right: 9px; bottom: 5px; margin-top: 0; font-size: 11px; color: var(--ink-faint); text-align: right; opacity: 0.75; letter-spacing: 0.01em; }
 .mn-chat-bubble-mine .mn-chat-bubble-time { color: var(--ink-faint); }
-.mn-unread-divider { display: flex; align-items: center; gap: 10px; margin: 10px 10px 4px; }
-.mn-unread-divider::before, .mn-unread-divider::after { content: ""; flex: 1; height: 1px; background: var(--red, #e63946); opacity: 0.5; }
-.mn-unread-divider span { font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 700; color: var(--red, #e63946); text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+.mn-date-divider { display: flex; align-items: center; justify-content: center; margin: 14px 0 8px; }
+.mn-date-divider span { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: var(--ink-faint); }
+.mn-unread-divider { display: flex; align-items: center; justify-content: center; margin: 14px 0 8px; }
+.mn-unread-divider span {
+  font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+  color: var(--ink-faint); background: var(--paper-line);
+  padding: 6px 14px; border-radius: 999px; white-space: nowrap;
+}
 /* swipe-to-reply */
 .mn-chat-bubble-row { position: relative; touch-action: pan-y; }
 .mn-chat-bubble { transition: transform .15s ease; }
-.mn-chat-swipe-icon {
+.mn-chat-swipe-icon { display: none !important; }
+.mn-chat-swipe-icon-unused {
   position: absolute; top: 50%; left: 6px; width: 24px; height: 24px;
   border-radius: 50%; background: var(--paper-line); color: var(--ink-faint);
   display: flex; align-items: center; justify-content: center;
@@ -2091,6 +2278,7 @@ html { scroll-behavior: smooth; }
   transition: opacity .15s ease, transform .15s ease; pointer-events: none;
 }
 .mn-chat-bubble-row-mine .mn-chat-swipe-icon { left: auto; right: 6px; }
+.mn-chat-reply-bar { display: none !important; }
 .mn-chat-bubble-row[data-swipe-active="1"] .mn-chat-swipe-icon { opacity: 1; transform: translateY(-50%) scale(1); }
 .mn-gift-card-row { padding: 2px 10px; }
 .mn-gift-card {
@@ -2111,12 +2299,7 @@ html { scroll-behavior: smooth; }
 .mn-gift-card-amount { margin: 3px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; color: var(--ink); }
 .mn-gift-card-amount span { font-size: 11px; font-weight: 600; opacity: .7; margin-left: 2px; }
 .mn-gift-card-time { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink-faint); text-align: right; }
-.mn-gift-card-tail {
-  position: absolute; bottom: 8px; width: 12px; height: 12px;
-  background: inherit; border-radius: 3px;
-}
-.mn-chat-bubble-row-mine .mn-gift-card-tail { right: -5px; transform: rotate(45deg); }
-.mn-chat-bubble-row:not(.mn-chat-bubble-row-mine) .mn-gift-card-tail { left: -5px; transform: rotate(45deg); }
+
 .mn-gift-card-title { margin: 0; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--ink); }
 .mn-gift-card-amount { margin: 4px 0 0; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 17px; color: var(--ink); }
 .mn-gift-card-amount span { font-size: 11px; font-weight: 600; opacity: .7; margin-left: 2px; }
@@ -2160,7 +2343,8 @@ html { scroll-behavior: smooth; }
 .mn-chat-limit-notice {
   text-align: center; font-size: 11.5px; color: var(--ink-faint);
   margin: 10px auto 4px; padding: 5px 12px; width: fit-content;
-  background: color-mix(in srgb, var(--paper-raised) 88%, transparent);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-sm);
   border-radius: 999px;
 }
 
@@ -2660,6 +2844,29 @@ body[data-theme="dark"] .mn-install-btn-primary { background: #000; color: #fff;
   margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 600;
   font-size: 13px; letter-spacing: 0.03em; color: #8A8F98;
 }
+.mn-pfind { margin: 0 0 14px 0; padding: 4px 0 6px; border-bottom: 1px solid var(--border); }
+.mn-pfind-title { margin: 0 0 4px 2px; font: 700 12px 'Inter', sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.mn-pfind-empty { margin: 8px 2px; font-size: 13px; color: var(--ink-faint); }
+.mn-pfind-row { display: flex; align-items: center; gap: 12px; padding: 9px 4px; border-radius: 10px; cursor: pointer; }
+.mn-pfind-row:hover { background: var(--paper-line); }
+.mn-pfind-row .mn-avatar { width: 42px; height: 42px; flex: 0 0 auto; }
+.mn-pfind-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mn-pfind-name { font: 600 15px 'Inter', sans-serif; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-pfind-sub { font-size: 12.5px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-shell[data-imagetok="true"] .mn-pfind { display: none !important; }
+.mn-suggest-box { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 60; }
+.mn-sg-panel { background: var(--paper-raised); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow-md); max-height: 60vh; overflow-y: auto; padding: 6px 0; }
+.mn-sg-head { display: flex; justify-content: space-between; align-items: center; padding: 6px 16px 4px; font: 700 12px 'Inter', sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.mn-sg-head button { background: none; border: none; color: var(--green); font: 600 12px 'Inter', sans-serif; text-transform: none; letter-spacing: 0; cursor: pointer; }
+.mn-sg-row { display: flex; align-items: center; gap: 14px; padding: 11px 14px; cursor: pointer; }
+.mn-sg-row:hover, .mn-sg-row:active { background: var(--paper-line); }
+.mn-sg-row .mn-avatar { width: 34px; height: 34px; flex: 0 0 auto; }
+.mn-sg-ico { width: 22px; flex: 0 0 auto; display: flex; justify-content: center; color: var(--ink-soft); font-weight: 700; }
+.mn-sg-text { flex: 1; min-width: 0; font-size: 15.5px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mn-sg-sub { display: block; font-size: 12px; color: var(--ink-soft); }
+.mn-sg-fill { flex: 0 0 auto; background: none; border: none; color: var(--ink-soft); font-size: 20px; line-height: 1; padding: 4px 6px; cursor: pointer; }
+.mn-search .mn-sg-panel svg { position: static; transform: none; }
+.mn-search-clear { display: none !important; }
 </style>
 </head>
 <body>
@@ -3524,6 +3731,9 @@ function youtubeEmbedHtml(text) {
   if (!id) return "";
   return ytEmbedHtmlById(id);
 }
+function stripYoutubeUrlForChat(text) {
+  return String(text || "").replace(/\b(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/\S+|youtu\.be\/\S+)/gi, "").trim();
+}
 // ---------------- generic link-embed helpers (Create > Link tab) ----------------
 // Loose "looks like a link" check — good enough for a client-side preview,
 // not a full URL validator (we never fetch the link, just format it).
@@ -3897,26 +4107,55 @@ function videoEmbedHtml(url, opts) {
   const loop = opts.loop ? "loop" : "";
   const extraAttrs = opts.extraAttrs || "";
   const ratio = opts.w && opts.h ? ` style="aspect-ratio:${opts.w} / ${opts.h};"` : "";
-  // Media-fragment hint (#t=0.5): with only preload="metadata" (no full
-  // download), most browsers still decode and show whatever frame the src
-  // points at as the still preview before playback starts. Pointing that at
-  // ~0.5s instead of frame 0 avoids the all-black opening frame a lot of
-  // clips start on, giving every video (Wikimedia or anywhere else) a real
-  // image preview with no extra network request. Skipped if the URL already
-  // carries a fragment.
   const src = /#/.test(url) ? url : `${url}#t=0.5`;
-  // Wikimedia files come with a real thumbnail (opts.poster, from
-  // fetchWikiFileUrl) — prefer that as the poster since it's guaranteed to
-  // render even if the browser can't decode a cross-origin video frame at all.
   const poster = opts.poster ? ` poster="${opts.poster}"` : "";
-  return `
+  // Reels/full-screen autoplay contexts still get the eager native-controls
+  // video — it's meant to start playing immediately. Everywhere else (feed
+  // posts) gets a lightweight click-to-play card: just the decoded poster
+  // frame + a small play badge, nothing downloads until tapped.
+  if (opts.autoplay) {
+    return `
       <div class="mn-img-embed mn-video-embed"${ratio}>
       <video src="${src}" controls playsinline muted ${autoplay} ${loop} preload="metadata"${poster} ${extraAttrs}
         onclick="event.stopPropagation()"
         onerror="mediaLoadError(this, '${escapeJsString(url)}')"></video>
     </div>
   `;
+  }
+  return `
+      <div class="mn-img-embed mn-video-embed mn-video-embed-static"${ratio} onclick="playInlineVideo(this, event)" onmousedown="preloadInlineVideo(this)" ontouchstart="preloadInlineVideo(this)">
+      <video src="${src}" playsinline muted ${loop} preload="metadata"${poster} ${extraAttrs}
+        onerror="mediaLoadError(this, '${escapeJsString(url)}')"></video>
+      <span class="mn-video-play-sm" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </div>
+  `;
 }
+function preloadInlineVideo(wrap) {
+  const video = wrap.querySelector("video");
+  if (video && video.preload !== "auto" && video.readyState < 2) {
+    video.preload = "auto";
+  }
+}
+function playInlineVideo(wrap, event) {
+  event.stopPropagation();
+  if (wrap.classList.contains("mn-video-embed-playing")) return;
+  const video = wrap.querySelector("video");
+  if (!video) return;
+  wrap.classList.add("mn-video-embed-playing", "mn-video-embed-loading");
+if (video.preload !== "auto") video.preload = "auto";
+  video.setAttribute("controls", "");
+  video.muted = false;
+  const clearLoading = () => wrap.classList.remove("mn-video-embed-loading");
+  video.addEventListener("playing", clearLoading, { once: true });
+  video.play().then(clearLoading).catch(() => {
+  wrap.classList.remove("mn-video-embed-playing", "mn-video-embed-loading");
+  mediaLoadError(video, video.src);
+});
+}
+window.playInlineVideo = playInlineVideo;
+window.preloadInlineVideo = preloadInlineVideo;
 
 // -- Audio: exact stored file URL, played inline with the native controls. --
 function audioEmbedHtml(url) {
@@ -4713,10 +4952,11 @@ async function loadFollowingQuestions(reset = false) {
     const results = await Promise.all(
       chunks.map(async (ids) => {
         const ref = query(
-          collection(db, "questions"),
-          where("authorId", "in", ids),
-          orderBy("createdAt", "desc")
-        );
+  collection(db, "questions"),
+  where("authorId", "in", ids),
+  orderBy("createdAt", "desc"),
+  limit(50)
+);
 
         return getDocs(ref);
       })
@@ -4775,7 +5015,7 @@ let questionsHasMore = true;       // false once a page comes back smaller than 
 let questionsLoadingMore = false;  // guards against firing multiple loads at once
 let feedSentinelObserver = null;   // IntersectionObserver watching the loader element at the bottom of the feed
 
-const qRef = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+const qRef = query(collection(db, "questions"), orderBy("createdAt", "desc"), limit(50));
 let firstFeedPagePainted = false;
 onSnapshot(qRef, async (snap) => {
   state.questions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
@@ -5180,14 +5420,21 @@ async function loadTopAnswers() {
 }
 
 let sharedOpened = false;
-function maybeOpenSharedQuestion() {
+async function maybeOpenSharedQuestion() {
   if (sharedOpened) return;
   const params = new URLSearchParams(location.search);
   const qid = params.get("q");
-  if (qid && state.questions.find((q) => q.id === qid)) {
-    sharedOpened = true;
-    openDetail(qid, "home");
+  if (!qid) return;
+  sharedOpened = true;
+  let q = state.questions.find((x) => x.id === qid);
+  if (!q) {
+    try {
+      const snap = await getDoc(doc(db, "questions", qid));
+      if (snap.exists()) { q = { id: snap.id, ...snap.data() }; state.questions.unshift(q); }
+    } catch (e) { console.error(e); }
   }
+  if (q) openDetail(qid, "home");
+  else showToast("This post isn't available anymore.");
 }
 
 function selectScreen(screen) {
@@ -5232,7 +5479,7 @@ function floatPlusOne(btn) {
 function celebrateUpvote(btn) {
   if (!btn) return;
   popEl(btn);
-  floatPlusOne(btn);
+  
   hapticTap(9);
 }
 
@@ -5914,14 +6161,34 @@ function setChannelPostMediaUrl(v) { state.channelPostForm.mediaUrl = v.trim(); 
 // Full re-render once the link field loses focus, so the image/video/audio preview
 // appears — done on blur rather than on every keystroke so typing never loses focus.
 function commitChannelPostMediaUrl() { render(); }
+// Reads a video file's real dimensions (without uploading it) and checks it's 16:9.
+// A small tolerance covers normal encoder rounding (e.g. 1920x1080, 1280x720).
+function isVideo16by9(file, tolerance = 0.02) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const videoEl = document.createElement("video");
+    videoEl.preload = "metadata";
+    videoEl.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      const ratio = videoEl.videoWidth / videoEl.videoHeight;
+      resolve(Math.abs(ratio - 16 / 9) < tolerance);
+    };
+    videoEl.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Couldn't read that video file.")); };
+    videoEl.src = url;
+  });
+}
 async function onChannelPostFileSelected(input) {
   const file = (input.files || [])[0];
   input.value = "";
   if (!file) return;
   try {
+    if (file.type.startsWith("video/")) {
+      const ok = await isVideo16by9(file);
+      if (!ok) { showToast("Only 16:9 videos are allowed.", "error"); return; }
+    }
     const toUpload = await maybeCompressImage(file);
-const result = await uploadFileToCloudinary(toUpload);
-setChannelPostMediaUrl(result.url);
+    const result = await uploadFileToCloudinary(toUpload);
+    setChannelPostMediaUrl(result.url);
     commitChannelPostMediaUrl();
   } catch (e) { console.error(e); showToast(e.message || "Upload failed. Try again.", "error"); }
 }
@@ -6369,11 +6636,20 @@ chatMessagesUnsub = onSnapshot(mq, (snap) => {
 function detachChatMessagesListener() {
   if (chatMessagesUnsub) { chatMessagesUnsub(); chatMessagesUnsub = null; }
 }
+
 function attachActiveChatUserListener(chatId, otherUserId) {
   if (activeChatUserUnsub) { activeChatUserUnsub(); activeChatUserUnsub = null; }
   activeChatUserUnsub = onSnapshot(doc(db, "users", otherUserId), (snap) => {
     if (snap.exists() && state.activeChatId === chatId) {
-      state.activeChatUser = { ...state.activeChatUser, lastActive: snap.data().lastActive };
+      const d = snap.data();
+      state.activeChatUser = {
+        ...state.activeChatUser,
+        lastActive: d.lastActive,
+        followersCount: d.followersCount,
+        followedUsers: d.followedUsers,
+        photoURL: d.photoURL || state.activeChatUser.photoURL,
+        username: d.username || state.activeChatUser.username,
+      };
       render();
     }
   }, (e) => showToast("lastActive error: " + e.message, "error"));
@@ -6385,7 +6661,25 @@ function isNearChatBottom() {
   const threshold = 140; // px of slack from the true bottom
   return (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - threshold);
 }
+window.addEventListener("scroll", () => {
+  if (state.screen !== "chat") return;
+  const btn = document.querySelector(".mn-chat-jumpdown");
+  if (btn) btn.classList.toggle("mn-chat-jumpdown-show", !isNearChatBottom());
+}, { passive: true });
 function scrollChatToBottom() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const overflowing = document.documentElement.scrollHeight > window.innerHeight + 4;
+      if (!overflowing) return;
+      const last = document.querySelector(".mn-chat-bubble-row:last-child");
+      if (last) last.scrollIntoView({ block: "end" });
+      else window.scrollTo(0, document.body.scrollHeight);
+    });
+  });
+}
+// Always scrolls, unconditionally — bypasses the "near bottom already" guard
+// added later, which is meant for auto-scroll-on-new-message, not a manual tap.
+function jumpToChatBottom() {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const last = document.querySelector(".mn-chat-bubble-row:last-child");
@@ -6394,6 +6688,7 @@ function scrollChatToBottom() {
     });
   });
 }
+window.jumpToChatBottom = jumpToChatBottom;
 // Clears the reader's own unread counter on this chat. Safe to call on a chat
 // that doesn't exist in Firestore yet (opening a brand-new conversation before
 // either side has sent a message) — updateDoc simply fails silently in that case.
@@ -6639,12 +6934,213 @@ window.setGiftAmount = setGiftAmount;
 window.toggleGiftCustom = toggleGiftCustom;
 window.sendGiftCoins = sendGiftCoins;
 
+// ================= PEOPLE SEARCH (home search bar) =================
+var peopleResults = [];
+var peopleSearching = false;
+var peopleSearchTimer = null;
+var peopleSearchSeq = 0;
+
+function searchPeopleForFeed(raw) {
+  const term = (raw || "").trim();
+  clearTimeout(peopleSearchTimer);
+  if (!term || term.startsWith("#")) {      // empty or hashtag: no people search
+    peopleSearchSeq++;
+    peopleResults = []; peopleSearching = false;
+    renderPeopleResultsOnly();
+    return;
+  }
+  peopleSearching = true;
+  renderPeopleResultsOnly();
+  peopleSearchTimer = setTimeout(() => runPeopleSearch(term), 350);
+}
+
+async function runPeopleSearch(term) {
+  const seq = ++peopleSearchSeq;
+  // Firestore prefix search is case-sensitive, so try a few spellings
+  const lower = term.toLowerCase();
+  const variants = [...new Set([term, lower, lower.charAt(0).toUpperCase() + lower.slice(1)])];
+  try {
+    const snaps = await Promise.all(variants.map((v) => getDocs(query(
+      collection(db, "users"), orderBy("username"),
+      where("username", ">=", v), where("username", "<=", v + "\uf8ff"),
+      limit(8)
+    ))));
+    if (seq !== peopleSearchSeq) return;    // a newer search started
+    const byId = new Map();
+    snaps.forEach((s) => s.docs.forEach((d) => byId.set(d.id, { id: d.id, ...d.data() })));
+    peopleResults = [...byId.values()].slice(0, 8);
+    peopleResults.forEach((u) => { state.photoCache[u.id] = u.photoURL || ""; });
+  } catch (e) { console.error(e); peopleResults = []; }
+  if (seq !== peopleSearchSeq) return;
+  peopleSearching = false;
+  renderPeopleResultsOnly();
+}
+
+function peopleResultRowHtml(u) {
+  const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
+  const isMe = state.user && u.id === state.user.uid;
+  const following = isFollowedAuthor(u.id);
+  return `
+    <div class="mn-pfind-row" onclick="openUserProfile('${u.id}', '${nameEsc}', event)" role="button">
+      ${avatarHtml(u.username, u.id, u.photoURL)}
+      <div class="mn-pfind-info">
+        <span class="mn-pfind-name">${escapeHtml(u.username || "")}</span>
+        <span class="mn-pfind-sub">${escapeHtml(creatorTagline(u))}</span>
+      </div>
+      ${isMe ? "" : `<button class="mn-follow-btn ${following ? "mn-follow-btn-active" : ""}" onclick="toggleFollowUser('${u.id}', '${nameEsc}', event); event.stopPropagation();">${following ? "Following" : "Follow"}</button>`}
+    </div>`;
+}
+
+function peopleResultsHtml() {
+  if (state.sortMode === "imagetok") return "";
+  const term = (state.searchTerm || "").trim();
+  if (!term || term.startsWith("#")) return "";
+  if (peopleSearching && !peopleResults.length)
+    return `<div class="mn-pfind"><p class="mn-pfind-title">People</p><p class="mn-pfind-empty">Searching…</p></div>`;
+  if (!peopleResults.length) return "";
+  return `<div class="mn-pfind"><p class="mn-pfind-title">People</p>${peopleResults.map(peopleResultRowHtml).join("")}</div>`;
+}
+
+function renderPeopleResultsOnly() {
+  const el = document.getElementById("mn-people-results");
+  if (el) el.innerHTML = peopleResultsHtml();
+renderSuggestOnly();
+}
+// ================= SEARCH SUGGESTIONS (YouTube-style) =================
+var suggestOpen = false;
+var suggestItems = [];
+var RECENT_KEY = "mn_recent_searches";
+var SG_CLOCK = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>`;
+var SG_SEARCH = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg>`;
+
+function getRecentSearches() {
+  try { return JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) { return []; }
+}
+function saveRecentSearch(t) {
+  t = (t || "").trim();
+  if (!t) return;
+  const list = getRecentSearches().filter((x) => x.toLowerCase() !== t.toLowerCase());
+  list.unshift(t);
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
+}
+function clearRecentSearches() {
+  try { localStorage.removeItem(RECENT_KEY); } catch (e) {}
+  renderSuggestOnly();
+}
+
+function openSuggest() { suggestOpen = true; renderSuggestOnly(); }
+function closeSuggest() { suggestOpen = false; renderSuggestOnly(); }
+function renderSuggestOnly() {
+  const el = document.getElementById("mn-suggest-box");
+  if (el) el.innerHTML = suggestBoxHtml();
+}
+
+function buildTextSuggestions(term) {
+  const t = term.toLowerCase().replace(/^#/, "");
+  const out = [];
+  const seen = new Set();
+  const tags = new Set();
+  (state.questions || []).forEach((q) => (q.tags || []).forEach((tag) => { if (tag.includes(t)) tags.add(tag); }));
+  [...tags].slice(0, 3).forEach((tag) => { out.push({ kind: "tag", text: "#" + tag }); seen.add("#" + tag); });
+  if (term.startsWith("#")) return out;
+  let posts = 0;
+  (state.questions || []).forEach((q) => {
+    if (posts >= 5) return;
+    const text = (q.title || q.body || "").replace(/\s+/g, " ").trim();
+    const idx = text.toLowerCase().indexOf(t);
+    if (idx < 0) return;
+    const s = text.slice(idx, idx + 50).trim();
+    if (!s || seen.has(s.toLowerCase())) return;
+    seen.add(s.toLowerCase());
+    out.push({ kind: "post", text: s });
+    posts++;
+  });
+  return out;
+}
+
+function sgRow(icon, text, i) {
+  return `
+    <div class="mn-sg-row" onclick="pickSuggestion(${i})">
+      <span class="mn-sg-ico">${icon}</span>
+      <span class="mn-sg-text">${escapeHtml(text)}</span>
+      <button class="mn-sg-fill" onclick="fillSuggestion(${i}, event)" aria-label="Use this text">&#8598;</button>
+    </div>`;
+}
+
+function suggestBoxHtml() {
+  if (!suggestOpen || state.screen !== "home" || state.sortMode === "imagetok") return "";
+  const term = (state.searchTerm || "").trim();
+
+  if (!term) {                                   // empty box: recent searches
+    const recent = getRecentSearches();
+    if (!recent.length) return "";
+    suggestItems = recent;
+    return `<div class="mn-sg-panel">
+      <div class="mn-sg-head"><span>Recent</span><button onclick="clearRecentSearches()">Clear all</button></div>
+      ${recent.map((t, i) => sgRow(SG_CLOCK, t, i)).join("")}
+    </div>`;
+  }
+
+  const items = buildTextSuggestions(term);      // typing: people + tags + phrases
+  suggestItems = items.map((x) => x.text);
+  const people = term.startsWith("#") ? [] : peopleResults.slice(0, 3);
+  if (!people.length && !items.length) return "";
+  const peopleHtml = people.map((u) => {
+    const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
+    return `
+      <div class="mn-sg-row" onclick="openPersonFromSuggest('${u.id}', '${nameEsc}', event)">
+        ${avatarHtml(u.username, u.id, u.photoURL)}
+        <span class="mn-sg-text">${escapeHtml(u.username || "")}<span class="mn-sg-sub">${escapeHtml(creatorTagline(u))}</span></span>
+      </div>`;
+  }).join("");
+  return `<div class="mn-sg-panel">${peopleHtml}${items.map((x, i) => sgRow(x.kind === "tag" ? "#" : SG_SEARCH, x.text, i)).join("")}</div>`;
+}
+
+function pickSuggestion(i) {                     // tap the row: search it now
+  const t = suggestItems[i];
+  if (!t) return;
+  setSearchTerm(t);
+  saveRecentSearch(t);
+  closeSuggest();
+  const el = document.getElementById("mn-search-input");
+  if (el) el.blur();
+}
+function fillSuggestion(i, ev) {                 // tap the arrow: copy into box, keep typing
+  if (ev) ev.stopPropagation();
+  const t = suggestItems[i];
+  if (!t) return;
+  setSearchTerm(t);
+  renderSuggestOnly();
+  const el = document.getElementById("mn-search-input");
+  if (el) { el.value = t; el.focus(); }
+}
+function openPersonFromSuggest(id, name, ev) {
+  suggestOpen = false;
+  saveRecentSearch(name);
+  openUserProfile(id, name, ev);
+}
+function searchKeydown(ev) {
+  if (ev.key === "Enter") { saveRecentSearch(state.searchTerm); closeSuggest(); ev.target.blur(); }
+  else if (ev.key === "Escape") { closeSuggest(); }
+}
+document.addEventListener("pointerdown", (e) => {
+  if (suggestOpen && !e.target.closest(".mn-search")) closeSuggest();
+});
+Object.assign(window, { openSuggest, closeSuggest, searchKeydown, pickSuggestion, fillSuggestion, clearRecentSearches, openPersonFromSuggest });
+// ================= END PEOPLE SEARCH =================
+
 let searchTrackTimer = null;
 let searchRenderTimer = null;
 function setSearchTerm(v) {
   state.searchTerm = v;
+  const inputEl = document.getElementById("mn-search-input");
+  if (inputEl && inputEl.value !== v) inputEl.value = v;
+  const clearBtn = document.querySelector(".mn-search-clear");
+  if (clearBtn) clearBtn.style.display = v ? "" : "none";
+  else if (v && inputEl) inputEl.insertAdjacentHTML("afterend", `<button class="mn-iconbtn mn-search-clear" onclick="setSearchTerm('')" title="Clear">✕</button>`);
   clearTimeout(searchRenderTimer);
   searchRenderTimer = setTimeout(renderFeedOnly, 200);
+searchPeopleForFeed(v);
   clearTimeout(searchTrackTimer);
   searchTrackTimer = setTimeout(() => { if (v.trim()) trackEvent("search", { search_term: v.trim() }); }, 600);
 }
@@ -6892,10 +7388,30 @@ async function upvoteQuestion(id, ev) {
   if (!state.user) { setState({ pendingScreen: state.screen, authModal: "signin" }); return; }
   const q = findQuestionById(id);
   if (!q || (q.upvoterIds || []).includes(state.user.uid)) return;
-  recordTagInterest(q.tags, 3);
-  celebrateUpvote(ev && ev.currentTarget);
+  const btn = ev && ev.currentTarget;
+// 1) instant UI: update local data + button before any network call
+q.points = (q.points || 0) + 1;
+q.upvoterIds = [...(q.upvoterIds || []), state.user.uid];
+if (btn) {
+  btn.classList.remove("mn-stat-upvote");
+  btn.classList.add("mn-stat-upvoted");
+  const c = btn.querySelector(".mn-count");
+  if (c) c.textContent = q.points;
+  else btn.insertAdjacentHTML("beforeend", `<span class="mn-count">${q.points}</span>`);
+}
+celebrateUpvote(btn);
+recordTagInterest(q.tags, 3);
+// 2) save in the background; undo the UI if it fails
+try {
   await updateDoc(doc(db, "questions", id), { points: increment(1), upvoterIds: arrayUnion(state.user.uid) });
-  if (q.authorId) await updateDoc(doc(db, "users", q.authorId), { totalPoints: increment(1) }).catch(() => {});
+} catch (e) {
+  console.error(e);
+  q.points = Math.max(0, (q.points || 1) - 1);
+  q.upvoterIds = (q.upvoterIds || []).filter((u) => u !== state.user.uid);
+  render();
+  return;
+}
+if (q.authorId) updateDoc(doc(db, "users", q.authorId), { totalPoints: increment(1) }).catch(() => {});
   createNotification(q.authorId, { type: "upvote_question", questionId: id, preview: (q.title || "").slice(0, 90) });
   trackEvent("upvote", { content_type: "question", item_id: id });
 }
@@ -7336,19 +7852,14 @@ async function onProfilePhotoFileSelected(input) {
   if (!file) return;
   try {
     const toUpload = await maybeCompressImage(file);
-const result = await uploadFileToCloudinary(toUpload);
-setChallengeCoverUrl(result.url);
+    const result = await uploadFileToCloudinary(toUpload);
+    setProfileField('photoUrl', result.url);
     render();
     showToast("Photo uploaded — tap Save to keep it.");
   } catch (e) { console.error(e); showToast(e.message || "Photo upload failed. Try again.", "error"); }
 }
 async function saveProfile() {
-  const rawInput = (state.profileForm.photoUrl || "").trim();
-  if (rawInput && !isWikimediaPhotoUrl(rawInput)) {
-    showToast("That doesn't look like a valid link. Paste a direct image link (e.g. from catbox.moe).");
-    return;
-  }
-  const rawPhoto = normalizeWikimediaUrl(rawInput, 150);
+    const rawPhoto = (state.profileForm.photoUrl || "").trim();
   await updateDoc(doc(db, "users", state.user.uid), { bio: state.profileForm.bio, place: state.profileForm.place, photoURL: rawPhoto });
   state.profile.bio = state.profileForm.bio;
   state.profile.place = state.profileForm.place;
@@ -7430,6 +7941,7 @@ function iconLink() { return `<svg width="20" height="20" viewBox="0 0 24 24" fi
 function iconWhatsapp() { return `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.6.1-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6 0-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.4 0-.5s-.6-1.4-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.3s1 2.7 1.2 2.9c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3a8.2 8.2 0 1 1 7.1 3.8z"/></svg>`; }
 function iconTelegram() { return `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.5 2.7 10.9c-1 .4-1 1.7.1 2l4.6 1.5 1.8 5.6c.2.7 1 .9 1.6.4l2.5-2.2 4.7 3.4c.7.5 1.7.1 1.9-.7l3.2-15.5c.2-1-.7-1.7-1.6-1.9zM9.1 15.1l-1-3.5 9.6-6-7.9 7.4-.7 2.1z"/></svg>`; }
 function iconMoon() { return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+function iconMoreDots() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>`; }
 function iconMegaphone(active) { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${active ? 2.3 : 2}"><path d="M3 11v2a2 2 0 0 0 2 2h1l3.5 5v-14L6 9H5a2 2 0 0 0-2 2Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 8.5a10 10 0 0 1 0 7M17.5 6a14.5 14.5 0 0 1 0 12" stroke-linecap="round"/></svg>`; }
 function iconPollSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 20V10M12 20V4M18 20v-7" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 function iconImageSmall() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m5 18 5-5.5 3.5 3.5L18 11l3 5" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
@@ -7710,6 +8222,7 @@ let list = state.sortMode === "following"
     } else {
       list = list.filter((q) =>
         (q.title || "").toLowerCase().includes(term) ||
+(q.authorName || "").toLowerCase().includes(term) ||
         (q.body || "").toLowerCase().includes(term) ||
         (q.tags || []).some((t) => t.includes(term))
       );
@@ -8061,10 +8574,12 @@ function renderHome() {
       </button>
       <div class="mn-search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="mn-search-input" placeholder="Search anything or #hashtag..." value="${escapeHtml(state.searchTerm)}" oninput="setSearchTerm(this.value)" />
+        <input id="mn-search-input" placeholder="Search posts, people or #hashtag..." value="${escapeHtml(state.searchTerm)}" oninput="setSearchTerm(this.value); openSuggest();" onfocus="openSuggest()" onkeydown="searchKeydown(event)" autocomplete="off" enterkeyhint="search" />
+<div id="mn-suggest-box" class="mn-suggest-box">${suggestBoxHtml()}</div>
         ${state.searchTerm ? `<button class="mn-iconbtn mn-search-clear" onclick="setSearchTerm('')" title="Clear">✕</button>` : ""}
       </div>
-      <div class="mn-tabs mn-hometabs">
+      <div id="mn-people-results">${peopleResultsHtml()}</div>
+<div class="mn-tabs mn-hometabs">
         <button class="mn-tab ${state.sortMode === "foryou" ? "mn-tab-active" : ""}" onclick="setSortMode('foryou')">For You</button>
         <button class="mn-tab ${isFollowingTab ? "mn-tab-active" : ""}" onclick="setSortMode('following')">Following</button>
         <button class="mn-tab ${isImageTokTab ? "mn-tab-active" : ""}" onclick="setSortMode('imagetok')">ImageTok</button>
@@ -8172,20 +8687,19 @@ function renderProfile() {
   const editForm = state.profileEdit ? `
     <div class="mn-editform">
       <div class="mn-field">
-        <label>Profile photo</label>
-        <div class="mn-photo-edit-row">
-          <div class="mn-avatar mn-photo-edit-preview" role="img" aria-label="Photo preview">
-            ${(state.profileForm.photoUrl || "").trim() && isWikimediaPhotoUrl(state.profileForm.photoUrl)
-              ? `<img class="mn-avatar-img" src="${escapeHtml(normalizeWikimediaUrl(state.profileForm.photoUrl))}" alt="" onerror="previewImgError(this)" />`
-              : iconPersonSilhouette()}
-          </div>
-          <input class="mn-input" style="flex:1;" placeholder="Paste an image link (e.g. from catbox.moe)" value="${escapeHtml(state.profileForm.photoUrl)}" oninput="setProfileField('photoUrl', this.value)" />
-          <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-profile-photo-input').click()" title="Upload a photo">${iconImageSmall()}</button>
-          <input id="mn-profile-photo-input" type="file" accept="image/*" style="display:none" onchange="onProfilePhotoFileSelected(this)" />
-        </div>
-        <p class="mn-photo-edit-status">${(state.profileForm.photoUrl || "").trim() && !isWikimediaPhotoUrl(state.profileForm.photoUrl) ? "That's not a valid link." : ""}</p>
-        <p class="mn-photo-edit-hint">Paste a link from catbox.moe or a wikimedia commons link here,.</p>
-      </div>
+  <label>Profile photo</label>
+  <div class="mn-photo-edit-row">
+    <div class="mn-avatar mn-photo-edit-preview" role="img" aria-label="Photo preview">
+      ${(state.profileForm.photoUrl || "").trim()
+      ? `<img class="mn-avatar-img" src="${escapeHtml(state.profileForm.photoUrl)}" alt="" onerror="previewImgError(this)" />`
+      : iconPersonSilhouette()}
+    </div>
+    <button type="button" class="mn-composer-attach" onclick="document.getElementById('mn-profile-photo-input').click()" title="Upload a photo">${iconImageSmall()}</button>
+    <input id="mn-profile-photo-input" type="file" accept="image/*" style="display:none" onchange="onProfilePhotoFileSelected(this)" />
+  </div>
+  <p class="mn-photo-edit-status"></p>
+  <p class="mn-photo-edit-hint">Tap the camera to change your photo</p>
+</div>
       <div class="mn-field">
         <label>Bio</label>
         <textarea class="mn-textarea" rows="3" placeholder="Tell others a bit about you..." oninput="setProfileField('bio', this.value)">${escapeHtml(state.profileForm.bio)}</textarea>
@@ -8194,7 +8708,7 @@ function renderProfile() {
         <label>Location</label>
         <input class="mn-input" placeholder="School or district" value="${escapeHtml(state.profileForm.place)}" oninput="setProfileField('place', this.value)" />
       </div>
-      <button class="mn-primary-btn" style="margin-top:0;" onclick="saveProfile()">Save changes</button>
+      <button class="mn-primary-btn" style="margin-top:0;" onclick="saveProfile()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Save changes</button>
     </div>
   ` : "";
 
@@ -8556,7 +9070,7 @@ function saveDismissedSuggestions() {
 function dismissSuggestedUser(uid, ev) {
   if (ev) { ev.stopPropagation(); ev.preventDefault(); }
   if (!dismissedSuggestions.includes(uid)) { dismissedSuggestions.push(uid); saveDismissedSuggestions(); }
-  const card = ev && ev.target.closest(".mn-suggest-card");
+  const card = ev && ev.target.closest(".mn-suggest-card, .mn-inbox-suggest-row");
   if (card) {
     card.style.transition = "opacity .18s ease, transform .18s ease";
     card.style.opacity = "0";
@@ -8580,6 +9094,26 @@ function removeDepeopleUser(uid, ev) {
     setTimeout(() => card.remove(), 180);
   }
   showToast("Removed — you'll see them again next time.");
+}
+function iconInfoCircle() { return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5M12 7.5v.01" stroke-linecap="round"/></svg>`; }
+function inboxSuggestedRowHtml(u) {
+  const following = isFollowedAuthor(u.id);
+  const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
+  return `
+    <div class="mn-inbox-suggest-row" onclick="openUserProfile('${u.id}', '${nameEsc}', event)" role="button">
+      <span class="mn-inbox-suggest-avatar">${avatarHtml(u.username, u.id, u.photoURL)}</span>
+      <div class="mn-inbox-suggest-info">
+        <span class="mn-inbox-suggest-name">${escapeHtml(u.username || "")}</span>
+        <span class="mn-inbox-suggest-sub">${escapeHtml(creatorTagline(u))}</span>
+      </div>
+      <div class="mn-inbox-suggest-actions">
+        <button class="mn-inbox-suggest-btn ${following ? "mn-inbox-suggest-btn-active" : ""}" onclick="toggleFollowUser('${u.id}', '${nameEsc}', event); event.stopPropagation();">${following ? "Following" : "Follow"}</button>
+        <button class="mn-inbox-suggest-dismiss" onclick="dismissSuggestedUser('${u.id}', event)" title="Remove" aria-label="Remove suggestion">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
 }
 function suggestCardHtml(u) {
   const following = isFollowedAuthor(u.id);
@@ -8606,7 +9140,7 @@ function suggestModuleHtml() {
   return `
     <div class="mn-suggest-module">
       <div class="mn-suggest-module-head">
-        <span class="mn-suggest-module-title">${iconUsersSmall()} People you may know</span>
+        <span class="mn-suggest-module-title">${iconUsersSmall()} Suggested</span>
       </div>
       <div class="mn-suggest-scroll">
         ${users.map((u) => suggestCardHtml(u)).join("")}
@@ -8629,22 +9163,29 @@ users = [...boosted, ...depeopleCandidates(20, boostedIds)].filter((u) => u.id !
 }
 if (users.length === 0) return "";
 return `
-<div class="mn-depeople-bar">
-  ${users.map((u) => {
-  const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
-  return `
-  <div class="mn-depeople-card">
-    <div class="mn-depeople-card-photo">${avatarHtml(u.username, u.id, u.photoURL)}</div>
-    <div class="mn-depeople-card-body">
-      <span class="mn-depeople-card-name">${escapeHtml(u.username || "")}</span>
-      <div class="mn-depeople-card-actions">
-        <button class="mn-follow-btn" onclick="markDepeopleViewed('${u.id}'); openUserProfile('${u.id}', '${nameEsc}', event, true)">View</button>
-        <button class="mn-depeople-card-remove" onclick="riseUser('${u.id}', '${nameEsc}', event)">Rise</button>
+<div class="mn-depeople-section">
+  <div class="mn-depeople-header">
+    <p class="mn-depeople-title">${iconUsersSmall()}<span>Depeople</span></p>
+<p class="mn-depeople-sub">Click to view their post or make them risen to new people</p>
+  </div>
+  <div class="mn-depeople-bar">
+    ${users.map((u) => {
+    const nameEsc = escapeHtml(u.username || "").replace(/'/g, "\\'");
+    return `
+    <div class="mn-depeople-card">
+      <div class="mn-depeople-card-photo">${avatarHtml(u.username, u.id, u.photoURL)}</div>
+      <div class="mn-depeople-card-scrim"></div>
+      <div class="mn-depeople-card-body">
+        <span class="mn-depeople-card-name">${escapeHtml(u.username || "")}</span>
+        <div class="mn-depeople-card-actions">
+          <button class="mn-depeople-card-view" onclick="markDepeopleViewed('${u.id}'); openUserProfile('${u.id}', '${nameEsc}', event, true)">View</button>
+          <button class="mn-depeople-card-remove" onclick="riseUser('${u.id}', '${nameEsc}', event)">Rise</button>
+        </div>
       </div>
     </div>
+    `;
+    }).join("")}
   </div>
-  `;
-  }).join("")}
 </div>
 `;
 }
@@ -9760,11 +10301,12 @@ function groupNotifications(list) {
 // instead of the generic gray person silhouette avatarHtml() falls back to
 // when there's no photo, plus a verified checkmark so it reads as official.
 function adminAvatarHtml() {
-  return `
-    <div class="mn-avatar mn-admin-avatar" aria-label="MENYA admin">
-      <span class="mn-admin-avatar-mark">📢</span>
-    </div>
-  `;
+return `
+<div class="mn-avatar mn-admin-avatar" aria-label="MENYA admin">
+  <img src="/favicon.png" alt="MENYA" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+  <span class="mn-admin-avatar-mark" style="display:none;">📢</span>
+</div>
+`;
 }
 function notifRowHtml(n) {
   const c = notifContent(n);
@@ -9777,13 +10319,10 @@ function notifRowHtml(n) {
         <span class="mn-notif-badge ${c.cls}">${isAdmin ? iconVerifiedBadge() : c.icon}</span>
       </div>
       <div class="mn-notif-main">
-        <p class="mn-notif-text">${c.text}</p>
-        ${preview}
-      </div>
-      <div class="mn-notif-side">
-        <span class="mn-time">${timeAgo(n.createdAt)}</span>
-        ${n.read ? "" : `<span class="mn-dot mn-notif-unread-dot"></span>`}
-      </div>
+  <p class="mn-notif-text">${c.text} <span class="mn-notif-time">${timeAgo(n.createdAt)}</span></p>
+  ${preview}
+</div>
+<div class="mn-notif-side">${n.read ? "" : `<span class="mn-dot mn-notif-unread-dot"></span>`}</div>
     </div>
   `;
 }
@@ -9797,6 +10336,31 @@ const NOTIF_TABS = [
   { key: "likes", label: "Likes" },
   { key: "admin", label: "Admin" },
 ];
+function notifDayLabel(ts) {
+  const date = ts && ts.toDate ? ts.toDate() : new Date(ts);
+  const now = new Date();
+  const startOf = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const diffDays = Math.round((startOf(now) - startOf(date)) / 86400000);
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays <= 7) return "This week";
+  const sameYear = date.getFullYear() === now.getFullYear();
+  return date.toLocaleDateString(undefined, sameYear ? { month: "long", day: "numeric" } : { month: "long", day: "numeric", year: "numeric" });
+}
+function notifSectionsHtml(list) {
+  const order = []; const byLabel = new Map();
+  for (const n of list) {
+    const label = notifDayLabel(n.createdAt);
+    if (!byLabel.has(label)) { byLabel.set(label, []); order.push(label); }
+    byLabel.get(label).push(n);
+  }
+  return order.map((label) => `
+    <div class="mn-notif-section">
+      <p class="mn-notif-section-label">${label}</p>
+      ${byLabel.get(label).map((n) => notifRowHtml(n)).join("")}
+    </div>
+  `).join("");
+}
 function renderNotifications() {
   if (!state.user) {
     return `<div class="mn-empty mn-empty-notif">
@@ -9819,9 +10383,9 @@ function renderNotifications() {
     <button class="mn-notif-tab ${filter === t.key ? "mn-notif-tab-active" : ""}" onclick="setNotifFilter('${t.key}')">${t.label}</button>
   `).join("")}</div>`;
   const listHtml = filtered.length
-    ? `<div class="mn-notif-list">${groupNotifications(filtered).map((n) => notifRowHtml(n)).join("")}</div>`
+    ? `<div class="mn-notif-list">${notifSectionsHtml(groupNotifications(filtered))}</div>`
     : `<div class="mn-empty mn-empty-notif">${iconBell(false)}<p class="mn-empty-title">Nothing here yet</p></div>`;
-  return tabsHtml + listHtml;
+  return listHtml;
 }
 
 // ---------------- Messages (mini messenger) ----------------
@@ -9872,26 +10436,9 @@ function renderMessages() {
   `;
 
   let visible = chats;
-  if (filter === "unread") {
-    visible = chats.filter((c) => (c["unread_" + state.user.uid] || 0) > 0);
-  } else if (filter === "requests") {
-    visible = [];
-  }
-  if (search) {
-    visible = visible.filter((c) => {
-      const other = otherParticipant(c);
-      return other && (other.username || "").toLowerCase().includes(search);
-    });
-  }
 
-  let listHtml;
-  if (filter === "requests") {
-    listHtml = `<div class="mn-empty mn-empty-notif">
-      ${iconChat(false)}
-      <p class="mn-empty-title">No message requests</p>
-      <p class="mn-empty-sub">Requests from people you don't follow yet will show up here.</p>
-    </div>`;
-  } else if (chats.length === 0) {
+let listHtml;
+if (chats.length === 0) {
     listHtml = `<div class="mn-empty mn-empty-notif">
       ${iconChat(false)}
       <p class="mn-empty-title">No conversations yet</p>
@@ -9904,28 +10451,30 @@ function renderMessages() {
       <p class="mn-empty-sub">${search ? "Try a different name." : "No unread chats right now."}</p>
     </div>`;
   } else {
-    listHtml = `<div class="mn-chat-list">${visible.map((c) => chatRowHtml(c)).join("")}</div>`;
-  }
+    listHtml = `<div class="mn-chat-list">${chatSectionsHtml(visible)}</div>`;
+}
 
-  return `
-    <div class="mn-search mn-msg-search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input placeholder="Search" value="${escapeHtml(state.messagesSearch)}" oninput="setMessagesSearch(this.value)" />
-      ${state.messagesSearch ? `<button class="mn-iconbtn mn-search-clear" onclick="setMessagesSearch('')" title="Clear">✕</button>` : ""}
-    </div>
-    ${storiesHtml}
-    ${tabsHtml}
-    ${listHtml}
-  `;
+const suggested = suggestedUsers(8);
+const suggestedHtml = suggested.length ? `
+<div class="mn-inbox-suggest-section">
+  <div class="mn-inbox-suggest-header">${iconInfoCircle()}<span>Suggested accounts</span></div>
+  ${suggested.map((u) => inboxSuggestedRowHtml(u)).join("")}
+</div>
+` : "";
+
+return `
+${listHtml}
+${suggestedHtml}
+`;
 }
 function chatRowHtml(c) {
-  const other = otherParticipant(c);
-  if (!other) return "";
-  const unread = state.user ? (c["unread_" + state.user.uid] || 0) : 0;
-  const mine = state.user && c.lastSenderId === state.user.uid;
-  const preview = c.lastMessage ? (mine ? "You: " : "") + c.lastMessage : "Messages and calls are secured with end-to-end encryption.";
-  return `
-    <div class="mn-chat-row ${unread > 0 ? "mn-chat-row-unread" : ""}" onclick="openChatFromRow('${c.id}')" role="button">
+const other = otherParticipant(c);
+if (!other) return "";
+const unread = state.user ? (c["unread_" + state.user.uid] || 0) : 0;
+const mine = state.user && c.lastSenderId === state.user.uid;
+const preview = c.lastMessage ? (mine ? "You: " : "") + c.lastMessage : "Messages and calls are secured with end-to-end encryption.";
+return `
+<div class="mn-chat-row mn-notif-row ${unread > 0 ? " mn-chat-row-unread mn-notif-row-unread" : "" }" onclick="openChatFromRow('${c.id}')" role="button">
       <span class="mn-chat-row-avatar-wrap">
         ${avatarHtml(other.username, other.id, other.photoURL)}
         ${other.online ? `<span class="mn-msg-online-dot"></span>` : ""}
@@ -9940,6 +10489,22 @@ function chatRowHtml(c) {
       ${unread > 0 ? `<span class="mn-notif-count mn-chat-row-badge">${unread > 9 ? "9+" : unread}</span>` : ""}
     </div>
   `;
+}
+// Groups chat rows by day using the same label/markup as Notifications,
+// so Messages gets identical date-divider spacing.
+function chatSectionsHtml(list) {
+const order = []; const byLabel = new Map();
+for (const c of list) {
+const label = notifDayLabel(c.lastMessageAt || c.createdAt);
+if (!byLabel.has(label)) { byLabel.set(label, []); order.push(label); }
+byLabel.get(label).push(c);
+}
+return order.map((label) => `
+<div class="mn-notif-section">
+  <p class="mn-notif-section-label">${label}</p>
+  ${byLabel.get(label).map((c) => chatRowHtml(c)).join("")}
+</div>
+`).join("");
 }
 // "New chat" picker: a dedicated full-screen list (WhatsApp-style) — search
 // by username up top, a pinned "Message yourself" row, then everyone else
@@ -10135,7 +10700,7 @@ const ELIG_TARGETS = {
   views: 100,                // views received on your own content
   dwellSeconds: 15 * 60,     // time other people spend viewing your content
 };
-const ELIG_CRITERIA_COUNT = 6;
+const ELIG_CRITERIA_COUNT = 5;
 
 function getCalendarWeekKey(d = new Date()) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -10204,7 +10769,7 @@ function computeWeeklyEligibilityPercent(rawWp) {
     Math.min(1, wp.posts / ELIG_TARGETS.posts),
     Math.min(1, wp.answers / ELIG_TARGETS.answers),
     Math.min(1, wp.challenges / ELIG_TARGETS.challenges),
-    channelDone ? 1 : Math.min(1, wp.channelSeconds / ELIG_TARGETS.channelSeconds),
+    
     Math.min(1, wp.views / ELIG_TARGETS.views),
     Math.min(1, wp.dwellSeconds / ELIG_TARGETS.dwellSeconds),
   ];
@@ -10261,7 +10826,7 @@ function consistencyLabel(wp) {
 function recentActivityLabel(wp) {
   const isCurrentWeek = wp && wp.weekKey === getCalendarWeekKey();
   if (!isCurrentWeek) return "Quiet";
-  const anyActivity = (wp.posts || wp.answers || wp.challenges || wp.channelSeconds || wp.views || wp.dwellSeconds);
+  const anyActivity = (wp.posts || wp.answers || wp.challenges || wp.views || wp.dwellSeconds);
   return anyActivity ? "Healthy" : "Quiet";
 }
 
@@ -10297,7 +10862,7 @@ function eligibilityPanelHtml() {
       <div class="mn-elig-summary-row"><span>You can withdraw</span><strong>${withdrawable.toLocaleString()} RWF</strong></div>
       <div class="mn-elig-summary-row"><span>MENYA platform share</span><strong>${platformShare.toLocaleString()} RWF</strong></div>
     </div>
-    <p class="mn-elig-explain">Your eligibility resets every calendar week (Mon–Sun) based on posts, answers, challenges, channel activity, views, and time readers spend on your content.</p>
+    <p class="mn-elig-explain">Your eligibility resets every calendar week (Mon–Sun) based on posts, answers, challenges, views, and time readers spend on your content.</p>
   `;
 }
 
@@ -10714,7 +11279,7 @@ function initChatSwipeToReply() {
   root.addEventListener("pointerup", endSwipe);
   root.addEventListener("pointercancel", endSwipe);
 }
-initChatSwipeToReply();
+// initChatSwipeToReply(); // reply feature disabled
 function setReplyTarget(mid) {
   const m = (state.chatMessages || []).find((x) => x.id === mid);
   if (!m) return;
@@ -10736,45 +11301,54 @@ function renderChat() {
   if (!other) return `<p class="mn-empty-sub" style="text-align:center;padding:40px 0;">Loading...</p>`;
   const msgs = state.chatMessages || [];
   if (!state.chatMessagesLoaded) return `<p class="mn-empty-sub" style="text-align:center;padding:24px 0;">Loading...</p>`;
-  if (!msgs.length) {
-    return `<div class="mn-empty" style="padding:40px 20px;">
-      ${avatarHtml(other.username, other.id, other.photoURL)}
-      <p class="mn-empty-title" style="margin-top:10px;">${escapeHtml(other.username || "User")}</p>
-      <p class="mn-empty-sub">Say hello — start the conversation.</p>
-    </div>`;
-  }
-  const unreadCount = state.chatUnreadOnOpen || 0;
-  const idx = Math.max(0, msgs.length - unreadCount);
-  const unreadMsgs = unreadCount > 0 ? msgs.slice(idx) : [];
-  const showChatTabs = true;
-  const filterMode = showChatTabs ? (state.chatFeedFilter === "all" ? "all" : "unread") : "all";
-  const visibleMsgs = filterMode === "unread" ? unreadMsgs : msgs;
-  const chatFilterBar = showChatTabs ? `
-    <div class="mn-channel-filterbar" role="tablist">
-      <button class="mn-channel-filter-chip ${filterMode === "unread" ? "mn-channel-filter-chip-active" : ""}" onclick="setChatFeedFilter('unread')" role="tab" aria-selected="${filterMode === "unread"}">
-        Unread <span class="mn-channel-filter-count">${unreadMsgs.length}</span>
-      </button>
-      <button class="mn-channel-filter-chip ${filterMode === "all" ? "mn-channel-filter-chip-active" : ""}" onclick="setChatFeedFilter('all')" role="tab" aria-selected="${filterMode === "all"}">All</button>
-    </div>
-  ` : "";
-  if (!visibleMsgs.length) {
-    return chatFilterBar + `<div class="mn-empty" style="padding:40px 20px;">
-      <p class="mn-empty-title">You're all caught up</p>
-      <p class="mn-empty-sub">No new messages since your last visit.</p>
-      <button class="mn-channel-catchup-btn" onclick="setChatFeedFilter('all')">View all messages</button>
-    </div>`;
-  }
-  const startMarker = filterMode === "all" ? chatStartMarkerHtml(other) : "";
-return chatFilterBar + `<div class="mn-chat-messages">${startMarker}${groupGiftMessages(visibleMsgs).map((m) => {
-  const mid = m.gifts ? m.gifts[0].id : m.id;
-  const divider = mid === state.unreadDividerId ? unreadDividerHtml() : "";
-  return divider + (m.gifts ? giftGroupHtml(m.gifts) : chatBubbleHtml(m));
-  }).join("")}
-  <p class="mn-chat-limit-notice">You're seeing up to 20 messages. Older messages beyond that are hidden.</p>
+  const handleEsc = "@" + escapeHtml((other.username || "user").toLowerCase().replace(/\s+/g, "_"));
+const followingCount = other.followedUsers ? other.followedUsers.length : 0;
+const introHtml = `<div class="mn-chat-intro">
+  ${avatarHtml(other.username, other.id, other.photoURL)}
+  <p class="mn-chat-intro-name">${escapeHtml(other.username || "User")}</p>
+  <p class="mn-chat-intro-handle">${handleEsc}</p>
+  <p class="mn-chat-intro-stats">${formatFollowerCount(followingCount)} following · ${formatFollowerCount(other.followersCount || 0)} followers</p>
+</div>`;
+if (!msgs.length) {
+return `<div class="mn-chat-messages">${introHtml}</div>`;
+}
+return `<div class="mn-chat-messages">${introHtml}${renderMessagesWithDateDividers(groupGiftMessages(msgs))}
 </div>`;
 }
 function unreadDividerHtml() {
-  return `<div class="mn-unread-divider"><span>Unread messages</span></div>`;
+const n = state.chatUnreadOnOpen || 0;
+const label = n === 1 ? "1 unread message" : `${n} unread messages`;
+return `<div class="mn-unread-divider"><span>${label}</span></div>`;
+}
+function dayLabel(ts) {
+const date = ts.toDate ? ts.toDate() : new Date(ts);
+const now = new Date();
+const startOf = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+const diffDays = Math.round((startOf(now) - startOf(date)) / 86400000);
+if (diffDays === 0) return "Today";
+if (diffDays === 1) return "Yesterday";
+const sameYear = date.getFullYear() === now.getFullYear();
+return date.toLocaleDateString(undefined, sameYear ? { month: "long", day: "numeric" } : { month: "long", day: "numeric", year: "numeric" });
+}
+function formatBubbleTime(ts) {
+if (!ts) return "";
+const date = ts.toDate ? ts.toDate() : new Date(ts);
+return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+}
+function renderMessagesWithDateDividers(items) {
+let lastDay = null;
+return items.map((item) => {
+const ts = item.gifts ? item.gifts[0].createdAt : item.createdAt;
+const mid = item.gifts ? item.gifts[0].id : item.id;
+const day = ts ? dayLabel(ts) : null;
+let header = "";
+if (day && day !== lastDay) {
+header = `<div class="mn-date-divider"><span>${day}</span></div>`;
+lastDay = day;
+}
+const unreadDiv = mid === state.unreadDividerId ? unreadDividerHtml() : "";
+return header + unreadDiv + (item.gifts ? giftGroupHtml(item.gifts) : chatBubbleHtml(item));
+}).join("");
 }
 function groupGiftMessages(msgs) {
   const out = []; let i = 0;
@@ -10805,7 +11379,7 @@ function giftGroupHtml(gifts) {
         <p class="mn-gift-group-total">${total.toLocaleString()} <span>coins total</span></p>
         <p class="mn-gift-group-title">🎁 ${gifts.length} Gifts from ${senderName}</p>
         <div class="mn-gift-group-icons">${icons}</div>
-        <span class="mn-gift-group-time">${timeAgo(last.createdAt)}</span>
+        <span class="mn-gift-group-time">${formatBubbleTime(last.createdAt)}</span>
       </div>
     </div>`;
 }
@@ -10829,7 +11403,7 @@ function chatBubbleHtml(m) {
           <p class="mn-gift-card-title">🎁 ${otherName} sent a Gift!</p>
           <div class="mn-gift-card-icon">🎁</div>
           <p class="mn-gift-card-amount">${(m.giftAmount || 0).toLocaleString()} <span>coins</span></p>
-          <span class="mn-gift-card-time">${timeAgo(m.createdAt)}</span>
+          
           <span class="mn-gift-card-tail"></span>
         </div>
       </div>`;
@@ -10839,20 +11413,16 @@ function chatBubbleHtml(m) {
   const mediaType = m.mediaUrl ? (m.mediaType || "file") : (m.imageUrl ? "image" : "");
   const hasMedia = !!mediaUrl;
   const hasText = !!(m.text && m.text.trim());
+const ytEmbed = "";
   return `
     <div class="mn-chat-bubble-row ${mine ? "mn-chat-bubble-row-mine" : ""}" data-mid="${m.id}">
       <span class="mn-chat-swipe-icon">${iconReplySmall()}</span>
-      <div class="mn-chat-bubble ${mine ? "mn-chat-bubble-mine" : ""} ${hasMedia ? "mn-chat-bubble-media" : ""}">
-        ${m.replyTo ? `
-          <div class="mn-chat-quote" onclick="scrollToChatMessage('${m.replyTo.id}')">
-            <span class="mn-chat-quote-name">${escapeHtml(m.replyTo.senderName || "")}</span>
-            <span class="mn-chat-quote-text">${escapeHtml(m.replyTo.text || "")}</span>
-          </div>
-        ` : ""}
+      <div class="mn-chat-bubble ${mine ? "mn-chat-bubble-mine" : ""} ${(hasMedia || ytEmbed) ? "mn-chat-bubble-media" : ""}">
+        
         ${hasMedia ? chatMediaHtml(mediaUrl, mediaType) : ""}
-        ${hasText ? `<p ${hasMedia ? 'style="margin-top:6px;"' : ""}>${linkifyText(m.text || "")}</p>` : ""}
-        <span class="mn-chat-bubble-time">${timeAgo(m.createdAt)}</span>
-      </div>
+${ytEmbed}
+${hasText ? `<p ${(hasMedia || ytEmbed) ? 'style="margin-top:6px;"' : "" }>${linkifyText(stripYoutubeUrlForChat(m.text || ""))}</p>` : ""}
+</div>
     </div>
   `;
 }
@@ -10873,7 +11443,7 @@ function chatMediaHtml(url, type) {
   if (type === "video") {
     return `
       <div class="mn-chat-media-wrap mn-chat-media-video">
-        <video src="${safeUrl}" data-src="${safeUrl}" controls playsinline preload="metadata" onerror="chatMediaLoadError(this)"></video>
+        <video src="${safeUrl}" data-src="${safeUrl}" controls playsinline preload="auto" onerror="chatMediaLoadError(this)"></video>
       </div>
     `;
   }
@@ -10958,6 +11528,7 @@ function answerCardHtml(q, a) {
   const replyCount = a.repliesCount != null ? a.repliesCount : (repliesLoaded ? replies.length : 0);
   const bodyEsc = escapeHtml(a.body).replace(/'/g, "\\'").replace(/\n/g, " ");
   const nameEsc = escapeHtml(a.authorName || "").replace(/'/g, "\\'");
+const isAuthorCreator = a.authorId && q.authorId && a.authorId === q.authorId;
 
   const composerOpen = state.openReplyBox === a.id;
   const replyingTo = state.replyingTo && state.replyingTo.aid === a.id ? state.replyingTo : null;
@@ -10981,48 +11552,68 @@ function answerCardHtml(q, a) {
   ` : "";
 
   return `
-    <div class="mn-comment">
-      ${quoteBlockHtml(a.quotedFrom)}
-      <div class="mn-comment-head">
-        <div class="mn-comment-author" onclick="openUserProfile('${a.authorId || ""}', '${nameEsc}', event)" role="button">${avatarHtml(a.authorName, a.authorId, a.authorPhoto)}<span>${escapeHtml(a.authorName || "")}</span></div>
-        <span class="mn-time">${timeAgo(a.createdAt)}</span>
+<div class="mn-comment">
+  ${quoteBlockHtml(a.quotedFrom)}
+  <div class="mn-comment-row">
+    <div onclick="openUserProfile('${a.authorId || ""}', '${nameEsc}', event)" role="button">${avatarHtml(a.authorName, a.authorId, a.authorPhoto)}</div>
+    <div class="mn-comment-main">
+      <div class="mn-comment-topline" onclick="openUserProfile('${a.authorId || ""}', '${nameEsc}', event)" role="button">
+        <span class="mn-comment-name">${escapeHtml(a.authorName || "")}</span>
+        ${isAuthorCreator ? `<span class="mn-comment-creator-badge">Creator</span>` : ""}
       </div>
       <p class="mn-comment-body">${escapeHtml(a.body)}</p>
       ${mediaEmbedHtml(a.body)}
-      <div class="mn-answer-actions">
-        <button class="mn-action-btn" onclick="toggleReplyBox('${q.id}','${a.id}')">${iconReply()} Reply</button>
-        <button class="mn-action-btn ${aUpvoted ? "mn-comment-upvoted" : ""}" onclick="upvoteAnswer('${q.id}','${a.id}', event)">▲ Like <span class="mn-count">${a.points || 0}</span></button>
-        <button class="mn-action-btn" onclick="quoteContent('answer','${a.id}',null,'${nameEsc}','${bodyEsc}')">${iconQuote()} Quote</button>
-        ${replyCount > 0 ? `<button class="mn-view-replies-btn" onclick="toggleThread('${q.id}','${a.id}')">${expanded ? "Hide" : "View"} ${replyCount} ${replyCount === 1 ? "reply" : "replies"}</button>` : ""}
+      <div class="mn-comment-meta">
+        <span class="mn-time">${timeAgo(a.createdAt)}</span>
+        <button class="mn-comment-reply-link" onclick="toggleReplyBox('${q.id}','${a.id}')">Reply</button>
+        <button class="mn-comment-reply-link" onclick="quoteContent('answer','${a.id}',null,'${nameEsc}','${bodyEsc}')">Quote</button>
+        ${replyCount > 0 ? `<button class="mn-comment-reply-link" onclick="toggleThread('${q.id}','${a.id}')">${expanded ? "Hide" : "View"} ${replyCount} ${replyCount === 1 ? "reply" : "replies"}</button>` : ""}
       </div>
-      ${threadHtml}
     </div>
-  `;
+    <button class="mn-comment-like-col ${aUpvoted ? " mn-comment-upvoted" : "" }" onclick="upvoteAnswer('${q.id}','${a.id}', event)">
+      ${iconHeart(aUpvoted)}
+      <span class="mn-count">${a.points || 0}</span>
+    </button>
+  </div>
+  ${threadHtml}
+</div>
+`;
 }
 
 function replyItemHtml(q, a, r) {
   const rUpvoted = state.user && (r.upvoterIds || []).includes(state.user.uid);
   const nameEsc = escapeHtml(r.authorName || "").replace(/'/g, "\\'");
   const bodyEsc = escapeHtml(r.body).replace(/'/g, "\\'").replace(/\n/g, " ");
-  return `
-    <div class="mn-reply">
-      ${quoteBlockHtml(r.quotedFrom)}
-      <div class="mn-comment-head">
-        <div class="mn-comment-author" onclick="openUserProfile('${r.authorId || ""}', '${nameEsc}', event)" role="button">${avatarHtml(r.authorName, r.authorId, r.authorPhoto)}<span>${escapeHtml(r.authorName || "")}</span></div>
-        <span class="mn-time">${timeAgo(r.createdAt)}</span>
+const isAuthorCreator = r.authorId && q.authorId && r.authorId === q.authorId;
+return `
+<div class="mn-reply">
+  ${quoteBlockHtml(r.quotedFrom)}
+  <div class="mn-comment-row">
+    <div onclick="openUserProfile('${r.authorId || ""}', '${nameEsc}', event)" role="button">${avatarHtml(r.authorName, r.authorId, r.authorPhoto)}</div>
+    <div class="mn-comment-main">
+      <div class="mn-comment-topline" onclick="openUserProfile('${r.authorId || ""}', '${nameEsc}', event)" role="button">
+        <span class="mn-comment-name">${escapeHtml(r.authorName || "")}</span>
+        ${isAuthorCreator ? `<span class="mn-comment-creator-badge">Creator</span>` : ""}
       </div>
       <p class="mn-comment-body">${r.replyingToName ? `<span class="mn-reply-mention">@${escapeHtml(r.replyingToName)}</span> ` : ""}${escapeHtml(r.body)}</p>
       ${mediaEmbedHtml(r.body)}
-      <div class="mn-answer-actions">
-        <button class="mn-action-btn" onclick="toggleReplyBox('${q.id}','${a.id}', {aid:'${a.id}', rid:'${r.id}', name:'${nameEsc}'})">${iconReply()} Reply</button>
-        <button class="mn-action-btn ${rUpvoted ? "mn-comment-upvoted" : ""}" onclick="upvoteReply('${q.id}','${a.id}','${r.id}', event)">▲ Like <span class="mn-count">${r.points || 0}</span></button>
-        <button class="mn-action-btn" onclick="quoteContent('reply','${a.id}','${r.id}','${nameEsc}','${bodyEsc}')">${iconQuote()} Quote</button>
+      <div class="mn-comment-meta">
+        <span class="mn-time">${timeAgo(r.createdAt)}</span>
+        <button class="mn-comment-reply-link" onclick="toggleReplyBox('${q.id}','${a.id}', {aid:'${a.id}', rid:'${r.id}', name:'${nameEsc}'})">Reply</button>
+        <button class="mn-comment-reply-link" onclick="quoteContent('reply','${a.id}','${r.id}','${nameEsc}','${bodyEsc}')">Quote</button>
       </div>
     </div>
-  `;
+    <button class="mn-comment-like-col ${rUpvoted ? " mn-comment-upvoted" : "" }" onclick="upvoteReply('${q.id}','${a.id}','${r.id}', event)">
+      ${iconHeart(rUpvoted)}
+      <span class="mn-count">${r.points || 0}</span>
+    </button>
+  </div>
+</div>
+`;
 }
 function iconReply() { return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>`; }
 function iconQuote() { return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 8h10M7 12h6M6 20l3-3H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-3 3z"/></svg>`; }
+function iconHeart(filled) { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`; } function iconHeartOld(filled) { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M12 21s-6.7-4.35-9.3-8.1C.8 10.1 1.4 6.7 4.3 5.1c2.4-1.3 5.2-.6 6.7 1.4l1 1.3 1-1.3c1.5-2 4.3-2.7 6.7-1.4 2.9 1.6 3.5 5 1.6 7.8C18.7 16.65 12 21 12 21z"/></svg>`; }
 
 function signOutConfirmHtml() {
   if (!state.signOutConfirmOpen) { signOutModalWasOpen = false; return ""; }
@@ -11037,12 +11628,30 @@ function signOutConfirmHtml() {
         <p class="mn-sheet-title">Sign out of MENYA?</p>
         <p class="mn-confirm-body">You'll need to sign back in to ask questions, answer, or follow topics.</p>
         <div class="mn-confirm-actions">
-          <button class="mn-sheet-cancel" onclick="closeSignOutConfirm()">Cancel</button>
-          <button class="mn-sheet-danger" onclick="signOutUser()">${iconLogout()}<span>Sign out</span></button>
-        </div>
-      </div>
-    </div>
-  `;
+  <button class="mn-sheet-cancel" onclick="closeSignOutConfirm()">Cancel</button>
+  <button class="mn-sheet-danger" onclick="signOutUser()">${iconLogout()}<span>Sign out</span></button>
+</div>
+</div>
+</div>
+`;
+}
+function openChatOptions() { setState({ chatOptionsOpen: true }); }
+function closeChatOptions() { setState({ chatOptionsOpen: false }); }
+function chatOptionsSheetHtml() {
+if (!state.chatOptionsOpen || !state.activeChatUser) return "";
+const other = state.activeChatUser;
+return `
+<div class="mn-sheet-overlay mn-anim-in" onclick="if(event.target===this) closeChatOptions()">
+  <div class="mn-sheet mn-anim-in">
+    <div class="mn-sheet-handle"></div>
+    <p class="mn-sheet-title">${escapeHtml(other.username || "User")}</p>
+    <button class="mn-sheet-cancel" style="margin-bottom:8px;" onclick="closeChatOptions(); openUserProfile('${other.id}', '${escapeHtml(other.username || "").replace(/'/g, " \\'")}');">View profile</button>
+    <button class="mn-sheet-cancel" style="margin-bottom:8px;" onclick="closeChatOptions();">Mute</button>
+    <button class="mn-sheet-danger" style="margin-bottom:8px;">${iconWarn()}<span>Report</span></button>
+    <button class="mn-sheet-cancel" onclick="closeChatOptions()">Cancel</button>
+  </div>
+</div>
+`;
 }
 const COIN_PACKAGES = [
   { id: "p1000", coins: 1000, frw: 1000, label: "1,000 coins" },
@@ -11558,7 +12167,7 @@ function commentsSheetHtml() {
       <div class="mn-sheet mn-comments-sheet${animClass}">
         <div class="mn-sheet-handle"></div>
         <div class="mn-comments-sheet-head">
-          <span class="mn-sheet-title">Comments</span>
+          <span class="mn-sheet-title">${q.answersCount || 0} ${(q.answersCount || 0) === 1 ? "comment" : "comments"}</span>
           <button class="mn-iconbtn mn-comments-close" onclick="closeComments()" title="Close">✕</button>
         </div>
         <div class="mn-comments-sheet-scroll mn-comments-sheet-inner">
@@ -11601,7 +12210,7 @@ function commentsSheetHtml() {
           <button class="mn-chat-reply-bar-close" onclick="clearReplyTarget()">✕</button>
         </div>
       ` : ""}
-            <textarea rows="1" placeholder="${state.quoteTarget ? "Add your thoughts..." : "Write a comment..."}" oninput="setAnswerDraft(this.value)">${escapeHtml(state.answerDraft)}</textarea>
+            <textarea rows="1" placeholder="${state.quoteTarget ? "Add your thoughts..." : "Add comment..."}" oninput="setAnswerDraft(this.value)">${escapeHtml(state.answerDraft)}</textarea>
             <button class="mn-composer-send" onclick="submitAnswer('${q.id}')" ${state.answerDraft.trim() && !state.answerBusy ? "" : "disabled"} title="Reply">
               ${state.answerBusy ? `<span class="mn-spinner"></span>` : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2 15 22l-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
             </button>
@@ -11781,8 +12390,11 @@ function iconPlayFilled(size) { size = size || 16; return `<svg width="${size}" 
 function iconPhoneMedium() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2c-8 0-15-7-15-15a2 2 0 0 1 2-2z"/></svg>`; }
 function iconCopySmall() { return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`; }
 function iconBack() { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 5 8 12l7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+
+function iconArrowLeft() { return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 function iconLogout() { return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 function iconBell(active) { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${active ? 2.3 : 2}"><path d="M6 9a6 6 0 0 1 12 0c0 4.2 1.2 6 2 7H4c.8-1 2-2.8 2-7Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke-linecap="round"/></svg>`; }
+function iconInbox(active) { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="${active ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4.5L12 21l-2.5-3H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 10.5h8" stroke="${active ? "#fff" : "currentColor"}"/></svg>`; }
 function iconChat(active) { return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${active ? 2.3 : 2}"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
 // Small badge icons stamped on a notification's avatar to show what kind of
 // activity it is at a glance — mirrors the heart/person-plus overlay pattern
@@ -11822,11 +12434,11 @@ function headerHtml() {
     `;
   }
   if (state.screen === "notifications") {
-    return `
-      <div class="mn-detail-header">
-        <button class="mn-iconbtn" onclick="closeNotifications()" title="Back">${iconBack()}</button>
-        <span class="mn-detail-header-title">Notifications</span>
-      </div>
+return `
+<div class="mn-detail-header">
+  <button class="mn-iconbtn" onclick="closeNotifications()" title="Back">${iconArrowLeft()}</button>
+  <span class="mn-detail-header-title mn-header-title-lg">Notifications</span>
+</div>
       <div class="mn-header-right">
         <button class="mn-iconbtn" onclick="toggleTheme()" title="Toggle theme">${state.theme === "dark" ? iconSun() : iconMoon()}</button>
       </div>
@@ -11881,29 +12493,29 @@ function headerHtml() {
     `;
   }
   if (state.screen === "messages") {
-    return `
-      <div class="mn-detail-header">
-        <button class="mn-iconbtn" onclick="closeMessages()" title="Back">${iconBack()}</button>
-        <span class="mn-detail-header-title mn-msg-header-title">Messages</span>
-      </div>
+return `
+<div class="mn-detail-header">
+  <button class="mn-iconbtn" onclick="closeMessages()" title="Back">${iconArrowLeft()}</button>
+  <span class="mn-detail-header-title mn-msg-header-title mn-header-title-lg">Messages</span>
+</div>
       <div class="mn-header-right">
-        <button class="mn-iconbtn" onclick="toggleTheme()" title="Toggle theme">${state.theme === "dark" ? iconSun() : iconMoon()}</button>
-        <button class="mn-iconbtn" onclick="openNewChat()" title="New message">${iconPencil()}</button>
-      </div>
-    `;
-  }
-  if (state.screen === "chat") {
+  <button class="mn-iconbtn" onclick="toggleTheme()" title="Toggle theme">${state.theme === "dark" ? iconSun() : iconMoon()}</button>
+</div>
+`;
+}
+if (state.screen === "chat") {
     const other = state.activeChatUser;
     const nameEsc = other ? escapeHtml(other.username || "").replace(/'/g, "\\'") : "";
     return `
-      <div class="mn-detail-header mn-chat-header" ${other ? `onclick="openUserProfile('${other.id}', '${nameEsc}', event)"` : ""}>
-        <button class="mn-iconbtn" onclick="closeChat(); event.stopPropagation();" title="Back">${iconBack()}</button>
-        ${other ? avatarHtml(other.username, other.id, other.photoURL) : ""}
-<div class="mn-detail-header-titlewrap">
-  <span class="mn-detail-header-title">${other ? escapeHtml(other.username || "User") : "Chat"}</span>
-  <span class="mn-chat-header-sub">${other ? "" : ""}</span>
+      <div class="mn-detail-header mn-chat-header" ${other ? `onclick="openUserProfile('${other.id}', '${nameEsc}', event)" ` : "" }>
+  <button class="mn-iconbtn" onclick="closeChat(); event.stopPropagation();" title="Back">${iconBack()}</button>
+  ${other ? avatarHtml(other.username, other.id, other.photoURL) : ""}
+  <div class="mn-detail-header-titlewrap">
+    <span class="mn-detail-header-title">${other ? escapeHtml(other.username || "User") : "Chat"}</span>
+    <span class="mn-chat-header-sub">${other ? "" : ""}</span>
+  </div>
+  <button class="mn-iconbtn" style="margin-left:auto;" onclick="openChatOptions(); event.stopPropagation();" title="Options">${iconMoreDots()}</button>
 </div>
-      </div>
     `;
   }
   return `
@@ -11912,7 +12524,7 @@ function headerHtml() {
     </div>
     <div class="mn-header-right">
       ${state.user ? `
-        <button class="mn-iconbtn mn-messages-btn" onclick="openMessages()" title="Messages">
+        <button class="mn-iconbtn" style="display:none" onclick="openMessages()" title="Messages">
           ${iconChat()}
           ${state.chatsUnread > 0 ? `<span class="mn-notif-count">${state.chatsUnread > 9 ? "9+" : state.chatsUnread}</span>` : ""}
         </button>
@@ -12074,9 +12686,13 @@ const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0
     : state.screen === "channels" ? renderChannels()
     : state.screen === "channelDetail" ? renderChannelDetail()
     : state.screen === "channelPostDetail" ? renderChannelPostDetail()
-    : renderDetail();
+: renderDetail();
 
-  const composerHtml = state.screen === "detail" && findQuestionById(state.detailId) ? `
+const chatIsPendingRequest = state.screen === "chat" && state.activeChatUser && state.user
+&& Array.isArray(state.chatMessages) && state.chatMessages.length > 0
+&& !state.chatMessages.some(m => m.senderId !== state.user.uid);
+
+const composerHtml = state.screen === "detail" && findQuestionById(state.detailId) ? `
     <div class="mn-composer-bar mn-composer-bar-col">
       ${state.quoteTarget ? `
         <div class="mn-composer-quote">
@@ -12100,27 +12716,17 @@ const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0
       <span class="mn-channel-writebar-text">Write an update</span>
       <span class="mn-channel-writebar-attach">${iconImageSmall()}</span>
     </button>
-  ` : state.screen === "chat" && state.activeChatUser ? `
+  ` : chatIsPendingRequest ? `
+<div class="mn-composer-bar mn-chat-composer mn-reqbanner">
+  <p class="mn-reqbanner-title">Message request sent</p>
+  <p class="mn-reqbanner-sub">You can start chatting once this user has accepted your message request.</p>
+</div>
+` : state.screen === "chat" && state.activeChatUser ? `
+    <button class="mn-chat-jumpdown ${state.chatStickToBottom ? "" : "mn-chat-jumpdown-show"}" onclick="jumpToChatBottom()" title="Jump to latest">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </button>
     <div class="mn-composer-bar mn-chat-composer mn-composer-bar-col">
-      ${state.messageMediaPicker ? `
-        <div class="mn-media-picker">
-          <input class="mn-media-picker-input" type="url" inputmode="url" placeholder="Paste a catbox.moe link (photo, video or audio)…"
-            value="${escapeHtml(state.messageMediaUrl)}"
-            onkeydown="if(event.key==='Enter'){event.preventDefault();commitMessageMediaUrl(this.value);}" />
-          <button class="mn-media-picker-add" onclick="commitMessageMediaUrl(document.querySelector('.mn-media-picker-input').value)" title="Attach">Add</button>
-          <button class="mn-media-picker-cancel" onclick="closeMessageMediaPicker()" title="Cancel">✕</button>
-        </div>
-        ${state.messageMediaError ? `<p class="mn-media-picker-error">${escapeHtml(state.messageMediaError)}</p>` : `<p class="mn-media-picker-hint">Photos, videos and audio from files.catbox.moe are embedded automatically.</p>`}
-      ` : ""}
-      ${state.messageMediaUrl && !state.messageMediaPicker ? `
-        <div class="mn-media-preview-chip">
-          ${state.messageMediaType === "image"
-            ? `<img src="${escapeHtml(state.messageMediaUrl)}" alt="Attached image" onerror="this.style.display='none'" />`
-            : `<span class="mn-media-preview-icon">${state.messageMediaType === "video" ? iconVideoSmall() : state.messageMediaType === "audio" ? iconMicSmall() : iconAttachSmall()}</span>`}
-          <span class="mn-media-preview-label">${state.messageMediaType === "image" ? "Photo" : state.messageMediaType === "video" ? "Video" : state.messageMediaType === "audio" ? "Audio" : "File"} attached</span>
-          <button class="mn-media-preview-remove" onclick="clearMessageMedia(event)" title="Remove attachment">✕</button>
-        </div>
-      ` : ""}
+      
       ${state.replyTarget ? `
 <div class="mn-chat-reply-bar">
   <div class="mn-chat-reply-bar-main">
@@ -12132,12 +12738,9 @@ const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0
 ` : ""}
 <div class="mn-composer-row">
   <div class="mn-chat-pill">
-    <button class="mn-composer-attach" onclick="toggleMessageMediaPicker()" title="Attach a catbox.moe photo, video or audio link">${iconAttachSmall()}</button>
-<button class="mn-composer-attach" onclick="document.getElementById('mn-message-file-input').click()" title="Upload a photo, video or audio file">${iconImageSmall()}</button>
-<input id="mn-message-file-input" type="file" accept="image/*,video/*,audio/*" style="display:none" onchange="onMessageFileSelected(this)" />
-          <button class="mn-composer-attach" onclick="openGiftCoins()" title="Gift coins">${iconGiftSmall()}</button>
-          <textarea rows="1" placeholder="Message ${escapeHtml(state.activeChatUser.username || "")}..." oninput="setMessageDraft(this.value)">${escapeHtml(state.messageDraft)}</textarea>
-        </div>
+    <button class="mn-composer-attach" onclick="openGiftCoins()" title="Gift coins">${iconGiftSmall()}</button>
+    <textarea rows="1" placeholder="Message" oninput="setMessageDraft(this.value)">${escapeHtml(state.messageDraft)}</textarea>
+  </div>
         <button class="mn-composer-send mn-chat-send" onclick="sendMessage()" ${(state.messageDraft.trim() || state.messageMediaUrl) && !state.messageBusy ? "" : "disabled"} title="Send">
           ${state.messageBusy ? `<span class="mn-spinner"></span>` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
         </button>
@@ -12155,7 +12758,7 @@ const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0
         ${composerHtml}
         <nav class="mn-nav">
           <button class="mn-navbtn ${state.screen === "home" ? "mn-navbtn-active" : ""}" onclick="selectScreen('home')">${iconHome(state.screen === "home")}<span>Home</span></button>
-          <button class="mn-navbtn ${state.screen === "discover" ? "mn-navbtn-active" : ""}" onclick="selectScreen('discover')">${iconCompass(state.screen === "discover", 22)}<span>Discover</span></button>
+          <button class="mn-navbtn mn-messages-btn ${state.screen === "messages" || state.screen === "chat" ? "mn-navbtn-active" : ""}" onclick="openMessages()">${iconInbox(state.screen === "messages" || state.screen === "chat")}<span>Messages</span>${state.chatsUnread > 0 ? `<span class="mn-notif-count">${state.chatsUnread > 9 ? "9+" : state.chatsUnread}</span>` : ""}</button>
           <button class="mn-navbtn mn-navbtn-create" onclick="selectScreen('create')"><span class="mn-fab">${iconPlus()}</span><span>Create</span></button>
           <button class="mn-navbtn ${state.screen === "challenges" ? "mn-navbtn-active" : ""}" onclick="selectScreen('challenges')">${iconChallenges(state.screen === "challenges")}<span>Challenges</span></button>
           <button class="mn-navbtn ${state.screen === "profile" ? "mn-navbtn-active" : ""}" onclick="selectScreen('profile')">${iconUser(state.screen === "profile")}<span>Profile</span></button>
@@ -12165,7 +12768,8 @@ const challengeRailScrollLeft = challengeRailEl ? challengeRailEl.scrollLeft : 0
 ${newChallengeCodeSheetHtml()}
         ${regionPickerHtml()}
         ${signOutConfirmHtml()}
-        ${reelsViewerHtml()}
+${chatOptionsSheetHtml()}
+${reelsViewerHtml()}
         ${commentsSheetHtml()}
         ${newChatSheetHtml()}
         ${createChannelSheetHtml()}
@@ -12571,10 +13175,278 @@ window.setChallengeCorrect = setChallengeCorrect;
 window.submitChallenge = submitChallenge;
 window.goToFeed = goToFeed;
 window.setSortMode = setSortMode;
+
+// ===== CHANNELS OFF (one switch) =====
+const CHANNELS_ENABLED = false; // true = bring Channels back
+if (!CHANNELS_ENABLED) {
+  document.head.insertAdjacentHTML("beforeend", '<style>[onclick="openChannelsScreen()"]{display:none!important}</style>');
+  openChannelsScreen = openChannel = openChannelPostDetail = () => {};
+  const _render = render;
+  render = () => {
+    if (["channels", "channelDetail", "channelPostDetail"].includes(state.screen)) state.screen = "home";
+    return _render();
+  };
+}
+// ===== END CHANNELS OFF =====
 window.openChannelsScreen = openChannelsScreen;
 window.closeChannelsScreen = closeChannelsScreen;
 window.setChannelsTab = setChannelsTab;
-window.setMyEarnSubTab = setMyEarnSubTab;
+// ===== MYEARN TAB IN PROFILE =====
+function profileEarnHtml() {
+const sub = state.myEarnSubTab === "eligibility" ? "eligibility" : "earn";
+return `
+<div class="mn-tabs mn-subtabs">
+  <button class="mn-tab ${sub === "earn" ? "mn-tab-active" : "" }" onclick="setMyEarnSubTab('earn')">Earn</button>
+  <button class="mn-tab ${sub === "eligibility" ? "mn-tab-active" : "" }" onclick="setMyEarnSubTab('eligibility')">Eligibility</button>
+</div>
+${sub === "eligibility" ? eligibilityPanelHtml() : coinsPanelHtml()}
+`;
+}
+const _selectProfileTab = selectProfileTab;
+selectProfileTab = (tab) => {
+if (tab !== "earn") return _selectProfileTab(tab);
+state.profileTab = "earn";
+setMyEarnSubTab(state.myEarnSubTab === "eligibility" ? "eligibility" : "earn");
+};
+window.selectProfileTab = selectProfileTab;
+const _renderProfile = renderProfile;
+renderProfile = () => {
+let html = _renderProfile();
+const statsBtn = `onclick="selectProfileTab('stats')">Stats</button>`;
+const at = html.indexOf(statsBtn);
+if (at === -1) return html;
+const isEarn = state.profileTab === "earn";
+const earnBtn = `<button class="mn-tab ${isEarn ? " mn-tab-active" : "" }" onclick="selectProfileTab('earn')">MyEarn</button>`;
+html = html.slice(0, at + statsBtn.length) + "\n " + earnBtn + html.slice(at + statsBtn.length);
+if (!isEarn) return html;
+const tabsEnd = html.indexOf("</div>", at) + 6;
+const head = html.slice(0, tabsEnd).replace(`<button class="mn-tab mn-tab-active" onclick="selectProfileTab('stats')">`, `<button class="mn-tab " onclick="selectProfileTab('stats')">`);
+    return head + profileEarnHtml() + "</div>";
+    };
+    // ===== END MYEARN TAB =====
+    window.setMyEarnSubTab = setMyEarnSubTab;
+// ===== ELIGIBILITY: channel criterion auto-done =====
+ELIG_TARGETS.channelSeconds = 0;
+const _elig = eligibilityPanelHtml;
+eligibilityPanelHtml = () => {
+  const h = _elig(), i = h.indexOf('<div class="mn-elig-summary-row"><span>Channel activity');
+  return i < 0 ? h : h.slice(0, i) + h.slice(h.indexOf("</strong></div>", i) + 15);
+};
+        // ===== SETTINGS: theme + feed order (replaces Edit) =====
+document.head.insertAdjacentHTML("beforeend", `<style>
+[onclick="toggleTheme()"] { display: none !important; }
+.mn-set { margin: 16px 0 6px; padding-top: 16px; border-top: 1px solid var(--border); }
+.mn-set-head { font: 700 16px Inter, sans-serif; color: var(--ink); margin-bottom: 14px; }
+.mn-set-tabs { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.mn-set-tabs::-webkit-scrollbar { display: none; }
+.mn-set-tab { flex: 0 0 auto; border: none; border-bottom: 2px solid transparent; background: none; padding: 0 0 10px 0; font: 600 13.5px Inter, sans-serif; color: var(--ink-faint); cursor: pointer; }
+.mn-set-tab.on { color: var(--ink); border-bottom-color: var(--ink); }
+.mn-set-panel .mn-editform { border-top: 0; margin-top: 0; padding-top: 0; }
+.mn-set-themes { display: flex; flex-direction: column; }
+.mn-set-theme { flex: none; display: flex; align-items: center; gap: 12px; border: none; border-bottom: 1px solid var(--paper-line); background: none; padding: 12px 0; cursor: pointer; font: 600 14px Inter, sans-serif; color: var(--ink); text-align: left; }
+.mn-set-theme:last-child { border-bottom: none; }
+.mn-set-theme::after { content: ""; width: 18px; height: 18px; margin-left: auto; border-radius: 50%; border: 2px solid var(--border-strong); box-sizing: border-box; flex: 0 0 auto; }
+.mn-set-theme.on::after { border-color: var(--green); background: radial-gradient(var(--green) 45%, transparent 50%); }
+.mn-set-prev { width: 34px; height: 34px; flex: 0 0 auto; box-sizing: border-box; border-radius: 8px; border: 1px solid rgba(128, 128, 128, 0.35); display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 6px; }
+.mn-set-prev i { display: block; height: 4px; border-radius: 3px; }
+.mn-set-prev i:last-child { width: 60%; }
+.mn-set-prev.light { background: #fff; }
+.mn-set-prev.light i { background: #d5d9df; }
+.mn-set-prev.dark { background: #14171c; }
+.mn-set-prev.dark i { background: #3b414b; }
+.mn-set-opt { display: flex; width: 100%; align-items: center; gap: 12px; text-align: left; border: none; border-bottom: 1px solid var(--paper-line); background: none; padding: 12px 0; margin-bottom: 0; cursor: pointer; }
+.mn-set-opt:last-child { border-bottom: none; }
+.mn-set-opt > span { flex: 1; }
+.mn-set-opt b { display: block; font: 600 14px Inter, sans-serif; color: var(--ink); }
+.mn-set-opt em { display: block; font: 400 12.5px Inter, sans-serif; font-style: normal; color: var(--ink-faint); margin-top: 2px; line-height: 1.4; }
+.mn-set-opt > i { width: 18px; height: 18px; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--border-strong); flex: 0 0 auto; }
+.mn-set-opt.on > i { border-color: var(--green); background: radial-gradient(var(--green) 45%, transparent 50%); }
+
+/* ===== Settings restyle ===== */
+.mn-set { border-top: 0; padding-top: 6px; margin-top: 8px; }
+.mn-set-head { font: 800 20px Inter, sans-serif; letter-spacing: -0.02em; margin-bottom: 2px; }
+.mn-set-sub { font: 400 13px Inter, sans-serif; color: var(--ink-faint); margin: 0 0 16px; }
+
+/* segmented tabs */
+.mn-set-tabs { gap: 4px; padding: 4px; border: 0; border-radius: 14px; background: var(--paper-line); margin-bottom: 16px; }
+.mn-set-tab { flex: 1; padding: 9px 10px; border: 0; border-radius: 10px; text-align: center; font: 600 13px Inter, sans-serif; transition: all .18s ease; }
+.mn-set-tab.on { background: var(--paper-raised); color: var(--green); border: 0; box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 4px 10px -4px rgba(0,0,0,.10); }
+
+/* card panel */
+.mn-set-panel { background: var(--paper-raised); border: 1px solid var(--border); border-radius: 20px; padding: 20px 18px; box-shadow: 0 10px 30px -18px rgba(0,0,0,.25); }
+
+/* labels + inputs */
+.mn-set-panel .mn-field { margin-bottom: 18px; }
+.mn-set-panel .mn-field label { font: 700 11.5px Inter, sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint); margin-bottom: 8px; }
+.mn-set-panel .mn-input, .mn-set-panel .mn-textarea { background: var(--paper-line); border: 1.5px solid transparent; border-radius: 14px; padding: 13px 14px; font-size: 14.5px; }
+.mn-set-panel .mn-input:focus, .mn-set-panel .mn-textarea:focus { background: var(--paper-raised); border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+
+/* photo: centered avatar + camera badge */
+.mn-set-panel .mn-field:first-child { text-align: center; }
+.mn-set-panel .mn-field:first-child > label { display: none; }
+.mn-set-panel .mn-photo-edit-row { position: relative; width: fit-content; margin: 4px auto 6px; }
+.mn-set-panel .mn-photo-edit-preview.mn-avatar { width: 96px; height: 96px; border: 3px solid var(--paper-raised); box-shadow: 0 0 0 3px var(--green-soft), 0 10px 24px -10px rgba(0,0,0,.35); }
+.mn-set-panel .mn-photo-edit-preview svg { width: 46%; height: 46%; }
+.mn-set-panel .mn-photo-edit-row .mn-composer-attach { position: absolute; right: -4px; bottom: -2px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--green); color: #fff; border: 3px solid var(--paper-raised); box-shadow: 0 4px 10px -3px rgba(0,0,0,.35); }
+.mn-shell[data-theme="dark"] .mn-set-panel .mn-photo-edit-row .mn-composer-attach { color: #06231A; }
+.mn-set-panel .mn-photo-edit-hint { text-align: center; font-size: 12px; margin-top: 8px; }
+
+/* save button */
+.mn-set-panel .mn-primary-btn {
+margin-top: 6px; padding: 14px; border-radius: 14px; font-size: 15px; letter-spacing: .01em;
+background: var(--green);
+background: linear-gradient(135deg, var(--green), color-mix(in srgb, var(--green) 72%, #000));
+box-shadow: 0 12px 22px -12px var(--green);
+}
+.mn-set-panel .mn-primary-btn:not(:disabled):active { transform: scale(.98); }
+
+/* ===== Threads-style override (flat, no cards) ===== */
+
+/* underline tabs */
+.mn-set-tabs { background: none; padding: 0; border-radius: 0; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.mn-set-tab { flex: 1; padding: 12px 0; border-radius: 0; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--ink-faint); font: 600 14px Inter, sans-serif; }
+.mn-set-tab.on { background: none; box-shadow: none; color: var(--ink); border-bottom: 2px solid var(--ink); }
+
+/* no card */
+.mn-set-panel { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; }
+
+/* rows separated by hairlines */
+.mn-set-panel .mn-field { margin: 0; padding: 16px 0; border-bottom: 1px solid var(--border); text-align: left; }
+.mn-set-panel .mn-field label { text-transform: none; letter-spacing: 0; font: 600 14px Inter, sans-serif; color: var(--ink); margin-bottom: 4px; }
+
+/* borderless inputs */
+.mn-set-panel .mn-input, .mn-set-panel .mn-textarea { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 4px 0; font-size: 14.5px; color: var(--ink-soft); }
+.mn-set-panel .mn-input:focus, .mn-set-panel .mn-textarea:focus { background: transparent; border: 0; box-shadow: none; color: var(--ink); }
+.mn-set-panel .mn-textarea { min-height: 64px; }
+
+/* photo row: small avatar + outlined icon button */
+.mn-set-panel .mn-photo-edit-row { position: static; width: auto; margin: 0; gap: 14px; }
+.mn-set-panel .mn-photo-edit-preview.mn-avatar { width: 64px; height: 64px; border: 1px solid var(--border); box-shadow: none; }
+.mn-shell .mn-set-panel .mn-photo-edit-row .mn-composer-attach { position: static; width: 38px; height: 38px; background: transparent; color: var(--ink); border: 1px solid var(--border-strong); box-shadow: none; }
+.mn-set-panel .mn-photo-edit-hint { text-align: left; margin-top: 10px; }
+
+/* solid black button */
+.mn-shell .mn-set-panel .mn-primary-btn { margin-top: 22px; padding: 14px; border-radius: 12px; background: var(--ink); color: var(--paper-raised); box-shadow: none; font-weight: 700; }
+.mn-set-panel .mn-primary-btn svg { display: none; }
+</style>`);
+
+// remember which posts this person has actually viewed (on screen 1s+, or opened)
+const VIEWED_KEY = "mn_viewed_ids";
+const viewedIdsSet = (() => { try { return new Set(JSON.parse(localStorage.getItem(VIEWED_KEY) || "[]")); } catch (e) { return new Set(); } })();
+let viewedSaveTimer = null;
+const _trackViewOnce = trackViewOnce;
+trackViewOnce = (id) => {
+  if (id && !viewedIdsSet.has(id)) {
+    viewedIdsSet.add(id);
+    clearTimeout(viewedSaveTimer);
+    viewedSaveTimer = setTimeout(() => { try { localStorage.setItem(VIEWED_KEY, JSON.stringify(Array.from(viewedIdsSet).slice(-3000))); } catch (e) {} }, 800);
+  }
+  return _trackViewOnce(id);
+};
+
+// feed order: default | new | old | unviewed | mix  (feed posts only, nothing else)
+const FEED_ORDER_KEY = "mn_feed_order";
+let feedOrderMode = "default";
+try { feedOrderMode = localStorage.getItem(FEED_ORDER_KEY) || "default"; } catch (e) {}
+const _postMs = (q) => (q.createdAt && q.createdAt.toMillis ? q.createdAt.toMillis() : 0);
+function applyFeedOrder(list) {
+  const newestFirst = (a, b) => _postMs(b) - _postMs(a);
+  const fresh = list.filter((q) => !viewedIdsSet.has(q.id)).sort(newestFirst);
+  const seen = list.filter((q) => viewedIdsSet.has(q.id)).sort(newestFirst);
+  if (feedOrderMode === "new") return list.slice().sort(newestFirst);
+  if (feedOrderMode === "old") return list.slice().sort((a, b) => _postMs(a) - _postMs(b));
+  if (feedOrderMode === "unviewed") return fresh.concat(seen);
+  if (feedOrderMode === "mix") {
+    const mixed = [];
+    let lo = 0, hi = fresh.length - 1;
+    while (lo <= hi) { mixed.push(fresh[lo++]); if (lo <= hi) mixed.push(fresh[hi--]); }
+    return mixed.concat(seen);
+  }
+  return list;
+}
+const _sortQuestions = sortQuestions;
+sortQuestions = (list, mode) => {
+  if (feedOrderMode === "default" || (mode !== "foryou" && mode !== "following")) return _sortQuestions(list, mode);
+  return applyFeedOrder(mode === "following" ? _sortQuestions(list, mode) : list);
+};
+function setFeedOrder(mode) {
+  feedOrderMode = mode;
+  try { localStorage.setItem(FEED_ORDER_KEY, mode); } catch (e) {}
+  refreshForYouOrder();
+  resetCommittedFeed();
+  render();
+}
+function setTheme(mode) { if (state.theme !== mode) toggleTheme(); }
+window.setFeedOrder = setFeedOrder;
+window.setTheme = setTheme;
+
+// Settings card with tabs: Profile | Appearance | Feed order
+let settingsTab = "profile";
+function setSettingsTab(t) { settingsTab = t; render(); }
+window.setSettingsTab = setSettingsTab;
+function settingsExtraHtml(editHtml) {
+  const tabs = [["profile", "Profile"], ["appearance", "Appearance"], ["feed", "Feed order"]];
+  const tabBtns = tabs.map((t) => {
+    const on = settingsTab === t[0] ? "on" : "";
+    return `<button class="mn-set-tab ${on}" onclick="setSettingsTab('${t[0]}')">${t[1]}</button>`;
+  }).join("");
+  let panel = editHtml;
+  if (settingsTab === "appearance") {
+    const dark = state.theme === "dark";
+    const lightOn = dark ? "" : "on";
+    const darkOn = dark ? "on" : "";
+    panel = `
+      <div class="mn-set-themes">
+        <button class="mn-set-theme ${lightOn}" onclick="setTheme('light')"><span class="mn-set-prev light"><i></i><i></i></span>Light</button>
+        <button class="mn-set-theme ${darkOn}" onclick="setTheme('dark')"><span class="mn-set-prev dark"><i></i><i></i></span>Dark</button>
+      </div>
+    `;
+  } else if (settingsTab === "feed") {
+    const opts = [
+      ["default", "For You (default)", "A smart mix based on who you follow and like"],
+      ["new", "Newest first", "The latest posts at the top"],
+      ["old", "Oldest first", "Older posts at the top"],
+      ["unviewed", "Not yet viewed", "Posts you have not seen yet come first"],
+      ["mix", "Mix new + old", "Alternates newest and oldest posts you have not seen"]
+    ];
+    panel = opts.map((o) => {
+      const on = feedOrderMode === o[0] ? "on" : "";
+      return `<button class="mn-set-opt ${on}" onclick="setFeedOrder('${o[0]}')"><span><b>${o[1]}</b><em>${o[2]}</em></span><i></i></button>`;
+    }).join("");
+  }
+  return `
+    <div class="mn-set">
+      <div class="mn-set-head">Settings</div>
+<p class="mn-set-sub">Manage your profile, look and feed.</p>
+      <div class="mn-set-tabs">${tabBtns}</div>
+      <div class="mn-set-panel">${panel}</div>
+    </div>
+  `;
+}
+const _renderProfileSettings = renderProfile;
+renderProfile = () => {
+  let h = _renderProfileSettings();
+  const editTxt = "<span>Edit</span>";
+  const e = h.indexOf(editTxt);
+  if (e !== -1) {
+    const s = h.lastIndexOf("<svg", e);
+    const gear = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>`;
+    if (s !== -1) h = h.slice(0, s) + gear + "<span>Settings</span>" + h.slice(e + editTxt.length);
+  }
+  if (state.profileEdit) {
+    let editHtml = "";
+    const a = h.indexOf('<div class="mn-editform">');
+    if (a !== -1) {
+      const b = h.indexOf("Save changes</button>", a);
+      const c = b === -1 ? -1 : h.indexOf("</div>", b) + 6;
+      if (c > 5) { editHtml = h.slice(a, c); h = h.slice(0, a) + h.slice(c); }
+    }
+    const t = h.indexOf('<div class="mn-tabs">');
+  if (t !== -1) h = h.slice(0, t) + settingsExtraHtml(editHtml) + "</div>";
+  }
+  return h;
+};
+// ===== END SETTINGS =====
 window.openWithdraw = openWithdraw;
 window.closeWithdraw = closeWithdraw;
 window.setWithdrawPhone = setWithdrawPhone;
@@ -12844,7 +13716,157 @@ return r;
 });
 })();
 // ================= END STABILITY PATCH =================
+// ================= MENYA NAV + TAP + INSTANT HOME FIX (single paste) =================
+(function () {
+  const KEEP_HOME_MS = 10 * 60 * 1000; // Home keeps the same posts for 10 min; after that it reshuffles like before
 
+  // 1) Back button: ignore double-taps and always take ONE clean step back
+  const _go = History.prototype.go;
+  let lastBack = 0;
+  History.prototype.back = function () {
+    const now = Date.now();
+    if (now - lastBack < 350) return;
+    lastBack = now;
+    _go.call(this, -1);
+  };
+
+  // 2) Never push a duplicate history entry for the screen you're already on
+  const navKey = (s) => s ? [s.screen, s.detailId, !!s.commentsOpen, s.viewedUserId, s.activeChannelId, s.channelPostDetailId, s.activeChatId, s.sortMode].join("|") : "";
+  pushNav = function (force) {
+    if (suppressNav) return;
+    const snap = navSnapshot();
+    if (!force && !anyOverlayOpen() && navKey(history.state) === navKey(snap)) {
+      history.replaceState(snap, "", location.pathname + location.search);
+      return;
+    }
+    history.pushState(snap, "", location.pathname + location.search);
+  };
+
+  // 3) INSTANT HOME: the Home feed is kept alive while you visit other screens and
+  //    put straight back (no rebuilding 50 posts, no reshuffle) when you return
+  let homeCache = null;      // { node, sig, at, scrollY }
+  let lastScreen = null;
+  let homeScrollY = 0;
+  let popNav = false;
+  let useCachedHome = false;
+  const homeSig = () => [
+    state.user && state.user.uid,
+    ((state.profile && state.profile.followedUsers) || []).join(","),
+    state.sortMode, state.searchTerm, state.theme,
+    (committedFeedIds || []).join(","),
+  ].join("|");
+  const homeCacheFresh = () => homeCache && Date.now() - homeCache.at < KEEP_HOME_MS;
+  window.addEventListener("scroll", () => { if (state.screen === "home") homeScrollY = window.scrollY; }, { passive: true });
+
+  const _renderHome = renderHome;
+  renderHome = function () {
+    return useCachedHome ? '<div class="mn-home" id="mn-home-slot"></div>' : _renderHome();
+  };
+
+  // 4) Tapping the tab you're already on just scrolls to top; Home reuses the kept feed
+  const _select = selectScreen;
+  selectScreen = function (screen) {
+    if (screen === state.screen && !anyOverlayOpen()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (screen === "home" && homeCacheFresh()) {
+      trackEvent("screen_view", { screen_name: "home" });
+      setState({ screen: "home" });
+      pushNav();
+      return;
+    }
+    return _select(screen);
+  };
+  window.selectScreen = selectScreen;
+
+  // 5) Closing Comments with X also removes the history entry it added
+  let skipNextPop = false;
+  const _closeComments = closeComments;
+  closeComments = function () {
+    const hadEntry = !suppressNav && history.state && history.state.commentsOpen;
+    _closeComments();
+    if (hadEntry) {
+      skipNextPop = true;
+      _go.call(history, -1);
+      setTimeout(() => { skipNextPop = false; }, 800);
+    }
+  };
+  window.closeComments = closeComments;
+
+  // 6) Phone Back: skip stale duplicate entries + stop channel/chat listeners leaking
+  window.addEventListener("popstate", (e) => {
+    if (skipNextPop) { skipNextPop = false; e.stopImmediatePropagation(); return; }
+    if (anyOverlayOpen()) return;
+    const snap = e.state;
+    if (snap && snap.screen && navKey(snap) === navKey(navSnapshot())) {
+      e.stopImmediatePropagation();
+      _go.call(history, -1);
+      return;
+    }
+    popNav = true; setTimeout(() => { popNav = false; }, 0);
+    const inChannel = state.screen === "channelDetail" || state.screen === "channelPostDetail";
+    const toChannel = snap && (snap.screen === "channelDetail" || snap.screen === "channelPostDetail");
+    if (inChannel && !toChannel) { flushChannelDwell(); detachChannelListeners(); }
+    if (state.screen === "chat" && !(snap && snap.screen === "chat")) { detachChatMessagesListener(); detachActiveChatUserListener(); }
+  }, true);
+
+  // 7) Opening a post from a button now shows the screen at once (it used to wait for the network)
+  const _openDetail = openDetail;
+  openDetail = function (...a) {
+    const r = _openDetail.apply(this, a);
+    render();
+    return r;
+  };
+  window.openDetail = openDetail;
+
+  // 8) render(): keep Home alive when leaving it, put it back when returning,
+  //    and never let a background render eat a tap
+  const _render = render;
+  let down = false, downAt = 0, pending = false;
+  render = function (...args) {
+    if (down && Date.now() - downAt < 300) { pending = true; return; }
+    pending = false;
+    const from = lastScreen, to = state.screen;
+
+    if (from === "home" && to !== "home") {
+      const el = document.querySelector(".mn-home");
+      homeCache = el && el.querySelector(".mn-feed") && state.sortMode !== "imagetok"
+        ? { node: el, sig: homeSig(), at: Date.now(), scrollY: homeScrollY }
+        : null;
+    }
+
+    let swap = null;
+    if (to === "home" && from !== "home" && homeCacheFresh() && homeCache.sig === homeSig() && state.sortMode !== "imagetok") {
+      swap = homeCache;
+      useCachedHome = true;
+    }
+
+    let r;
+    try { r = _render.apply(this, args); } finally { useCachedHome = false; }
+
+    if (swap) {
+      const slot = document.getElementById("mn-home-slot");
+      try {
+        if (!slot) throw new Error("no slot");
+        slot.replaceWith(swap.node);
+        window.scrollTo({ top: popNav ? swap.scrollY : 0, left: 0, behavior: "instant" });
+        renderFeedOnly();        // syncs counts / new or deleted posts on the kept feed
+        observeFeedSentinel();
+      } catch (err) {
+        homeCache = null;
+        r = _render.apply(this, args);   // safe fallback: normal full render
+      }
+    }
+    lastScreen = state.screen;
+    return r;
+  };
+  document.addEventListener("pointerdown", () => { down = true; downAt = Date.now(); }, true);
+  const up = () => { down = false; setTimeout(() => { if (pending) render(); }, 400); };
+  document.addEventListener("pointerup", up, true);
+  document.addEventListener("pointercancel", up, true);
+})();
+// ================= END MENYA NAV + TAP + INSTANT HOME FIX =================
 render();
 const mnSplashEl = document.getElementById('mn-splash');
 if (mnSplashEl) mnSplashEl.remove();
