@@ -6,6 +6,42 @@
 <meta name="color-scheme" content="light">
 <title>Poisson score predictor</title>
 <meta name="description" content="Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0D3A2B">
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp previews) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Poisson Score Predictor">
+<meta property="og:description" content="Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.png">
+<meta property="og:site_name" content="Poisson Score Predictor">
+
+<!-- Twitter/X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Poisson Score Predictor">
+<meta name="twitter:description" content="Turn average goals into match odds. A Poisson-based predictor for football scores.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/og-image.png">
+
+<!-- Structured data for search engines -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Poisson Score Predictor",
+    "description": "Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Any",
+    "url": "https://YOUR-DOMAIN.com/",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
@@ -150,6 +186,24 @@ details code{background:#E3ECE7;padding:1px 6px;border-radius:5px;font-size:13px
 .legend3 .nm span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .legend3 .pv{font:700 clamp(20px,4.6vw,28px)/1.15 var(--display);font-variant-numeric:tabular-nums}
 .legend3 .od{font-size:13px;color:var(--muted)}
+/* Custom dropdown */
+.cs{position:relative}
+.cs select{display:none}
+.cs-btn{
+  width:100%;height:46px;padding:0 14px;border:1.5px solid #AEBFB7;border-radius:8px;
+  background:#fff;color:var(--ink);font:500 16px var(--body);text-align:left;
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+}
+.cs-btn:after{content:'';width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-top:-4px}
+.cs-list{
+  position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:10;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 8px 24px rgba(13,37,30,.18);max-height:260px;overflow-y:auto;padding:6px;display:none;
+}
+.cs.open .cs-list{display:block}
+.cs-opt{padding:12px;border-radius:8px;cursor:pointer;font-size:15px;color:var(--ink)}
+.cs-opt:hover,.cs-opt.hi{background:#DDE8E2}
+.cs-opt.sel{font-weight:650;color:var(--pitch)}
 
 /* Markets */
 .market{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
@@ -209,6 +263,19 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+.match-list-col{display:none}
+.match-list-col .card{position:sticky;top:20px}
+.match-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:70vh;overflow-y:auto}
+.match-list-item{padding:12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--card);transition:background .15s}
+.match-list-item:hover{background:var(--chalk)}
+.match-list-item.active{border-color:var(--pitch);background:var(--chalk)}
+.match-list-item .teams{font-weight:600;font-size:14.5px}
+.match-list-item .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.match-list-empty{padding:16px;text-align:center;color:var(--muted);font-size:14px}
+@media (min-width:900px){
+  .layout.has-list{grid-template-columns:300px minmax(0,1fr)}
+  .match-list-col{display:block}
+}
 @media (max-width:520px){
   .card{padding:16px}
   .verdict{padding:22px 16px 20px}
@@ -238,8 +305,17 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
 <main id="main" class="wrap">
 
   <!-- ============ MATCH ============ -->
-  <section id="panel-match" role="tabpanel" aria-labelledby="tab-match" class="layout" data-view="input">
-    <div class="form-col">
+  <section id="panel-match" role="tabpanel" aria-labelledby="tab-match" class="layout has-list" data-view="input">
+  <aside class="match-list-col">
+    <div class="card">
+      <h3>Upcoming matches</h3>
+      <p class="hint">Tap a match to load it.</p>
+      <div class="match-list" id="matchListItems">
+        <p class="match-list-empty">No matches loaded yet.</p>
+      </div>
+    </div>
+  </aside>
+  <div class="form-col">
       <form id="matchForm" class="card" novalidate>
         <h3>Match details</h3>
         <p class="hint">Fill in the details, then tap Show prediction.</p>
@@ -250,40 +326,35 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
   <option value="">Choose a match…</option>
 </select>
 <p class="hint" id="fdStatus" style="margin:6px 0 0"></p>
-            <option value="">Choose a matchup…</option>
-            <option value="even">Evenly matched</option>
-            <option value="fav">Strong home favourite</option>
-            <option value="low">Low-scoring, defensive game</option>
-          </select>
-        </div>
+</div>
 
         <fieldset>
           <legend><span class="dot h"></span>Home team</legend>
           <label for="homeName">Team name</label>
-          <input type="text" id="homeName" value="Riverside FC" maxlength="30" autocomplete="off">
-          <div class="row2" style="margin-top:10px">
-            <div><label for="hFor">Goals scored</label><input type="number" id="hFor" value="1.8" min="0" max="6" step="0.05" inputmode="decimal"></div>
-            <div><label for="hAg">Goals conceded</label><input type="number" id="hAg" value="0.9" min="0" max="6" step="0.05" inputmode="decimal"></div>
-          </div>
-          <p class="hint" style="margin:6px 0 0">Average per home game.</p>
-        </fieldset>
+          <input type="text" id="homeName" placeholder="e.g. Riverside FC" maxlength="30" autocomplete="off">
+<div class="row2" style="margin-top:10px">
+  <div><label for="hFor">Goals scored</label><input type="number" id="hFor" min="0" max="6" step="0.05" inputmode="decimal"></div>
+  <div><label for="hAg">Goals conceded</label><input type="number" id="hAg" min="0" max="6" step="0.05" inputmode="decimal"></div>
+</div>
+<p class="hint" style="margin:6px 0 0">Average per home game.</p>
+</fieldset>
 
-        <fieldset>
-          <legend><span class="dot a"></span>Away team</legend>
-          <label for="awayName">Team name</label>
-          <input type="text" id="awayName" value="Northgate United" maxlength="30" autocomplete="off">
-          <div class="row2" style="margin-top:10px">
-            <div><label for="aFor">Goals scored</label><input type="number" id="aFor" value="1.3" min="0" max="6" step="0.05" inputmode="decimal"></div>
-            <div><label for="aAg">Goals conceded</label><input type="number" id="aAg" value="1.4" min="0" max="6" step="0.05" inputmode="decimal"></div>
-          </div>
-          <p class="hint" style="margin:6px 0 0">Average per away game.</p>
-        </fieldset>
+<fieldset>
+  <legend><span class="dot a"></span>Away team</legend>
+  <label for="awayName">Team name</label>
+  <input type="text" id="awayName" placeholder="e.g. Northgate United" maxlength="30" autocomplete="off">
+  <div class="row2" style="margin-top:10px">
+    <div><label for="aFor">Goals scored</label><input type="number" id="aFor" min="0" max="6" step="0.05" inputmode="decimal"></div>
+    <div><label for="aAg">Goals conceded</label><input type="number" id="aAg" min="0" max="6" step="0.05" inputmode="decimal"></div>
+  </div>
+  <p class="hint" style="margin:6px 0 0">Average per away game.</p>
+</fieldset>
 
-        <fieldset>
-          <legend><span class="dot d"></span>League averages</legend>
-          <div class="row2">
-            <div><label for="lgH">Home goals per game</label><input type="number" id="lgH" value="1.5" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
-            <div><label for="lgA">Away goals per game</label><input type="number" id="lgA" value="1.2" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
+<fieldset>
+  <legend><span class="dot d"></span>League averages</legend>
+  <div class="row2">
+    <div><label for="lgH">Home goals per game</label><input type="number" id="lgH" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
+    <div><label for="lgA">Away goals per game</label><input type="number" id="lgA" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
           </div>
         </fieldset>
 
@@ -468,8 +539,7 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
 
 <noscript><p class="wrap">This predictor needs JavaScript to run.</p></noscript>
 
-<script>
-(function(){
+<script type="module">
 'use strict';
 
 /* ---------- helpers ---------- */
@@ -738,82 +808,104 @@ $('#heat').addEventListener('click', e => {
   $('#heatReadout').textContent = `${lastMatch.home} ${i} – ${j} ${lastMatch.away}: ${pct(p)} chance (fair odds ${odds(p)}).`;
 });
 
-const matchDefaults = {homeName:'Riverside FC', awayName:'Northgate United', hFor:1.8, hAg:0.9, aFor:1.3, aAg:1.4, lgH:1.5, lgA:1.2};
-const presets = {
-  even: {homeName:'Harbour Town', awayName:'Kestrel Athletic', hFor:1.4, hAg:1.3, aFor:1.3, aAg:1.4, lgH:1.5, lgA:1.2},
-  fav:  {homeName:'Capital City', awayName:'Fenwick Rovers', hFor:2.5, hAg:0.7, aFor:0.9, aAg:1.9, lgH:1.5, lgA:1.2},
-  low:  {homeName:'Stonebridge', awayName:'Marlow Park', hFor:1.0, hAg:0.8, aFor:0.8, aAg:0.9, lgH:1.5, lgA:1.2}
-};
+const matchDefaults = {homeName:'', awayName:'', hFor:'', hAg:'', aFor:'', aAg:'', lgH:'', lgA:''};
+
 function fill(obj){
   Object.entries(obj).forEach(([k, val]) => { $('#'+k).value = val; $('#'+k).removeAttribute('aria-invalid'); });
   $('#matchError').hidden = true;
 }
-
-/* ---------- football-data.org ---------- */
-const FD_KEY = 'ae0d6a826f3447d0ab236d241aa60540';
-const FD_URL = 'https://api.football-data.org/v4';
-const fdMatches = {}, fdStandings = {};
-const short = t => t.shortName || t.name;
-const sum = (rows, k) => rows.reduce((a, r) => a + r[k], 0);
-const avg = (n, d) => d > 0 ? +(n / d).toFixed(2) : null;
-
-async function fd(path){
-  const r = await fetch(FD_URL + path, {headers:{'X-Auth-Token': FD_KEY}});
-  if (r.status === 429) throw new Error('Too many requests. Wait a minute and try again.');
-  if (!r.ok) throw new Error('football-data.org error ' + r.status);
-  return r.json();
-}
-
-async function loadMatches(){
-  const sel = $('#preset'), st = $('#fdStatus');
-  st.textContent = 'Loading matches…';
-  try{
-    const day = d => d.toISOString().slice(0, 10);
-    const data = await fd(`/matches?dateFrom=${day(new Date())}&dateTo=${day(new Date(Date.now() + 7*864e5))}`);
-    const list = (data.matches || []).filter(m => m.status === 'SCHEDULED' || m.status === 'TIMED');
-    if (!list.length){ st.textContent = 'No upcoming matches in the next 7 days.'; return; }
-    list.forEach(m => {
-      fdMatches[m.id] = m;
-      const o = document.createElement('option');
-      o.value = m.id;
-      o.textContent = `${short(m.homeTeam)} vs ${short(m.awayTeam)} · ` +
-        new Date(m.utcDate).toLocaleDateString(undefined, {day:'numeric', month:'short'});
-      sel.appendChild(o);
+function enhanceSelect(sel) {
+  const wrap = document.createElement('div');
+  wrap.className = 'cs';
+  sel.parentNode.insertBefore(wrap, sel);
+  wrap.appendChild(sel);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'cs-btn';
+  const list = document.createElement('div');
+  list.className = 'cs-list';
+  wrap.appendChild(btn);
+  wrap.appendChild(list);
+  
+  function render() {
+    btn.textContent = sel.options[sel.selectedIndex]?.textContent || '';
+    list.innerHTML = '';
+    Array.from(sel.options).forEach((o, i) => {
+      const item = document.createElement('div');
+      item.className = 'cs-opt' + (i === sel.selectedIndex ? ' sel' : '');
+      item.textContent = o.textContent;
+      item.addEventListener('click', () => {
+        sel.selectedIndex = i;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        wrap.classList.remove('open');
+        render();
+      });
+      list.appendChild(item);
     });
-    st.textContent = '';
-  }catch(err){ st.textContent = err.message; }
+  }
+  render();
+  new MutationObserver(render).observe(sel, { childList: true, subtree: true });
+  btn.addEventListener('click', () => wrap.classList.toggle('open'));
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
 }
+enhanceSelect($('#preset'));
+enhanceSelect($('#evMode'));
+/* ---------- match data from Firebase (added by admin) ---------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-async function getStandings(code){
-  if (fdStandings[code]) return fdStandings[code];
-  const data = await fd(`/competitions/${code}/standings`);
-  const pick = t => (data.standings.find(s => s.type === t) || {}).table;
-  const out = {home: pick('HOME'), away: pick('AWAY')};
-  if (!out.home || !out.away) throw new Error('Home/away stats are not available for this competition.');
-  return (fdStandings[code] = out);
+const firebaseConfig = {
+  apiKey: "AIzaSyCNIsjSl60AlGmtmtC4H3uy5bQ_WCG2HV0",
+  authDomain: "poats-dd25a.firebaseapp.com",
+  projectId: "poats-dd25a",
+  storageBucket: "poats-dd25a.firebasestorage.app",
+  messagingSenderId: "804924221918",
+  appId: "1:804924221918:web:2aeed317da8773e3fbd54f"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+/* ---------- visitor tracking ---------- */
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+let sessionId = localStorage.getItem('poats_sid');
+if (!sessionId){
+  sessionId = crypto.randomUUID();
+  localStorage.setItem('poats_sid', sessionId);
 }
+function ping(){
+  setDoc(doc(db, 'presence', sessionId), { lastSeen: serverTimestamp() }, { merge: true }).catch(() => {});
+}
+ping();
+setInterval(ping, 20000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') ping(); });
+const fdMatches = {};
 
-async function applyMatch(id){
-  const m = fdMatches[id], st = $('#fdStatus');
+onSnapshot(collection(db, 'matches'), snap => {
+  const sel = $('#preset');
+  sel.querySelectorAll('option[data-fb]').forEach(o => o.remove());
+  snap.forEach(d => {
+    const m = d.data();
+    fdMatches[d.id] = m;
+    const o = document.createElement('option');
+    o.value = d.id;
+    o.dataset.fb = '1';
+    o.textContent = `${m.homeName} vs ${m.awayName}`;
+    sel.appendChild(o);
+  });
+});
+
+function applyMatch(id){
+  const m = fdMatches[id];
   if (!m) return;
-  st.textContent = 'Loading team stats…';
-  try{
-    const {home, away} = await getStandings(m.competition.code);
-    const h = home.find(r => r.team.id === m.homeTeam.id);
-    const a = away.find(r => r.team.id === m.awayTeam.id);
-    if (!h || !a || h.playedGames < 1 || a.playedGames < 1) throw new Error('Not enough games played yet for these teams.');
-    fill({
-      homeName: short(m.homeTeam), awayName: short(m.awayTeam),
-      hFor: avg(h.goalsFor, h.playedGames), hAg: avg(h.goalsAgainst, h.playedGames),
-      aFor: avg(a.goalsFor, a.playedGames), aAg: avg(a.goalsAgainst, a.playedGames),
-      lgH: avg(sum(home, 'goalsFor'), sum(home, 'playedGames')),
-      lgA: avg(sum(away, 'goalsFor'), sum(away, 'playedGames'))
-    });
-    st.textContent = 'Loaded from football-data.org.';
-  }catch(err){ st.textContent = err.message; }
+  fill({
+    homeName: m.homeName, awayName: m.awayName,
+    hFor: m.hFor, hAg: m.hAg, aFor: m.aFor, aAg: m.aAg,
+    lgH: m.lgH, lgA: m.lgA
+  });
 }
 
 $('#preset').addEventListener('change', e => { if (e.target.value) applyMatch(e.target.value); });
+
 $('#resetMatch').addEventListener('click', () => { fill(matchDefaults); $('#preset').value = ''; });
 $('#ouLine').addEventListener('change', updateMatch);
 $('#matchForm').addEventListener('submit', e => {
@@ -900,8 +992,6 @@ $('#resetEvent').addEventListener('click', () => {
   $('#evMode').value = 'atleast'; $('#eventError').hidden = true;
 });
 
-loadMatches();
-})();
 </script>
 </body>
 </html>
