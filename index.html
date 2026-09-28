@@ -4,36 +4,51 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Poisson score predictor</title>
-<meta name="description" content="Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.">
-<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<!-- REPLACE -->
+<title>Free Profit & Loss Calculator & Break-Even Tool | Menya</title>
+<meta name="description" content="Free profit and loss calculator. Enter revenue and costs to see net profit or loss, margins and your break-even point instantly. No spreadsheet needed.">
+<link rel="canonical" href="https://menya.site/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0D3A2B">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Menya">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Menya">
 
 <!-- Open Graph (Facebook, LinkedIn, WhatsApp previews) -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Poisson Score Predictor">
-<meta property="og:description" content="Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.">
-<meta property="og:url" content="https://YOUR-DOMAIN.com/">
-<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.png">
-<meta property="og:site_name" content="Poisson Score Predictor">
+<meta property="og:title" content="Profit & Loss Calculator">
+<meta property="og:description" content="Enter your revenue and costs and see your profit or loss instantly, plus your break-even point.">
+<meta property="og:url" content="https://menya.site/">
+<meta property="og:image" content="https://menya.site/og-image.png">
+<meta property="og:site_name" content="Profit & Loss Calculator">
 
 <!-- Twitter/X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Poisson Score Predictor">
-<meta name="twitter:description" content="Turn average goals into match odds. A Poisson-based predictor for football scores.">
-<meta name="twitter:image" content="https://YOUR-DOMAIN.com/og-image.png">
+<meta name="twitter:title" content="Profit & Loss Calculator">
+<meta name="twitter:description" content="Know if you're making money, in seconds.">
+<meta name="twitter:image" content="https://menya.site/og-image.png">
 
 <!-- Structured data for search engines -->
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Poisson Score Predictor",
-    "description": "Turn average goals into match odds. A Poisson-based predictor for football scores, plus a general Poisson calculator for any event.",
-    "applicationCategory": "SportsApplication",
+    "name": "Profit & Loss Calculator",
+    "description": "Enter your revenue and costs and see your profit or loss instantly, plus your break-even point.",
+    "applicationCategory": "FinanceApplication",
     "operatingSystem": "Any",
-    "url": "https://YOUR-DOMAIN.com/",
+    "url": "https://menya.site/",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -44,7 +59,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- REPLACE -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#E9EFEC;
@@ -58,10 +74,13 @@
   --home:22 120 76;
   --draw:96 108 122;
   --away:61 82 196;
-  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
-  --body:'Figtree','Segoe UI',system-ui,-apple-system,sans-serif;
+  --profit:22 120 76;
+  --loss:179 38 30;
+  --tax:214 154 20;
+  --display:'Inter','Segoe UI',system-ui,sans-serif;
+--body:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;min-width:0} html,body{overflow-x:hidden;max-width:100%} img,svg,video,canvas,table{max-width:100%} input,textarea,select,button{max-width:100%} p,h1,h2,h3,h4,span,div{overflow-wrap:break-word;word-break:break-word} .scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--paper);color:var(--ink);
@@ -75,19 +94,22 @@ body{
 :focus-visible{outline:3px solid rgb(var(--away));outline-offset:2px}
 
 /* Header */
+/* REPLACE */
 .top{padding:32px 0 8px}
+.top .lede{font-size:14px}
 h1{
-  font:700 clamp(30px,6vw,52px)/1.02 var(--display);
-  letter-spacing:-.02em;margin:0 0 10px;
+  font:700 22px/28px var(--display);
+  letter-spacing:-.02em;margin:0 0 8px;
   font-variation-settings:'opsz' 72;
 }
 .lede{margin:0 0 22px;color:var(--muted);max-width:56ch;font-size:17px}
-.tabs{display:inline-flex;background:#DAE4DF;padding:4px;border-radius:12px;gap:4px}
+/* REPLACE */
+.tabs{display:inline-flex;background:transparent;padding:0;border-radius:0;gap:16px;border-bottom:1px solid var(--line)}
 .tabs button{
-  font:600 15px/1 var(--body);border:0;background:transparent;color:var(--muted);
-  padding:12px 18px;border-radius:9px;cursor:pointer;min-height:44px;
+  font:600 13px/1 var(--body);border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);
+  padding:0 0 12px;border-radius:0;cursor:pointer;min-height:44px;
 }
-.tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 0 rgba(13,58,43,.18)}
+.tabs button[aria-selected="true"]{background:transparent;color:var(--ink);box-shadow:none;border-bottom-color:var(--ink)}
 .tabs button:hover{color:var(--ink)}
 
 /* Layout */
@@ -115,14 +137,32 @@ h1{
   animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+#boot{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#000}
+#boot[hidden]{display:none}
+#boot .spinner{margin:0}
+@media (prefers-reduced-motion:reduce){
+  #boot .spinner,.btn-spin{animation:spin 1.2s linear infinite!important}
+}
+body:has(#boot:not([hidden])){overflow:hidden}
+.boot-brand{
+  position:absolute;left:0;right:0;text-align:center;
+  bottom:calc(28px + env(safe-area-inset-bottom,0px));
+  font:500 12px/1.3 var(--body);color:var(--muted);
+}
+.boot-brand b{
+  display:block;margin-top:3px;font:700 14px/1.3 var(--body);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--pitch);
+}
 .lbar{height:6px;background:#E3ECE7;border-radius:3px;overflow:hidden;margin:20px auto 0;max-width:280px}
 .lbar i{display:block;height:100%;width:0;background:var(--pitch);border-radius:3px}
 .stack{display:grid;gap:16px;min-width:0}
 
 /* Cards */
+/* REPLACE */
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
-.card h3{font:650 19px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
-.card .hint{margin:0 0 14px;color:var(--muted);font-size:14px}
+#appScreen .card{background:transparent;border:0;border-radius:0;padding:0;box-shadow:none}
+.card h3{font:650 16px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.hint{margin:0 0 14px;color:var(--muted);font-size:14px}
 
 /* Form */
 fieldset{border:0;padding:0;margin:0 0 18px;min-width:0}
@@ -131,7 +171,7 @@ legend{font:650 15px/1.3 var(--body);padding:0;margin-bottom:8px;display:flex;al
 .dot.h{background:rgb(var(--home))}.dot.a{background:rgb(var(--away))}.dot.d{background:rgb(var(--draw))}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 label{display:block;font-size:13.5px;color:var(--muted);margin-bottom:4px}
-input[type=text],input[type=number],select{
+input[type=text],input[type=number],input[type=email],input[type=password],select{
   width:100%;height:46px;padding:0 12px;border:1.5px solid #AEBFB7;border-radius:8px;
   background:#fff;color:var(--ink);font:500 16px var(--body);
 }
@@ -146,8 +186,27 @@ input[aria-invalid="true"]{border-color:#B3261E;background:#FFF6F5}
   border:1.5px solid var(--pitch);background:var(--pitch);color:var(--chalk);
 }
 .btn:hover{background:#0A2E22}
-.btn.ghost{background:transparent;color:var(--pitch)}
+.btn-spin{
+  display:inline-block;width:18px;height:18px;border-radius:50%;margin-right:10px;
+  border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;
+  vertical-align:-4px;animation:spin .7s linear infinite;
+}
+.btn:disabled{cursor:wait;opacity:.9}
+.btn.loading{position:relative;color:transparent!important;pointer-events:none;opacity:.92}
+.btn.loading::after{
+  content:"";position:absolute;inset:0;margin:auto;width:20px;height:20px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;
+  animation:spin .7s linear infinite;
+}
+/* REPLACE */
+/* REPLACE */
+.btn.ghost{background:transparent;color:var(--pitch);min-height:38px;padding:0 16px;font-size:13.5px}
+/* REPLACE */
+button[id$="Back"],#backHomeBtn{display:none}
 .btn.ghost:hover{background:#DDE8E2}
+/* REPLACE */
+.btn.pill{background:transparent;color:var(--ink);border:0;border-radius:999px;min-height:30px;padding:0 6px;font-size:13.5px}
+.btn.pill:hover{background:#E3ECE7}
 .btn.grow{flex:1}
 .err{background:#FFF1F0;border:1px solid #E9A9A4;color:#7A1912;border-radius:10px;padding:12px 14px;font-size:14.5px;margin-bottom:14px}
 details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
@@ -163,13 +222,13 @@ details code{background:#E3ECE7;padding:1px 6px;border-radius:5px;font-size:13px
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .verdict>*:not(.pitch-lines){position:relative}
 .v-kicker{margin:0;font-size:14.5px;color:#B9D2C6}
-.v-outcome{font:700 clamp(24px,5vw,36px)/1.1 var(--display);margin:2px 0 18px;letter-spacing:-.015em}
+.v-outcome{font:700 clamp(18px,4vw,26px)/1.2 var(--display);margin:2px 0 18px;letter-spacing:-.01em;white-space:normal;overflow-wrap:normal;word-break:normal}
 .v-board{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:6px}
 .v-side{display:flex;flex-direction:column;min-width:0}
 .v-side:first-child{align-items:flex-end;text-align:right}
 .v-side:last-child{align-items:flex-start}
-.v-digit{font:750 clamp(76px,20vw,140px)/.9 var(--display);font-variation-settings:'opsz' 96;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-.v-dash{font:300 clamp(44px,12vw,80px)/1 var(--display);color:#7FA894;padding-bottom:.08em}
+.v-digit{font:750 clamp(24px,7vw,48px)/1 var(--display);font-variation-settings:'opsz' 96;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap;overflow-wrap:normal;word-break:normal}
+.v-dash{font:300 clamp(20px,5vw,32px)/1 var(--display);color:#7FA894;padding-bottom:.08em}
 .v-name{font-size:14.5px;color:#CFE2D8;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:8px}
 .v-note{margin:18px 0 0;color:#D6E6DD;font-size:15px;max-width:52ch}
 .v-note b{color:#fff}
@@ -181,10 +240,9 @@ details code{background:#E3ECE7;padding:1px 6px;border-radius:5px;font-size:13px
 .probbar i{display:block;min-width:3px;transition:flex-basis .35s ease}
 .probbar .h{background:rgb(var(--home))}.probbar .d{background:rgb(var(--draw))}.probbar .a{background:rgb(var(--away))}
 .legend3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.legend3 div{min-width:0}
 .legend3 .nm{font-size:13.5px;color:var(--muted);display:flex;gap:6px;align-items:center;min-width:0}
 .legend3 .nm span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.legend3 .pv{font:700 clamp(20px,4.6vw,28px)/1.15 var(--display);font-variant-numeric:tabular-nums}
+.legend3 .pv{font:700 clamp(15px,3.4vw,19px)/1.15 var(--display);font-variant-numeric:tabular-nums}
 .legend3 .od{font-size:13px;color:var(--muted)}
 /* Custom dropdown */
 .cs{position:relative}
@@ -208,12 +266,18 @@ details code{background:#E3ECE7;padding:1px 6px;border-radius:5px;font-size:13px
 /* Markets */
 .market{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
 .market:first-of-type{border-top:0}
+.market,.market:first-of-type{border:1px solid var(--line);padding:10px 12px}
+.market + .market{margin-top:-1px}
+.market dt{flex:1;border-right:1px solid var(--line);padding-right:12px}
+.market dd{min-width:38%}
 .market dt{color:var(--muted);font-size:15px}
 .market dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.market dd.win{color:#1a7f37}
+.market dd.loss{color:#c0392b}
 .market select{width:auto;height:38px;font-size:15px;margin-left:6px}
 dl{margin:0}
 
-/* Heat map */
+/* Sensitivity grid (heat map) */
 .heat-wrap{overflow-x:auto}
 table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;min-width:290px}
 .heat th{font:600 12.5px var(--body);color:var(--muted);padding:2px}
@@ -229,29 +293,38 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
 .heat-key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px;color:var(--muted);margin:12px 0 0}
 .heat-key span{display:inline-flex;align-items:center;gap:6px}
 .swatch-pred{width:12px;height:12px;border-radius:3px;outline:3px solid var(--amber);outline-offset:-1px;background:#fff}
+.dot.p{background:rgb(var(--profit))}.dot.l{background:rgb(var(--loss))}
 .readout{margin:12px 0 0;padding:10px 12px;background:#EEF3F0;border-radius:8px;font-size:14.5px;min-height:44px}
 
-/* Top scores */
+/* Top scores / cost drivers */
 .toplist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.toplist li{display:grid;grid-template-columns:70px 1fr 58px;gap:12px;align-items:center}
-.toplist .sc{font:700 20px var(--display);font-variant-numeric:tabular-nums}
+.toplist li{display:grid;grid-template-columns:96px 1fr 74px;gap:12px;align-items:center}
+.toplist .sc{font:700 16px var(--display);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .toplist .tr{height:12px;background:#E3ECE7;border-radius:6px;overflow:hidden}
 .toplist .tr i{display:block;height:100%;border-radius:6px;background:rgb(var(--c))}
-.toplist .pv{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;font-size:15px}
+.toplist .pv{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;font-size:14.5px}
 
 /* Bar charts */
 .chart{display:flex;gap:3px;align-items:flex-end;height:158px}
 .chart .col{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
 .chart .fill{width:100%;height:calc(var(--h) * 1.3px);min-height:2px;background:#9DB5AA;border-radius:4px 4px 0 0}
-.chart .col.on .fill{background:rgb(var(--home))}
+.chart .col.on .fill{background:rgb(var(--profit))}
+.chart .col.loss .fill{background:rgb(var(--loss))}
 .chart .col.peak .fill{background:var(--pitch)}
-.chart .val{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;margin-bottom:3px;white-space:nowrap}
+.chart .val{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;margin-bottom:3px;white-space:nowrap}
 .axis{display:flex;gap:3px;margin-top:5px}
 .axis span{flex:1;min-width:0;text-align:center;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .chart-note{font-size:13.5px;color:var(--muted);margin:12px 0 0}
+.be-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px;font-variant-numeric:tabular-nums}
+.be-table th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px;text-transform:uppercase}
+.be-table th:last-child,.be-table td:last-child{text-align:right}
+.be-table td{padding:9px 6px;border-bottom:1px solid var(--line)}
+.be-table tr.on td:last-child{color:rgb(var(--profit));font-weight:600}
+.be-table tr.loss td:last-child{color:rgb(var(--loss));font-weight:600}
+.be-table tr.target td{background:#E3ECE7;font-weight:700}
 
-/* Event tab */
-.answer{font:650 clamp(34px,8vw,54px)/1 var(--display);letter-spacing:-.02em;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+/* Break-even tab */
+.answer{font:650 clamp(22px,5.5vw,36px)/1.1 var(--display);letter-spacing:-.02em;margin:4px 0 8px;font-variant-numeric:tabular-nums}
 .answer-text{margin:0;color:var(--muted);font-size:16px}
 .answer-text b{color:var(--ink)}
 
@@ -279,288 +352,972 @@ table.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:f
 @media (max-width:520px){
   .card{padding:16px}
   .verdict{padding:22px 16px 20px}
-  .toplist li{grid-template-columns:56px 1fr 52px;gap:10px}
+  .toplist li{grid-template-columns:76px 1fr 62px;gap:8px}
   .tabs{display:flex;width:100%}
   .tabs button{flex:1;padding-inline:8px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
 }
+
+/* ---------- Home screen ---------- */
+/* REPLACE */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;position:sticky;top:0;z-index:50;background:var(--paper)}
+/* REPLACE */
+.brand{display:flex;align-items:center;gap:9px;font:700 18px 'Quicksand',sans-serif;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+
+/* REPLACE */
+.nav-actions{display:flex;gap:6px;align-items:center}
+.hero{padding:28px 0 4px;text-align:left}
+.hero h1{max-width:16ch}
+.hero .lede{font-size:14px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 6px}
+.hero-actions .btn{padding:0 24px}
+.try-link{display:inline-block;margin-top:14px;font-size:14.5px;color:var(--muted);text-decoration:underline;background:none;border:0;cursor:pointer;padding:0;font-family:var(--body)}
+.try-link:hover{color:var(--ink)}
+/* REPLACE */
+.feature-grid{display:grid;gap:36px;grid-template-columns:1fr;margin:24px 0 32px}
+.feature-item{padding:0}
+.feature-img{width:100%;border-radius:12px;margin:0 0 14px;display:block}
+.feature-item h3{margin-bottom:8px}
+.feature-item p{color:var(--muted);font-size:13px;margin:0}
+.feature-num{font:700 12px var(--display);color:rgb(var(--home));margin:0 0 6px}
+@media (max-width:760px){
+  .feature-grid{grid-template-columns:1fr}
+}
+
+/* ---------- Auth modals ---------- */
+.modal-backdrop{position:fixed;inset:0;background:rgba(13,37,30,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
+.modal{background:var(--card);border-radius:16px;padding:26px;width:100%;max-width:400px;border:1px solid var(--line)}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.modal h2{font:700 24px var(--display);margin:0}
+.modal-close{border:0;background:none;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;padding:4px}
+.modal .lede{font-size:14.5px;margin-bottom:20px}
+.modal-note{font-size:13px;color:var(--muted);margin:14px 0 0;text-align:center}
+.modal-switch{font-size:14px;color:var(--muted);text-align:center;margin-top:16px}
+.modal-switch button{background:none;border:0;color:var(--pitch);font-weight:650;cursor:pointer;padding:0;font:inherit;text-decoration:underline}
+
+/* ---------- App top bar ---------- */
+/* REPLACE */
+.app-topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;position:sticky;top:0;z-index:50;background:var(--paper)}
+.app-topbar .brand{font-size:16px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.avatar-btn{width:40px;height:40px;border-radius:50%;background:var(--pitch);color:var(--chalk);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex:none}
+.avatar-btn svg{width:20px;height:20px}
+
+/* ---------- Profile modal ---------- */
+.page{max-width:640px;margin-inline:auto}
+.auth-plain{max-width:440px;margin:44px auto 0}
+.auth-plain h3{font:700 26px/1.2 var(--display);margin:0 0 6px;letter-spacing:-.01em}
+.auth-plain{margin-top:24px}
+.su-progress{display:flex;gap:6px;margin-bottom:22px}
+.su-progress span{flex:1;height:4px;border-radius:4px;background:#CBD8D1;transition:background .2s}
+.su-progress span.on{background:var(--pitch)}
+.su-kicker{font:650 12.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.su-step[hidden]{display:none}
+.su-field{margin-bottom:22px}
+.su-field label{font:600 13px var(--body);color:var(--muted);margin-bottom:0}
+.su-opt{font-weight:400;color:#8A9C93;margin-left:4px}
+.su-step input[type=text],.su-step input[type=email],.su-step input[type=password]{height:48px;padding:0;border:0;border-bottom:1.5px solid #AEBFB7;border-radius:0;background:transparent;font:500 17px var(--body);color:var(--ink);outline:none}
+.su-step input:focus{border-bottom-color:var(--pitch);box-shadow:0 1px 0 var(--pitch)}
+.su-step input::placeholder{color:#93A59C;font-weight:400}
+.su-pass{position:relative}
+.su-step .su-pass input{padding-right:56px}
+.su-pass button{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:0;font:650 13px var(--body);color:var(--pitch);cursor:pointer;padding:8px 0 8px 8px}
+.su-step .cur-picker-btn{background:transparent;border:0;border-bottom:1.5px solid #AEBFB7;border-radius:0;padding:0;height:48px;font:500 17px var(--body)}
+.su-step .cur-picker-btn::after{content:"▾";float:right;color:var(--muted)}
+.su-primary{width:100%;min-height:52px;border-radius:12px;font-size:16px;margin-top:6px}
+.su-actions{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.su-back{background:none;border:0;padding:12px;font:600 15px var(--body);color:var(--muted);cursor:pointer}
+
+/* Match Sign up + Log in to Home */
+.app-topbar .brand{font-size:18px}
+.auth-plain{margin-top:12px}
+.auth-plain h3{font:700 22px/28px var(--display);letter-spacing:-.02em;margin:0 0 8px}
+.auth-plain .hint{font-size:14px;margin:0 0 22px}
+.su-kicker{font:700 12px var(--display);letter-spacing:.04em;color:rgb(var(--home));margin:0 0 6px}
+.su-field label{font-size:13.5px}
+.su-step input[type=text],.su-step input[type=email],.su-step input[type=password]{font-size:16px;height:46px}
+.su-step .cur-picker-btn{font-size:16px;height:46px}
+.su-primary{min-height:46px;border-radius:10px;font-size:15px}
+.su-back{font-size:14px}
+.modal-note{font-size:13px}
+.modal-switch{font-size:14px}
+.modal.wide{max-width:640px}
+.modal{max-height:88vh;overflow-y:auto}
+.profile-photo-wrap{position:relative;flex:none}
+.edit-btn{position:absolute;right:-4px;bottom:-4px;width:28px;height:28px;border-radius:50%;background:var(--pitch);color:var(--chalk);border:2px solid var(--paper);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;padding:0}
+.edit-btn:hover{background:#0A2E22}
+.profile-divider{border:0;border-top:1px solid var(--line);margin:4px 0 0}
+/* REPLACE */
+/* REPLACE */
+.profile-head{display:flex;flex-direction:column;gap:2px;min-width:0;margin-top:4px}
+.profile-toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.edit-pill{background:var(--paper);border:1px solid var(--line);color:var(--ink);font:650 13px var(--display);padding:7px 16px;border-radius:999px;cursor:pointer}
+.edit-pill-icon{padding:7px 10px;font-size:16px;line-height:1;margin-left:6px}
+.edit-pill:hover{background:#E4EBE7}
+#profileMoreBtn,#profileMoreBtn:hover,#profileMoreBtn:active{background:none;border:0;box-shadow:none;color:var(--ink)}
+#profileMoreBtn svg{width:24px;height:24px}
+#profileEditBtn{display:none}
+.profile-avatar{width:88px;height:88px;border-radius:50%;background:var(--pitch);color:var(--chalk);display:flex;align-items:center;justify-content:center;flex:none;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.profile-avatar svg{width:28px;height:28px}
+/* REPLACE */
+.profile-head input{font:700 20px var(--display);letter-spacing:-.01em;border:1.5px solid transparent;background:transparent;padding:2px 0;margin:0;border-radius:8px;height:auto;min-width:0;width:100%;pointer-events:none}
+.profile-head.editing input{border-color:var(--line);background:#fff;padding:8px 10px;pointer-events:auto}
+/* ADD */
+/* REPLACE */
+.
+/* ADD */
+.profile-bio{width:100%;max-width:320px;text-align:left;border:none;outline:none;box-shadow:none;appearance:none;-webkit-appearance:none;background:transparent;font:400 14px var(--body);color:var(--ink);resize:none;margin-top:8px;padding:8px 0;border-radius:8px;pointer-events:none}
+.profile-bio-text{width:100%;max-width:320px;text-align:left;margin:8px 0 0;font:400 14px var(--body);color:var(--ink);white-space:pre-wrap}
+.profile-bio{width:100%;max-width:320px;text-align:left;border:1.5px solid var(--line);background:#fff;font:400 14px var(--body);color:var(--ink);resize:none;margin-top:8px;padding:8px 10px;border-radius:8px}
+.profile-meta{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.profile-meta-item{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted)}
+.meta-icon{width:24px;height:24px;background:none;color:var(--muted);display:flex;align-items:center;justify-content:center;flex:none}
+.profile-meta-item input{font-size:15px;color:var(--muted)}
+.profile-meta-item input{border:1.5px solid transparent;background:transparent;font:500 13.5px var(--body);color:var(--ink);flex:1;padding:6px 0;border-radius:8px;pointer-events:none}
+.profile-head.editing .profile-meta-item input{border-color:var(--line);background:#fff;pointer-events:auto}
+.profile-meta-item input:hover,.profile-meta-item input:focus{color:var(--ink)}
+.profile-head input:hover,.profile-head input:focus{border-color:var(--pitch)}
+.profile-tagline{color:var(--muted);font-size:13.5px;margin-top:2px;text-align:center}
+.profile-menu-label{font:650 13px var(--display);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px 2px}
+.profile-section{margin-top:22px}
+#profileScreen .page{margin-top:6px !important}
+.profile-avatar{width:68px;height:68px}
+.profile-toprow{margin-bottom:6px}
+.profile-head{margin-top:0}
+#profileName{font-size:17px;line-height:1.25;padding-top:0;padding-bottom:0}
+.profile-bio-text{margin:2px 0 0;font-size:13.5px;line-height:1.4}
+.profile-meta{gap:0;margin-top:4px}
+.profile-meta-item input{height:auto;min-height:0;padding:4px 0;font-size:14px}
+.meta-icon{width:22px;height:22px}
+.meta-icon svg{width:18px;height:18px}
+#profileScreen .tab-row{margin-top:6px}
+.profile-section h3{font:650 16px var(--display);margin:0 0 4px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-grid div{background:#F3F7F5;border-radius:10px;padding:12px;text-align:center}
+.stat-grid .sv{font:700 19px var(--display);font-variant-numeric:tabular-nums;display:block}
+.stat-grid .sl{font-size:12px;color:var(--muted)}
+.profile-empty{padding:14px;text-align:center;color:var(--muted);font-size:14px;background:#F3F7F5;border-radius:10px}
+.note-compose{display:flex;align-items:flex-end;gap:8px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:6px 6px 6px 16px;margin-top:10px;transition:border-radius .15s ease}
+textarea#profileNotes{flex:1;min-height:24px;max-height:150px;overflow-y:auto;border:0;background:transparent;resize:none;font:400 14.5px var(--body);color:var(--ink);padding:8px 0;line-height:1.4}
+textarea#profileNotes:focus{outline:none}
+#noteSendBtn{width:36px;height:36px;flex-shrink:0;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:2px}
+.note-day{font:650 12px var(--display);color:var(--muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.04em}
+.note-item{padding:6px 0;border-bottom:1px solid var(--line)}
+.note-item p{margin:0 0 4px;font:400 14px var(--body);color:var(--ink);white-space:pre-wrap}
+.note-item time{font:400 12px var(--body);color:var(--muted)}
+.notes-lead{margin:2px 0 0}
+.note-compose{border-radius:18px;padding:8px 8px 8px 16px;box-shadow:0 1px 2px rgba(19,37,30,.05)}
+.note-compose:focus-within{border-color:var(--pitch);box-shadow:0 0 0 3px rgba(19,37,30,.10)}
+.notes-search{margin-top:14px;height:42px;font-size:15px;border-radius:12px}
+.notes-meta{font:500 12.5px var(--body);color:var(--muted);margin:16px 0 0}
+.note-item{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;padding:12px 0 8px;margin-bottom:0}
+.note-item p{margin:0 0 8px;line-height:1.5}
+.note-foot{display:flex;align-items:center;justify-content:space-between}
+.note-del{background:none;border:0;color:var(--muted);padding:6px;margin:-6px -8px -6px 0;border-radius:8px;cursor:pointer;display:flex}
+.note-del:active{color:#B3261E;background:rgba(179,38,30,.08)}
+.note-day{margin:22px 0 8px}
+.notes-empty{text-align:center;padding:36px 12px 24px}
+.notes-empty-ico{width:64px;height:64px;margin:0 auto 16px;border-radius:20px;background:#E3ECE7;color:var(--pitch);display:flex;align-items:center;justify-content:center}
+.notes-empty h4{margin:0 0 6px;font:700 18px var(--display)}
+.notes-empty p{margin:0 auto 18px;max-width:300px;color:var(--muted);font-size:14px;line-height:1.5}
+.note-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.note-chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font:500 13.5px var(--body);color:var(--ink);cursor:pointer}
+.note-chip:active{background:var(--paper)}
+.note-more{background:none;border:0;padding:0 0 8px;font:600 13.5px var(--body);color:var(--pitch);cursor:pointer}
+#profileNotesScreen{padding-bottom:120px}
+#profileNotesScreen .note-compose{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px) + var(--kb,0px));margin:0;z-index:60;box-shadow:0 6px 20px rgba(19,37,30,.14)}
+#profileNotesScreen .note-undo-bar{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px) + var(--kb,0px));margin:0;z-index:60}
+@media (min-width:560px){
+  .stat-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* ---------- Plain vertical profile menu (no cards) ---------- */
+.page-title{font:650 16px/22px var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.section-label{font:650 12.5px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:30px 0 2px}
+.section-label:first-of-type{margin-top:26px}
+/* REPLACE */
+.menu-list{display:flex;flex-direction:column;margin-top:36px}
+/* REPLACE */
+.menu-link{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;
+  background:none;border:0;padding:18px 2px;
+  text-align:left;cursor:pointer;color:var(--ink);font-family:var(--body);
+}
+.menu-list .menu-link:last-child{border-bottom:0}
+/* REPLACE */
+.menu-list .menu-link:last-child{border-bottom:0}
+.menu-link .ml-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+/* REPLACE */
+.menu-link .ml-title{font:650 16px var(--display);letter-spacing:-.01em}
+.menu-link .ml-sub{font-size:13px;color:var(--muted)}
+.menu-link .ml-arrow{color:var(--muted);flex:none;font-size:20px;line-height:1}
+.menu-link:hover .ml-title{text-decoration:underline}
+
+/* plain rows (history / stats reuse .market where possible) */
+.plain-row{padding:14px 2px;border-top:1px solid var(--line)}
+.plain-row:first-child{border-top:0}
+.plain-row .pr-title{font-weight:600;font-size:15px}
+.plain-row .pr-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.hint.empty{padding:16px 2px}
+
+/* planner */
+.plan-list{margin-top:6px}
+.plan-row{display:flex;gap:12px;align-items:flex-start;padding:16px 2px;border-top:1px solid var(--line)}
+.plan-list .plan-row:first-child{border-top:0}
+.plan-check{width:22px;height:22px;margin-top:2px;accent-color:var(--pitch);flex:none}
+.plan-body{flex:1;min-width:0}
+.plan-title{font:650 15.5px var(--body)}
+.plan-row.done .plan-title{text-decoration:line-through;color:var(--muted)}
+.plan-meta{font-size:13px;color:var(--muted);margin-top:2px}
+.plan-meta.overdue{color:#B3261E}
+.plan-note{font-size:13.5px;color:var(--ink);margin-top:4px}
+.plan-del{background:none;border:0;color:#B3261E;font-size:13px;cursor:pointer;padding:0;text-decoration:underline;margin-top:8px;font-family:var(--body)}
+
+/* stats period tabs + data table + PDF export */
+.period-tabs{margin:14px 0 20px}
+.data-table-wrap{overflow-x:auto;margin-top:10px;-webkit-overflow-scrolling:touch}
+table.data-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+.data-table th{text-align:left;font:650 11.5px var(--body);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+.data-table td{padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.data-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+.data-table tr:last-child td{border-bottom:0}
+.data-table .pos{color:rgb(var(--profit))}
+.data-table .neg{color:rgb(var(--loss))}
+table.data-table{border:1px solid var(--line)}
+.data-table th,.data-table td{border:1px solid var(--line)}
+.data-table th{background:#E3ECE7}
+.data-table th.num{text-align:right}
+.data-table tr:last-child td{border-bottom:1px solid var(--line)}
+#printArea .page-title{margin-bottom:2px}
+#printMeta{display:none}
+@media print{
+  body *{visibility:hidden}
+  #printArea, #printArea *{visibility:visible}
+  #printArea{position:absolute;left:0;top:0;width:100%;padding:0;margin:0}
+  #printArea #printMeta{display:block;margin:0 0 16px;color:#4F625A;font-size:12.5px}
+  table.data-table{min-width:0}
+  .data-table th, .data-table td{padding:6px 8px;font-size:11.5px}
+}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.tab-row{display:flex;border-bottom:1px solid var(--line);margin-top:6px}
+.tab-link{flex:1;background:none;border:0;padding:12px 4px;font:650 14px var(--display);color:var(--muted);cursor:pointer;text-align:center;border-bottom:2px solid transparent} .tab-link[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.tab-link:hover{color:var(--ink)}
+.tab-link:active,.tab-link:focus-visible{color:var(--pitch);border-bottom-color:var(--pitch)}
+.more-menu-wrap{position:relative;display:inline-block}
+.more-menu{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 14px rgba(19,37,30,.12);min-width:140px;z-index:30;overflow:hidden}
+.more-menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:10px 14px;font:600 14px var(--body);color:var(--ink);cursor:pointer}
+.more-menu button:hover{background:var(--paper)}
+.more-menu{min-width:220px;border-radius:14px;box-shadow:0 8px 24px rgba(19,37,30,.18);top:calc(100% + 10px)}
+.more-menu button{padding:18px 20px;font:600 16px var(--body);min-height:56px}
+.more-menu{min-width:270px;padding:8px;border-radius:16px;box-shadow:0 14px 34px rgba(19,37,30,.18);overflow:visible;transform-origin:top right;animation:mmIn .16s ease-out}
+.more-menu::before{content:"";position:absolute;top:-7px;right:16px;width:12px;height:12px;background:#fff;border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.more-menu button{display:flex;align-items:center;gap:12px;padding:10px;min-height:0;border-radius:12px}
+.more-menu button + button{border-top:0;margin-top:2px}
+.more-menu button:hover,.more-menu button:active{background:var(--paper)}
+.mm-ico{width:40px;height:40px;border-radius:12px;background:#E3ECE7;color:var(--pitch);display:flex;align-items:center;justify-content:center;flex:none}
+.mm-txt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mm-txt b{font:650 15.5px var(--display);color:var(--ink)}
+.mm-txt small{font:400 12.5px var(--body);color:var(--muted)}
+.mm-arrow{font-size:22px;line-height:1;color:var(--muted)}
+@keyframes mmIn{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
+
+.screen-overlay{position:fixed;inset:0;background:var(--paper);z-index:50;overflow-y:auto;padding:20px}
+.history-table{width:100%;border-collapse:collapse;margin-top:8px;font:400 14px var(--body)}
+.history-table th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);color:var(--ink-soft);font:650 12px var(--display);text-transform:uppercase;letter-spacing:.02em}
+.history-table td{padding:10px 6px;border-bottom:1px solid var(--line)}
+.market dd.win{color:#1a7f37}
+.market dd.loss{color:#c0392b}
+.cur-picker-btn{width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font:400 14px var(--body);color:var(--ink);cursor:pointer}
+.cur-picker{position:relative}
+.cur-picker-btn{width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font:400 14px var(--body);color:var(--ink);cursor:pointer}
+.cur-picker-menu{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 14px rgba(19,37,30,.12);max-height:220px;overflow-y:auto;z-index:30}
+#plannerScreen .row2{grid-template-columns:1fr}
+.dt-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.dt-row .cur-picker{min-width:0}
+.dt-row .cur-picker-btn{min-height:46px;padding:10px 4px;text-align:center;white-space:nowrap;font-weight:500}
+.dt-row .cur-picker-btn::after{content:" ▾";font-size:11px;color:var(--muted)}
+.dt-row .cur-picker{flex:1}
+.cur-picker-menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:10px 12px;font:400 14px var(--body);color:var(--ink);cursor:pointer}
+.cur-picker-menu button:hover{background:var(--paper)}
+.note-item{touch-action:pan-y}
+.note-undo-bar{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;margin-top:10px;font:400 14px var(--body)}
+.note-undo-bar button{background:none;border:0;color:#8FD6B4;font:650 14px var(--body);cursor:pointer}
+
+/* Match Notes + Planner to the rest of the site */
+textarea#profileNotes{font-size:16px}
+.note-item p{font-size:15px;line-height:1.5}
+.note-item time,.note-day{font-size:12.5px}
+.plan-title{font-size:16px}
+.plan-meta{font-size:13.5px}
+.plan-note{font-size:14px}
+.plan-del{font-size:13.5px}
+.try-link{font-size:14px}
+#alertStack{display:flex;flex-direction:column;gap:10px;width:min(1120px,100% - 32px);margin:12px auto 0}
+#alertStack:empty{display:none}
+.alert-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--pitch);border-radius:12px;padding:12px 14px;box-shadow:0 4px 14px rgba(19,37,30,.10);animation:mmIn .2s ease-out}
+.alert-card.profit{border-left-color:rgb(var(--profit))}
+.alert-card.loss{border-left-color:rgb(var(--loss))}
+.alert-card .ac-ico{width:38px;height:38px;border-radius:10px;background:#E3ECE7;color:var(--pitch);display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
+.alert-card .ac-body{flex:1;min-width:0}
+.alert-card .ac-title{font:650 15px/1.3 var(--display);color:var(--ink)}
+.alert-card .ac-text{font-size:13.5px;color:var(--muted);margin-top:2px}
+.alert-card .ac-text b.pos{color:rgb(var(--profit))}
+.alert-card .ac-text b.neg{color:rgb(var(--loss))}
+.alert-card .ac-actions{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex:none}
+.alert-card .ac-go{background:var(--pitch);color:#fff;border:0;border-radius:8px;padding:8px 12px;font:600 13px var(--body);cursor:pointer;min-height:36px}
+.alert-card .ac-x{background:none;border:0;color:var(--muted);font:600 12.5px var(--body);cursor:pointer;padding:2px}
+#rmStack{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top,0px));z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.rm-card{background:#111;color:#fff;border-radius:12px;padding:12px 16px;box-shadow:0 8px 24px rgba(19,37,30,.18);font:600 14.5px/1.4 var(--body);pointer-events:auto;transform:translateY(-140%);opacity:0;transition:transform .35s ease,opacity .35s ease}
+.rm-card.in{transform:none;opacity:1}
+.rm-card small{display:block;font-weight:400;color:rgba(255,255,255,.75);font-size:13px}
 </style>
 </head>
 <body>
+<div id="boot">
+  <img src="./icon-512.png" alt="" style="width:140px;height:140px;object-fit:contain;border-radius:20px">
+  <div class="boot-brand">from<b>Alliance Corporation</b></div>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
+<!-- ================= HOME SCREEN ================= -->
+<div id="homeScreen">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="#" id="homeLogo">Menya</a>
+      <div class="nav-actions">
+  <button class="btn pill" id="navSignIn">Sign in</button>
+</div>
+    </nav>
+
+    <header class="hero">
+      <h1>Know your profit or loss in seconds</h1>
+      <p class="lede">Type in what you earned and what you spent. Get a clear profit or loss figure, your margins, and your break-even point — no spreadsheet, no accountant required.</p>
+      <div class="hero-actions">
+        <button class="btn" id="heroSignup">Get started free</button>
+        <button class="btn ghost" id="heroLogin">Log in</button>
+      </div>
+      <button class="try-link" id="heroTry">Or try it now without an account &rarr;</button>
+    </header>
+
+    <!-- REPLACE -->
+<section class="feature-grid" aria-label="What you can do">
+  <div class="feature-item">
+    <img src="https://files.catbox.moe/9vjl89.jpeg" alt="Instant profit and loss result" class="feature-img">
+    <p class="feature-num">Instant</p>
+    <h3>Profit &amp; loss, live</h3>
+    <p>Experience the power of real-time financial tracking without the hassle of complex spreadsheets. Our intuitive interface allows you to simply enter your revenue, cost of goods sold (COGS), and operating expenses to instantly generate a comprehensive view of your business's health. As you type, watch your gross and net profit figures update immediately, giving you instant clarity on your bottom line. We automatically calculate your profit margins, eliminating manual math errors and saving you valuable time. Whether you are testing a new pricing strategy or reviewing your monthly performance, this live tool provides the immediate feedback you need to make confident, data-driven decisions on the fly.</p>
+  </div>
+  <div class="feature-item">
+    <img src="https://files.catbox.moe/8pggbl.png" alt="Profit margins breakdown" class="feature-img">
+    <p class="feature-num">Built in</p>
+    <h3>Break-even calculator</h3>
+    <p>Understanding exactly when your business turns a profit is critical for long-term success, which is why we have integrated a powerful break-even calculator directly into our platform. By simply setting your price per unit and your variable costs, you can instantly determine the exact number of sales required to cover your total expenses. This feature removes the guesswork from financial planning, allowing you to visualize the precise moment your venture shifts from a loss to a profit. It is an essential tool for setting realistic sales targets, validating business models, and understanding the financial viability of your products before you even launch them.</p>
+  </div>
+  <div class="feature-item">
+    <img src="https://files.catbox.moe/w9pfyx.png" alt="Break-even point calculator" class="feature-img">
+    <p class="feature-num">Saved</p>
+    <h3>Your recent calculations</h3>
+    <p>Never lose track of a critical financial scenario again with our automatic saving feature. Every calculation you run is securely stored locally on your device, ensuring your sensitive financial data remains private while being instantly accessible. This means you can easily reload previous scenarios, compare past performance against current numbers, and track how your financial outlook changes over time. With just one tap, you can revisit an old pricing model or expense projection without having to re-enter all the data. It creates a convenient, historical log of your financial planning sessions, making it simple to analyze trends and refine your strategy.</p>
+  </div>
+</section>
+  </div>
+</div>
+
+<!-- ================= SIGN UP SCREEN ================= -->
+<div id="signupScreen" hidden>
+  <div class="wrap app-topbar">
+    <a class="brand" href="#" id="signupLogo">Menya</a>
+    <button class="btn ghost" id="signupBack">&larr; Home</button>
+  </div>
+  <div class="wrap page auth-plain">
+      <div class="su-progress" aria-hidden="true"><span class="on"></span><span id="suBar2"></span></div>
+<p class="su-kicker" id="suKicker">Step 1 of 2</p>
+<h3 id="suTitle">Create your account</h3>
+<p class="hint" id="suSub">Save your calculations and pick up where you left off.</p>
+<form id="signupForm">
+  <div class="su-step" id="suStep1">
+    <div class="su-field"><label for="suEmail">Email</label><input type="email" id="suEmail" required autocomplete="email" placeholder="you@example.com"></div>
+    <div class="su-field"><label for="suPassword">Password</label>
+      <div class="su-pass"><input type="password" id="suPassword" required minlength="6" autocomplete="new-password" placeholder="At least 6 characters"><button type="button" id="suPassToggle">Show</button></div>
+    </div>
+    <button type="button" class="btn su-primary" id="suNext">Continue</button>
+  </div>
+  
+  <div class="su-step" id="suStep2" hidden>
+    <div class="su-field"><label for="suName">Business name</label><input type="text" id="suName" autocomplete="organization" placeholder="e.g. Aime Fresh Market"></div>
+    <div class="su-field"><label for="suBio">Short bio <span class="su-opt">optional</span></label><input type="text" id="suBio" maxlength="120" placeholder="What you sell, in one line"></div>
+    <div class="su-field"><label for="suLocation">Location <span class="su-opt">optional</span></label><input type="text" id="suLocation" placeholder="City or town"></div>
+    <div class="su-field"><label for="suPhone">Phone <span class="su-opt">optional</span></label><input type="text" id="suPhone" inputmode="tel" autocomplete="tel" placeholder="+250 ..."></div>
+    <div class="su-field">
+      <label>Currency</label>
+      <div class="cur-picker" id="curPicker">
+        <button type="button" class="cur-picker-btn" id="curPickerBtn">US Dollar (USD)</button>
+        <div class="cur-picker-menu" id="curPickerMenu" hidden>
+          <button type="button" data-value="USD">US Dollar (USD)</button>
+          <button type="button" data-value="KES">Kenyan Shilling (KES)</button>
+          <button type="button" data-value="TZS">Tanzanian Shilling (TZS)</button>
+          <button type="button" data-value="UGX">Ugandan Shilling (UGX)</button>
+          <button type="button" data-value="RWF">Rwandan Franc (RWF)</button>
+          <button type="button" data-value="BIF">Burundian Franc (BIF)</button>
+          <button type="button" data-value="SSP">South Sudanese Pound (SSP)</button>
+          <button type="button" data-value="ETB">Ethiopian Birr (ETB)</button>
+          <button type="button" data-value="SOS">Somali Shilling (SOS)</button>
+          <button type="button" data-value="DJF">Djiboutian Franc (DJF)</button>
+          <button type="button" data-value="ERN">Eritrean Nakfa (ERN)</button>
+        </div>
+        <input type="hidden" id="suCurrency" value="USD">
+      </div>
+    </div>
+    <div class="su-actions">
+      <button type="submit" class="btn su-primary">Create account</button>
+      <button type="button" class="su-back" id="suPrev">&larr; Back</button>
+    </div>
+  </div>
+</form>
+<p class="modal-switch">Already have an account? <button type="button" id="toLogin">Log in</button></p>
+</div>
+</div>
+
+<!-- ================= LOG IN SCREEN ================= -->
+<div id="loginScreen" hidden>
+  <div class="wrap app-topbar">
+    <a class="brand" href="#" id="loginLogo">Menya</a>
+    <button class="btn ghost" id="loginBack">&larr; Home</button>
+  </div>
+  <div class="wrap page auth-plain">
+      <p class="su-kicker">Welcome back</p>
+<h3>Log in to Menya</h3>
+<p class="hint">Pick up where you left off.</p>
+<form id="loginForm">
+  <div class="su-step">
+    <div class="su-field"><label for="liEmail">Email</label><input type="email" id="liEmail" required autocomplete="email" placeholder="you@example.com"></div>
+    <div class="su-field"><label for="liPassword">Password</label>
+      <div class="su-pass"><input type="password" id="liPassword" required autocomplete="current-password" placeholder="Your password"><button type="button" id="liPassToggle">Show</button></div>
+    </div>
+    <button type="submit" class="btn su-primary">Log in</button>
+  </div>
+</form>
+      
+      <p class="modal-switch">New here? <button type="button" id="toSignup">Sign up</button></p>
+  </div>
+</div>
+
+<!-- ================= PROFILE SCREEN ================= -->
+<div id="profileScreen" hidden>
+  <div class="wrap app-topbar">
+    <a class="brand" href="#" id="profileLogo">Menya</a>
+    
+  </div>
+  <div class="wrap page" style="margin-top:20px">
+    
+
+<div class="profile-head">
+  <div class="profile-toprow">
+    <div class="profile-avatar" aria-hidden="true">
+      <img src="https://files.catbox.moe/j15uir.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+    </div>
+    <button type="button" class="edit-pill" id="profileEditBtn">Edit Profile</button>
+<div class="more-menu-wrap">
+  <button type="button" class="edit-pill edit-pill-icon" id="profileMoreBtn" aria-label="More options"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+  <div class="more-menu" id="profileMoreMenu" hidden>
+    <button type="button" id="moreNotes">Notes</button>
+    <button type="button" id="morePlanner">Planner</button>
+<button type="button" id="moreInstall">Download app</button>
+    <button type="button" id="moreInstall">Download app</button>
+<button type="button" id="moreLogout">Log out</button>
+  </div>
+</div>
+  </div>
+  <label for="profileName" class="sr-only">Name or company</label>
+  <input type="text" id="profileName" placeholder="Add your name or company" maxlength="40" autocomplete="off">
+  <p id="profileBioText" class="profile-bio-text" hidden></p>
+<textarea id="profileBio" placeholder="Add a short bio" maxlength="140" rows="2" class="profile-bio" hidden></textarea>
+  <div class="profile-meta">
+    <span class="profile-meta-item"><span class="meta-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><input type="text" id="profileLocation" placeholder="Location"></span>
+    <span class="profile-meta-item"><span class="meta-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><input type="tel" id="profilePhone" placeholder="Phone number"></span>
+  </div>
+</div>
+
+    <!-- REPLACE -->
+
+<nav class="tab-row" aria-label="Profile sections">
+  <button type="button" class="tab-link" id="openHistory">History</button>
+  <button type="button" class="tab-link" id="openStats">Stats</button>
+  
+</nav>
+
+<div id="profileHistoryScreen">
+  <div class="scroll-x"><div id="profileHistory"></div></div>
+</div>
+
+<div id="profileStatsScreen" hidden>
+    <h3 class="page-title">Stats</h3>
+    <p class="hint">Worked out from everything saved on this device.</p>
+
+    <div class="tabs period-tabs" role="tablist" aria-label="Stats period">
+      <button role="tab" id="ptab-daily" aria-selected="true" tabindex="0" data-period="daily">Daily</button>
+      <button role="tab" id="ptab-weekly" aria-selected="false" tabindex="-1" data-period="weekly">Weekly</button>
+      <button role="tab" id="ptab-monthly" aria-selected="false" tabindex="-1" data-period="monthly">Monthly</button>
+      <button role="tab" id="ptab-all" aria-selected="false" tabindex="-1" data-period="all">All time</button>
+    </div>
+
+    <dl id="profileStats"></dl>
+
+    <p class="section-label">Net profit trend</p>
+    <p class="hint" id="statsTrendHint">Your last calculations, oldest to newest.</p>
+    <div class="chart" id="statsChart"></div>
+    <div class="axis" id="statsAxis"></div>
+
+    <p class="section-label">Profitable vs. loss</p>
+    <div class="probbar" id="statsRatioBar" role="img" aria-label="Share of profitable calculations vs losses"></div>
+    <div class="heat-key" id="statsRatioLegend"></div>
+
+    <div id="printArea">
+      <p class="section-label">Full history</p>
+      <p class="hint">Every saved calculation, oldest data first available on export.</p>
+      <p id="printMeta"></p>
+      <div class="data-table-wrap">
+        <table class="data-table" id="statsTable">
+          <thead>
+            <tr><th>Date</th><th>Name</th><th class="num">Revenue</th><th class="num">Costs</th><th class="num">Tax</th><th class="num">Net</th><th>Result</th></tr>
+          </thead>
+          <tbody id="statsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="actions" style="margin-top:18px">
+      <button type="button" class="btn ghost" id="exportPdf">Export table as PDF</button>
+    </div>
+  </div>
+</div>
+
+<div id="profileNotesScreen" class="screen-overlay" hidden>
+  <button type="button" class="btn ghost" id="notesBack">&larr; Profile</button>
+  <h3 class="page-title" style="margin-top:14px">Notes</h3>
+<p class="hint notes-lead">Your private space for ideas, decisions and lessons. Saved on this device only.</p>
+  <div class="note-compose">
+  <textarea id="profileNotes" placeholder="What are you thinking about?…" rows="1"></textarea>
+  <button type="button" id="noteSendBtn" aria-label="Send">&uarr;</button>
+</div>
+  <input type="text" id="notesSearch" class="notes-search" placeholder="Search your notes" autocomplete="off" hidden>
+<div id="notesList" style="margin-top:8px"></div>
+<div class="note-undo-bar" id="noteUndoBar" hidden>
+  <span>Note deleted</span>
+  <button type="button" id="noteUndoBtn">Undo</button>
+</div>
+</div>
+
+<div id="plannerScreen" class="screen-overlay" hidden>
+  <button type="button" class="btn ghost" id="plannerBack">&larr; Profile</button>
+    <h3 class="page-title">Planner</h3>
+    <p class="hint">Set a plan, get reminded, then mark it done when it's finished.</p>
+
+    <p id="notifStatus" class="hint" style="margin-top:14px"></p>
+    <button type="button" class="try-link" id="enableNotif">Turn on notifications &rarr;</button>
+
+    <form id="planForm" style="margin-top:22px">
+      <div style="margin-bottom:14px">
+        <label for="planTitle">Plan</label>
+        <input type="text" id="planTitle" placeholder="e.g. Review March numbers" maxlength="60" required autocomplete="off">
+      </div>
+      <div class="row2" style="margin-bottom:14px">
+        <div>
+          <label>Date</label>
+          <div class="dt-row">
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="dayBtn">Day</button><div class="cur-picker-menu" id="dayMenu" hidden></div></div>
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="monthBtn">Month</button><div class="cur-picker-menu" id="monthMenu" hidden></div></div>
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="yearBtn">Year</button><div class="cur-picker-menu" id="yearMenu" hidden></div></div>
+          </div>
+          <input type="hidden" id="planDate" required>
+        </div>
+        <div>
+          <label>Time</label>
+          <div class="dt-row">
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="hourBtn">Hour</button><div class="cur-picker-menu" id="hourMenu" hidden></div></div>
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="minBtn">Min</button><div class="cur-picker-menu" id="minMenu" hidden></div></div>
+            <div class="cur-picker"><button type="button" class="cur-picker-btn" id="ampmBtn">AM</button><div class="cur-picker-menu" id="ampmMenu" hidden><button type="button" data-v="AM">AM</button><button type="button" data-v="PM">PM</button></div></div>
+          </div>
+          <input type="hidden" id="planTime" required>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label for="planNote">Note (optional)</label>
+        <input type="text" id="planNote" placeholder="Any detail to remind yourself" maxlength="120" autocomplete="off">
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn grow">Add to planner</button>
+      </div>
+    </form>
+
+    <p class="section-label">Your plans</p>
+    <div id="plannerList" class="plan-list"></div>
+
+    <p class="section-label">Profit / loss alerts</p>
+    <p class="hint" style="margin:0 0 12px">Get notified when a saved calculation's net result passes this amount, either way.</p>
+    <div style="max-width:240px;margin-bottom:24px">
+      <label for="alertThreshold">Alert me above</label>
+      <input type="number" id="alertThreshold" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 1000">
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP SCREEN ================= -->
+<div id="appScreen" hidden>
+<div class="wrap app-topbar">
+  <a class="brand" href="#" id="backHome">Menya</a>
+  <div class="topbar-right">
+    <button class="btn ghost" id="backHomeBtn">&larr; Home</button>
+    <!-- REPLACE -->
+<button class="avatar-btn" id="profileBtn" aria-label="Open profile">
+  <img src="https://files.catbox.moe/j15uir.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+</button>
+  </div>
+</div>
+<div id="alertStack" role="region" aria-label="Reminders" aria-live="polite"></div>
 <header class="top">
   <div class="wrap">
-    <h1>Poisson score predictor</h1>
-    <p class="lede">Enter how many goals each team scores and concedes. The model turns those averages into a chance for every scoreline and picks the most likely result.</p>
-    <div class="tabs" role="tablist" aria-label="Predictor type">
-      <button role="tab" id="tab-match" aria-selected="true" aria-controls="panel-match" tabindex="0">Football match</button>
-      <button role="tab" id="tab-event" aria-selected="false" aria-controls="panel-event" tabindex="-1">Any event</button>
+    <h1>Profit &amp; loss calculator</h1>
+    <p class="lede">Enter your revenue and costs. The calculator works out your gross and net profit, your margins, and where your money is going.</p>
+    <div class="tabs" role="tablist" aria-label="Calculator type">
+      <button role="tab" id="tab-pl" aria-selected="true" aria-controls="panel-pl" tabindex="0">Profit &amp; loss</button>
+      <button role="tab" id="tab-be" aria-selected="false" aria-controls="panel-be" tabindex="-1">Break-even</button>
     </div>
   </div>
 </header>
 
 <main id="main" class="wrap">
 
-  <!-- ============ MATCH ============ -->
-  <section id="panel-match" role="tabpanel" aria-labelledby="tab-match" class="layout has-list" data-view="input">
+  <!-- ============ PROFIT & LOSS ============ -->
+  <section id="panel-pl" role="tabpanel" aria-labelledby="tab-pl" class="layout has-list" data-view="input">
   <aside class="match-list-col">
     <div class="card">
-      <h3>Upcoming matches</h3>
-      <p class="hint">Tap a match to load it.</p>
-      <div class="match-list" id="matchListItems">
-        <p class="match-list-empty">No matches loaded yet.</p>
+      <h3>Recent calculations</h3>
+      <p class="hint">Saved on this device. Tap one to reload it.</p>
+      <div class="match-list" id="savedListItems">
+        <p class="match-list-empty">Nothing saved yet.</p>
       </div>
     </div>
   </aside>
   <div class="form-col">
-      <form id="matchForm" class="card" novalidate>
-        <h3>Match details</h3>
-        <p class="hint">Fill in the details, then tap Show prediction.</p>
+      <form id="plForm" class="card" novalidate>
+        <h3>Business numbers</h3>
+        <p class="hint">Fill in the details, then tap Calculate.</p>
 
         <div style="margin-bottom:16px">
-          <label for="preset">Choose a match</label>
-<select id="preset">
-  <option value="">Choose a match…</option>
-</select>
-<p class="hint" id="fdStatus" style="margin:6px 0 0"></p>
-</div>
+          <label for="bizName">Business or period name</label>
+          <input type="text" id="bizName" placeholder="e.g. Corner Cafe, March" maxlength="40" autocomplete="off">
+        </div>
 
         <fieldset>
-          <legend><span class="dot h"></span>Home team</legend>
-          <label for="homeName">Team name</label>
-          <input type="text" id="homeName" placeholder="e.g. Riverside FC" maxlength="30" autocomplete="off">
-<div class="row2" style="margin-top:10px">
-  <div><label for="hFor">Goals scored</label><input type="number" id="hFor" min="0" max="6" step="0.05" inputmode="decimal"></div>
-  <div><label for="hAg">Goals conceded</label><input type="number" id="hAg" min="0" max="6" step="0.05" inputmode="decimal"></div>
-</div>
-<p class="hint" style="margin:6px 0 0">Average per home game.</p>
-</fieldset>
+          <legend><span class="dot h"></span>Revenue &amp; cost of sales</legend>
+          <div class="row2">
+            <div><label for="revenue">Revenue</label><input type="number" id="revenue" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+            <div><label for="cogs">Cost of goods sold</label><input type="number" id="cogs" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+          </div>
+          <p class="hint" style="margin:6px 0 0">Cost of goods sold is what it directly cost you to make or buy what you sold.</p>
+        </fieldset>
 
-<fieldset>
-  <legend><span class="dot a"></span>Away team</legend>
-  <label for="awayName">Team name</label>
-  <input type="text" id="awayName" placeholder="e.g. Northgate United" maxlength="30" autocomplete="off">
-  <div class="row2" style="margin-top:10px">
-    <div><label for="aFor">Goals scored</label><input type="number" id="aFor" min="0" max="6" step="0.05" inputmode="decimal"></div>
-    <div><label for="aAg">Goals conceded</label><input type="number" id="aAg" min="0" max="6" step="0.05" inputmode="decimal"></div>
-  </div>
-  <p class="hint" style="margin:6px 0 0">Average per away game.</p>
-</fieldset>
-
-<fieldset>
-  <legend><span class="dot d"></span>League averages</legend>
-  <div class="row2">
-    <div><label for="lgH">Home goals per game</label><input type="number" id="lgH" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
-    <div><label for="lgA">Away goals per game</label><input type="number" id="lgA" min="0.1" max="6" step="0.05" inputmode="decimal"></div>
+        <fieldset>
+          <legend><span class="dot a"></span>Operating expenses</legend>
+          <div class="row2" style="margin-bottom:10px">
+            <div><label for="rent">Rent &amp; utilities</label><input type="number" id="rent" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+            <div><label for="salaries">Salaries &amp; wages</label><input type="number" id="salaries" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+          </div>
+          <div class="row2">
+            <div><label for="marketing">Marketing</label><input type="number" id="marketing" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+            <div><label for="otherOpex">Other expenses</label><input type="number" id="otherOpex" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
           </div>
         </fieldset>
 
-        <label class="switch" for="dc">
-          <input type="checkbox" id="dc" checked>
-          <span><b>Adjust for low scores</b>Corrects the model for 0–0, 1–0, 0–1 and 1–1, which happen slightly more or less often than plain Poisson says.</span>
-        </label>
+        <fieldset>
+          <legend><span class="dot d"></span>Tax</legend>
+          <label for="taxRate">Tax rate on profit (%)</label>
+          <input type="number" id="taxRate" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0">
+          <p class="hint" style="margin:6px 0 0">Leave at 0 if you'd rather see pre-tax profit.</p>
+        </fieldset>
 
-        <div id="matchError" class="err" role="alert" hidden></div>
+        <div id="plError" class="err" role="alert" hidden></div>
 
         <div class="actions">
-          <button type="submit" class="btn grow">Show prediction</button>
-          <button type="button" class="btn ghost" id="resetMatch">Reset</button>
+          <button type="submit" class="btn grow">Calculate</button>
+          <button type="button" class="btn ghost" id="resetPl">Reset</button>
         </div>
 
         <details>
           <summary>How it's calculated</summary>
-          <p>Expected goals for the home team = <code>home scored × away conceded ÷ league home average</code>. For the away team it is <code>away scored × home conceded ÷ league away average</code>.</p>
-          <p>Each side's goal count is then modelled with the Poisson formula <code>P(k) = e<sup>−λ</sup>λ<sup>k</sup> / k!</code>. Multiplying the two gives the chance of every exact score.</p>
+          <p>Gross profit = <code>revenue − cost of goods sold</code>. Operating profit = <code>gross profit − operating expenses</code>. Net profit = <code>operating profit − tax</code>.</p>
         </details>
       </form>
     </div>
 
     <div class="loader card" role="status" aria-live="polite">
       <div class="spinner" aria-hidden="true"></div>
-      <h3>Calculating prediction</h3>
+      <h3>Calculating your numbers</h3>
       <p class="hint loader-status">Preparing…</p>
       <div class="lbar" aria-hidden="true"><i></i></div>
     </div>
 
-    <div id="matchResults" class="stack results" tabindex="-1">
+    <div id="plResults" class="stack results" tabindex="-1">
       <div class="results-bar"><button type="button" class="btn ghost" data-back>&larr; Edit inputs</button></div>
       <article class="verdict" id="verdict">
         <svg class="pitch-lines" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <g fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2">
-            <rect x="12" y="12" width="376" height="236" rx="4"/>
-            <line x1="200" y1="12" x2="200" y2="248"/>
-            <circle cx="200" cy="130" r="40"/>
-            <rect x="12" y="80" width="56" height="100"/>
-            <rect x="332" y="80" width="56" height="100"/>
+            <polyline points="20,210 100,160 170,190 240,90 320,120 380,40" />
+            <circle cx="380" cy="40" r="5" fill="#fff" fill-opacity=".11" stroke="none"/>
           </g>
         </svg>
-        <p class="v-kicker">Predicted result</p>
+        <p class="v-kicker">Result</p>
         <h2 class="v-outcome" id="vOutcome">–</h2>
         <div class="v-board" id="vBoard">
-          <div class="v-side"><span class="v-digit" id="vH">0</span><span class="v-name" id="vHName"></span></div>
+          <div class="v-side"><span class="v-digit" id="vH">0</span><span class="v-name" id="vHName">Revenue</span></div>
           <span class="v-dash" aria-hidden="true">–</span>
-          <div class="v-side"><span class="v-digit" id="vA">0</span><span class="v-name" id="vAName"></span></div>
+          <div class="v-side"><span class="v-digit" id="vA">0</span><span class="v-name" id="vAName">Total costs</span></div>
         </div>
         <p class="v-note" id="vNote"></p>
       </article>
 
       <section class="card">
-        <h3>Who is likely to win</h3>
-        <div class="probbar" id="probBar" role="img" aria-label="Win, draw and loss probabilities"><i class="h"></i><i class="d"></i><i class="a"></i></div>
+        <h3>Where your revenue goes</h3>
+        <div class="probbar" id="probBar" role="img" aria-label="Cost of sales, operating expenses, tax and net profit as a share of revenue"><i class="a"></i><i class="d"></i><i class="h"></i></div>
         <div class="legend3" id="legend3"></div>
-        <p class="hint" style="margin:14px 0 0">Fair odds are the decimal odds that match each chance with no bookmaker margin.</p>
+        <p class="hint" style="margin:14px 0 0">Shown as a share of revenue. If net profit is negative, this scenario is a loss.</p>
       </section>
 
       <section class="card">
-        <h3>Goals</h3>
+        <h3>Margins</h3>
         <dl id="markets">
-          <div class="market"><dt>Expected goals</dt><dd id="mXg">–</dd></div>
-          <div class="market"><dt>Both teams score</dt><dd id="mBtts">–</dd></div>
-          <div class="market">
-            <dt>Total goals <select id="ouLine" aria-label="Total goals line">
-              <option value="0.5">0.5</option><option value="1.5">1.5</option><option value="2.5" selected>2.5</option><option value="3.5">3.5</option><option value="4.5">4.5</option>
-            </select></dt>
-            <dd id="mOu">–</dd>
-          </div>
+          <div class="market"><dt>Gross profit</dt><dd id="mGross">–</dd></div>
+          <div class="market"><dt>Gross margin</dt><dd id="mGrossMargin">–</dd></div>
+          <div class="market"><dt>Operating profit</dt><dd id="mOperating">–</dd></div>
+          <div class="market"><dt>Net margin</dt><dd id="mNetMargin">–</dd></div>
         </dl>
-        <h3 style="margin-top:20px">Total goals in the match</h3>
-        <div class="chart" id="goalsChart" style="margin-top:14px"></div>
-        <div class="axis" id="goalsAxis"></div>
+        <h3 style="margin-top:20px">Revenue vs. costs vs. profit</h3>
+        <div class="chart" id="plChart" style="margin-top:14px"></div>
+        <div class="axis" id="plAxis"></div>
       </section>
 
       <section class="card">
-        <h3>Every scoreline</h3>
-        <p class="hint" id="heatHint"></p>
+        <h3>What-if: revenue and cost swings</h3>
+        <p class="hint" id="heatHint">Rows show a change in revenue, columns a change in costs. Cells show the resulting net profit.</p>
         <div class="heat-wrap"><table class="heat" id="heat"></table></div>
         <div class="heat-key">
-          <span><i class="dot h"></i>Home win</span>
-          <span><i class="dot d"></i>Draw</span>
-          <span><i class="dot a"></i>Away win</span>
-          <span><i class="swatch-pred"></i>Predicted score</span>
+          <span><i class="dot p"></i>Profit</span>
+          <span><i class="dot l"></i>Loss</span>
+          <span><i class="swatch-pred"></i>Your numbers, as entered</span>
         </div>
-        <p class="readout" id="heatReadout">Tap a square to see its exact chance.</p>
+        <p class="readout" id="heatReadout">Tap a square to see its exact net profit.</p>
       </section>
 
       <section class="card">
-        <h3>Five most likely scores</h3>
-        <p class="hint" id="topHint">Any single score is rarely above 15%, so the result is a safer call than the exact score.</p>
+        <h3>Your biggest cost drivers</h3>
+        <p class="hint" id="topHint">Ranked from largest to smallest.</p>
         <ul class="toplist" id="topList"></ul>
       </section>
 
       <div class="actions">
-        <button type="button" class="btn ghost" id="copyMatch">Copy summary</button>
+        <button type="button" class="btn ghost" id="copyPl">Copy summary</button>
       </div>
     </div>
   </section>
 
-  <!-- ============ ANY EVENT ============ -->
-  <section id="panel-event" role="tabpanel" aria-labelledby="tab-event" class="layout" data-view="input" hidden>
+  <!-- ============ BREAK-EVEN ============ -->
+  <section id="panel-be" role="tabpanel" aria-labelledby="tab-be" class="layout" data-view="input" hidden>
     <div class="form-col">
-      <form id="eventForm" class="card" novalidate>
-        <h3>Event details</h3>
-        <p class="hint">Use this for anything that happens at a steady average rate: calls, orders, defects, goals, arrivals.</p>
+      <form id="beForm" class="card" novalidate>
+        <h3>Unit economics</h3>
+        <p class="hint">Use this to find out how many units or sales you need before you cover your costs.</p>
 
         <div style="margin-bottom:14px">
-          <label for="evLabel">What are you counting?</label>
-          <input type="text" id="evLabel" value="customer calls in an hour" maxlength="60" autocomplete="off">
-        </div>
-        <div style="margin-bottom:14px">
-          <label for="evRate">Average number in that period</label>
-          <input type="number" id="evRate" value="4.2" min="0" max="200" step="0.1" inputmode="decimal">
+          <label for="fixedCosts">Fixed costs (per period)</label>
+          <input type="number" id="fixedCosts" value="2000" min="0" step="0.01" inputmode="decimal">
         </div>
         <div class="row2" style="margin-bottom:16px">
           <div>
-            <label for="evMode">I want the chance of</label>
-            <select id="evMode">
-              <option value="exact">exactly</option>
-              <option value="atmost">at most</option>
-              <option value="atleast" selected>at least</option>
-            </select>
+            <label for="price">Price per unit</label>
+            <input type="number" id="price" value="25" min="0" step="0.01" inputmode="decimal">
           </div>
           <div>
-            <label for="evK">This many</label>
-            <input type="number" id="evK" value="6" min="0" max="500" step="1" inputmode="numeric">
+            <label for="variableCost">Variable cost per unit</label>
+            <input type="number" id="variableCost" value="10" min="0" step="0.01" inputmode="decimal">
           </div>
         </div>
-        <div id="eventError" class="err" role="alert" hidden></div>
+        <div style="margin-bottom:14px">
+          <label for="targetUnits">Units you plan to sell (optional)</label>
+          <input type="number" id="targetUnits" value="150" min="0" step="1" inputmode="numeric">
+        </div>
+        <div id="beError" class="err" role="alert" hidden></div>
         <div class="actions">
-          <button type="submit" class="btn grow">Show prediction</button>
-          <button type="button" class="btn ghost" id="resetEvent">Reset</button>
+          <button type="submit" class="btn grow">Calculate</button>
+          <button type="button" class="btn ghost" id="resetBe">Reset</button>
         </div>
       </form>
     </div>
 
     <div class="loader card" role="status" aria-live="polite">
       <div class="spinner" aria-hidden="true"></div>
-      <h3>Calculating prediction</h3>
+      <h3>Calculating your break-even</h3>
       <p class="hint loader-status">Preparing…</p>
       <div class="lbar" aria-hidden="true"><i></i></div>
     </div>
 
-    <div id="eventResults" class="stack results" tabindex="-1">
+    <div id="beResults" class="stack results" tabindex="-1">
       <div class="results-bar"><button type="button" class="btn ghost" data-back>&larr; Edit inputs</button></div>
       <article class="verdict">
         <svg class="pitch-lines" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <g fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2">
-            <circle cx="200" cy="130" r="40"/><circle cx="200" cy="130" r="80"/><circle cx="200" cy="130" r="120"/>
+            <line x1="20" y1="230" x2="380" y2="30"/>
+            <line x1="20" y1="230" x2="380" y2="230"/>
           </g>
         </svg>
-        <p class="v-kicker">Most likely count</p>
-        <h2 class="v-outcome" id="evMode2" style="margin-bottom:6px">–</h2>
+        <p class="v-kicker">Break-even point</p>
+        <h2 class="v-outcome" id="beOutcome" style="margin-bottom:6px">–</h2>
         <div class="v-board" id="evBoard" style="grid-template-columns:auto">
-          <div class="v-side" style="align-items:flex-start;text-align:left"><span class="v-digit" id="evModeNum">0</span></div>
+          <div class="v-side" style="align-items:flex-start;text-align:left"><span class="v-digit" id="beUnits">0</span></div>
         </div>
-        <p class="v-note" id="evNote"></p>
+        <p class="v-note" id="beNote"></p>
       </article>
 
       <section class="card">
-        <h3>Your question</h3>
-        <p class="answer" id="evAnswerNum">–</p>
-        <p class="answer-text" id="evAnswerText"></p>
+        <h3>At your target sales</h3>
+        <p class="answer" id="beAnswerNum">–</p>
+        <p class="answer-text" id="beAnswerText"></p>
       </section>
 
       <section class="card">
-        <h3>Chance of each count</h3>
-        <p class="hint" id="evChartHint"></p>
-        <div class="chart" id="evChart"></div>
-        <div class="axis" id="evAxis"></div>
-        <p class="chart-note"><span class="dot h"></span> Counts that match your question. The dark bar is the single most likely count.</p>
+        <h3>Profit by units sold</h3>
+        <p class="hint" id="beChartHint"></p>
+        <div class="chart" id="beChart"></div>
+        <table class="be-table" id="beTable"></table>
+        <p class="chart-note"><span class="dot l"></span> Below break-even is a loss. <span class="dot h"></span> At or above is a profit. The dark bar is your target.</p>
       </section>
     </div>
   </section>
 
-  <p class="disclaimer">The Poisson model assumes events happen independently at a steady average rate. Real matches also depend on injuries, tactics, weather and luck, so treat every number as a probability, not a guarantee. This tool is for information and entertainment, not betting advice.</p>
+  <p class="disclaimer">This calculator gives a simplified estimate based only on the numbers you enter. It doesn't apply accounting standards such as accruals, depreciation or inventory valuation, and it isn't aware of tax rules in your area. Use it for a quick sense of your numbers, not as financial, tax or accounting advice.</p>
 </main>
+</div>
 
 <div class="toast" id="toast" role="status"></div>
 
-<noscript><p class="wrap">This predictor needs JavaScript to run.</p></noscript>
+<noscript><p class="wrap">This calculator needs JavaScript to run.</p></noscript>
 
-<script type="module">
-'use strict';
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+  firebase.initializeApp({
+  apiKey: "AIzaSyCNIsjSl60AlGmtmtC4H3uy5bQ_WCG2HV0",
+    authDomain: "poats-dd25a.firebaseapp.com",
+    projectId: "poats-dd25a",
+    storageBucket: "poats-dd25a.firebasestorage.app",
+    messagingSenderId: "804924221918",
+  appId: "1:804924221918:web:2aeed317da8773e3fbd54f"
+});
+const fbAuth = firebase.auth();
+  const fbDb = firebase.firestore();
+</script>
+<script>
+  'use strict';
 
 /* ---------- helpers ---------- */
-const $ = (s, r=document) => r.querySelector(s);
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pct = (p, d=1) => (p*100).toFixed(d) + '%';
-const odds = p => p > 0.0005 ? (1/p).toFixed(2) : '–';
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ---------- Firebase data layer ---------- */
+const CACHE = { profile:{}, calcs:[], notes:[], plans:[] };
+let uid = null, ready = false, loadPromise = null;
+const userDoc = () => fbDb.collection('users').doc(uid);
+const saveTimers = {};
 
-function pmf(l, n){
-  const a = new Array(n+1).fill(0);
-  if (l <= 0){ a[0] = 1; return a; }
-  let lp = -l; a[0] = Math.exp(lp);
-  const ll = Math.log(l);
-  for (let k = 1; k <= n; k++){ lp += ll - Math.log(k); a[k] = Math.exp(lp); }
-  return a;
+function cloudSave(field){
+  if (!uid || !ready) return;
+  clearTimeout(saveTimers[field]);
+  saveTimers[field] = setTimeout(() => {
+    const data = JSON.parse(JSON.stringify(CACHE[field]));
+    userDoc().set({ [field]: data }, { merge:true })
+      .catch(err => { console.error(err); toast('Could not save. Check your connection.'); });
+  }, 400);
 }
-function readNum(id, min, max){
+function cloudLoad(user){
+  if (loadPromise && uid === user.uid) return loadPromise;
+  uid = user.uid; ready = false;
+  loadPromise = userDoc().get().then(snap => {
+    const d = snap.exists ? snap.data() : {};
+    CACHE.profile = d.profile || {};
+    CACHE.calcs = d.calcs || [];
+    CACHE.notes = d.notes || [];
+    CACHE.plans = d.plans || [];
+    ready = true;
+    renderSaved();
+  }).catch(err => { console.error(err); toast('Could not load your data.'); });
+  return loadPromise;
+}
+function cloudClear(){
+  uid = null; ready = false; loadPromise = null;
+  CACHE.profile = {}; CACHE.calcs = []; CACHE.notes = []; CACHE.plans = [];
+  renderSaved();
+}
+function setBusy(form, on){
+  const b = form.querySelector('button[type="submit"]');
+  if (!b) return;
+  if (on){
+    b.dataset.label = b.textContent;
+    b.disabled = true;
+    b.setAttribute('aria-busy','true');
+    b.innerHTML = '<span class="btn-spin"></span>Please wait\u2026';
+  } else {
+    b.disabled = false;
+    b.removeAttribute('aria-busy');
+    b.textContent = b.dataset.label || b.textContent;
+  }
+}
+function authMessage(err){
+  const m = {
+    'auth/email-already-in-use':'That email already has an account. Try logging in.',
+    'auth/invalid-email':"That email address doesn't look right.",
+    'auth/weak-password':'Password must be at least 6 characters.',
+    'auth/invalid-credential':'Wrong email or password.',
+    'auth/too-many-requests':'Too many attempts. Try again in a few minutes.',
+    'auth/network-request-failed':'No internet connection.'
+  };
+  return m[err.code] || 'Something went wrong. Please try again.';
+}
+function hideBoot() { const b = $('#boot'); if (b) b.hidden = true; }
+setTimeout(hideBoot, 4000);
+fbAuth.onAuthStateChanged(user => {
+  const onAuthPages = !$('#signupScreen').hidden || !$('#loginScreen').hidden;
+  if (user) {
+    cloudLoad(user);
+    if (!$('#homeScreen').hidden || onAuthPages) showScreen('appScreen', false);
+  } else {
+    cloudClear();
+    if (!onAuthPages) showScreen('homeScreen', false);
+  }
+  hideBoot();
+});
+function getCurrency(){
+  try { return CACHE.profile.currency || 'USD'; }
+  catch(e){ return 'USD'; }
+}
+function money(n, compact=false){
+  const currency = getCurrency();
+  const opts = compact
+    ? {style:'currency', currency, notation:'compact', maximumFractionDigits:1}
+    : {style:'currency', currency, minimumFractionDigits:(Math.abs(n) < 100 && !Number.isInteger(n)) ? 2 : 0, maximumFractionDigits:(Math.abs(n) < 100 && !Number.isInteger(n)) ? 2 : 0};
+  try { return new Intl.NumberFormat('en-US', opts).format(n); }
+  catch(e){ return new Intl.NumberFormat('en-US', {...opts, currency:'USD'}).format(n); }
+}
+
+function readNumOrZero(id, max=1e12){
   const el = $('#'+id);
+  const raw = el.value.trim();
+  if (raw === ''){ el.setAttribute('aria-invalid','false'); return 0; }
   const v = el.valueAsNumber;
-  const ok = Number.isFinite(v) && v >= min && v <= max;
+  const ok = Number.isFinite(v) && v >= 0 && v <= max;
   el.setAttribute('aria-invalid', ok ? 'false' : 'true');
   return ok ? v : null;
 }
@@ -581,22 +1338,935 @@ function copyText(text){
     document.body.removeChild(ta);
   });
 }
-function chartHTML(items, showVal){
+function chartHTML(items, showVal) {
+  const dense = items.length > 8;
   const chart = items.map(it =>
     `<div class="col ${it.cls||''}" title="${esc(it.tip||'')}">` +
-    (showVal ? `<span class="val">${esc(it.val)}</span>` : '') +
+    (showVal && !dense ? `<span class="val">${esc(it.val)}</span>` : '') +
     `<div class="fill" style="--h:${it.h.toFixed(1)}"></div></div>`
   ).join('');
   const axis = items.map(it => `<span>${esc(it.label)}</span>`).join('');
-  return {chart, axis};
+  return { chart, axis };
 }
 function restartAnim(el){
   if (reduceMotion) return;
   el.classList.remove('settle'); void el.offsetWidth; el.classList.add('settle');
 }
 
+/* ---------- screen switching (home / app / signup / login / profile) ---------- */
+const SCREENS = ['homeScreen','appScreen','signupScreen','loginScreen','profileScreen'];
+/* REPLACE */
+function showScreen(id, push) {
+  SCREENS.forEach(s => { $('#' + s).hidden = (s !== id); });
+  window.scrollTo(0, 0);
+  if (push !== false) { try { history.pushState({ screen: id }, '', '#' + id); } catch(e) {} }
+}
+window.addEventListener('popstate', e => {
+  $('#profileNotesScreen').hidden = true;
+  $('#plannerScreen').hidden = true;
+  if (e.state && e.state.overlay) return;
+  let id = (e.state && e.state.screen) || 'homeScreen';
+if (fbAuth.currentUser && id === 'homeScreen') id = 'appScreen';
+  showScreen(id, false);
+});
+function showHome(){ showScreen(fbAuth.currentUser ? 'appScreen' : 'homeScreen'); }
+function showApp(){ showScreen('appScreen'); if (typeof renderAlertCards === 'function') renderAlertCards(); }
+function showSignup(){ showScreen('signupScreen'); goStep(1); }
+function showLogin(){ showScreen('loginScreen'); }
+const SUBSCREENS = ['profileHistoryScreen','profileStatsScreen','profileNotesScreen','plannerScreen'];
+function isSubscreenOpen(){ return SUBSCREENS.some(s => !$('#'+s).hidden); }
+
+
+$('#heroSignup').addEventListener('click', showSignup);
+$('#navSignIn').addEventListener('click', showLogin);
+$('#heroLogin').addEventListener('click', showLogin);
+$('#heroTry').addEventListener('click', showApp);
+$('#toLogin').addEventListener('click', showLogin);
+$('#toSignup').addEventListener('click', showSignup);
+let suStep = 1;
+function goStep(n){
+  suStep = n;
+  $('#suStep1').hidden = n !== 1;
+  $('#suStep2').hidden = n !== 2;
+  $('#suBar2').classList.toggle('on', n === 2);
+  $('#suKicker').textContent = 'Step ' + n + ' of 2';
+  $('#suTitle').textContent = n === 1 ? 'Create your account' : 'About your business';
+  $('#suSub').textContent = n === 1 ? 'Save your calculations and pick up where you left off.' : 'This shows on your profile. You can skip the optional fields.';
+  window.scrollTo(0, 0);
+}
+$('#suNext').addEventListener('click', () => {
+  if (!$('#suEmail').reportValidity() || !$('#suPassword').reportValidity()) return;
+  goStep(2);
+});
+$('#suPrev').addEventListener('click', () => goStep(1));
+$('#suPassToggle').addEventListener('click', () => {
+  const p = $('#suPassword'), show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  $('#suPassToggle').textContent = show ? 'Hide' : 'Show';
+});
+$('#signupForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (suStep === 1) { $('#suNext').click(); return; }
+  setBusy(e.target, true);
+  try {
+    const cred = await fbAuth.createUserWithEmailAndPassword($('#suEmail').value.trim(), $('#suPassword').value);
+    await cloudLoad(cred.user);
+    saveProfile({
+      name: $('#suName').value.trim(),
+      bio: $('#suBio').value.trim(),
+      location: $('#suLocation').value.trim(),
+      phone: $('#suPhone').value.trim(),
+      currency: $('#suCurrency').value
+    });
+    showApp();
+    toast('Account created \u2014 let\u2019s calculate');
+  } catch(err){
+    console.error(err);
+    toast(authMessage(err));
+    if (err.code && /email|password/.test(err.code)) goStep(1);
+  } finally {
+    setBusy(e.target, false);
+  }
+});
+  
+$('#curPickerBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  $('#curPickerMenu').hidden = !$('#curPickerMenu').hidden;
+});
+$$('.cur-picker-menu button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $('#suCurrency').value = btn.dataset.value;
+    $('#curPickerBtn').textContent = btn.textContent;
+    $('#curPickerMenu').hidden = true;
+  });
+});
+document.addEventListener('click', e => {
+  if (!$('#curPickerMenu').hidden && !e.target.closest('.cur-picker')) $('#curPickerMenu').hidden = true;
+});
+function buildMenu(menuEl, items, onPick, btnEl){
+  menuEl.innerHTML = items.map(v => `<button type="button" data-v="${v.v}">${v.label}</button>`).join('');
+  menuEl.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => { onPick(b.dataset.v, b.textContent); menuEl.hidden = true; });
+  });
+  btnEl.addEventListener('click', e => { e.stopPropagation(); menuEl.hidden = !menuEl.hidden; });
+}
+const days = Array.from({length:31}, (_,i) => ({v:String(i+1).padStart(2,'0'), label:i+1}));
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  .map((m,i) => ({v:String(i+1).padStart(2,'0'), label:m}));
+const thisYear = new Date().getFullYear();
+const years = Array.from({length:6}, (_,i) => ({v:String(thisYear+i), label:thisYear+i}));
+const hours = Array.from({length:12}, (_,i) => ({v:String(i+1).padStart(2,'0'), label:i+1}));
+const mins = Array.from({length:60}, (_,i) => ({v:String(i).padStart(2,'0'), label:String(i).padStart(2,'0')}));
+
+let selDay='', selMonth='', selYear='', selHour='', selMin='', selAmpm='AM';
+function syncPlanDate(){ if (selDay && selMonth && selYear) $('#planDate').value = `${selYear}-${selMonth}-${selDay}`; }
+function syncPlanTime(){
+  if (selHour && selMin){
+    let h = parseInt(selHour, 10);
+    if (selAmpm === 'PM' && h !== 12) h += 12;
+    if (selAmpm === 'AM' && h === 12) h = 0;
+    $('#planTime').value = `${String(h).padStart(2,'0')}:${selMin}`;
+  }
+}
+buildMenu($('#dayMenu'), days, (v,label) => { selDay=v; $('#dayBtn').textContent=label; syncPlanDate(); }, $('#dayBtn'));
+buildMenu($('#monthMenu'), months, (v,label) => { selMonth=v; $('#monthBtn').textContent=label; syncPlanDate(); }, $('#monthBtn'));
+buildMenu($('#yearMenu'), years, (v,label) => { selYear=v; $('#yearBtn').textContent=label; syncPlanDate(); }, $('#yearBtn'));
+buildMenu($('#hourMenu'), hours, (v,label) => { selHour=v; $('#hourBtn').textContent=label; syncPlanTime(); }, $('#hourBtn'));
+buildMenu($('#minMenu'), mins, (v,label) => { selMin=v; $('#minBtn').textContent=label; syncPlanTime(); }, $('#minBtn'));
+buildMenu($('#ampmMenu'), [{v:'AM',label:'AM'},{v:'PM',label:'PM'}], (v,label) => { selAmpm=v; $('#ampmBtn').textContent=label; syncPlanTime(); }, $('#ampmBtn'));
+document.addEventListener('click', e => {
+  ['dayMenu','monthMenu','yearMenu','hourMenu','minMenu','ampmMenu'].forEach(id => {
+    if (!$('#'+id).hidden && !e.target.closest('.cur-picker')) $('#'+id).hidden = true;
+  });
+});
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  setBusy(form, true);
+  try {
+    const cred = await fbAuth.signInWithEmailAndPassword($('#liEmail').value.trim(), $('#liPassword').value);
+    await cloudLoad(cred.user);
+    showApp();
+    toast('Welcome back');
+  } catch (err) {
+    console.error(err);
+    toast(authMessage(err));
+  } finally {
+    setBusy(form, false);
+  }
+});
+$('#liPassToggle').addEventListener('click', () => {
+  const p = $('#liPassword'), show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  $('#liPassToggle').textContent = show ? 'Hide' : 'Show';
+});
+$('#backHome').addEventListener('click', e => { e.preventDefault(); showHome(); });
+$('#backHomeBtn').addEventListener('click', showHome);
+$('#homeLogo').addEventListener('click', e => e.preventDefault());
+$('#signupBack').addEventListener('click', showHome);
+$('#loginBack').addEventListener('click', showHome);
+$('#signupLogo').addEventListener('click', e => { e.preventDefault(); showHome(); });
+$('#loginLogo').addEventListener('click', e => { e.preventDefault(); showHome(); });
+
+$('#profileLogo').addEventListener('click', e => { e.preventDefault(); showHome(); });
+function showProfile() {
+  const p = loadProfile();
+  $('#profileName').value = p.name || '';
+  $('#profileBio').value = p.bio || '';
+  $('#profileLocation').value = p.location || '';
+  $('#profilePhone').value = p.phone || '';
+  updateProfileEmptyFields();
+  updatePlannerSub();
+  showScreen('profileScreen');
+  showProfileHistory();
+}
+function updateProfileEmptyFields() {
+  const editing = $('.profile-head').classList.contains('editing');
+  const bio = $('#profileBio').value.trim();
+  $('#profileBioText').textContent = bio;
+  $('#profileBioText').hidden = editing || !bio;
+  $('#profileBio').hidden = !editing;
+  $('#profileLocation').closest('.profile-meta-item').hidden = !editing && !$('#profileLocation').value.trim();
+  $('#profilePhone').closest('.profile-meta-item').hidden = !editing && !$('#profilePhone').value.trim();
+}
+const profilePanels = ['profileHistoryScreen', 'profileStatsScreen'];
+const profileTabBtns = ['openHistory', 'openStats'];
+function showProfilePanel(panelId, btnId){
+  profilePanels.forEach(id => $('#'+id).hidden = (id !== panelId));
+  profileTabBtns.forEach(id => $('#'+id).setAttribute('aria-selected', id === btnId));
+}
+$('#openHistory').addEventListener('click', showProfileHistory);
+$('#openStats').addEventListener('click', showProfileStats);
+$('#notesBack').addEventListener('click', () => history.back());
+$('#plannerBack').addEventListener('click', () => history.back());
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!$('#signupScreen').hidden || !$('#loginScreen').hidden) showHome();
+  else if (!$('#profileScreen').hidden) showApp();
+});
+
+/* ---------- profile ---------- */
+const PROFILE_KEY = 'pl_profile';
+function loadProfile(){ return CACHE.profile; }
+function saveProfile(patch){
+  CACHE.profile = {...CACHE.profile, ...patch};
+  cloudSave('profile');
+  return CACHE.profile;
+}
+
+let statsPeriod = 'daily';
+function localMidnight(ts){
+  const d = new Date(ts); d.setHours(0,0,0,0); return d.getTime();
+}
+function periodStart(period){
+  const todayStart = localMidnight(Date.now());
+  if (period === 'daily') return todayStart;
+  if (period === 'weekly') return todayStart - 6*86400000;
+  if (period === 'monthly') return todayStart - 29*86400000;
+  return 0;
+}
+function periodLabel(period){
+  return {daily:'today', weekly:'the last 7 days', monthly:'the last 30 days', all:'all time'}[period] || 'all time';
+}
+function renderStatsTable(list){
+  const tbody = $('#statsTableBody');
+  const meta = $('#printMeta');
+  if (!list.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="hint empty">Nothing saved yet.</td></tr>';
+    meta.textContent = '';
+    return;
+  }
+  const sorted = list.slice().sort((a,b) => b.date - a.date);
+  tbody.innerHTML = sorted.map(item => {
+    const d = new Date(item.date);
+    const inp = item.inputs || {};
+    const totalCosts = (Number(inp.cogs)||0) + (Number(inp.rent)||0) + (Number(inp.salaries)||0) + (Number(inp.marketing)||0) + (Number(inp.otherOpex)||0);
+    const tax = Math.max(0, (item.revenue||0) - totalCosts - item.netProfit);
+    const isProfit = item.netProfit >= 0;
+    return `<tr>
+      <td>${d.toLocaleDateString()}</td>
+      <td>${esc(item.name)}</td>
+      <td class="num">${money(item.revenue||0)}</td>
+      <td class="num">${money(totalCosts)}</td>
+      <td class="num">${money(tax)}</td>
+      <td class="num ${isProfit?'pos':'neg'}">${money(item.netProfit)}</td>
+      <td class="${isProfit?'pos':'neg'}">${isProfit?'Profit':'Loss'}</td>
+    </tr>`;
+  }).join('');
+  meta.textContent = `Exported ${new Date().toLocaleString()} \u00b7 ${sorted.length} record${sorted.length===1?'':'s'}`;
+}
+function renderProfileStats(){
+  const all = loadSaved();
+  const box = $('#profileStats');
+  const chartBox = $('#statsChart'), axisBox = $('#statsAxis'), trendHint = $('#statsTrendHint');
+  const ratioBar = $('#statsRatioBar'), ratioLegend = $('#statsRatioLegend');
+
+  renderStatsTable(all);
+
+  if (!all.length){
+    box.innerHTML = '<p class="hint empty">Run a calculation to see your stats.</p>';
+    chartBox.innerHTML = ''; axisBox.innerHTML = ''; trendHint.textContent = 'Nothing saved yet.';
+    ratioBar.innerHTML = ''; ratioLegend.innerHTML = '';
+    return;
+  }
+
+  const cutoff = periodStart(statsPeriod);
+  const list = statsPeriod === 'all' ? all : all.filter(i => i.date >= cutoff);
+
+  if (!list.length){
+    box.innerHTML = `<p class="hint empty">No calculations for ${periodLabel(statsPeriod)} yet.</p>`;
+    chartBox.innerHTML = ''; axisBox.innerHTML = '';
+    trendHint.textContent = `Nothing saved for ${periodLabel(statsPeriod)}.`;
+    ratioBar.innerHTML = ''; ratioLegend.innerHTML = '';
+    return;
+  }
+
+  const count = list.length;
+  const totalNet = list.reduce((s, i) => s + i.netProfit, 0);
+  const totalRevenue = list.reduce((s, i) => s + (i.revenue || 0), 0);
+  const profitable = list.filter(i => i.netProfit >= 0).length;
+  const losing = count - profitable;
+  const avgNet = totalNet / count;
+  const best = list.reduce((a, b) => b.netProfit > a.netProfit ? b : a);
+  const worst = list.reduce((a, b) => b.netProfit < a.netProfit ? b : a);
+  const avgMargin = totalRevenue > 0 ? totalNet / totalRevenue : null;
+
+  // current streak: consecutive same-outcome runs from the most recent, over all-time history
+  let streak = 1;
+  const latestIsProfit = all[0].netProfit >= 0;
+  for (let i = 1; i < all.length; i++){
+    if ((all[i].netProfit >= 0) === latestIsProfit) streak++; else break;
+  }
+
+  box.innerHTML = [
+    [count, statsPeriod === 'all' ? 'Calculations' : `Calculations (${periodLabel(statsPeriod)})`],
+    [money(totalNet, true), 'Total net profit'],
+    [money(avgNet, true), 'Average result'],
+    [`${profitable}/${count}`, 'Profitable runs'],
+    [`${esc(best.name)} (${money(best.netProfit, true)})`, 'Best result'],
+    [`${esc(worst.name)} (${money(worst.netProfit, true)})`, 'Worst result'],
+    [`${streak} ${latestIsProfit ? 'profit' : 'loss'}${streak===1?'':'s'} in a row`, 'Current streak (all time)'],
+    [avgMargin != null ? pct(avgMargin) : '–', 'Average net margin']
+  ].map(([v, l]) => `<div class="market"><dt>${esc(l)}</dt><dd>${typeof v === 'string' ? v : esc(String(v))}</dd></div>`).join('');
+
+  // trend chart, grouped to suit the selected period
+  let items = [];
+  if (statsPeriod === 'daily'){
+    const sample = list.slice().sort((a,b) => a.date - b.date).slice(-4);
+    const maxAbs = Math.max(...sample.map(i => Math.abs(i.netProfit)), 1);
+    items = sample.map(i => ({
+      h: Math.max(Math.abs(i.netProfit) / maxAbs * 100, 2),
+      label: new Date(i.date).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}),
+      val: money(i.netProfit, true),
+      tip: `${i.name}: ${money(i.netProfit)} ${i.netProfit>=0?'profit':'loss'}`,
+      cls: i.netProfit >= 0 ? 'on' : 'loss'
+    }));
+    trendHint.textContent = 'Every calculation today, oldest to newest.';
+  } else if (statsPeriod === 'weekly'){
+    const buckets = [];
+    for (let i = 0; i < 4; i++) buckets.push({ start: cutoff + i*86400000, sum: 0 });
+    list.forEach(entry => {
+      const idx = Math.min(3, Math.max(0, Math.floor((entry.date - cutoff) / 86400000)));
+      buckets[idx].sum += entry.netProfit;
+    });
+    const maxAbs = Math.max(...buckets.map(b => Math.abs(b.sum)), 1);
+    items = buckets.map(b => ({
+      h: Math.max(Math.abs(b.sum) / maxAbs * 100, 2),
+      label: new Date(b.start).toLocaleDateString(undefined,{weekday:'short'}),
+      val: money(b.sum, true),
+      tip: `${new Date(b.start).toLocaleDateString()}: ${money(b.sum)} net`,
+      cls: b.sum >= 0 ? 'on' : 'loss'
+    }));
+    trendHint.textContent = 'Net profit per day, last 7 days.';
+  } else if (statsPeriod === 'monthly'){
+    const bucketCount = 4;
+    const bucketSize = Math.ceil(30 / bucketCount) * 86400000;
+    const buckets = [];
+    for (let i = 0; i < bucketCount; i++) buckets.push({ start: cutoff + i*bucketSize, sum: 0 });
+    list.forEach(entry => {
+      let idx = Math.floor((entry.date - cutoff) / bucketSize);
+      idx = Math.min(bucketCount - 1, Math.max(0, idx));
+      buckets[idx].sum += entry.netProfit;
+    });
+    const maxAbs = Math.max(...buckets.map(b => Math.abs(b.sum)), 1);
+    items = buckets.map(b => ({
+      h: Math.max(Math.abs(b.sum) / maxAbs * 100, 2),
+      label: new Date(b.start).toLocaleDateString(undefined,{month:'numeric',day:'numeric'}),
+      val: money(b.sum, true),
+      tip: `Week of ${new Date(b.start).toLocaleDateString()}: ${money(b.sum)} net`,
+      cls: b.sum >= 0 ? 'on' : 'loss'
+    }));
+    trendHint.textContent = 'Net profit by week, last 30 days.';
+  } else {
+    const sample = all.slice(0, 4).slice().reverse();
+    const maxAbs = Math.max(...sample.map(i => Math.abs(i.netProfit)), 1);
+    items = sample.map(i => {
+      const d = new Date(i.date);
+      const isPeak = i === best && best.netProfit > 0;
+      return {
+        h: Math.max(Math.abs(i.netProfit) / maxAbs * 100, 2),
+        label: d.toLocaleDateString(undefined,{month:'numeric',day:'numeric'}),
+        val: money(i.netProfit, true),
+        tip: `${i.name}: ${money(i.netProfit)} ${i.netProfit>=0?'profit':'loss'} on ${d.toLocaleDateString()}`,
+        cls: (isPeak ? 'peak ' : '') + (i.netProfit >= 0 ? 'on' : 'loss')
+      };
+    });
+    trendHint.textContent = `Your last ${sample.length} calculations, oldest to newest.`;
+  }
+
+  if (items.length < 2){
+    chartBox.innerHTML = ''; axisBox.innerHTML = '';
+    trendHint.textContent = 'Run a couple more calculations to see a trend.';
+  } else {
+    const ch = chartHTML(items, true);
+    chartBox.innerHTML = ch.chart; axisBox.innerHTML = ch.axis;
+  }
+
+  // profit vs loss ratio (for the selected period)
+  const profitPct = profitable / count * 100;
+  const lossPct = 100 - profitPct;
+  ratioBar.innerHTML =
+    `<i style="flex:${profitPct} 0 0%;background:rgb(var(--profit))"></i>` +
+    `<i style="flex:${lossPct} 0 0%;background:rgb(var(--loss))"></i>`;
+  ratioLegend.innerHTML =
+    `<span><i class="dot p"></i>Profitable &middot; ${profitable} (${pct(profitable/count)})</span>` +
+    `<span><i class="dot l"></i>Loss &middot; ${losing} (${pct(losing/count)})</span>`;
+}
+const statsTabs = [...document.querySelectorAll('#profileStatsScreen [role=tab]')];
+function selectStatsTab(t){
+  statsTabs.forEach(x => {
+    const on = x === t;
+    x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
+  });
+  statsPeriod = t.dataset.period;
+  renderProfileStats();
+}
+statsTabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectStatsTab(t));
+  t.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+      const n = statsTabs[(i + (e.key === 'ArrowRight' ? 1 : statsTabs.length - 1)) % statsTabs.length];
+      selectStatsTab(n); n.focus();
+    }
+  });
+});
+$('#exportPdf').addEventListener('click', async () => {
+  if (!window.jspdf || !window.jspdf.jsPDF) { toast('PDF tool did not load. Check internet and reload'); return; }
+  if (!$('#statsTableBody').children.length) { toast('No calculations to export yet'); return; }
+  try {
+    toast('Preparing PDF…');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape' });
+    doc.setFontSize(16);
+    doc.text('Menya - saved calculations', 14, 16);
+    doc.setFontSize(10);
+    doc.text($('#printMeta').textContent, 14, 23);
+    doc.autoTable({
+      html: '#statsTable',
+      startY: 28,
+  theme: 'grid',
+  styles: { lineColor: [190, 205, 197], lineWidth: 0.2 },
+      headStyles: { fillColor: [19, 37, 30] },
+      columnStyles: { 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' }, 5: { halign: 'right' } },
+      didParseCell: d => {
+        if (d.section === 'head' && [2, 3, 4, 5].includes(d.column.index)) d.cell.styles.halign = 'right';
+if (d.section === 'body' && (d.column.index === 5 || d.column.index === 6)) {
+          const isProfit = d.row.cells[6].text[0] === 'Profit';
+          d.cell.styles.textColor = isProfit ? [26, 127, 55] : [192, 57, 43];
+        }
+      }
+    });
+
+    const name = 'menya-calculations-' + new Date().toISOString().slice(0, 10) + '.pdf';
+    const blob = doc.output('blob');
+    let dl = null;
+    try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }
+    if (dl) {
+      try { await dl.save({ filename: name, data: blob }); toast('PDF saved: ' + name); }
+      catch (err) { toast(err && err.code === 'declined' ? 'Save cancelled' : 'Could not save the PDF'); }
+      return;
+    }
+
+    const file = new File([blob], name, { type: 'application/pdf' });
+
+    // Phones: open the share sheet so you can tap "Save to Files / Downloads"
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: name });
+        toast('PDF ready. Choose where to save it');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') { toast('Export cancelled'); return; }
+      }
+    }
+
+    // Fallback: normal browser download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast('PDF downloaded: ' + name);
+  } catch (e) {
+    console.error(e);
+    toast('Could not create the PDF');
+  }
+});
+function renderProfileHistory(){
+  const list = loadSaved();
+  const box = $('#profileHistory');
+  if (!list.length){ box.innerHTML = '<p class="hint empty">No calculations yet — run one from the Profit &amp; loss tab.</p>'; return; }
+  const sorted = list.slice().sort((a,b) => b.date - a.date);
+  box.innerHTML = '<table class="data-table"><thead><tr><th>Date</th><th>Name</th><th class="num">Net</th><th>Result</th></tr></thead><tbody>' +
+  sorted.map(item => {
+    const isProfit = item.netProfit >= 0;
+    return `<tr><td>${new Date(item.date).toLocaleDateString()}</td><td>${esc(item.name)}</td><td class="num ${isProfit ? 'pos' : 'neg'}">${money(Math.abs(item.netProfit))}</td><td class="${isProfit ? 'pos' : 'neg'}">${isProfit ? 'Profit' : 'Loss'}</td></tr>`;
+  }).join('') +
+  '</tbody></table>';
+}
+function showProfileHistory(){ renderProfileHistory(); showProfilePanel('profileHistoryScreen','openHistory'); }
+function showProfileStats(){ renderProfileStats(); showProfilePanel('profileStatsScreen','openStats'); }
+const NOTES_KEY = 'pl_notes_list';
+function loadNotes(){ return CACHE.notes; }
+function saveNotes(list){ CACHE.notes = list; cloudSave('notes'); }
+function noteDayLabel(ts){
+  const d = new Date(ts), t = new Date();
+  const start = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const diff = Math.round((start(t) - start(d)) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  return d.toLocaleDateString(undefined, {weekday:'long', month:'short', day:'numeric'});
+}
+const NOTE_PROMPTS = ['What went well today?', 'One idea to grow sales', 'What I learned this week', 'Something to fix or stop doing'];
+const NOTE_WORD_LIMIT = 50;
+const expandedNotes = new Set();
+function noteBody(n){
+  const total = (n.text.match(/\S+/g) || []).length;
+  if (total <= NOTE_WORD_LIMIT) return `<p>${esc(n.text)}</p>`;
+  if (expandedNotes.has(n.id)) return `<p>${esc(n.text)}</p><button type="button" class="note-more">Show less</button>`;
+  let count = 0, cut = n.text.length;
+  for (const m of n.text.matchAll(/\S+/g)) {
+    if (++count === NOTE_WORD_LIMIT) { cut = m.index + m[0].length; break; }
+  }
+  return `<p>${esc(n.text.slice(0, cut))}…</p><button type="button" class="note-more">Read more</button>`;
+}
+function renderNotesList(){
+  const all = loadNotes();
+  const q = ($('#notesSearch').value || '').trim().toLowerCase();
+  $('#notesSearch').hidden = all.length < 3;
+  const box = $('#notesList');
+  if (!all.length){
+    box.innerHTML = `<div class="notes-empty">
+      <div class="notes-empty-ico"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+      <h4>Your thinking starts here</h4>
+      <p>Write down ideas, decisions and lessons before they slip away. Tap a prompt to begin.</p>
+      <div class="note-chips">${NOTE_PROMPTS.map(p => `<button type="button" class="note-chip">${p}</button>`).join('')}</div>
+    </div>`;
+    return;
+  }
+  const list = all.slice().reverse().filter(n => !q || n.text.toLowerCase().includes(q));
+  if (!list.length){ box.innerHTML = `<p class="hint empty">No notes match “${esc(q)}”.</p>`; return; }
+  let lastDay = '';
+  let html = `<div class="notes-meta">${all.length} ${all.length === 1 ? 'note' : 'notes'}${q ? ` · ${list.length} found` : ''}</div>`;
+  list.forEach(n => {
+    const day = noteDayLabel(n.date);
+    if (day !== lastDay){ html += `<div class="note-day">${day}</div>`; lastDay = day; }
+    const time = new Date(n.date).toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'});
+    html += `<div class="note-item" data-id="${n.id}">${noteBody(n)}<div class="note-foot"><time>${time}</time><button type="button" class="note-del" aria-label="Delete note"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></div></div>`;
+  });
+  box.innerHTML = html;
+}
+$('#notesSearch').addEventListener('input', renderNotesList);
+$('#notesList').addEventListener('click', e => {
+  const more = e.target.closest('.note-more');
+  if (more){
+    const id = more.closest('.note-item').dataset.id;
+    if (expandedNotes.has(id)) expandedNotes.delete(id); else expandedNotes.add(id);
+    renderNotesList();
+    return;
+  }
+  const chip = e.target.closest('.note-chip');
+  if (chip){ const ta = $('#profileNotes'); ta.value = chip.textContent + '\n'; autoGrowNote(); ta.focus(); return; }
+  const del = e.target.closest('.note-del');
+  if (del) deleteNoteById(del.closest('.note-item').dataset.id);
+});
+let lastDeletedNote = null, lastDeletedIndex = -1, undoTimer = null;
+function deleteNoteById(id){
+  const list = loadNotes();
+  const idx = list.findIndex(n => n.id === id);
+  if (idx === -1) return;
+  lastDeletedNote = list[idx];
+  lastDeletedIndex = idx;
+  list.splice(idx, 1);
+  saveNotes(list);
+  renderNotesList();
+  $('#noteUndoBar').hidden = false;
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => { $('#noteUndoBar').hidden = true; lastDeletedNote = null; }, 4000);
+}
+$('#noteUndoBtn').addEventListener('click', () => {
+  if (!lastDeletedNote) return;
+  const list = loadNotes();
+  list.splice(lastDeletedIndex, 0, lastDeletedNote);
+  saveNotes(list);
+  renderNotesList();
+  $('#noteUndoBar').hidden = true;
+  lastDeletedNote = null;
+  clearTimeout(undoTimer);
+});
+let swipeStartX = 0, swipeEl = null;
+$('#notesList').addEventListener('pointerdown', e => {
+  const item = e.target.closest('.note-item');
+if (e.target.closest('.note-del, .note-more')) return;
+  if (!item) return;
+  swipeEl = item; swipeStartX = e.clientX;
+  swipeEl.style.transition = 'none';
+  swipeEl.setPointerCapture(e.pointerId);
+});
+$('#notesList').addEventListener('pointermove', e => {
+  if (!swipeEl) return;
+  const dx = e.clientX - swipeStartX;
+  if (dx < 0) swipeEl.style.transform = `translateX(${dx}px)`;
+});
+$('#notesList').addEventListener('pointerup', e => {
+  if (!swipeEl) return;
+  swipeEl.style.transition = 'transform .18s ease';
+  const dx = e.clientX - swipeStartX;
+  if (dx < -80){
+    const id = swipeEl.dataset.id;
+    swipeEl.style.transform = 'translateX(-100%)';
+    swipeEl.style.opacity = '0';
+    setTimeout(() => deleteNoteById(id), 180);
+  } else {
+    swipeEl.style.transform = 'translateX(0)';
+  }
+  swipeEl = null;
+});
+if (window.visualViewport) {
+  const vv = window.visualViewport;
+  const fixKb = () => {
+    const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    document.documentElement.style.setProperty('--kb', kb + 'px');
+  };
+  vv.addEventListener('resize', fixKb);
+  vv.addEventListener('scroll', fixKb);
+}
+function showProfileNotes() {
+  $('#notesSearch').value = '';
+  $('#profileNotes').value = '';
+  renderNotesList();
+  $('#profileNotesScreen').hidden = false;
+  history.pushState({ overlay: 'profileNotesScreen' }, '', '#profileNotesScreen');
+}
+function updatePlannerSub() {
+  // no-op: Planner is no longer a tab, so there's nothing to badge
+}
+function showPlanner(){
+  renderPlanner();
+  updateNotifStatus();
+  const p = loadProfile();
+  $('#alertThreshold').value = (p.alertThreshold != null) ? p.alertThreshold : '';
+  $('#plannerScreen').hidden = false;
+history.pushState({ overlay: 'plannerScreen' }, '', '#plannerScreen');
+}
+$('#profileBtn').addEventListener('click', showProfile);
+$('#profileEditBtn').addEventListener('click', () => {
+  const on = $('.profile-head').classList.toggle('editing');
+  $('#profileEditBtn').textContent = on ? 'Done' : 'Edit Profile';
+  updateProfileEmptyFields();
+});
+$('#profileMoreBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  $('#profileMoreMenu').hidden = !$('#profileMoreMenu').hidden;
+});
+$('#moreNotes').addEventListener('click', () => { $('#profileMoreMenu').hidden = true; showProfileNotes(); });
+$('#morePlanner').addEventListener('click', () => { $('#profileMoreMenu').hidden = true; showPlanner(); });
+let deferredInstall = null;
+const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function refreshInstallBtn(){ $('#moreInstall').hidden = isStandalone(); }
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; refreshInstallBtn(); });
+window.addEventListener('appinstalled', () => { deferredInstall = null; refreshInstallBtn(); toast('Menya installed'); });
+$('#moreInstall').addEventListener('click', async () => {
+  $('#profileMoreMenu').hidden = true;
+  if (deferredInstall){ deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; refreshInstallBtn(); }
+  else if (isIOS){ toast('Tap the Share icon, then "Add to Home Screen"'); }
+  else { toast('Open the browser menu (⋮) and tap "Install app"'); }
+});
+refreshInstallBtn();
+/* ---------- install app (Chrome/Android prompt, Safari/iOS instructions) ---------- */
+let deferredInstall = null;
+const isStandalone = () =>
+  window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+function refreshInstallBtn() {
+  const btn = $('#moreInstall');
+  btn.hidden = isStandalone();
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstall = e;
+  refreshInstallBtn();
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstall = null;
+  refreshInstallBtn();
+  toast('Menya installed');
+});
+$('#moreInstall').addEventListener('click', async () => {
+  $('#profileMoreMenu').hidden = true;
+  if (deferredInstall) {
+    deferredInstall.prompt();
+    await deferredInstall.userChoice;
+    deferredInstall = null;
+    refreshInstallBtn();
+  } else if (isIOS) {
+  toast('Tap the Share icon, then "Add to Home Screen"');
+} else {
+  toast('Open the browser menu (⋮) and tap "Install app" or "Add to Home screen"');
+}
+});
+refreshInstallBtn();
+$('#moreLogout').addEventListener('click', async () => {
+  $('#profileMoreMenu').hidden = true;
+  await fbAuth.signOut();
+  showHome();
+  toast('Logged out');
+});
+document.addEventListener('click', e => {
+  if (!$('#profileMoreMenu').hidden && !e.target.closest('.more-menu-wrap')) $('#profileMoreMenu').hidden = true;
+});
+$('#profileName').addEventListener('input', e => saveProfile({ name: e.target.value }));
+$('#profileBio').addEventListener('input', e => { saveProfile({bio: e.target.value}); $('#profileBioText').textContent = e.target.value; });
+$('#profileLocation').addEventListener('input', e => saveProfile({ location: e.target.value }));
+$('#profilePhone').addEventListener('input', e => saveProfile({ phone: e.target.value }));
+function autoGrowNote() {
+  const el = $('#profileNotes');
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 150) + 'px';
+}
+$('#profileNotes').addEventListener('input', autoGrowNote);
+$('#noteSendBtn').addEventListener('click', () => {
+  const text = $('#profileNotes').value.trim();
+  if (!text) return;
+  const list = loadNotes();
+  list.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2,7), text, date: Date.now() });
+  saveNotes(list);
+  $('#profileNotes').value = '';
+  autoGrowNote();
+  renderNotesList();
+});
+
+/* ---------- planner: schedule plans + mark done + reminders ---------- */
+const PLANNER_KEY = 'pl_planner_plans';
+function loadPlans(){ return CACHE.plans; }
+function savePlans(list){ CACHE.plans = list; cloudSave('plans'); }
+
+function renderPlanner(){
+  const list = loadPlans().slice().sort((a,b) => a.when - b.when);
+  const box = $('#plannerList');
+  if (!list.length){ box.innerHTML = '<p class="hint empty">No plans yet — add one above.</p>'; return; }
+  const now = Date.now();
+  box.innerHTML = list.map(p => {
+    const d = new Date(p.when);
+    const dateStr = d.toLocaleDateString(undefined,{month:'short',day:'numeric'}) + ' \u00b7 ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+    const overdue = !p.done && p.when < now;
+    return `<div class="plan-row${p.done?' done':''}" data-id="${p.id}">
+      <input type="checkbox" class="plan-check" ${p.done?'checked':''} aria-label="Mark ${esc(p.title)} done">
+      <div class="plan-body">
+        <div class="plan-title">${esc(p.title)}</div>
+        <div class="plan-meta${overdue?' overdue':''}">${dateStr}${overdue?' \u00b7 overdue':''}</div>
+        ${p.note ? `<div class="plan-note">${esc(p.note)}</div>` : ''}
+        <button type="button" class="plan-del">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+$('#planForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = $('#planTitle').value.trim();
+  const date = $('#planDate').value;
+  const time = $('#planTime').value;
+  const note = $('#planNote').value.trim();
+  if (!title || !date || !time) return;
+  const when = new Date(date + 'T' + time).getTime();
+  if (!isFinite(when)) return;
+  const list = loadPlans();
+  list.push({id: Date.now().toString(36), title, note, when, done:false, notified:false});
+  savePlans(list);
+  $('#planForm').reset();
+  renderPlanner();
+  updatePlannerSub();
+  toast('Added to planner');
+});
+
+$('#plannerList').addEventListener('click', e => {
+  const del = e.target.closest('.plan-del');
+  if (!del) return;
+  const row = del.closest('.plan-row');
+  savePlans(loadPlans().filter(p => p.id !== row.dataset.id));
+renderPlanner();
+updatePlannerSub();
+renderAlertCards();
+});
+$('#plannerList').addEventListener('change', e => {
+  const cb = e.target.closest('.plan-check');
+  if (!cb) return;
+  const row = cb.closest('.plan-row');
+  const list = loadPlans();
+  const p = list.find(x => x.id === row.dataset.id);
+  if (p){ p.done = cb.checked; if (p.done) p.notified = true; savePlans(list); renderPlanner(); updatePlannerSub(); renderAlertCards(); }
+});
+
+/* ---------- notifications: plan reminders + profit/loss alerts ---------- */
+let swReg = null;
+if ('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js')
+    .then(reg => { swReg = reg; })
+    .catch(() => { swReg = null; }); // e.g. not served over https — falls back to in-page notifications
+}
+function updateNotifStatus(){
+  const el = $('#notifStatus'); const btn = $('#enableNotif');
+  if (!('Notification' in window)){ el.textContent = 'Notifications aren\u2019t supported in this browser — reminders will still show in-app.'; btn.hidden = true; return; }
+  if (Notification.permission === 'granted'){ el.textContent = 'Notifications are on — you\u2019ll get them on this device, even in the background.'; btn.hidden = true; }
+  else if (Notification.permission === 'denied'){ el.textContent = 'Notifications are blocked for this site — enable them in your browser or phone settings.'; btn.hidden = true; }
+  else { el.textContent = 'Turn on notifications so reminders and alerts reach you on this phone.'; btn.hidden = false; }
+}
+$('#enableNotif').addEventListener('click', () => {
+  if (!('Notification' in window)) return;
+  Notification.requestPermission().then(updateNotifStatus);
+});
+function notify(title, body){
+  if (!('Notification' in window) || Notification.permission !== 'granted'){
+    toast(title + (body ? ' — ' + body : ''));
+    return;
+  }
+  const opts = { body, tag: title, renotify: true, requireInteraction: false };
+  // Mobile browsers (Android Chrome especially) require the service-worker
+  // route — the plain Notification() constructor throws or is silently
+  // dropped there. Desktop supports both, so this path covers phones too.
+  if (swReg && swReg.showNotification){
+    swReg.showNotification(title, opts).catch(() => toast(title + (body ? ' — ' + body : '')));
+    return;
+  }
+  if (navigator.serviceWorker && navigator.serviceWorker.ready){
+    navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts))
+      .catch(() => toast(title + (body ? ' — ' + body : '')));
+    return;
+  }
+  try { new Notification(title, opts); }
+  catch(e){ toast(title + (body ? ' — ' + body : '')); }
+}
+function checkPlans(){
+  const list = loadPlans();
+  let changed = false;
+  const now = Date.now();
+  list.forEach(p => {
+    if (!p.done && !p.notified && p.when <= now){
+      notify('Reminder: ' + p.title, p.note || 'This plan is due now.');
+      p.notified = true; changed = true;
+    }
+  });
+  if (changed){
+    savePlans(list);
+    if (!$('#plannerScreen').hidden) renderPlanner();
+    if (!$('#profileScreen').hidden) updatePlannerSub();
+renderAlertCards();
+  }
+}
+setInterval(checkPlans, 5000);
+
+function rmShow(title, sub){
+  let stack = document.getElementById('rmStack');
+  if (!stack){ stack = document.createElement('div'); stack.id = 'rmStack'; document.body.appendChild(stack); }
+  const c = document.createElement('div');
+  c.className = 'rm-card';
+  c.innerHTML = '<div>' + title + '</div>' + (sub ? '<small>' + sub + '</small>' : '');
+  stack.appendChild(c);
+  requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add('in')));
+  const close = () => { c.classList.remove('in'); setTimeout(() => c.remove(), 400); };
+  c.addEventListener('click', close);
+  setTimeout(close, 8000);
+}
+function renderAlertCards(){
+  if ($('#appScreen').hidden) return;
+  window.rmSeen = window.rmSeen || {};
+const due = loadPlans().filter(p => !p.done && !rmSeen[p.id] && p.when <= Date.now());
+  if (!due.length) return;
+  due.forEach(p => {
+    rmSeen[p.id] = true;
+    rmShow('Time for your planner', esc(p.title) + (p.note ? ' \u00b7 ' + esc(p.note) : ''));
+  });
+  savePlans(loadPlans());
+  const all = loadSaved();
+  if (all.length){
+    const profit = all.filter(i => i.netProfit >= 0).reduce((s, i) => s + i.netProfit, 0);
+    const loss = all.filter(i => i.netProfit < 0).reduce((s, i) => s + Math.abs(i.netProfit), 0);
+    setTimeout(() => rmShow('Net profit: ' + money(profit), 'Net loss: ' + money(loss)), 500);
+  }
+}
+checkPlans();
+
+function renderAlertCardsOld(){
+  const box = document.getElementById('alertStack');
+  if (!box) return;
+  const now = Date.now();
+  const due = loadPlans().filter(p => !p.done && !p.dismissed && p.when <= now).sort((a,b) => a.when - b.when);
+  if (!due.length){ box.innerHTML = ''; return; }
+  let html = due.map(p => `<div class="alert-card" data-plan="${p.id}">
+    <div class="ac-ico" aria-hidden="true">\u23F0</div>
+    <div class="ac-body"><div class="ac-title">Time for your planner</div>
+      <div class="ac-text">${esc(p.title)}${p.note ? ' \u00b7 ' + esc(p.note) : ''}</div></div>
+    <div class="ac-actions"><button type="button" class="ac-go" data-act="open">Check out</button>
+      <button type="button" class="ac-x" data-act="dismiss">Dismiss</button></div>
+  </div>`).join('');
+  const all = loadSaved();
+  if (all.length){
+    const profit = all.filter(i => i.netProfit >= 0).reduce((s,i) => s + i.netProfit, 0);
+    const loss = all.filter(i => i.netProfit < 0).reduce((s,i) => s + Math.abs(i.netProfit), 0);
+    const net = profit - loss;
+    html += `<div class="alert-card ${net >= 0 ? 'profit' : 'loss'}" data-net="1">
+      <div class="ac-ico" aria-hidden="true">${net >= 0 ? '\u2191' : '\u2193'}</div>
+      <div class="ac-body"><div class="ac-title">Your net ${net >= 0 ? 'profit' : 'loss'}: ${money(Math.abs(net))}</div>
+        <div class="ac-text">Net profit <b class="pos">${money(profit)}</b> \u00b7 Net loss <b class="neg">${money(loss)}</b> across ${all.length} saved calculation${all.length === 1 ? '' : 's'}</div></div>
+      <div class="ac-actions"><button type="button" class="ac-go" data-act="stats">View stats</button></div>
+    </div>`;
+  }
+  box.innerHTML = html;
+}
+document.getElementById('alertStack').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const card = b.closest('.alert-card');
+  if (b.dataset.act === 'stats'){ showProfile(); showProfileStats(); return; }
+  if (b.dataset.act === 'open'){ showPlanner(); return; }
+  if (b.dataset.act === 'dismiss'){
+    const list = loadPlans(); const p = list.find(x => x.id === card.dataset.plan);
+    if (p){ p.dismissed = true; savePlans(list); }
+    renderAlertCards();
+  }
+});
+setInterval(renderAlertCards, 5000);
+setTimeout(renderAlertCards, 1500);
+
+$('#alertThreshold').addEventListener('input', e => {
+  const v = parseFloat(e.target.value);
+  saveProfile({alertThreshold: (e.target.value.trim() !== '' && isFinite(v)) ? v : null});
+});
+function maybeAlertPL(entry){
+  const p = loadProfile();
+  const threshold = p.alertThreshold;
+  if (threshold == null || !isFinite(threshold) || threshold <= 0) return;
+  if (Math.abs(entry.netProfit) >= threshold){
+    const kind = entry.netProfit >= 0 ? 'High profit' : 'High loss';
+    notify(kind + ': ' + entry.name, money(Math.abs(entry.netProfit)) + ' ' + (entry.netProfit>=0?'profit':'loss'));
+  }
+}
+
 /* ---------- screen flow: input -> loading -> results ---------- */
-const LOAD_MS = reduceMotion ? 500 : 1800;
+const LOAD_MS = reduceMotion ? 400 : 1200;
 function runFlow(panel, compute, steps){
   if (panel.dataset.view === 'loading') return;
   if (!compute()) return;                       // invalid input: stay on the input screen
@@ -624,8 +2294,8 @@ document.addEventListener('click', e => {
   window.scrollTo(0, 0);
 });
 
-/* ---------- tabs ---------- */
-const tabs = [...document.querySelectorAll('[role=tab]')];
+/* ---------- tabs (calculator: Profit & loss / Break-even) ---------- */
+const tabs = [...document.querySelectorAll('#appScreen [role=tab]')];
 function selectTab(t){
   tabs.forEach(x => {
     const on = x === t;
@@ -643,355 +2313,293 @@ tabs.forEach((t, i) => {
   });
 });
 
-/* ============ MATCH MODEL ============ */
-const N = 10;          // goals per side used in the calculation
-const SHOW = 6;        // goals per side shown in the grid
-const RHO = -0.1;      // low-score correction strength
+/* ============ PROFIT & LOSS ============ */
 let lastSummary = '';
-let lastMatch = null;
+let lastPl = null;
 
-function tau(i, j, lh, la){
-  if (i === 0 && j === 0) return Math.max(0, 1 - lh*la*RHO);
-  if (i === 0 && j === 1) return Math.max(0, 1 + lh*RHO);
-  if (i === 1 && j === 0) return Math.max(0, 1 + la*RHO);
-  if (i === 1 && j === 1) return Math.max(0, 1 - RHO);
-  return 1;
+function computeTax(operatingProfit, rate){
+  return operatingProfit > 0 ? operatingProfit * (rate/100) : 0;
 }
 
-function updateMatch(){
-  const v = {
-    hFor: readNum('hFor',0,6), hAg: readNum('hAg',0,6),
-    aFor: readNum('aFor',0,6), aAg: readNum('aAg',0,6),
-    lgH: readNum('lgH',0.1,6), lgA: readNum('lgA',0.1,6)
-  };
-  const errBox = $('#matchError');
-  if (Object.values(v).some(x => x === null)){
-    errBox.textContent = 'Check the highlighted fields. Team averages must be between 0 and 6, and league averages between 0.1 and 6.';
+function updatePl(){
+  const revenue = readNumOrZero('revenue');
+  const cogs = readNumOrZero('cogs');
+  const rent = readNumOrZero('rent');
+  const salaries = readNumOrZero('salaries');
+  const marketing = readNumOrZero('marketing');
+  const otherOpex = readNumOrZero('otherOpex');
+  const taxRate = readNumOrZero('taxRate', 100);
+  const errBox = $('#plError');
+  if ([revenue,cogs,rent,salaries,marketing,otherOpex,taxRate].some(x => x === null)){
+    errBox.textContent = 'Check the highlighted fields — amounts can\u2019t be negative, and tax rate must be 0–100%.';
     errBox.hidden = false; return false;
   }
-  const lh = v.hFor * v.aAg / v.lgH;
-  const la = v.aFor * v.hAg / v.lgA;
-  if (lh > 8 || la > 8){
-    errBox.textContent = 'These numbers give more than 8 expected goals for one side, which is outside what this model shows. Check the averages.';
-    errBox.hidden = false; return false;
+  if (revenue === 0){
+    errBox.textContent = 'Enter your revenue to calculate a profit or loss.';
+    errBox.hidden = false; $('#revenue').setAttribute('aria-invalid','true'); return false;
   }
+  $('#revenue').setAttribute('aria-invalid','false');
   errBox.hidden = true;
 
-  const home = $('#homeName').value.trim() || 'Home team';
-  const away = $('#awayName').value.trim() || 'Away team';
-  const dc = $('#dc').checked;
-
-  // score grid
-  const ph = pmf(lh, N), pa = pmf(la, N);
-  const grid = []; let total = 0;
-  for (let i = 0; i <= N; i++){
-    grid[i] = [];
-    for (let j = 0; j <= N; j++){
-      let p = ph[i] * pa[j];
-      if (dc) p *= tau(i, j, lh, la);
-      grid[i][j] = p; total += p;
-    }
-  }
-  for (let i = 0; i <= N; i++) for (let j = 0; j <= N; j++) grid[i][j] /= total;
-
-  let pH = 0, pD = 0, pA = 0, btts = 0;
-  const best = {home:null, draw:null, away:null};
-  const all = [];
-  const tg = new Array(8).fill(0);
-  for (let i = 0; i <= N; i++){
-    for (let j = 0; j <= N; j++){
-      const p = grid[i][j];
-      const reg = i > j ? 'home' : i === j ? 'draw' : 'away';
-      if (reg === 'home') pH += p; else if (reg === 'draw') pD += p; else pA += p;
-      if (i >= 1 && j >= 1) btts += p;
-      if (!best[reg] || p > best[reg].p) best[reg] = {i, j, p};
-      all.push({i, j, p, reg});
-      tg[Math.min(7, i + j)] += p;
-    }
-  }
-  all.sort((a, b) => b.p - a.p);
-
-  const probs = {home:pH, draw:pD, away:pA};
-  const key = Object.keys(probs).sort((a, b) => probs[b] - probs[a])[0];
-  const pred = best[key];
-  const outcomeText = key === 'home' ? `${home} win` : key === 'away' ? `${away} win` : 'Draw';
+  const opex = rent + salaries + marketing + otherOpex;
+  const totalCosts = cogs + opex;
+  const grossProfit = revenue - cogs;
+  const operatingProfit = grossProfit - opex;
+  const tax = computeTax(operatingProfit, taxRate);
+  const netProfit = operatingProfit - tax;
+  const grossMargin = grossProfit / revenue;
+  const netMargin = netProfit / revenue;
+  const name = $('#bizName').value.trim() || 'Your business';
+  const isProfit = netProfit >= 0;
 
   // verdict
-  $('#vOutcome').textContent = outcomeText;
-  $('#vH').textContent = pred.i; $('#vA').textContent = pred.j;
-  $('#vHName').textContent = home; $('#vAName').textContent = away;
-  const pm = probs[key];
-  const conf = pm >= 0.55 ? 'Clear favourite' : pm >= 0.42 ? 'Slight edge' : 'Close call';
-  let note = `<b>${conf}.</b> ${pct(pm)} chance of ${key === 'draw' ? 'a draw' : 'this result'}. This is the most likely score inside that result (${pct(pred.p)}).`;
-  if (all[0].i !== pred.i || all[0].j !== pred.j){
-    note += ` The single most likely score overall is ${all[0].i}–${all[0].j} (${pct(all[0].p)}).`;
-  }
+  $('#vOutcome').textContent = `${money(Math.abs(netProfit))} ${isProfit ? 'profit' : 'loss'}`;
+  $('#vH').textContent = money(revenue, true);
+  $('#vA').textContent = money(totalCosts + tax, true);
+  $('#vHName').textContent = 'Revenue';
+  $('#vAName').textContent = 'Total costs incl. tax';
+  const conf = Math.abs(netMargin) >= 0.2 ? (isProfit ? 'Healthy margin' : 'Sizeable loss') : Math.abs(netMargin) >= 0.05 ? (isProfit ? 'Modest margin' : 'Modest loss') : 'Very thin margin';
+  let note = `<b>${conf}.</b> Net margin is ${pct(netMargin)} of revenue for ${esc(name)}.`;
+  note += ` Gross profit is ${money(grossProfit)} (${pct(grossMargin)} margin) before operating expenses of ${money(opex)}.`;
   $('#vNote').innerHTML = note;
   restartAnim($('#vBoard'));
 
-  // probability bar + legend
+  // breakdown bar (costs / tax / net profit as share of revenue)
+  const pCosts = Math.min(1, totalCosts / revenue);
+  const pTax = Math.min(1, tax / revenue);
+  const pNet = netProfit / revenue;
   const bars = $('#probBar').children;
-  bars[0].style.flexBasis = (pH*100) + '%'; bars[0].style.flexGrow = 0;
-  bars[1].style.flexBasis = (pD*100) + '%'; bars[1].style.flexGrow = 0;
-  bars[2].style.flexBasis = (pA*100) + '%'; bars[2].style.flexGrow = 0;
-  $('#probBar').setAttribute('aria-label', `${home} win ${pct(pH)}, draw ${pct(pD)}, ${away} win ${pct(pA)}`);
+  bars[0].style.flexBasis = (pCosts*100) + '%'; bars[0].style.flexGrow = 0;
+  bars[1].style.flexBasis = (pTax*100) + '%'; bars[1].style.flexGrow = 0;
+  bars[2].style.flexBasis = (Math.max(0,pNet)*100) + '%'; bars[2].style.flexGrow = 0;
   $('#legend3').innerHTML = [
-    ['h', home, pH], ['d', 'Draw', pD], ['a', away, pA]
-  ].map(([c, n, p]) =>
+    ['a', 'Costs', totalCosts, totalCosts / revenue],
+    ['d', 'Tax', tax, pTax],
+    ['h', 'Net profit', netProfit, pNet]
+  ].map(([c, n, amt, p]) =>
     `<div><div class="nm"><span class="dot ${c}"></span><span>${esc(n)}</span></div>` +
-    `<div class="pv">${pct(p)}</div><div class="od">Fair odds ${odds(p)}</div></div>`
+    `<div class="pv"${amt<0?' style="color:#B3261E"':''}>${money(amt)}</div><div class="od">${pct(p)} of revenue</div></div>`
   ).join('');
 
-  // markets
-  const line = parseFloat($('#ouLine').value);
-  let over = 0;
-  for (let i = 0; i <= N; i++) for (let j = 0; j <= N; j++) if (i + j > line) over += grid[i][j];
-  $('#mXg').textContent = `${lh.toFixed(2)} – ${la.toFixed(2)}`;
-  $('#mBtts').textContent = `Yes ${pct(btts,0)} · No ${pct(1-btts,0)}`;
-  $('#mOu').textContent = `Over ${pct(over,0)} · Under ${pct(1-over,0)}`;
+  // margins
+  $('#mGross').textContent = money(grossProfit);
+  $('#mGrossMargin').textContent = pct(grossMargin);
+  $('#mOperating').textContent = money(operatingProfit);
+  $('#mNetMargin').textContent = pct(netMargin);
 
-  // total goals chart
-  const tgMax = Math.max(...tg);
-  const items = tg.map((p, n) => ({
-    h: p / tgMax * 100, label: n === 7 ? '7+' : String(n), val: (p*100).toFixed(0),
-    tip: `${n === 7 ? '7 or more' : n} goals: ${pct(p)}`, cls: n > line ? 'on' : ''
+  // revenue/costs/profit chart
+  const chartItems = [
+    {label:'Revenue', v:revenue, cls:''},
+    {label:'COGS', v:cogs, cls:''},
+    {label:'Opex', v:opex, cls:''},
+    {label:'Tax', v:tax, cls:''},
+    {label:'Net', v:netProfit, cls: netProfit >= 0 ? 'on' : 'loss'}
+  ];
+  const maxV = Math.max(...chartItems.map(i => Math.abs(i.v)), 1);
+  const items = chartItems.map(i => ({
+    h: Math.abs(i.v) / maxV * 100, label: i.label, val: money(i.v, true), tip: `${i.label}: ${money(i.v)}`, cls: i.cls
   }));
   const ch = chartHTML(items, true);
-  $('#goalsChart').innerHTML = ch.chart; $('#goalsAxis').innerHTML = ch.axis;
+  $('#plChart').innerHTML = ch.chart; $('#plAxis').innerHTML = ch.axis;
 
-  // heat map
-  let maxCell = 0;
-  for (let i = 0; i <= SHOW; i++) for (let j = 0; j <= SHOW; j++) maxCell = Math.max(maxCell, grid[i][j]);
-  let html = '<thead><tr><th scope="col"></th>';
-  for (let j = 0; j <= SHOW; j++) html += `<th scope="col">${j}</th>`;
+  // sensitivity grid
+  const steps = [-30,-20,-10,0,10,20,30];
+  const grid = [];
+  let maxAbs = 0;
+  for (let i = 0; i < steps.length; i++){
+    grid[i] = [];
+    for (let j = 0; j < steps.length; j++){
+      const rev2 = revenue * (1 + steps[i]/100);
+      const costs2 = totalCosts * (1 + steps[j]/100);
+      const op2 = rev2 - costs2;
+      const tax2 = computeTax(op2, taxRate);
+      const net2 = op2 - tax2;
+      grid[i][j] = net2;
+      maxAbs = Math.max(maxAbs, Math.abs(net2));
+    }
+  }
+  let html = '<thead><tr><th scope="col">Rev \\ Cost</th>';
+  for (let j = 0; j < steps.length; j++) html += `<th scope="col">${steps[j]>0?'+':''}${steps[j]}%</th>`;
   html += '</tr></thead><tbody>';
-  for (let i = 0; i <= SHOW; i++){
-    html += `<tr><th scope="row">${i}</th>`;
-    for (let j = 0; j <= SHOW; j++){
-      const p = grid[i][j];
-      const reg = i > j ? 'home' : i === j ? 'draw' : 'away';
-      const a = 0.07 + 0.88 * (p / maxCell);
-      const isPred = (i === pred.i && j === pred.j);
-      const label = p >= 0.0005 ? (p*100).toFixed(1) : '0';
-      html += `<td><button type="button" data-i="${i}" data-j="${j}" class="${a > 0.8 ? 'hi' : ''}${isPred ? ' pred' : ''}" ` +
-              `style="--c:var(--${reg});--a:${a.toFixed(3)}" aria-label="${i} to ${j}, ${pct(p)}">${label}</button></td>`;
+  const zeroIdx = steps.indexOf(0);
+  for (let i = 0; i < steps.length; i++){
+    html += `<tr><th scope="row">${steps[i]>0?'+':''}${steps[i]}%</th>`;
+    for (let j = 0; j < steps.length; j++){
+      const net2 = grid[i][j];
+      const reg = net2 >= 0 ? 'profit' : 'loss';
+      const a = 0.1 + 0.85 * (maxAbs ? Math.abs(net2)/maxAbs : 0);
+      const isPred = (i === zeroIdx && j === zeroIdx);
+      html += `<td><button type="button" data-i="${i}" data-j="${j}" class="${a>0.7?'hi':''}${isPred?' pred':''}" ` +
+              `style="--c:var(--${reg});--a:${a.toFixed(3)}" aria-label="Revenue ${steps[i]}%, cost ${steps[j]}%, net ${money(net2)}">${money(net2,true).replace('$','')}</button></td>`;
     }
     html += '</tr>';
   }
   html += '</tbody>';
   $('#heat').innerHTML = html;
-  $('#heatHint').textContent = `Rows show ${home} goals (0 to ${SHOW}). Columns show ${away} goals. Numbers are percentages.`;
-  lastMatch = {grid, home, away};
-  $('#heatReadout').textContent = 'Tap a square to see its exact chance.';
+  lastPl = {grid, steps};
+  $('#heatReadout').textContent = 'Tap a square to see its exact net profit.';
 
-  // top 5
-  $('#topList').innerHTML = all.slice(0, 5).map(s =>
-    `<li><span class="sc">${s.i}–${s.j}</span>` +
-    `<span class="tr" aria-hidden="true"><i style="width:${(s.p/all[0].p*100).toFixed(1)}%;--c:var(--${s.reg})"></i></span>` +
-    `<span class="pv">${pct(s.p)}</span></li>`
-  ).join('');
+  // cost drivers
+  const drivers = [
+    {name:'COGS', v:cogs, c:'a'},
+    {name:'Rent', v:rent, c:'d'},
+    {name:'Salaries', v:salaries, c:'h'},
+    {name:'Marketing', v:marketing, c:'a'},
+    {name:'Other', v:otherOpex, c:'d'}
+  ].filter(d => d.v > 0).sort((a,b) => b.v - a.v);
+  const maxD = drivers.length ? drivers[0].v : 1;
+  $('#topList').innerHTML = drivers.length ? drivers.slice(0,5).map(d =>
+    `<li><span class="sc">${esc(d.name)}</span>` +
+    `<span class="tr" aria-hidden="true"><i style="width:${(d.v/maxD*100).toFixed(1)}%;--c:var(--${d.c})"></i></span>` +
+    `<span class="pv">${money(d.v)}</span></li>`
+  ).join('') : '<li><span class="sc">–</span><span></span><span class="pv">No costs entered</span></li>';
 
   lastSummary =
-`${home} vs ${away}
-Prediction: ${outcomeText}, most likely score ${pred.i}–${pred.j}
-Chances: ${home} ${pct(pH)} | Draw ${pct(pD)} | ${away} ${pct(pA)}
-Expected goals: ${lh.toFixed(2)} – ${la.toFixed(2)}
-Both teams score: ${pct(btts,0)} | Over ${line}: ${pct(over,0)}
-Model: Poisson${dc ? ' with low-score adjustment' : ''}`;
+`${name}
+Result: ${money(Math.abs(netProfit))} ${isProfit ? 'profit' : 'loss'}
+Revenue: ${money(revenue)} | Total costs: ${money(totalCosts)} | Tax: ${money(tax)}
+Gross profit: ${money(grossProfit)} (${pct(grossMargin)} margin)
+Net profit: ${money(netProfit)} (${pct(netMargin)} margin)`;
+
+  saveCalc({name, netProfit, revenue, date: Date.now(), inputs:{bizName:$('#bizName').value, revenue, cogs, rent, salaries, marketing, otherOpex, taxRate}});
   return true;
 }
 
 $('#heat').addEventListener('click', e => {
   const b = e.target.closest('button[data-i]');
-  if (!b || !lastMatch) return;
-  const i = +b.dataset.i, j = +b.dataset.j, p = lastMatch.grid[i][j];
-  $('#heatReadout').textContent = `${lastMatch.home} ${i} – ${j} ${lastMatch.away}: ${pct(p)} chance (fair odds ${odds(p)}).`;
+  if (!b || !lastPl) return;
+  const i = +b.dataset.i, j = +b.dataset.j;
+  const net = lastPl.grid[i][j];
+  $('#heatReadout').textContent = `Revenue ${lastPl.steps[i]>0?'+':''}${lastPl.steps[i]}%, costs ${lastPl.steps[j]>0?'+':''}${lastPl.steps[j]}%: ${money(net)} ${net>=0?'profit':'loss'}.`;
 });
 
-const matchDefaults = {homeName:'', awayName:'', hFor:'', hAg:'', aFor:'', aAg:'', lgH:'', lgA:''};
-
-function fill(obj){
-  Object.entries(obj).forEach(([k, val]) => { $('#'+k).value = val; $('#'+k).removeAttribute('aria-invalid'); });
-  $('#matchError').hidden = true;
-}
-function enhanceSelect(sel) {
-  const wrap = document.createElement('div');
-  wrap.className = 'cs';
-  sel.parentNode.insertBefore(wrap, sel);
-  wrap.appendChild(sel);
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'cs-btn';
-  const list = document.createElement('div');
-  list.className = 'cs-list';
-  wrap.appendChild(btn);
-  wrap.appendChild(list);
-  
-  function render() {
-    btn.textContent = sel.options[sel.selectedIndex]?.textContent || '';
-    list.innerHTML = '';
-    Array.from(sel.options).forEach((o, i) => {
-      const item = document.createElement('div');
-      item.className = 'cs-opt' + (i === sel.selectedIndex ? ' sel' : '');
-      item.textContent = o.textContent;
-      item.addEventListener('click', () => {
-        sel.selectedIndex = i;
-        sel.dispatchEvent(new Event('change', { bubbles: true }));
-        wrap.classList.remove('open');
-        render();
-      });
-      list.appendChild(item);
-    });
-  }
-  render();
-  new MutationObserver(render).observe(sel, { childList: true, subtree: true });
-  btn.addEventListener('click', () => wrap.classList.toggle('open'));
-  document.addEventListener('click', e => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
-}
-enhanceSelect($('#preset'));
-enhanceSelect($('#evMode'));
-/* ---------- match data from Firebase (added by admin) ---------- */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCNIsjSl60AlGmtmtC4H3uy5bQ_WCG2HV0",
-  authDomain: "poats-dd25a.firebaseapp.com",
-  projectId: "poats-dd25a",
-  storageBucket: "poats-dd25a.firebasestorage.app",
-  messagingSenderId: "804924221918",
-  appId: "1:804924221918:web:2aeed317da8773e3fbd54f"
-};
-const fbApp = initializeApp(firebaseConfig);
-const db = getFirestore(fbApp);
-/* ---------- visitor tracking ---------- */
-import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-let sessionId = localStorage.getItem('poats_sid');
-if (!sessionId){
-  sessionId = crypto.randomUUID();
-  localStorage.setItem('poats_sid', sessionId);
-}
-function ping(){
-  setDoc(doc(db, 'presence', sessionId), { lastSeen: serverTimestamp() }, { merge: true }).catch(() => {});
-}
-ping();
-setInterval(ping, 20000);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') ping(); });
-const fdMatches = {};
-
-onSnapshot(collection(db, 'matches'), snap => {
-  const sel = $('#preset');
-  sel.querySelectorAll('option[data-fb]').forEach(o => o.remove());
-  snap.forEach(d => {
-    const m = d.data();
-    fdMatches[d.id] = m;
-    const o = document.createElement('option');
-    o.value = d.id;
-    o.dataset.fb = '1';
-    o.textContent = `${m.homeName} vs ${m.awayName}`;
-    sel.appendChild(o);
-  });
-});
-
-function applyMatch(id){
-  const m = fdMatches[id];
-  if (!m) return;
-  fill({
-    homeName: m.homeName, awayName: m.awayName,
-    hFor: m.hFor, hAg: m.hAg, aFor: m.aFor, aAg: m.aAg,
-    lgH: m.lgH, lgA: m.lgA
-  });
+const plDefaults = {bizName:'', revenue:'', cogs:'', rent:'', salaries:'', marketing:'', otherOpex:'', taxRate:''};
+function fillPl(obj){
+  Object.entries(obj).forEach(([k, val]) => { const el = $('#'+k); if (el){ el.value = val; el.removeAttribute('aria-invalid'); } });
+  $('#plError').hidden = true;
 }
 
-$('#preset').addEventListener('change', e => { if (e.target.value) applyMatch(e.target.value); });
-
-$('#resetMatch').addEventListener('click', () => { fill(matchDefaults); $('#preset').value = ''; });
-$('#ouLine').addEventListener('change', updateMatch);
-$('#matchForm').addEventListener('submit', e => {
+$('#plForm').addEventListener('submit', e => {
   e.preventDefault();
-  runFlow($('#panel-match'), updateMatch, ['Estimating expected goals…', 'Calculating every scoreline…', 'Ranking the likely results…']);
+  runFlow($('#panel-pl'), updatePl, ['Adding up your numbers…', 'Working out your margins…', 'Building your breakdown…']);
 });
-$('#copyMatch').addEventListener('click', () => {
+$('#resetPl').addEventListener('click', () => fillPl(plDefaults));
+$('#copyPl').addEventListener('click', () => {
   copyText(lastSummary).then(() => toast('Summary copied'), () => toast('Could not copy. Select the text manually.'));
 });
 
-/* ============ ANY EVENT ============ */
-const evDefaults = {evLabel:'customer calls in an hour', evRate:4.2, evK:6};
+/* ---------- saved calculations (localStorage) ---------- */
+const SAVE_KEY = 'pl_saved_calcs';
+function loadSaved(){ return CACHE.calcs; }
+function saveCalc(entry){
+  CACHE.calcs.unshift(entry);
+  CACHE.calcs = CACHE.calcs.slice(0, 500);
+  cloudSave('calcs');
+  renderSaved();
+  maybeAlertPL(entry);
+}
+function renderSaved(){
+  const list = loadSaved();
+  const box = $('#savedListItems');
+  if (!list.length){ box.innerHTML = '<p class="match-list-empty">Nothing saved yet.</p>'; return; }
+  box.innerHTML = list.map((item, idx) => {
+    const d = new Date(item.date);
+    const isProfit = item.netProfit >= 0;
+    return `<div class="match-list-item" data-idx="${idx}">
+      <div class="teams">${esc(item.name)}</div>
+      <div class="sub">${money(item.netProfit)} ${isProfit ? 'profit' : 'loss'} &middot; ${d.toLocaleDateString()}</div>
+    </div>`;
+  }).join('');
+}
+$('#savedListItems').addEventListener('click', e => {
+  const item = e.target.closest('.match-list-item');
+  if (!item) return;
+  const list = loadSaved();
+  const entry = list[+item.dataset.idx];
+  if (!entry) return;
+  fillPl(entry.inputs);
+  toast('Loaded ' + entry.name);
+});
+renderSaved();
 
-function updateEvent(){
-  const l = readNum('evRate', 0, 200);
-  const kRaw = readNum('evK', 0, 500);
-  const err = $('#eventError');
-  if (l === null || kRaw === null){
-    err.textContent = 'Check the highlighted fields. The average must be between 0 and 200, and the count between 0 and 500.';
+/* ============ BREAK-EVEN ============ */
+function updateBe(){
+  const fixedCosts = readNumOrZero('fixedCosts');
+  const price = readNumOrZero('price');
+  const variableCost = readNumOrZero('variableCost');
+  const targetUnits = readNumOrZero('targetUnits');
+  const err = $('#beError');
+  if ([fixedCosts, price, variableCost, targetUnits].some(x => x === null)){
+    err.textContent = 'Check the highlighted fields. Amounts can\u2019t be negative.';
     err.hidden = false; return false;
   }
+  const contribution = price - variableCost;
+  if (contribution <= 0){
+    err.textContent = 'Price per unit must be higher than variable cost per unit, or you\u2019ll never break even.';
+    err.hidden = false; $('#price').setAttribute('aria-invalid','true'); $('#variableCost').setAttribute('aria-invalid','true');
+    return false;
+  }
+  $('#price').setAttribute('aria-invalid','false'); $('#variableCost').setAttribute('aria-invalid','false');
   err.hidden = true;
 
-  const k = Math.round(kRaw);
-  const label = $('#evLabel').value.trim() || 'events';
-  const mode = $('#evMode').value;
-  const words = {exact:'exactly', atmost:'at most', atleast:'at least'};
+  const beUnits = Math.ceil(+(fixedCosts / contribution).toFixed(9));
+  const beRevenue = beUnits * price;
+  const marginPct = contribution / price;
 
-  const M = Math.min(900, Math.max(Math.ceil(l + 6*Math.sqrt(l) + 12), k + 1));
-  const p = pmf(l, M);
-
-  let prob = 0;
-  for (let x = 0; x <= M; x++){
-    if (mode === 'exact' ? x === k : mode === 'atmost' ? x <= k : x >= k) prob += p[x];
-  }
-  prob = Math.min(1, prob);
-
-  let modeIdx = 0;
-  for (let x = 1; x <= M; x++) if (p[x] > p[modeIdx]) modeIdx = x;
-  let cum = 0, lo = 0, hi = M, gotLo = false;
-  for (let x = 0; x <= M; x++){
-    cum += p[x];
-    if (!gotLo && cum >= 0.025){ lo = x; gotLo = true; }
-    if (cum >= 0.975){ hi = x; break; }
-  }
-
-  $('#evMode2').textContent = label;
-  $('#evModeNum').textContent = modeIdx;
-  $('#evNote').innerHTML = `<b>${pct(p[modeIdx])}</b> chance of exactly ${modeIdx}. About 95% of the time you would see between <b>${lo}</b> and <b>${hi}</b>.`;
+  $('#beOutcome').textContent = `Sell ${beUnits.toLocaleString()} units`;
+  $('#beUnits').textContent = beUnits.toLocaleString();
+  $('#beNote').innerHTML = `That's <b>${money(beRevenue)}</b> in revenue. Each unit contributes ${money(contribution)} (${pct(marginPct)}) toward covering your ${money(fixedCosts)} in fixed costs.`;
   restartAnim($('#evBoard'));
 
-  $('#evAnswerNum').textContent = pct(prob);
-  $('#evAnswerText').innerHTML = `Chance of <b>${words[mode]} ${k}</b> ${esc(label)}, when the average is ${l}.`;
+  const profitAtTarget = targetUnits * contribution - fixedCosts;
+  const atTargetProfit = profitAtTarget >= 0;
+  $('#beAnswerNum').textContent = `${money(Math.abs(profitAtTarget))} ${atTargetProfit ? 'profit' : 'loss'}`;
+  $('#beAnswerText').innerHTML = `At <b>${targetUnits.toLocaleString()} units</b> sold, you'd have a <b>${atTargetProfit ? 'profit' : 'loss'} of ${money(Math.abs(profitAtTarget))}</b>, ${targetUnits >= beUnits ? `which is ${(targetUnits-beUnits).toLocaleString()} units past break-even.` : `which is ${(beUnits-targetUnits).toLocaleString()} units short of break-even.`}`;
 
-  const sd = Math.sqrt(l);
-  const start = Math.max(0, Math.floor(l - 4*sd - 2));
-  const end = Math.min(M, Math.ceil(l + 4*sd + 4));
-  let maxP = 0;
-  for (let x = start; x <= end; x++) maxP = Math.max(maxP, p[x]);
-  const count = end - start + 1;
-  const step = Math.ceil(count / 14);
-  const items = [];
-  for (let x = start; x <= end; x++){
-    const sat = mode === 'exact' ? x === k : mode === 'atmost' ? x <= k : x >= k;
-    items.push({
-      h: maxP > 0 ? p[x] / maxP * 100 : 0,
-      label: ((x - start) % step === 0) ? String(x) : '',
-      val: (p[x]*100).toFixed(0), tip: `${x}: ${pct(p[x])}`,
-      cls: (x === modeIdx ? 'peak ' : '') + (sat ? 'on' : '')
-    });
-  }
-  const ch = chartHTML(items, count <= 14);
-  $('#evChart').innerHTML = ch.chart; $('#evAxis').innerHTML = ch.axis;
-  $('#evChartHint').textContent = `Showing ${start} to ${end}. Hover or tap a bar for its exact chance.`;
+  // chart: profit across a range of unit counts
+  const span = Math.max(beUnits, targetUnits, 1);
+  const start = 0;
+  const end = Math.ceil(span * 1.6 / 10) * 10;
+  const steps = 12;
+  const step = Math.max(1, Math.round(end / steps));
+  const points = [];
+  for (let u = start; u <= end; u += step) points.push(u);
+  if (points[points.length-1] !== end) points.push(end);
+
+  const profits = points.map(u => u * contribution - fixedCosts);
+  const maxAbs = Math.max(...profits.map(p => Math.abs(p)), 1);
+  let nearestIdx = 0, nearestDiff = Infinity;
+  points.forEach((u, i) => { const d = Math.abs(u - targetUnits); if (d < nearestDiff){ nearestDiff = d; nearestIdx = i; } });
+
+  const items = points.map((u, i) => ({
+    h: Math.abs(profits[i]) / maxAbs * 100,
+    label: String(u),
+    val: money(profits[i], true),
+    tip: `${u} units: ${money(profits[i])} ${profits[i]>=0?'profit':'loss'}`,
+    cls: (i === nearestIdx ? 'peak ' : '') + (profits[i] >= 0 ? 'on' : 'loss')
+  }));
+  const ch = chartHTML(items, true);
+  $('#beChart').innerHTML = ch.chart;
+$('#beTable').innerHTML = '<thead><tr><th>Units sold</th><th>Profit / loss</th></tr></thead><tbody>' +
+  points.map((u, i) => `<tr class="${i === nearestIdx ? 'target ' : ''}${profits[i] >= 0 ? 'on' : 'loss'}"><td>${u.toLocaleString()}</td><td>${profits[i] >= 0 ? '+' : '−'}${money(Math.abs(profits[i]))}</td></tr>`).join('') +
+  '</tbody>';
+  $('#beChartHint').textContent = `Showing 0 to ${end} units sold.`;
+
   return true;
 }
 
-$('#eventForm').addEventListener('submit', e => {
+$('#beForm').addEventListener('submit', e => {
   e.preventDefault();
-  runFlow($('#panel-event'), updateEvent, ['Reading your average…', 'Calculating probabilities…', 'Preparing your answer…']);
+  runFlow($('#panel-be'), updateBe, ['Reading your costs…', 'Finding your break-even…', 'Charting the range…']);
 });
-$('#resetEvent').addEventListener('click', () => {
-  Object.entries(evDefaults).forEach(([k, v]) => { $('#'+k).value = v; $('#'+k).removeAttribute('aria-invalid'); });
-  $('#evMode').value = 'atleast'; $('#eventError').hidden = true;
+$('#resetBe').addEventListener('click', () => {
+  $('#fixedCosts').value = 2000; $('#price').value = 25; $('#variableCost').value = 10; $('#targetUnits').value = 150;
+  ['fixedCosts','price','variableCost','targetUnits'].forEach(id => $('#'+id).removeAttribute('aria-invalid'));
+  $('#beError').hidden = true;
 });
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
