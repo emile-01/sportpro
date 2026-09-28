@@ -2008,7 +2008,7 @@ if(!reg)r.push('service worker is NOT registered');
 setTimeout(()=>{
 r.push(deferredInstall?'Install event: FIRED (button will work)':'Install event: DID NOT FIRE');
 r.push('Running as installed app: '+isStandalone());
-alert(r.join('\n'))},6000)})();
+},6000)})();
 
 $('#moreLogout').addEventListener('click', async () => {
   $('#profileMoreMenu').hidden = true;
