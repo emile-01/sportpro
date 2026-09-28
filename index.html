@@ -676,7 +676,7 @@ textarea#profileNotes{font-size:16px}
 </head>
 <body>
 <div id="boot">
-  <img src="./icon-512.png" alt="" style="width:140px;height:140px;object-fit:contain;border-radius:20px">
+  <img src="./icon-512.png" alt="" style="width:min(70vw,320px);height:min(70vw,320px);object-fit:contain;border-radius:20px">
   <div class="boot-brand">from<b>Alliance Corporation</b></div>
 </div>
 <a class="skip" href="#main">Skip to content</a>
@@ -1994,6 +1994,21 @@ $('#moreInstall').addEventListener('click', async () => {
 });
 refreshInstallBtn();
 /* ---------- install app (Chrome/Android prompt, Safari/iOS instructions) ---------- */
+(async()=>{const r=[];try{
+const m=await fetch('./manifest.json?'+Date.now());const t=await m.text();let j;
+try{j=JSON.parse(t)}catch(e){r.push('manifest.json is not JSON (a redirect is returning your homepage)')}
+if(j)for(const i of j.icons){const img=new Image();
+await new Promise(res=>{img.onload=res;img.onerror=()=>{r.push(i.src+' FAILED to load');res()};img.src=i.src+'?'+Date.now()});
+if(img.naturalWidth&&(img.naturalWidth+'x'+img.naturalHeight)!==i.sizes)r.push(i.src+' is '+img.naturalWidth+'x'+img.naturalHeight+', manifest says '+i.sizes)}
+const s=await fetch('./sw.js?'+Date.now());const ct=s.headers.get('content-type')||'';
+if(!ct.includes('javascript'))r.push('sw.js has wrong type: '+ct);
+const reg=await navigator.serviceWorker.getRegistration();
+if(!reg)r.push('service worker is NOT registered');
+}catch(e){r.push('error: '+e.message)}
+setTimeout(()=>{
+r.push(deferredInstall?'Install event: FIRED (button will work)':'Install event: DID NOT FIRE');
+r.push('Running as installed app: '+isStandalone());
+alert(r.join('\n'))},6000)})();
 
 $('#moreLogout').addEventListener('click', async () => {
   $('#profileMoreMenu').hidden = true;
