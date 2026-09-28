@@ -825,7 +825,6 @@ textarea#profileNotes{font-size:16px}
     <button type="button" id="moreNotes">Notes</button>
     <button type="button" id="morePlanner">Planner</button>
 <button type="button" id="moreInstall">Download app</button>
-    <button type="button" id="moreInstall">Download app</button>
 <button type="button" id="moreLogout">Log out</button>
   </div>
 </div>
@@ -1995,40 +1994,7 @@ $('#moreInstall').addEventListener('click', async () => {
 });
 refreshInstallBtn();
 /* ---------- install app (Chrome/Android prompt, Safari/iOS instructions) ---------- */
-let deferredInstall = null;
-const isStandalone = () =>
-  window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-function refreshInstallBtn() {
-  const btn = $('#moreInstall');
-  btn.hidden = isStandalone();
-}
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredInstall = e;
-  refreshInstallBtn();
-});
-window.addEventListener('appinstalled', () => {
-  deferredInstall = null;
-  refreshInstallBtn();
-  toast('Menya installed');
-});
-$('#moreInstall').addEventListener('click', async () => {
-  $('#profileMoreMenu').hidden = true;
-  if (deferredInstall) {
-    deferredInstall.prompt();
-    await deferredInstall.userChoice;
-    deferredInstall = null;
-    refreshInstallBtn();
-  } else if (isIOS) {
-  toast('Tap the Share icon, then "Add to Home Screen"');
-} else {
-  toast('Open the browser menu (⋮) and tap "Install app" or "Add to Home screen"');
-}
-});
-refreshInstallBtn();
 $('#moreLogout').addEventListener('click', async () => {
   $('#profileMoreMenu').hidden = true;
   await fbAuth.signOut();
