@@ -1,6 +1,9 @@
 {
+  "id": "./",
   "name": "Menya",
   "short_name": "Menya",
+  "description": "Listen to Rwandan radio stations and watch Rwandan TV channels live.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
