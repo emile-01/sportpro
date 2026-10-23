@@ -1964,6 +1964,9 @@ hls.on(Hls.Events.FRAG_LOADED, () => { rec = 0 });
       fail(i);
     });
     hls.loadSource(s.url);hls.attachMedia(au);
+  }else if(isHls&&!au.canPlayType("application/vnd.apple.mpegurl")){
+    setStatus("Player is still loading. Please reload the page.",false);
+    return;
   }else{au._nocors=false;if(s.type==="radio")au.crossOrigin="anonymous";else au.removeAttribute("crossorigin");au.src=s.url}
   clearTimeout(wd);wd=setTimeout(()=>{if(cur===i&&au.readyState<3)fail(i)},25000);
   au.play().catch(()=>{});
@@ -3151,6 +3154,16 @@ gres.addEventListener("touchmove", () => { if (document.activeElement === gq) gq
     }catch(e){}
   }
   au.addEventListener("playing",()=>{setTimeout(hookAudio,300);setTimeout(hookAudio,1800)});
+  window.addEventListener("menya-rec",()=>{setTimeout(hookAudio,200);setTimeout(hookAudio,1200)});
+  /* self-check: if the radio is playing but the pulse reads silence, reconnect it */
+  let flat=0;
+  setInterval(()=>{
+    if(!ana||au.paused||document.body.dataset.stype==="tv")return;
+    ana.getByteTimeDomainData(td);
+    let mx=0;for(let i=0;i<td.length;i++){const d=Math.abs(td[i]-128);if(d>mx)mx=d}
+    flat=mx<2?flat+1:0;
+    if(flat>=4){flat=0;hookAudio()}
+  },1000);
   document.addEventListener("click",()=>{if(actx&&actx.state==="suspended")actx.resume()});
   function frame() {
   if (document.body.dataset.stype === "tv") return;
@@ -4719,69 +4732,37 @@ body.stage-on.vfull #recwrap{display:none}
     for(const m of L){try{if(MediaRecorder.isTypeSupported(m))return m}catch(e){}}
     return "";
   }
-  function audioTracks(){
-    try{return (au.captureStream||au.mozCaptureStream).call(au).getAudioTracks()}catch(e){return[]}
+
+  /* One captured stream per recording. It only feeds the recorder and is released when the recording ends. */
+  function capture(){
+    try{const f=au.captureStream||au.mozCaptureStream;return f?f.call(au):null}catch(e){return null}
+  }
+  function release(){
+    if(R.src){R.src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});R.src=null;window.dispatchEvent(new Event("menya-rec"))}
   }
 
-  /* ---- TV frame: video + rising Menya text ---- */
-  function rise(g,t){
-    const C=7000,D=5200,p=((t+C-800)%C)/D;if(p>1)return;
-    const a=Math.min(1,Math.sin(p*Math.PI)*1.5),txt="Video from Menya · Join www.menya.site";
-    g.save();g.globalAlpha=a;g.font="600 30px sans-serif";g.textAlign="left";g.textBaseline="middle";
-    const wd=g.measureText(txt).width+76,x=W-wd-32,y=H-90-p*(H-220);
-    g.fillStyle="rgba(0,0,0,.6)";rr(g,x,y-30,wd,60,30);g.fill();
-    g.fillStyle="#c5221f";g.beginPath();g.arc(x+30,y,8,0,7);g.fill();
-    g.fillStyle="#fff";g.fillText(txt,x+50,y+1);
-    g.restore();
-  }
-  function endCard(g,e){
-    g.save();
-    const f=d=>{const k=Math.max(0,Math.min(1,(e-d)/600));return 1-Math.pow(1-k,3)};
-    const bg=g.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D3A2B");bg.addColorStop(1,"#0b0f14");
-    g.fillStyle=bg;g.fillRect(0,0,W,H);
-    g.textAlign="center";g.textBaseline="middle";g.fillStyle="#fff";
-    let a=f(0);g.globalAlpha=a;g.font="700 120px sans-serif";g.fillText("Menya",W/2,H/2-120+(1-a)*50);
-    a=f(500);g.globalAlpha=a;g.font="500 40px sans-serif";g.fillText("This video is from Menya",W/2,H/2+0+(1-a)*40);
-    a=f(1100);g.globalAlpha=a;
-    const pu=1+0.04*Math.sin(e/180);
-    g.translate(W/2,H/2+110+(1-a)*40);g.scale(pu,pu);
-    g.fillStyle="#c5221f";rr(g,-330,-45,660,90,45);g.fill();
-    g.fillStyle="#fff";g.font="700 44px sans-serif";g.fillText("Join www.menya.site now",0,2);
-    g.restore();
-    g.fillStyle="rgba(255,255,255,.2)";g.fillRect(240,H-60,800,6);
-    g.fillStyle="#fff";g.fillRect(240,H-60,800*Math.min(1,e/END),6);
-  }
-  function frame(){
-    const g=R.g,t=Date.now()-R.t0;
-    if(R.ending){endCard(g,Date.now()-R.t0-R.tEnd);return}
-    g.fillStyle="#000";g.fillRect(0,0,W,H);
-    const vw=au.videoWidth,vh=au.videoHeight;
-    if(vw&&vh){const s=Math.min(W/vw,H/vh),dw=vw*s,dh=vh*s;try{g.drawImage(au,(W-dw)/2,(H-dh)/2,dw,dh)}catch(e){}}
-    rise(g,t);
-  }
-
-  /* ---- start / stop / save ---- */
   function begin(){
     const s=cur>=0?all[cur]:null;
     if(!s||au.paused||au.readyState<2){say("Start playing first, then record");return}
     if(typeof MediaRecorder==="undefined"){say("This browser cannot record. Use Chrome.");return}
-    const video=s.type==="tv",tr=audioTracks();
-    if(!video&&!tr.length){say("This station does not allow recording");return}
+    const src=capture();
+    if(!src){say("This station does not allow recording");return}
+    const aud=src.getAudioTracks(),vid=src.getVideoTracks();
+    if(!aud.length&&!vid.length){src.getTracks().forEach(t=>t.stop());say("This station does not allow recording");return}
+    R.video=s.type==="tv"&&vid.length>0;
+    const tracks=R.video?vid.concat(aud):aud;
     let stream;
     try{
-      if(video){
-        const cv=document.createElement("canvas");cv.width=W;cv.height=H;R.g=cv.getContext("2d");
-        stream=new MediaStream(cv.captureStream(30).getVideoTracks().concat(tr));
-      }else stream=new MediaStream(tr);
-      R.mime=pick(video);
-      const o=R.mime?{mimeType:R.mime}:{};o.audioBitsPerSecond=128000;if(video)o.videoBitsPerSecond=2500000;
+      stream=new MediaStream(tracks);
+      R.mime=pick(R.video);
+      const o=R.mime?{mimeType:R.mime}:{};o.audioBitsPerSecond=96000;if(R.video)o.videoBitsPerSecond=2000000;
       R.rec=new MediaRecorder(stream,o);
-    }catch(e){say("Could not start recording on this channel");return}
-    R.chunks=[];R.tr=tr;R.video=video;R.name=s.name;R.limit=R.sel;R.ending=false;R.t0=Date.now();
+    }catch(e){src.getTracks().forEach(t=>{try{t.stop()}catch(_){}});say("Could not start recording on this channel");return}
+    R.src=src;R.chunks=[];R.ending=false;R.busy=false;R.t0=Date.now();R.name=s.name;R.limit=R.sel;
     R.rec.ondataavailable=e=>{if(e.data&&e.data.size)R.chunks.push(e.data)};
     R.rec.onstop=save;
     R.rec.start(1000);R.on=true;
-    if(video){frame();R.loop=setInterval(frame,33)}
+    window.dispatchEvent(new Event("menya-rec"));
     R.tick=setInterval(()=>{
       const sec=Math.floor((Date.now()-R.t0)/1000),left=R.limit?R.limit-sec:sec;
       $("rectime").textContent=R.ending?"Saving…":fmt(Math.max(0,left))+(R.limit?" left":"");
@@ -4790,27 +4771,28 @@ body.stage-on.vfull #recwrap{display:none}
     $("recbtn").classList.add("on");$("recbtn").innerHTML=ST;$("recbtn").setAttribute("aria-label","Stop recording");
     $("rectime").hidden=false;$("rectime").textContent=R.limit?fmt(R.limit)+" left":"00:00";
   }
+
   function stop(){
     if(!R.on||R.ending)return;
     clearTimeout(R.timer);
-    if(R.video){R.ending=true;R.tEnd=Date.now()-R.t0;R.tr.forEach(t=>{t.enabled=false});setTimeout(finish,END)}
-    else finish();
-  }
-  function finish(){
-    clearInterval(R.loop);
+    R.ending=true;
     try{if(R.rec&&R.rec.state!=="inactive")R.rec.stop();else save()}catch(e){save()}
   }
+
   function reset(){
-    clearInterval(R.tick);clearInterval(R.loop);clearTimeout(R.timer);
+    clearInterval(R.tick);clearTimeout(R.timer);
     R.on=false;R.ending=false;R.busy=false;R.chunks=[];R.rec=null;
+    release();
     const b=$("recbtn");b.classList.remove("on");b.disabled=false;b.innerHTML=DL;b.setAttribute("aria-label","Record");
     $("rectime").hidden=true;
   }
+
   function save(){
     $("recbtn").disabled=true;$("rectime").textContent="Saving…";
     const mt=(R.mime||(R.video?"video/webm":"audio/webm")).split(";")[0];
     const blob=new Blob(R.chunks,{type:mt});
-    if(blob.size<2000){say(R.video&&!hls?"This channel plays in a mode that blocks capture. Reload and try again.":"Nothing was recorded");reset();return}
+    release();
+    if(blob.size<2000){say(R.video?"This channel blocks recording. Try another channel.":"Nothing was recorded");reset();return}
     const ext=mt.indexOf("mp4")>=0?(R.video?".mp4":".m4a"):".webm";
     const nm=(R.name.replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"-").slice(0,30)||"menya")
       +"-"+new Date().toISOString().slice(0,16).replace(/[-:T]/g,"")+ext;
