@@ -124,7 +124,8 @@ gtag("config","G-8KSBHHXKHQ");
   (function() {
       var b = document.createElement("div");
   b.style.cssText="position:fixed;left:8px;right:8px;bottom:70px;max-height:35vh;overflow:auto;background:rgba(0,0,0,.9);color:#9f9;font:11px/1.4 monospace;padding:8px;border-radius:8px;z-index:99999;white-space:pre-wrap;display:none";
-  b.onclick=function(){b.style.display="none"};
+  b.onclick = function() { b.style.display = "none" };
+if (/[?&]debug/.test(location.search)) b.style.display = "block";
   document.documentElement.appendChild(b);
   window.dbg=function(m){b.textContent+=m+"\n";if(/^HLS /.test(m))window.lastHls=m};
   window.addEventListener("error",function(e){dbg("ERROR: "+e.message+" line "+e.lineno)});
@@ -1968,7 +1969,7 @@ hls.on(Hls.Events.FRAG_LOADED, () => { rec = 0 });
   }else if(isHls&&!window.Hls&&!au.canPlayType("application/vnd.apple.mpegurl")){
     play.w=(play.w||0)+1;
     if(play.w<10){setStatus("Loading player…",true);setTimeout(()=>{if(cur===i)play(i)},1000);return}
-    play.w=0;setStatus("Player failed to load. Please reload the page.",false);return;
+    play.w=0;try{waitStop()}catch(e){}document.body.classList.remove("waiting");setStatus("Player failed to load. Check your internet, then reload the page.",false);return;
   }else{play.w=0;au._nocors=false;au.crossOrigin="anonymous";au.src=s.url}
   clearTimeout(wd);wd=setTimeout(()=>{if(cur===i&&au.readyState<3)fail(i)},25000);
   au.play().catch(()=>{});
@@ -3620,7 +3621,7 @@ $("pset").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropaga
   function arm(i){
     clearTimeout(R.t);
     if(!isTv(i))return;
-    R.t=setTimeout(()=>{if(cur===i&&au.readyState<3)retry(i)},WAIT);
+    R.t=setTimeout(()=>{if(cur===i&&au.readyState<3){if(!retry(i))fail(i)}},WAIT);
   }
 
   function retry(i){
@@ -4738,6 +4739,7 @@ body.stage-on.vfull #recwrap{display:none}
   function release(){
     if(R.src){R.src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});R.src=null;window.dispatchEvent(new Event("menya-rec"))}
     if(R.pic){R.pic.stop();R.pic=null}
+    try{if(R.wl){R.wl.release();R.wl=null}}catch(e){}
   }
 
   function pick(video){
@@ -4747,7 +4749,7 @@ body.stage-on.vfull #recwrap{display:none}
     return "";
   }
 
-  const END_MS=4000;
+  const END_MS=5000;
   /* Draws the channel picture, then fades in the Menya end card. */
   function picture(){
     const cv=document.createElement("canvas");cv.width=960;cv.height=540;
@@ -4760,21 +4762,56 @@ body.stage-on.vfull #recwrap{display:none}
         if(vw&&vh){const s=Math.min(cv.width/vw,cv.height/vh),dw=vw*s,dh=vh*s;try{g.drawImage(au,(cv.width-dw)/2,(cv.height-dh)/2,dw,dh)}catch(e){}}
         return;
       }
-      const p=Math.min(1,(performance.now()-endAt)/600);
-      g.globalAlpha=p;g.textAlign="center";g.textBaseline="middle";
-      g.fillStyle="#fff";g.font="600 46px sans-serif";
-      g.fillText("This video was downloaded from Menya",cv.width/2,cv.height/2-80);
-      g.fillStyle="#c5221f";rr(g,cv.width/2-410,cv.height/2+10,820,90,45);g.fill();
-      g.fillStyle="#fff";g.font="700 36px sans-serif";
-      g.fillText("Join now using www.menya.site",cv.width/2,cv.height/2+55);
+      const t=Math.min(1,(performance.now()-endAt)/700),p=1-Math.pow(1-t,3);
+      const cx=cv.width/2;
+      /* background */
+      const bg=g.createLinearGradient(0,0,0,cv.height);
+      bg.addColorStop(0,"#0f1115");bg.addColorStop(1,"#1a1d22");
+      g.globalAlpha=p;g.fillStyle=bg;g.fillRect(0,0,cv.width,cv.height);
+      const glow=g.createRadialGradient(cx,120,10,cx,120,380);
+      glow.addColorStop(0,"rgba(197,34,31,.28)");glow.addColorStop(1,"rgba(197,34,31,0)");
+      g.fillStyle=glow;g.fillRect(0,0,cv.width,cv.height);
+      g.save();g.translate(0,(1-p)*18);
+      g.textAlign="center";g.textBaseline="middle";
+      /* logo */
+      const lx=cx-42,ly=62;
+      g.fillStyle="#c5221f";rr(g,lx,ly,84,60,18);g.fill();
+      g.strokeStyle="#fff";g.lineWidth=4.8;g.lineCap="round";g.lineJoin="round";
+      rr(g,lx+21,ly+22.5,42,27,6);g.stroke();
+      g.beginPath();g.moveTo(lx+33,ly+10.5);g.lineTo(lx+42,ly+22.5);g.lineTo(lx+51,ly+10.5);g.stroke();
+      /* name + welcome */
+      g.fillStyle="#fff";g.font="700 54px sans-serif";g.fillText("Menya",cx,170);
+      g.fillStyle="#ffb4b0";g.font="600 28px sans-serif";g.fillText("Murakaza neza · Welcome",cx,222);
+      g.fillStyle="#c7cbd1";g.font="500 24px sans-serif";
+      g.fillText("Rwandan radio and TV, live and free",cx,272);
+      /* red card */
+      const cw=600,ch=104,cy=315;
+      g.shadowColor="rgba(197,34,31,.55)";g.shadowBlur=32;g.shadowOffsetY=8;
+      const rg=g.createLinearGradient(cx-cw/2,0,cx+cw/2,0);
+      rg.addColorStop(0,"#c5221f");rg.addColorStop(1,"#e0403b");
+      g.fillStyle=rg;rr(g,cx-cw/2,cy,cw,ch,30);g.fill();
+      g.shadowBlur=0;g.shadowOffsetY=0;
+      g.fillStyle="rgba(255,255,255,.85)";g.font="600 20px sans-serif";
+      g.fillText("JOIN NOW · IT'S FREE",cx,cy+30);
+      g.fillStyle="#fff";g.font="700 40px sans-serif";
+      g.fillText("www.menya.site",cx,cy+68);
+      /* footer */
+      g.fillStyle="#8a9099";g.font="400 20px sans-serif";
+      g.fillText("This video was downloaded from Menya",cx,490);
+      g.restore();
       g.globalAlpha=1;
     };
     draw();
-    const iv=setInterval(draw,50);
+    /* a Worker timer is not slowed down when the screen dims or the app is in the background */
+    let wk=null,iv=0;
+    try{
+      wk=new Worker(URL.createObjectURL(new Blob(["setInterval(function(){postMessage(1)},40)"],{type:"text/javascript"})));
+      wk.onmessage=draw;
+    }catch(e){iv=setInterval(draw,40)}
     return{
       canvas:cv,
       toEnd(){if(!endAt)endAt=performance.now()},
-      stop(){clearInterval(iv)}
+      stop(){if(wk){wk.terminate();wk=null}clearInterval(iv)}
     };
   }
 
@@ -4793,10 +4830,10 @@ body.stage-on.vfull #recwrap{display:none}
     try{
       if(R.video){
         pic=picture();
-        stream=new MediaStream(pic.canvas.captureStream(20).getVideoTracks().concat(aud));
+        stream=new MediaStream(pic.canvas.captureStream(25).getVideoTracks().concat(aud));
       }else stream=new MediaStream(aud);
       R.mime=pick(R.video);
-      const o=R.mime?{mimeType:R.mime}:{};o.audioBitsPerSecond=96000;if(R.video)o.videoBitsPerSecond=1200000;
+      const o=R.mime?{mimeType:R.mime}:{};o.audioBitsPerSecond=96000;if(R.video)o.videoBitsPerSecond=1800000;
       R.rec=new MediaRecorder(stream,o);
     }catch(e){
       if(pic)pic.stop();
@@ -4804,6 +4841,8 @@ body.stage-on.vfull #recwrap{display:none}
       say("Could not start recording on this channel");return;
     }
     window.menyaRecording=true;
+    try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>{R.wl=l}).catch(()=>{})}catch(e){}
+    if(!R.wlh){R.wlh=1;document.addEventListener("visibilitychange",()=>{if(R.on&&!document.hidden&&navigator.wakeLock){try{navigator.wakeLock.request("screen").then(l=>{R.wl=l}).catch(()=>{})}catch(e){}}})}
     R.src=src;R.aud=aud;R.pic=pic;R.chunks=[];R.ending=false;R.busy=false;R.t0=Date.now();R.name=s.name;R.limit=R.sel;
     R.rec.ondataavailable=e=>{if(e.data&&e.data.size)R.chunks.push(e.data)};
     R.rec.onstop=save;
