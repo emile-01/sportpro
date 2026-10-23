@@ -4783,10 +4783,11 @@ body.stage-on.vfull #recwrap{display:none}
     if(!s||au.paused||au.readyState<2){say("Start playing first, then record");return}
     if(typeof MediaRecorder==="undefined"){say("This browser cannot record. Use Chrome.");return}
     const src=capture();
-    if(!src){say("This station does not allow recording");return}
+    if(!src){say("This browser cannot record. Open Menya in Chrome.");return}
     const aud=src.getAudioTracks();
-    if(au.crossOrigin!=="anonymous"){src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});say("This station does not allow recording");return}
-    if(!aud.length){src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});say("This station does not allow recording");return}
+    const viaMse=!!hls||/^blob:/.test(au.currentSrc||"");
+    if(!viaMse&&au.crossOrigin!=="anonymous"){src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});say("This channel's server blocks recording. Try another channel.");return}
+    if(!aud.length&&s.type!=="tv"){src.getTracks().forEach(t=>{try{t.stop()}catch(e){}});say("No sound yet. Wait a moment, then record.");return}
     R.video=s.type==="tv";
     let stream,pic=null;
     try{
