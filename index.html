@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffffff">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <script>
-(function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#ffffff"}catch(e){}})()
+(function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#ffffff"}catch(e){}})()
 </script>
 <style>
 html,html.app{background:var(--bg,#ffffff);min-height:100%}
@@ -4239,7 +4239,7 @@ body.stage-on #hub{display:none}
   function apply(){
     const t=get(),d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.setAttribute("data-theme",d?"dark":"light");
-    (function(c){document.querySelectorAll('meta[name="theme-color"]').forEach(x=>x.remove());var n=document.createElement("meta");n.name="theme-color";n.content=c;document.head.appendChild(n)})(d?"#121418":"#ffffff");
+    (function(c){document.querySelectorAll('meta[name="theme-color"]').forEach(x=>x.remove());var n=document.createElement("meta");n.name="theme-color";n.content=c;document.head.appendChild(n)})("#ffffff");
   }
   function mark(){
     document.querySelectorAll("#themeSec .zopt").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===get()));
