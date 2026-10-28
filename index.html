@@ -6697,6 +6697,60 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
   /* ---------- NEW CARD: black, snow, small waves ---------- */
   function makeCard(s){
     const W=960,H=540,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+{
+  const gg=cv.getContext("2d"),nm=String(s.name||"Radio");
+  const FF='"Figtree",-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
+  try{document.fonts.load('700 48px "Figtree"');document.fonts.load('400 30px "Figtree"')}catch(e){}
+  const draw2=()=>{
+    gg.fillStyle="#000";gg.fillRect(0,0,W,H);
+    gg.textBaseline="alphabetic";gg.textAlign="left";
+    /* radio name */
+    let fs=52;gg.fillStyle="#fff";gg.font="700 "+fs+"px "+FF;
+    while(gg.measureText(nm).width>W-240&&fs>26){fs-=2;gg.font="700 "+fs+"px "+FF}
+    gg.fillText(nm,60,190);
+    /* line under the name */
+    const t1="You can listen to ",t2="www.menya.site";
+    let f2=32;
+    const meas=()=>{gg.font="400 "+f2+"px "+FF;const a=gg.measureText(t1).width;gg.font="700 "+f2+"px "+FF;return a+gg.measureText(t2).width};
+    while(meas()>W-120&&f2>18)f2-=2;
+    gg.font="400 "+f2+"px "+FF;gg.fillStyle="#b9bfca";gg.fillText(t1,60,245);
+    const w1=gg.measureText(t1).width;
+    gg.font="700 "+f2+"px "+FF;gg.fillStyle="#fff";gg.fillText(t2,60+w1,245);
+    /* heart */
+    gg.fillStyle="#fff";gg.beginPath();
+    gg.moveTo(880,232);
+    gg.bezierCurveTo(838,200,846,160,872,160);
+    gg.bezierCurveTo(882,160,880,168,880,172);
+    gg.bezierCurveTo(880,168,878,160,888,160);
+    gg.bezierCurveTo(914,160,922,200,880,232);
+    gg.fill();
+    /* progress bar */
+    gg.fillStyle="#fff";gg.fillRect(60,322,840,7);
+    gg.beginPath();gg.arc(260,325.5,15,0,7);gg.fill();
+    /* labels */
+    gg.fillStyle="#fff";gg.font="500 28px "+FF;
+    gg.textAlign="left";gg.fillText("LIVE",60,385);
+    gg.textAlign="right";gg.fillText("RADIO",900,385);
+    /* controls */
+    gg.lineWidth=5;gg.lineCap="round";gg.lineJoin="round";gg.strokeStyle="#fff";
+    gg.beginPath();gg.moveTo(54,432);gg.lineTo(94,468);gg.moveTo(54,468);gg.lineTo(94,432);gg.stroke();
+    gg.fillRect(215,436,9,40);
+    gg.beginPath();gg.moveTo(262,436);gg.lineTo(262,476);gg.lineTo(230,456);gg.closePath();gg.fill();
+    gg.beginPath();gg.arc(480,456,50,0,7);gg.fill();
+    gg.fillStyle="#000";gg.beginPath();gg.moveTo(463,432);gg.lineTo(463,480);gg.lineTo(505,456);gg.closePath();gg.fill();
+    gg.fillStyle="#fff";
+    gg.fillRect(736,436,9,40);
+    gg.beginPath();gg.moveTo(698,436);gg.lineTo(698,476);gg.lineTo(730,456);gg.closePath();gg.fill();
+    gg.beginPath();
+    gg.moveTo(860,452);gg.lineTo(860,446);gg.quadraticCurveTo(860,436,870,436);gg.lineTo(910,436);
+    gg.moveTo(920,462);gg.lineTo(920,468);gg.quadraticCurveTo(920,478,910,478);gg.lineTo(870,478);
+    gg.stroke();
+    gg.beginPath();gg.moveTo(900,426);gg.lineTo(914,436);gg.lineTo(900,446);gg.closePath();gg.fill();
+    gg.beginPath();gg.moveTo(880,468);gg.lineTo(866,478);gg.lineTo(880,488);gg.closePath();gg.fill();
+  };
+  draw2();
+  return{cv,draw:draw2};
+}
     const g=cv.getContext("2d"),name=String(s.name||"Radio");
     const FF='"Figtree",-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
     try{document.fonts.load('700 40px "Figtree"');document.fonts.load('500 24px "Figtree"')}catch(e){}
