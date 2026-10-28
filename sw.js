@@ -1,4 +1,4 @@
-const CACHE = 'menya-v2';
+const CACHE = 'menya-v3';
 const BASE = new URL('./', self.registration.scope).href;
 const SHELL = [BASE, BASE + 'manifest.json', BASE + 'icon-192.png', BASE + 'icon-512.png'];
 
@@ -22,7 +22,7 @@ self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.method !== 'GET' || r.headers.has('range') || new URL(r.url).origin !== location.origin) return;
   e.respondWith(
-    fetch(r).then(res => {
+    fetch(r, { cache: 'no-cache' }).then(res => {
       if (res.ok) { const c = res.clone(); caches.open(CACHE).then(x => x.put(r, c)); }
       return res;
     }).catch(() => caches.match(r).then(hit => hit || (r.mode === 'navigate' ? caches.match(BASE) : Response.error())))
