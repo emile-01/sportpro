@@ -6800,7 +6800,7 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
     return{cv,draw};
   }
   /* ---------- the old white card (not used) ---------- */
-  function makeCard(s){
+  function makeCardOld(s) {
     const W=640,H=360,cv=document.createElement("canvas");cv.width=W;cv.height=H;
     const g=cv.getContext("2d");let logo=null;
     if(s.icon&&/^https:\/\//i.test(s.icon)){
