@@ -3243,8 +3243,8 @@ const bh=4+Math.pow(bin,1.6)*h*0.8*(on?1:0);
     var s=document.documentElement.style;
     s.setProperty("--vvh",vv.height+"px");
     s.setProperty("--vvt",vv.offsetTop+"px");
-    window.scrollTo(0, 0);
-var bd = document.body;
+    var bd = document.body;
+if (bd.classList.contains("stage-on") || bd.classList.contains("chat-open")) window.scrollTo(0, 0);
 bd.classList.toggle("kb", window.innerHeight - vv.height > 120);
 if (bd.classList.contains("chat-open")) {
   var cm = document.getElementById("cmsgs");
