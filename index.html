@@ -70,8 +70,10 @@ html[data-theme="dark"] #splash img{content:url(logo-mark.png);filter:invert(1)}
 @keyframes splin{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 </style>
 <script>if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)document.documentElement.classList.add("app")</script>
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-dark-192.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-dark-512.png" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="application-name" content="Menya">
 <meta name="mobile-web-app-capable" content="yes">
