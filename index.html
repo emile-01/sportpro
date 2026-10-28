@@ -6644,6 +6644,7 @@ html[data-theme="dark"] #reccard .rcgo2:not(.alt){background:#f1f3f6;color:#1214
 #rvfb.err .d{background:#ff8a85}
 
 /* test card */
+#rv .s.ok{display:none !important}
 #rv{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:500;width:min(440px,calc(100% - 24px));max-height:calc(100vh - 24px);overflow:auto;display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px;background:var(--bg);color:var(--ink);box-shadow:0 0 0 100vmax rgba(0,0,0,.55),0 12px 40px rgba(0,0,0,.4);font-family:var(--font)}
 #rv .h{display:flex;align-items:center;gap:10px}
 #rv .t{flex:1;min-width:0}
@@ -6693,7 +6694,58 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
   window._rf=0;let rec=null,chunks=[],secs=0,tick=0,drawIv=0,cvs=null,job=null,ac=null,an=null,buf=null,heard=true,quiet=0,dropped=false,urls=[],wasOn=false;
   const ui=on=>{b.classList.toggle("on",on);const r=b.querySelector(".rt");if(r)r.textContent=fmt(secs)};
 
-  /* ---------- the white 16:9 card (drawn 2 times a second) ---------- */
+  /* ---------- NEW CARD: black, snow, small waves ---------- */
+  function makeCard(s){
+    const W=960,H=540,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+    const g=cv.getContext("2d"),name=String(s.name||"Radio");
+    const FF='"Figtree",-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
+    try{document.fonts.load('700 40px "Figtree"');document.fonts.load('500 24px "Figtree"')}catch(e){}
+    let sd=12345;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
+    const flakes=[];
+    for(let i=0;i<170;i++)flakes.push({x:rnd()*W,y:rnd()*H,r:.8+rnd()*2.4,a:.25+rnd()*.65});
+    const N=57,bars=[];
+    for(let i=0;i<N;i++){
+      const m=1-Math.abs(i-(N-1)/2)/((N-1)/2);
+      bars.push(6+Math.abs(Math.sin(i*.9)*.6+Math.sin(i*.37+1)*.4)*38*(.35+.65*m));
+    }
+    function draw(){
+      const bg=g.createRadialGradient(W/2,H*.45,40,W/2,H*.45,W*.7);
+      bg.addColorStop(0,"#0b1018");bg.addColorStop(1,"#000");
+      g.fillStyle=bg;g.fillRect(0,0,W,H);
+      flakes.forEach(f=>{g.globalAlpha=f.a;g.fillStyle="#fff";g.beginPath();g.arc(f.x,f.y,f.r,0,7);g.fill()});
+      g.globalAlpha=1;
+      /* playlist icon + label */
+      g.fillStyle="#8fa3bf";
+      g.fillRect(48,40,24,3);g.fillRect(48,49,24,3);g.fillRect(48,58,14,3);
+      g.beginPath();g.arc(69,61,4.5,0,7);g.fill();g.fillRect(72,46,2.5,15);
+      g.textBaseline="alphabetic";g.textAlign="left";
+      g.font='600 20px '+FF;g.fillText("NOW PLAYING",88,60);
+      /* station name, upper left */
+      let fs=48;g.fillStyle="#fff";g.font='700 '+fs+'px '+FF;
+      while(g.measureText(name).width>W*.72&&fs>24){fs-=2;g.font='700 '+fs+'px '+FF}
+      g.fillText(name,48,64+fs+14);
+      /* small waves */
+      const bw=8,gap=7,x0=(W-N*(bw+gap)+gap)/2,cy=320;
+      bars.forEach((h,i)=>{
+        g.fillStyle="hsla("+(200+i*.6)+",90%,78%,.92)";
+        const x=x0+i*(bw+gap);
+        g.beginPath();
+        if(g.roundRect)g.roundRect(x,cy-h/2,bw,h,4);else g.rect(x,cy-h/2,bw,h);
+        g.fill();
+      });
+      /* big text */
+      g.textAlign="center";
+      g.fillStyle="#b8c4d6";g.font='500 40px '+FF;g.fillText("Hear it on",W/2,430);
+      let f2=88;g.font='700 '+f2+'px '+FF;
+      while(g.measureText("www.menya.site").width>W-120&&f2>40){f2-=2;g.font='700 '+f2+'px '+FF}
+      g.shadowColor="rgba(120,180,255,.55)";g.shadowBlur=24;
+      g.fillStyle="#fff";g.fillText("www.menya.site",W/2,510);
+      g.shadowBlur=0;
+    }
+    draw();
+    return{cv,draw};
+  }
+  /* ---------- the old white card (not used) ---------- */
   function makeCard(s){
     const W=640,H=360,cv=document.createElement("canvas");cv.width=W;cv.height=H;
     const g=cv.getContext("2d");let logo=null;
@@ -6881,7 +6933,7 @@ try { if (window._rac) window._rac.close() } catch (e) {} window._rac = null;
         const a=document.createElement("a");a.href=url;a.download=fname;a.style.display="none";
         B.appendChild(a);a.click();setTimeout(()=>a.remove(),3000);
         msg("Done. Saved to your Downloads. Check your phone. File: "+fname,"ok");
-        fb("Video saved to your Downloads.","ok",5000);
+        fb("Congratulations! Your video is saved.","ok",5000);
       }catch(e){
         try{
           const file=new File([blob],fname,{type:type.split(";")[0]});
