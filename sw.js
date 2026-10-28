@@ -1,6 +1,6 @@
-const CACHE = 'menya-v3';
+const CACHE = 'menya-v5';
 const BASE = new URL('./', self.registration.scope).href;
-const SHELL = [BASE, BASE + 'manifest.json', BASE + 'icon-192.png', BASE + 'icon-512.png'];
+const SHELL = [BASE, BASE + 'manifest.json', BASE + 'icon-192.png', BASE + 'icon-512.png', BASE + 'logo-mark.png', BASE + 'logo-mark-preview.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(

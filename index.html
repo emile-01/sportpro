@@ -10,8 +10,8 @@
 (function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#ffffff"}catch(e){}})()
 </script>
 <style>
-html,html,html.app{background:var(--bg,#ffffff)}
-html[data-theme="dark"],html[data-theme="dark"].app{background:#121418}
+html,html.app{background:var(--bg,#ffffff)}
+
 html[data-theme="dark"],html[data-theme="dark"].app{background:#121418}
 /* ===== DARK MODE ===== */
 html[data-theme="dark"]{color-scheme:dark;
@@ -66,7 +66,7 @@ html[data-theme="dark"] #pauth h2::before{filter:invert(1) hue-rotate(180deg)}
 #splash.hide{opacity:0;pointer-events:none}
 #splash img{width:88px;height:88px;animation:splin .7s ease both}
 #splash b{font:600 22px/1 "Figtree",-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.02em;color:var(--ink,#0f1115);animation:splin .7s .1s ease both}
-html[data-theme="dark"] #splash img{filter:invert(1)}
+html[data-theme="dark"] #splash img{content:url(logo-mark.png);filter:invert(1)}
 @keyframes splin{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 </style>
 <script>if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)document.documentElement.classList.add("app")</script>
@@ -1308,7 +1308,7 @@ body.hub-on #hub{display:block}
 <style>
 /* ===== LIGHT MODE POLISH ===== */
 .blogo{width:26px;height:26px;display:block;flex:none}
-html[data-theme="dark"] .blogo{filter:invert(1)}
+html[data-theme="dark"] .blogo{content:url(logo-mark.png);filter:invert(1)}
 .brand span{font-weight:600 !important;letter-spacing:-.02em !important}
 html:not([data-theme="dark"]) .top{border-bottom:1px solid var(--divider) !important}
 html:not([data-theme="dark"]) #bar{border-top:1px solid var(--divider);box-shadow:0 -6px 24px rgba(15,17,21,.05)}
@@ -1321,7 +1321,7 @@ html:not([data-theme="dark"]) #hmenu{border:1px solid var(--divider);box-shadow:
 </style>
 </head>
 <body>
-  <div id="splash"><img src="logo-mark.png" alt=""><b>Menya</b></div>
+  <div id="splash"><img src="logo-mark-preview.png" alt=""><b>Menya</b></div>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Menya – Rwandan radio and TV live</h1>
 <noscript><p>Menya lets you listen to Rwandan radio stations and watch Rwandan TV channels live. Please turn on JavaScript to use it.</p></noscript>
 <div class="layout">
@@ -1337,7 +1337,7 @@ html:not([data-theme="dark"]) #hmenu{border:1px solid var(--divider);box-shadow:
     <div class="top">
       <div class="hdr" id="hdr">
   <button class="ib" id="bell" aria-label="Notifications" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16v-5a6 6 0 0 0-5-5.9V4a1 1 0 0 0-2 0v1.1A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2z"/><path d="M10 21.5a2 2 0 0 0 4 0"/></svg><span class="badge" id="badge" hidden></span></button>
-  <div class="brand" aria-label="Menya"><img class="blogo" src="logo-mark.png" alt=""><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="var(--accent)"/><rect x="7" y="7.5" width="14" height="9" rx="2" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M11 3.5l3 4 3-4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Menya</span></div>
+  <div class="brand" aria-label="Menya"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="var(--accent)"/><rect x="7" y="7.5" width="14" height="9" rx="2" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M11 3.5l3 4 3-4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Menya</span></div>
   <button class="ib" id="install" aria-label="Install Menya" title="Install Menya" hidden><svg data-n="1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></button>
 <button class="ib" id="pbtn" aria-label="Profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></button>
 <button class="signin" id="rand2">Random</button>
