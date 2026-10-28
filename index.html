@@ -6781,10 +6781,19 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
     let r;
     try{
       cvs=makeCard(s);
-      const vt=cvs.cv.captureStream(4).getVideoTracks();
+      const vt=cvs.cv.captureStream(10).getVideoTracks();
       if(!vt.length)throw 0;
       try{localStorage.setItem("vrc",String(Date.now()))}catch(e){}
-      r=new MR(new MediaStream(at.concat(vt)),{mimeType:mt,audioBitsPerSecond:64000,videoBitsPerSecond:200000});
+      let aTracks=at;
+try{
+  const AC2=window.AudioContext||window.webkitAudioContext;
+  window._rac=new AC2();if(window._rac.resume)window._rac.resume();
+  const src2=window._rac.createMediaStreamSource(new MediaStream(at));
+  const dst2=window._rac.createMediaStreamDestination();
+  src2.connect(dst2);
+  aTracks=dst2.stream.getAudioTracks();
+}catch(e){aTracks=at}
+r=new MR(new MediaStream(aTracks.concat(vt)),{mimeType:mt,audioBitsPerSecond:64000,videoBitsPerSecond:200000});
     }catch(e){
       try{localStorage.removeItem("vrc")}catch(x){}
       cvs=null;fb("Recording failed to start.","err",6000);return;
@@ -6812,7 +6821,8 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
   function stopRec(){if(rec&&rec.state!=="inactive"){try{rec.stop()}catch(e){finish()}}}
   function finish(){
     clearInterval(tick);clearInterval(drawIv);
-    try{if(ac)ac.close()}catch(e){}ac=an=null;
+    try { if (ac) ac.close() } catch (e) {} ac = an = null;
+try { if (window._rac) window._rac.close() } catch (e) {} window._rac = null;
     try{localStorage.removeItem("vrc")}catch(e){}
     const mt=(rec&&rec.mimeType)||"video/webm",n=secs,s=job,bad=dropped,ok=heard,data=chunks;
     rec=null;cvs=null;chunks=[];secs=0;ui(false);
