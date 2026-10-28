@@ -10,7 +10,8 @@
 (function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#ffffff"}catch(e){}})()
 </script>
 <style>
-html,html.app{background:var(--bg,#ffffff)}
+html,html.app{background:var(--bg,#ffffff);min-height:100%}
+body{min-height:100vh;min-height:100dvh;background:var(--bg,#ffffff)}
 
 html[data-theme="dark"],html[data-theme="dark"].app{background:#121418}
 /* ===== DARK MODE ===== */
@@ -61,11 +62,11 @@ html[data-theme="dark"] #pauth h2::before{filter:invert(1) hue-rotate(180deg)}
   #mbtn{margin-left:auto !important}
   .hdr > #pbtn,.hdr > #bell,.hdr > #rand2,.hdr > #install{display:none !important}
 }
-#splash{display:none;position:fixed;inset:0;z-index:99999;background:var(--bg,#ffffff);flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .4s}
+#splash{display:none;position:fixed;inset:0;z-index:99999;background:#000000;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .4s}
 .app #splash{display:flex}
 #splash.hide{opacity:0;pointer-events:none}
 #splash img{width:88px;height:88px;animation:splin .7s ease both}
-#splash b{font:600 22px/1 "Figtree",-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.02em;color:var(--ink,#0f1115);animation:splin .7s .1s ease both}
+#splash b{font:600 22px/1 "Figtree",-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.02em;color:#ffffff;animation:splin .7s .1s ease both}
 html[data-theme="dark"] #splash img{content:url(logo-mark.png);filter:invert(1)}
 @keyframes splin{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 </style>
