@@ -1318,7 +1318,7 @@ body.hub-on #hub{display:block}
       <div class="hdr" id="hdr">
   <button class="ib" id="bell" aria-label="Notifications" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16v-5a6 6 0 0 0-5-5.9V4a1 1 0 0 0-2 0v1.1A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2z"/><path d="M10 21.5a2 2 0 0 0 4 0"/></svg><span class="badge" id="badge" hidden></span></button>
   <div class="brand" aria-label="Menya"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="var(--accent)"/><rect x="7" y="7.5" width="14" height="9" rx="2" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M11 3.5l3 4 3-4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Menya</span></div>
-  <button class="ib" id="install" aria-label="Install Menya" title="Install Menya" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></button>
+  <button class="ib" id="install" aria-label="Install Menya" title="Install Menya" hidden><svg data-n="1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></button>
 <button class="ib" id="pbtn" aria-label="Profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></button>
 <button class="signin" id="rand2">Random</button>
 <button class="ib" id="mbtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16"/></svg></button>
@@ -5475,7 +5475,7 @@ html[data-theme="dark"] #reccard .rci{background:#2e323a}
 
 /* ===== 3) NEW INSTALL APP SVG (header button + menu row) ===== */
 (()=>{
-  const INST='<svg data-n="1" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M12 7v6M9.2 10.4l2.8 2.8 2.8-2.8M10 18h4"/></svg>';
+  const INST='<svg data-n="1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>';
   const swap=()=>{
     const b=document.getElementById("install");
     if(b){const s=b.querySelector("svg");if(s&&!s.dataset.n)s.outerHTML=INST}
@@ -5484,7 +5484,7 @@ html[data-theme="dark"] #reccard .rci{background:#2e323a}
     });
   };
   swap();
-  new MutationObserver(swap).observe(document.getElementById("hbody"),{childList:true});
+  const hb=document.getElementById("hbody");if(hb)new MutationObserver(swap).observe(hb,{childList:true});setTimeout(swap,1500);
   addEventListener("appinstalled",()=>{try{notify("Menya is installed on your phone.")}catch(e){}});
 })();
 </script>
@@ -6707,15 +6707,18 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
     /* radio name */
     let fs=52;gg.fillStyle="#fff";gg.font="700 "+fs+"px "+FF;
     while(gg.measureText(nm).width>W-240&&fs>26){fs-=2;gg.font="700 "+fs+"px "+FF}
-    gg.fillText(nm,60,190);
-    /* line under the name */
-    const t1="You can listen to ",t2="www.menya.site";
-    let f2=32;
-    const meas=()=>{gg.font="400 "+f2+"px "+FF;const a=gg.measureText(t1).width;gg.font="700 "+f2+"px "+FF;return a+gg.measureText(t2).width};
-    while(meas()>W-120&&f2>18)f2-=2;
-    gg.font="400 "+f2+"px "+FF;gg.fillStyle="#b9bfca";gg.fillText(t1,60,245);
-    const w1=gg.measureText(t1).width;
-    gg.font="700 "+f2+"px "+FF;gg.fillStyle="#fff";gg.fillText(t2,60+w1,245);
+    gg.fillText(nm,60,150);
+    /* big highlighted web address */
+    const t1="Listen to",t2="www.menya.site";
+    gg.textAlign="left";gg.font="500 30px "+FF;gg.fillStyle="#b9bfca";gg.fillText(t1,60,205);
+    let f2=56;gg.font="800 "+f2+"px "+FF;
+    while(gg.measureText(t2).width>W-340&&f2>28){f2-=2;gg.font="800 "+f2+"px "+FF}
+    const pw=gg.measureText(t2).width+56,ph=76,px=60,py=222;
+    gg.fillStyle="#fff";gg.beginPath();
+    if(gg.roundRect)gg.roundRect(px,py,pw,ph,38);else gg.rect(px,py,pw,ph);
+    gg.fill();
+    gg.fillStyle="#000";gg.textBaseline="middle";gg.fillText(t2,px+28,py+ph/2+2);
+    gg.textBaseline="alphabetic";
     /* heart */
     gg.fillStyle="#fff";gg.beginPath();
     gg.moveTo(880,232);
