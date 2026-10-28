@@ -4238,7 +4238,7 @@ body.stage-on #hub{display:none}
   function apply(){
     const t=get(),d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.setAttribute("data-theme",d?"dark":"light");
-    const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#ffffff";
+    (function(c){document.querySelectorAll('meta[name="theme-color"]').forEach(x=>x.remove());var n=document.createElement("meta");n.name="theme-color";n.content=c;document.head.appendChild(n)})(d?"#121418":"#ffffff");
   }
   function mark(){
     document.querySelectorAll("#themeSec .zopt").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===get()));
