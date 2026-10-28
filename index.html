@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0D3A2B">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="color-scheme" content="light dark">
 <script>
-(function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#0D3A2B"}catch(e){}})()
+(function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#f6f7f9"}catch(e){}})()
 </script>
 <style>
-html.app{background:#000}
+html.app{background:var(--bg,#f6f7f9)}
 /* ===== DARK MODE ===== */
 html[data-theme="dark"]{color-scheme:dark;
 --bg:#121418;--surface2:#23262d;--ink:#f1f3f6;--mute:#a3abb8;--tint:#23262d;--tint2:#2e323a;
@@ -4216,7 +4217,7 @@ body.stage-on #hub{display:none}
   function apply(){
     const t=get(),d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.setAttribute("data-theme",d?"dark":"light");
-    const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#0D3A2B";
+    const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#121418":"#f6f7f9";
   }
   function mark(){
     document.querySelectorAll("#themeSec .zopt").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===get()));
@@ -6697,6 +6698,60 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
   /* ---------- NEW CARD: black, snow, small waves ---------- */
   function makeCard(s){
     const W=960,H=540,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+{
+  const gg=cv.getContext("2d"),nm=String(s.name||"Radio").trim().toLowerCase();
+  const FF='"Figtree",-apple-system,"Segoe UI",Roboto,Arial,sans-serif',K=W/360;
+  try{document.fonts.load('400 16px "Figtree"');document.fonts.load('500 16px "Figtree"');document.fonts.load('700 26px "Figtree"')}catch(e){}
+  const rr=(x,y,w,h,r,f)=>{gg.beginPath();if(gg.roundRect)gg.roundRect(x,y,w,h,r);else gg.rect(x,y,w,h);if(f){gg.fillStyle=f;gg.fill()}gg.stroke()};
+  const ln=(a,b,c,d)=>{gg.beginPath();gg.moveTo(a,b);gg.lineTo(c,d);gg.stroke()};
+  const BARS=[[40,170,6],[46,166,14],[52,161,24],[58,156,34],[64,163,20],[70,168,10],[76,159,28],[82,154,38],[88,162,22],[94,168,10],[100,165,16],[106,170,6]];
+  const draw3=()=>{
+    gg.setTransform(1,0,0,1,0,0);
+    gg.fillStyle="#fff";gg.fillRect(0,0,W,H);
+    gg.setTransform(K,0,0,K,-10*K,-8*K);
+    gg.lineCap="round";gg.lineJoin="round";gg.strokeStyle="#e2e5ea";
+    /* background: tv */
+    gg.lineWidth=2.5;
+    ln(286,34,268,18);ln(302,34,320,18);
+    rr(236,34,116,70,12,"#f6f7f9");
+    rr(246,44,78,50,7,"#fff");
+    ln(262,104,258,112);ln(326,104,330,112);
+    gg.lineWidth=2;
+    gg.beginPath();gg.moveTo(262,60);gg.quadraticCurveTo(285,50,308,60);gg.moveTo(262,76);gg.quadraticCurveTo(285,66,308,76);gg.stroke();
+    /* background: radio */
+    gg.lineWidth=2.5;
+    rr(282,132,72,58,10,"#f6f7f9");
+    ln(342,132,358,116);
+    gg.beginPath();gg.arc(305,161,14,0,7);gg.fillStyle="#fff";gg.fill();gg.stroke();
+    gg.lineWidth=2;
+    ln(299,156,311,156);ln(299,161,311,161);ln(299,166,311,166);
+    gg.fillStyle="#e2e5ea";
+    [[339,55,4],[339,70,4],[339,148,5]].forEach(c=>{gg.beginPath();gg.arc(c[0],c[1],c[2],0,7);gg.fill()});
+    gg.fillRect(330,162,16,3);gg.fillRect(330,170,16,3);
+    /* words */
+    gg.textBaseline="alphabetic";gg.textAlign="left";
+    let fs=16;
+    const wid=()=>{gg.font="400 "+fs+"px "+FF;const a=gg.measureText("watch ").width+gg.measureText(" and").width;gg.font="500 "+fs+"px "+FF;return a+gg.measureText(nm).width};
+    while(wid()>190&&fs>10)fs--;
+    let x=38;
+    gg.font="400 "+fs+"px "+FF;gg.fillStyle="#000";gg.fillText("watch ",x,54);x+=gg.measureText("watch ").width;
+    gg.font="500 "+fs+"px "+FF;gg.fillStyle="#1a73e8";gg.fillText(nm,x,54);x+=gg.measureText(nm).width;
+    gg.font="400 "+fs+"px "+FF;gg.fillStyle="#000";gg.fillText(" and",x,54);
+    gg.font="400 16px "+FF;gg.fillText("other radios and tv",38,80);
+    gg.fillText("on ",38,124);
+    const ox=38+gg.measureText("on ").width;
+    gg.font="700 26px "+FF;gg.fillText("www.menya.site",ox,124);
+    /* wave, curve and tagline */
+    gg.fillStyle="#000";
+    BARS.forEach(b=>{gg.beginPath();if(gg.roundRect)gg.roundRect(b[0],b[1],3,b[2],1.5);else gg.rect(b[0],b[1],3,b[2]);gg.fill()});
+    gg.strokeStyle="#000";gg.lineWidth=1.5;
+    gg.beginPath();gg.moveTo(122,166);gg.quadraticCurveTo(134,166,134,177);gg.quadraticCurveTo(134,188,146,188);gg.stroke();
+    gg.font="400 14px "+FF;gg.fillText("the smartest move.",154,193);
+    gg.setTransform(1,0,0,1,0,0);
+  };
+  draw3();
+  return{cv,draw:draw3};
+}
 {
   const gg=cv.getContext("2d"),nm=String(s.name||"Radio");
   const FF='"Figtree",-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
