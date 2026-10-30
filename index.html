@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light">
 <script>
-(function(){try{var t=localStorage.getItem("theme")||"light";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#ffffff"}catch(e){}})()
+(function(){try{var APP=matchMedia("(display-mode: standalone)").matches||matchMedia("(display-mode: fullscreen)").matches||matchMedia("(display-mode: minimal-ui)").matches||navigator.standalone===true;window.MENYA_APP=APP;var t=APP?"light":(localStorage.getItem("theme")||"light");var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#ffffff"}catch(e){}})()
 </script>
 <style>
 html,html.app{background:var(--bg,#ffffff);min-height:100%}
@@ -68,6 +68,9 @@ html[data-theme="dark"] #pauth h2::before{filter:invert(1) hue-rotate(180deg)}
 #splash img{width:88px;height:88px;animation:splin .7s ease both}
 #splash b{font:600 22px/1 "Figtree",-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.02em;color:var(--ink,#0f1115);animation:splin .7s .1s ease both}
 html[data-theme="dark"] #splash img{content:url(logo-mark.png);filter:invert(1)}
+#splash{background:#ffffff!important}
+#splash b{color:#0f1115!important}
+html[data-theme="dark"] #splash img{content:url(logo-mark-preview.png)!important;filter:none!important}
 @keyframes splin{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 </style>
 <script>if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)document.documentElement.classList.add("app")</script>
@@ -1800,9 +1803,25 @@ $("vol").oninput=e=>au.volume=e.target.value;
 $("q").oninput=render;
 $("rand").onclick=()=>{if(view.length)play(all.indexOf(view[Math.floor(Math.random()*view.length)]))};
 if("mediaSession" in navigator){navigator.mediaSession.setActionHandler("nexttrack",()=>step(1));navigator.mediaSession.setActionHandler("previoustrack",()=>step(-1))}
+const NKEY="menya_notes",NTTL=12*3600*1000;
 let notes=[],unread=0;
+function nSave(){try{localStorage.setItem(NKEY,JSON.stringify(notes.map(n=>({t:n.t,k:n.k,at:+n.at}))))}catch(e){}}
+function nPrune(){const c=Date.now()-NTTL,l=notes.length;notes=notes.filter(n=>+n.at>c);if(notes.length!==l){nSave();if(!document.getElementById("notes").hidden)drawNotes()}}
+try{notes=JSON.parse(localStorage.getItem(NKEY)||"[]").filter(n=>Date.now()-n.at<NTTL).map(n=>({t:n.t,k:n.k,at:new Date(n.at)}))}catch(e){notes=[]}
+setInterval(nPrune,60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)nPrune()});
+function osNotify(t,o){
+  try{
+    if(!("Notification" in window)||Notification.permission!=="granted"||!document.hidden)return;
+    navigator.serviceWorker.ready.then(r=>r.showNotification("Menya",{body:t,icon:"menya-192.png",badge:"menya-badge.png",tag:o.k||"menya",renotify:true,data:{url:o.url||"./"}}));
+  }catch(e){}
+}
+document.addEventListener("click",e=>{
+  if(Notification.permission!=="default")return;
+  try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(x){}
+});
 const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function notify(t){if(NP.dnd)return;if(notes[0]&&notes[0].t===t)return;notes.unshift({t,at:new Date()});notes=notes.slice(0,30);unread++;badge();if(!$("notes").hidden)drawNotes()}
+function notify(t,o){if(NP.dnd)return;if(notes[0]&&notes[0].t===t)return;notes.unshift({t,at:new Date(),k:o&&o.k});notes=notes.slice(0,30);nSave();unread++;badge();if(!$("notes").hidden)drawNotes();if(o&&o.push)osNotify(t,o)}
 function badge(){const b=$("badge");b.hidden=!unread;b.textContent=unread>9?"9+":unread}
 function drawNotes(){
   $("notes").innerHTML='<div class="nh">Notifications</div>'+(notes.length?notes.map(n=>'<div class="n">'+esc(n.t)+'<small>'+n.at.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+'</small></div>').join(""):'<div class="ne">No notifications yet.</div>');
@@ -2792,7 +2811,7 @@ function zWatch(){
   ZR.own.slice(0,10).forEach(r=>{let first=true;
     ZR.subs.push(db.collection("rooms").doc(r.id).collection("members").onSnapshot(q=>{
       if(first){first=false;return}
-      q.docChanges().forEach(c=>{if(c.type==="added"&&NP.join&&c.doc.id!==PF.u.uid)notify((c.doc.data().name||"Someone")+" joined "+r.name)});
+      q.docChanges().forEach(c=>{if(c.type==="added"&&NP.join&&c.doc.id!==PF.u.uid){const m=c.doc.data()||{};notify((m.name||"Someone")+" joined "+(r.name||"your room"),{push:1,k:"rm_"+r.id,url:"?r="+r.id})}});
     },()=>{}));
   });
   ids.forEach(id=>{let first=true;
@@ -2801,7 +2820,7 @@ function zWatch(){
       const d=q.docs[0];if(!d||d.metadata.hasPendingWrites)return;
       const m=d.data(),nm=(ZR.own.concat(ZR.joined).find(r=>r.id===id)||{}).name||"a room";
       if(!NP.msg||chatId==="r_"+id||m.n===(localStorage.getItem("cname")||""))return;
-      notify(m.n+" in "+nm+": "+String(m.m||"").slice(0,40));
+      notify(m.n+" in "+nm+": "+String(m.m||"").slice(0,40),{push:1,k:"rm_"+id,url:"?r="+id});
     },()=>{}));
   });
 }
@@ -4233,7 +4252,7 @@ body.stage-on #hub{display:none}
 /* ===== APPEARANCE: LIGHT / DARK / DEVICE ===== */
 (()=>{
   const $=id=>document.getElementById(id);
-  const get=()=>{try{return localStorage.getItem("theme")||"light"}catch(e){return"light"}};
+  const get=()=>{if(window.MENYA_APP)return"light";try{return localStorage.getItem("theme")||"light"}catch(e){return"light"}};
   const OPT=[["light","Light","Bright background"],["dark","Dark","Easier on the eyes at night"],["auto","Device","Follow your phone setting"]];
 
   function apply(){
@@ -4247,7 +4266,7 @@ body.stage-on #hub{display:none}
   function set(t){try{localStorage.setItem("theme",t)}catch(e){}apply();mark()}
 
   function inject(){
-    const box=$("hbody");if(!box||$("themeSec"))return;
+    if(window.MENYA_APP)return;const box=$("hbody");if(!box||$("themeSec"))return;
     const sec=document.createElement("div");sec.id="themeSec";
     sec.innerHTML='<h3 class="zh">Appearance</h3>'+OPT.map(o=>
       '<button type="button" class="zopt" data-t="'+o[0]+'" aria-pressed="false"><i></i><span><b>'+o[1]+'</b><small>'+o[2]+'</small></span></button>').join("");
@@ -7087,6 +7106,32 @@ try { if (window._rac) window._rac.close() } catch (e) {} window._rac = null;
     };
     B.appendChild(c);
   }
+})();
+</script>
+<script>
+(()=>{
+  const GAP=30*60*1000;let subs=[],sig="",last={};
+  const stop=()=>{subs.forEach(f=>{try{f()}catch(e){}});subs=[]};
+  function sync(){
+    if(!(window.PF&&PF.u&&db)){if(sig){stop();sig=""}return}
+    const favs=(PF.fav||[]).slice(0,20),s=favs.map(f=>f.key).join(",");
+    if(s===sig)return;sig=s;stop();
+    favs.forEach(f=>{
+      let first=true;
+      const since=new Date(Date.now()-150000);
+      subs.push(db.collection("chats").doc(f.key).collection("presence").where("t",">",since)
+        .onSnapshot(q=>{
+          if(first){first=false;return}
+          q.docChanges().forEach(c=>{
+            if(c.type!=="added"||c.doc.id===PF.u.uid||c.doc.metadata.hasPendingWrites)return;
+            if(typeof cur!=="undefined"&&cur>=0&&all[cur]&&cid(all[cur])===f.key&&!document.hidden)return;
+            if(Date.now()-(last[f.key]||0)<GAP)return;last[f.key]=Date.now();
+            notify("Someone just joined "+f.name+". Come and chat with them!",{push:1,k:"fv_"+f.key,url:"?c="+encodeURIComponent(f.key)});
+          });
+        },()=>{}));
+    });
+  }
+  setInterval(sync,5000);
 })();
 </script>
 </body>
