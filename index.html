@@ -1817,7 +1817,7 @@ function osNotify(t,o){
   }catch(e){}
 }
 document.addEventListener("click",e=>{
-  if(Notification.permission!=="default")return;
+  if(!("Notification" in window)||Notification.permission!=="default")return;
   try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(x){}
 });
 const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -2763,8 +2763,18 @@ async function zEnter(id,d){window.zGuardT=Date.now();
 }
 async function zOpenId(id){
   try{const d=await db.collection("rooms").doc(id).get();
-    if(!d.exists){notify("This room no longer exists.");return}
+    if(!d.exists){zGone(id);return}
     zEnter(id,d.data())}catch(e){notify("Could not open this room.")}
+}
+/* ---- screen shown when a room was deleted ---- */
+function zGone(id){
+  try{zLoad(0)}catch(e){}
+  try{if(PF.u&&id)db.collection("users").doc(PF.u.uid).collection("joined").doc(id).delete().catch(()=>{})}catch(e){}
+  let g=document.getElementById("zgone");
+  if(!g){g=document.createElement("div");g.id="zgone";document.body.appendChild(g)}
+  g.innerHTML='<div class="zgico">'+I_TR+'</div><h2>This room was deleted</h2><p>The owner removed it, so this link no longer works.</p><button class="zbtn" id="zgback">Back to settings</button>';
+  g.classList.add("on");
+  document.getElementById("zgback").onclick=()=>{g.classList.remove("on");zOpen("fr")};
 }
 function grpOpen(g){
   ZR.grp=g;closeSet();try{pfClose()}catch(e){}try{au.pause()}catch(e){}
@@ -2863,7 +2873,8 @@ function zFr(){
    +'<p class="zsub" style="margin-top:10px">'+(isPrem()?"Unlimited share links":shLeft()+" of 5 public share links left this week")+'</p>';
   h+='<h3 class="zh">My rooms'+(isPrem()?"":'<span>'+ZR.own.length+' of 3</span>')+'</h3>';
   h+=ZR.own.length?ZR.own.map(r=>zrow(r,true)).join(""):'<p class="zsub">No rooms yet.</p>';
-  if(ZR.joined.length)h+='<h3 class="zh">Joined</h3>'+ZR.joined.map(r=>zrow(r,false)).join("");
+  h += '<h3 class="zh">Rooms I joined' + (ZR.joined.length ? '<span>' + ZR.joined.length + '</span>' : '') + '</h3>';
+  h += ZR.joined.length ? ZR.joined.map(r => zrow(r, false)).join("") : '<p class="zsub">Rooms you join from a friend\'s link will show here.</p>';
   return h;
 }
 function zNt(){
@@ -4641,6 +4652,15 @@ zPublic=async function(s){
 </script>
 <style>
 body.group-on #hub,body.entering #hub{display:none}
+body.group-on #hub,body.entering #hub{display:none}
+#zgone{position:fixed;inset:0;z-index:9999;background:var(--bg);color:var(--ink);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px 24px;text-align:center}
+#zgone.on{display:flex}
+#zgone .zgico{width:72px;height:72px;border-radius:50%;background:var(--tint);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+#zgone .zgico svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#zgone h2{margin:0;font:600 22px/28px var(--font)}
+#zgone p{margin:0 0 14px;max-width:320px;font:400 15px/22px var(--font);color:var(--mute)}
+#zgone .zbtn{max-width:320px}
+
 #zload{position:fixed;inset:0;z-index:9998;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--mute);font:500 14px var(--font)}
 body.zloading #zload{display:flex}
 #zload i{width:42px;height:42px;border-radius:50%;border:4px solid var(--tint2);border-top-color:var(--ink);animation:zspin .8s linear infinite}
