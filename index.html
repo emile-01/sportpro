@@ -186,12 +186,28 @@ else icard("Install Menya","Tap the Chrome menu (three dots), then Install app."
 })();
 </script>
 <title>Menya – Listen to Rwandan Radio & Watch Rwandan TV Live</title>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8KSBHHXKHQ"></script>
 <script>
+const GA_ID="G-46Y1K4H98M";
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments)}
 gtag("js",new Date());
-gtag("config","G-8KSBHHXKHQ");
+if(!/^(localhost|127\.|192\.168\.)/.test(location.hostname)){
+  const s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id="+GA_ID;document.head.appendChild(s);
+  let first=Date.now(),visits=1,last=0;
+  try{
+    first=+localStorage.getItem("ga_first")||first;localStorage.setItem("ga_first",first);
+    visits=(+localStorage.getItem("ga_visits")||0)+1;last=+localStorage.getItem("ga_last")||0;
+    if(last&&Date.now()-last<30*60*1000)visits--;
+    localStorage.setItem("ga_visits",visits);localStorage.setItem("ga_last",Date.now());
+  }catch(e){}
+  gtag("config",GA_ID,{user_properties:{
+    visitor_type:visits>1?"returning":"new",
+    visit_count:visits,
+    days_since_first:Math.floor((Date.now()-first)/864e5),
+    display_mode:(matchMedia("(display-mode: standalone)").matches?"app":"browser"),
+    app_language:(navigator.language||"en").slice(0,2)
+  }});
+}
 </script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.17/hls.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js';document.head.appendChild(s)"></script>
 <script>
@@ -517,6 +533,31 @@ video{border-radius:var(--r-card)}
 /* no filters or scaling that soften images */
 .art img,.hi img{filter:none !important;transform:none !important;backface-visibility:hidden}
 #install{order:2;color:#000}
+
+/* ===== SHOW LOVE ===== */
+#loveBtn{order:3}
+#loveBtn::after{content:"Show love"}
+@media (max-width:899px){.hdr > #loveBtn{display:none !important}}
+body.love-on{overflow:hidden}
+#love{position:fixed;inset:0;z-index:130;display:none;background:var(--bg);color:var(--ink);font-family:var(--font);overflow-y:auto;overscroll-behavior:contain}
+body.love-on #love{display:block}
+@media (min-width:900px){body:not(.stage-on) #love{left:232px;z-index:21}}
+.lv-w{max-width:560px;margin:0 auto;padding:0 16px calc(32px + env(safe-area-inset-bottom))}
+.lv-top{position:relative;display:flex;align-items:center;justify-content:center;height:64px}
+.lv-top b{font:500 18px/24px var(--font);letter-spacing:-.01em}
+.lv-x{position:absolute;right:-8px;top:10px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.lv-x:active{background:var(--tint)}
+.lv-x svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.lv-w h2{margin:32px 0 10px;font:var(--f-sec);letter-spacing:var(--ls)}
+.lv-w p{margin:0 0 14px;font:var(--f-body);color:var(--mute)}
+.lv-w p.lv-tag{margin:28px 0 0;font:var(--f-name);color:var(--ink);letter-spacing:var(--ls)}
+.lv-card{margin-top:36px;padding:0;border-radius:0;background:none;text-align:center}
+.lv-intro{margin:8px 0 26px;padding-bottom:22px;border-bottom:1px solid var(--divider)}
+.lv-w p.lv-lead{font:var(--f-name);color:var(--ink);letter-spacing:var(--ls);margin:0 0 12px}
+.lv-card h2{margin:0 0 8px}
+.lv-card p{margin-bottom:12px}
+.lv-code{margin:6px 0 16px;font:700 24px/30px var(--font);letter-spacing:.01em;color:var(--ink);overflow-wrap:anywhere;user-select:all}
+.lv-w a.zbtn{display:grid;place-items:center;text-decoration:none}
 #install svg{stroke-width:2.4}
 #install[hidden]{display:none}
 #cbtn{font-size:20px}
@@ -1759,7 +1800,8 @@ body.stage-on[data-stype="tv"] #chat:not([data-mode="group"]):not(.mgame):not(.m
 body.rg-on.stage-on[data-stype="tv"] #chat:not([data-mode="group"]):not(.mgame):not(.mxon) #tvscene{display:none !important}
 #tvscene.out{opacity:0}
 #rscene,#tvscene{contain:layout paint;pointer-events:none}
-#tvscene .tv-scene{width:100%;max-width:440px;height:auto;overflow:visible}
+#tvscene .tv-scene{width:100%;max-width:440px;aspect-ratio:540/430;height:auto;overflow:visible}
+body.stage-on[data-stype="tv"]:not(.rg-on) #rgame{justify-content:center}
 #tvscene path{stroke-dasharray:1 2;stroke-dashoffset:1}
 #tvscene path.f{stroke:none;fill:currentColor;stroke-dasharray:none;stroke-dashoffset:0;opacity:0}
 #tvscene.go path{stroke-dashoffset:0;transition:stroke-dashoffset var(--t) ease-in-out var(--d)}
@@ -1880,6 +1922,7 @@ html body #lfl{flex:none !important;height:auto !important;overflow:visible !imp
     <div class="top">
       <div class="hdr" id="hdr">
   <button class="ib" id="bell" aria-label="Notifications" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16v-5a6 6 0 0 0-5-5.9V4a1 1 0 0 0-2 0v1.1A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2z"/><path d="M10 21.5a2 2 0 0 0 4 0"/></svg><span class="badge" id="badge" hidden></span></button>
+<button class="ib" id="loveBtn" type="button" aria-label="Show love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
   <div class="brand" aria-label="Menya"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="var(--accent)"/><rect x="7" y="7.5" width="14" height="9" rx="2" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M11 3.5l3 4 3-4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Menya</span></div>
   <button class="ib" id="install" aria-label="Install Menya" title="Install Menya" hidden><svg data-n="1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></button>
 <button class="ib" id="pbtn" aria-label="Profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></button>
@@ -2317,7 +2360,7 @@ e.preventDefault();clearInterval(T);step(S.pl[t]!==undefined?S.pl[t]:t)});
 const RADIO=["https://de1.api.radio-browser.info","https://nl1.api.radio-browser.info","https://at1.api.radio-browser.info"];
 const TV=["https://iptv-org.github.io/iptv/countries/rw.m3u","https://raw.githubusercontent.com/iptv-org/iptv/master/streams/rw.m3u"];
 const $=id=>document.getElementById(id);
-const ft=(u,ms=8000)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);return fetch(u,{signal:c.signal}).finally(()=>clearTimeout(t))};
+const ft=(u,ms=5000)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);return fetch(u,{signal:c.signal}).finally(()=>clearTimeout(t))};
 const BACKUP_CAT={sports:[["Cricket Gold","https://streams2.sofast.tv/scheduler/scheduleMaster/418.m3u8"],["FITE 24/7","https://d3d85c7qkywguj.cloudfront.net/scheduler/scheduleMaster/263.m3u8"],["Equidia","https://raw.githubusercontent.com/Paradise-91/ParaTV/main/streams/equidia/live2.m3u8"]],documentary:[["CGTN Documentary","https://news.cgtn.com/resource/live/document/cgtn-doc.m3u8"]]};
 const CAT_MAP={adult:"movies"};
 const CAT_SRC = c => { const k = CAT_MAP[c] || c; return ["https://iptv-org.github.io/iptv/categories/" + k + ".m3u", "https://cdn.jsdelivr.net/gh/iptv-org/iptv@gh-pages/categories/" + k + ".m3u"] };
@@ -2792,7 +2835,8 @@ async function loadTv(){
     out.push({id:"tv:"+url,type:"tv",cat:"rw",name,url,icon:icon||"",home:home||"",meta:"TV channel"});
   };
   let lg={},api=null;
-  try{api=await Promise.race([rwApi(),new Promise((_,j)=>setTimeout(j,5000))]);lg=api.logos||{}}catch(e){}
+  const apiP=rwApi().catch(()=>null);
+  try{const c=JSON.parse(localStorage.getItem("rwapi")||"null");if(c&&c.streams){api=c;lg=c.logos||{}}}catch(e){}
   for(const u of TV){
     try{
       const r=await ft(u);if(!r.ok)continue;
@@ -2813,6 +2857,7 @@ async function loadTv(){
   if(api)api.streams.forEach(x=>add(nameOf(x.title||""),x.url,lg[x.channel]));
   BACKUP_TV.forEach(([n,u])=>add(n,u,lg[LOGO_FIX[n]],BACKUP_HOME[n]));
   tv=out;try{if(out.length)localStorage.setItem("tvC",JSON.stringify(out))}catch(e){}dbg("TV list ready: "+out.length+" channels");
+  if(!api)apiP.then(a=>{if(!a)return;const l2=a.logos||{};a.streams.forEach(x=>add(nameOf(x.title||""),x.url,l2[x.channel]));tv=out;try{localStorage.setItem("tvC",JSON.stringify(out))}catch(e){}merge()});
 }
 
 function play(i){
@@ -2826,7 +2871,7 @@ function play(i){
 try{gtag("event","play_channel",{channel_name:s.name,channel_type:s.type,channel_category:s.cat||"radio"})}catch(e){}
   const isHls=/\.m3u8/i.test(s.url);
   if(isHls&&window.Hls&&Hls.isSupported()&&!au.canPlayType("application/vnd.apple.mpegurl")){
-    hls = new Hls({ startLevel: 0, startFragPrefetch: true, capLevelOnFPSDrop: true, capLevelToPlayerSize: true, abrBandWidthFactor: 0.7, abrBandWidthUpFactor: 0.5, maxBufferLength: s.type==="tv"?6:20, maxMaxBufferLength: s.type==="tv"?12:40, maxBufferSize: 8*1000*1000, backBufferLength: 5, maxBufferHole: 0.5, nudgeMaxRetry: 8, manifestLoadingMaxRetry: 3, levelLoadingMaxRetry: 4, fragLoadingMaxRetry: 6 });
+    hls = new Hls({ startLevel: 0, startFragPrefetch: true, capLevelOnFPSDrop: true, capLevelToPlayerSize: true, abrBandWidthFactor: 0.7, abrBandWidthUpFactor: 0.5, maxBufferLength: s.type==="tv"?24:30, maxMaxBufferLength: s.type==="tv"?40:60, maxBufferSize: 20*1000*1000, backBufferLength: 5, maxBufferHole: 0.5, nudgeMaxRetry: 8, manifestLoadingMaxRetry: 1, manifestLoadingTimeOut: 7000, manifestLoadingRetryDelay: 500, levelLoadingMaxRetry: 2, levelLoadingTimeOut: 7000, fragLoadingMaxRetry: 4, fragLoadingTimeOut: 12000 });
 hls.on(Hls.Events.FRAG_LOADED, () => { rec = 0 });
 hls.on(Hls.Events.MANIFEST_PARSED, () => {
   if (s.type !== "tv") return;
@@ -2847,7 +2892,7 @@ hls.on(Hls.Events.MANIFEST_PARSED, () => {
     });
     hls.loadSource(s.url);hls.attachMedia(au);
   }else{au._nocors=false;let nc=false;try{const m=JSON.parse(localStorage.getItem("nocors")||"{}");nc=Date.now()-(m[new URL(s.url).host]||0)<6048e5}catch(e){}if(s.type==="radio"&&!nc)au.crossOrigin="anonymous";else{au._nocors=nc;au.removeAttribute("crossorigin")}au.src=s.url}
-  clearTimeout(wd);wd=setTimeout(()=>{if(cur===i&&au.readyState<3)fail(i)},25000);
+  clearTimeout(wd);wd=setTimeout(()=>{if(cur===i&&au.readyState<3)fail(i)},18000);
   au.play().catch(()=>{});
   if("mediaSession" in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:s.name,artist:"Menya",artwork:s.icon?[{src:s.icon}]:[]})}
   render();
@@ -4265,7 +4310,7 @@ if (bd.classList.contains("chat-open")) {
   const mq=matchMedia("(max-width:899px)");
   const hdr=$("hdr"),mbtn=$("mbtn");
   const menu=document.createElement("div");menu.id="hmenu";menu.hidden=true;hdr.appendChild(menu);
-  const ids=["whBtn","favMenuBtn","proMenuBtn","bell","themeBtn","rand2","install"];
+  const ids=["whBtn","favMenuBtn","proMenuBtn","bell","loveBtn","themeBtn","rand2","install"];
 
   $("rand2").innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22M18 2l4 4-4 4M2 6h1.9c1.5 0 2.9.9 3.6 2.2M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8M18 14l4 4-4 4"/></svg>Random';
 
@@ -4560,7 +4605,7 @@ $("pset").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropaga
 /* ===== TV AUTO-RETRY: slow channels (RTV, KC2...) connect on their own ===== */
 (()=>{
   const R={n:0,t:0,w:0,p:false,quiet:false};
-  const MAX=6;          // retries before showing the error
+  const MAX=4;          // retries before showing the error
   const WAIT=9000;      // ms to wait for each try before retrying
   const oPlay=play,oFail=fail,oChat=chatSwitch,oWs=window.waitStart;
 
@@ -4738,6 +4783,18 @@ $("pset").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropaga
   })();
 </script>
 <script>
+/* ===== FAST START: don't rebuild the list while a stream is connecting ===== */
+(()=>{
+  const o=play,r0=render;let hold=false,tm=0;
+  play=function(i){
+    hold=true;let x;try{x=o.apply(this,arguments)}finally{hold=false}
+    clearTimeout(tm);
+    const go=()=>{clearTimeout(tm);au.removeEventListener("playing",go);r0()};
+    au.addEventListener("playing",go,{once:true});tm=setTimeout(go,3000);
+    return x;
+  };
+  render=function(){if(hold)return;return r0.apply(this,arguments)};
+})();
 /* ===== SHARE LINKS THAT WORK FOR PEOPLE IN OTHER COUNTRIES ===== */
 const SH=new URLSearchParams(location.search);   /* read the link before the app clears it */
 function shareUrl(s){
@@ -7897,20 +7954,21 @@ html[data-theme="dark"] #rv .s.err{background:#4a2220;color:#ffb3af}
     if(!s||s.type!=="radio"||rec)return;
     if(wv){fb("Video recording needs Chrome. Open menya.site in Chrome and try again.","err",7000);return}
     if(blocked()){fb("Video recording is paused on this phone because it crashed the page last time. Try again tomorrow or in Chrome.","err",8000);return}
-    if(au.paused||au.readyState<2){fb("Wait until the radio is playing, then tap record.","err",5000);return}
+    if(false){au._rt=s.url;try{const m=JSON.parse(localStorage.getItem("nocors")||"{}");delete m[new URL(s.url).host];localStorage.setItem("nocors",JSON.stringify(m))}catch(e){}au._nocors=false;au.crossOrigin="anonymous";au.src=s.url;au.play().catch(()=>{});fb("Preparing this station for recording. Tap record again in 5 seconds.","ok",6000);return}
+if(au.paused||au.readyState<2){fb("Wait until the radio is playing, then tap record.","err",5000);return}
     const cap=au.captureStream||au.mozCaptureStream;
-    if(!window.MediaRecorder||!cap||!HTMLCanvasElement.prototype.captureStream){fb("Video recording is not supported in this browser. Open Menya in Chrome.","err",7000);return}
+    if(!window.MediaRecorder||!cap){fb("Recording is not supported in this browser. Open Menya in Chrome.","err",7000);return}
     let ms;try{ms=cap.call(au)}catch(e){fb("This station cannot be recorded.","err",6000);return}
     const at=ms.getAudioTracks();
     if(!at.length){fb("This station cannot be recorded.","err",6000);return}
     const MR=window.MediaRecorder;
-    const mt=["video/mp4;codecs=avc1.42E01E,mp4a.40.2","video/mp4","video/webm;codecs=vp8,opus","video/webm"].find(t=>MR.isTypeSupported(t));
+    const mt=["audio/webm;codecs=opus","audio/webm","audio/mp4"].find(t=>MR.isTypeSupported(t));
     if(!mt){fb("This browser cannot make a video. Open Menya in Chrome.","err",7000);return}
     let r;
     try{
       cvs=makeCard(s);
-      const vt=cvs.cv.captureStream(10).getVideoTracks();
-      if(!vt.length)throw 0;
+      cvs=null;const vt=[];
+      
       try{localStorage.setItem("vrc",String(Date.now()))}catch(e){}
       let aTracks=at;
 try{
@@ -7933,7 +7991,7 @@ r=new MR(new MediaStream(aTracks.concat(vt)),{mimeType:mt,audioBitsPerSecond:640
     at.forEach(t=>t.addEventListener("ended",()=>{if(rec)stopRec()}));
     watch(at);
     rec.start(1000);ui(true);
-    fb("Recording · "+fmt(MAX)+" left","rec",0,true);
+    fb("Recording · "+fmt(MAX)+" left","rec",0,true);[400,1200,2500].forEach(t=>setTimeout(()=>{if(rec&&au.paused)au.play().catch(()=>{})},t));
     drawIv=setInterval(()=>{try{if(cvs){cvs.draw();const g2=cvs.cv.getContext("2d");g2.fillStyle=(++window._rf%2)?"#fefefe":"#fdfdfd";g2.fillRect(0,0,2,2)}}catch(e){}},200);
     tick=setInterval(()=>{
       if(!rec)return;
@@ -7942,7 +8000,7 @@ r=new MR(new MediaStream(aTracks.concat(vt)),{mimeType:mt,audioBitsPerSecond:640
         const left=Math.max(0,MAX-secs);
         fb("Recording · "+fmt(left)+" left","rec",0,true);
         
-        if(secs>=MAX){fb("5 minute limit reached. Preparing your video…","ok",0,false);stopRec()}
+        if(secs>=MAX){fb("5 minute limit reached. Preparing your recording…","ok",0,false);stopRec()}
       }else if(rec.state==="paused"){fb("Paused · radio is paused","pause",0,true)}
     },1000);
   }
@@ -7956,12 +8014,18 @@ try { if (window._rac) window._rac.close() } catch (e) {} window._rac = null;
     rec=null;cvs=null;chunks=[];secs=0;ui(false);
     if(false){fb("This station gives no sound to record, so nothing was saved. Try another station.","err",8000);return}
     if(n<3){fb("Recording too short, not saved.","err",6000);return}
-    const blob=new Blob(data,{type:mt});
+    const blob=new Blob(data,{type:/mp4/.test(mt)?"audio/mp4":"audio/webm"});
     if(!blob.size){fb("The video came out empty, so nothing was saved. Try again.","err",7000);return}
-    wasOn=!au.paused;
+    wasOn=false;if(false)
     try{au.pause()}catch(e){}
-    fb("Video ready. The radio is stopped so you can test it.","ok",6000);
-    showCard(blob,mt,n,s);
+    fb("Recording saved. Check your Downloads.","ok",6000);
+    (()=>{
+  const ext=/mp4/.test(mt)?"m4a":"webm",d=new Date(),p=x=>String(x).padStart(2,"0");
+  const fname=(String(s.name).replace(/[^\w\u00C0-\u024F-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40)||"radio")+"_"+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"_"+p(d.getHours())+"-"+p(d.getMinutes())+"."+ext;
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=fname;a.style.display="none";B.appendChild(a);a.click();
+  setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000);
+})();
   }
   b.onclick=e=>{e.stopPropagation();rec?stopRec():start()};
 
@@ -11347,6 +11411,259 @@ window.drawMonkey=function(g,w,h,t,on,sm,fd,ana){
     g.beginPath();g.moveTo(x,cy-half);g.lineTo(x,cy+half+0.01);g.stroke();
   }
 };
+</script>
+<script>
+/* pulse only when sound is really playing */
+(()=>{const dm=window.drawMonkey;
+window.drawMonkey=function(g,w,h,t,on,sm,fd,ana){
+  const real=!!on&&!au.paused&&!au.ended&&au.readyState>=3&&!au.seeking;
+  dm(g,w,h,t,real,real?sm:0,fd,real?ana:null);
+};})();
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+<style>
+#rsv{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:500;width:min(420px,calc(100% - 24px));display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px;background:var(--bg);color:var(--ink);box-shadow:0 0 0 100vmax rgba(0,0,0,.5),0 12px 40px rgba(0,0,0,.4);font-family:var(--font)}
+#rsv .h{display:flex;gap:10px;align-items:center}
+#rsv .t{flex:1;min-width:0}
+#rsv .n{font:500 18px/24px var(--font);overflow-wrap:anywhere}
+#rsv .m{font:400 14px/20px var(--font);color:var(--mute)}
+#rsv .x{width:36px;height:36px;color:var(--mute);font-size:16px}
+#rsv audio{width:100%}
+#rsv .sv{height:50px;border-radius:14px;background:var(--accent);color:#fff;font:500 16px/20px var(--font)}
+html[data-theme="dark"] #rsv .sv{background:#f1f3f6;color:#121418}
+#rsv .s{padding:12px 14px;border-radius:12px;font:500 15px/21px var(--font);overflow-wrap:anywhere}
+#rsv .s.ok{background:#e3f5ea;color:#14663a}
+#rsv .s.err{background:#fce8e6;color:#b3261e}
+#rvfb{left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:calc(100% - 28px);align-items:center;padding:11px 18px;border-radius:999px;background:#121418;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font:500 14px/20px var(--font)}
+#rvfb .d{margin-top:0}
+#rv,#rc2,#rc3,#rc4,#reccard{display:none!important}
+</style>
+<script>
+/* ===== RADIO RECORDER FINAL: MP3/AAC file, radio untouched ===== */
+(()=>{
+  const $=id=>document.getElementById(id),B=document.body,MAX=300,MAXB=14*1048576;
+  const wv=/; wv\)|FBAN|FBAV|Instagram/i.test(navigator.userAgent);
+  const old=$("recbtn");if(!old)return;
+  const b=old.cloneNode(true);b.id="recbtn";b.className="";b.type="button";old.replaceWith(b);
+
+  const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+  const pill=$("rvfb");let pt=0,rec=null,tick=0,urls=[];
+  const fb=(t,k,ms)=>{if(!pill)return;clearTimeout(pt);pill.className="show "+(k||"");pill.lastChild.textContent=t;if(ms)pt=setTimeout(()=>{pill.className=""},ms)};
+  const ui=(on,s)=>{b.classList.toggle("on",on);const r=b.querySelector(".rt");if(r)r.textContent=fmt(s||0)};
+  const extOf=t=>/aac/.test(t)?"aac":/mp4|m4a/.test(t)?"m4a":/ogg/.test(t)?"ogg":"mp3";
+
+  /* A) copy the stream itself: real MP3 or AAC, does not touch the player */
+  async function viaFetch(job){
+    const parts=[];let size=0,type="audio/mpeg";
+    try{
+      const r=await fetch(job.s.url,{signal:job.ctl.signal,cache:"no-store"});
+      const ct=(r.headers.get("content-type")||"").split(";")[0].trim().toLowerCase();
+      if(!r.ok||!r.body||/mpegurl|html|json|text|xml/.test(ct))return null;
+      if(ct&&ct!=="application/octet-stream")type=ct;
+      job.mode="fetch";
+      const rd=r.body.getReader();
+      for(;;){const x=await rd.read();if(x.done)break;parts.push(x.value);size+=x.value.length;if(size>=MAXB)break}
+      try{rd.cancel()}catch(e){}
+    }catch(e){}
+    return size>8000?{blob:new Blob(parts,{type}),type}:null;
+  }
+
+  /* B) fallback: listen to the playing audio and encode MP3 */
+  function viaCapture(job){
+    return new Promise(res=>{
+      const cap=au.captureStream||au.mozCaptureStream;
+      if(!cap||!window.lamejs||au.paused){res(null);return}
+      let ms;try{ms=cap.call(au)}catch(e){res(null);return}
+      const tr=ms.getAudioTracks();if(!tr.length){res(null);return}
+      const AC=window.AudioContext||window.webkitAudioContext;
+      let ctx,src,sp,enc;
+      try{
+        ctx=new AC();if(ctx.resume)ctx.resume();
+        src=ctx.createMediaStreamSource(new MediaStream(tr));
+        sp=ctx.createScriptProcessor(4096,1,1);
+        const mute=ctx.createGain();mute.gain.value=0;
+        src.connect(sp);sp.connect(mute);mute.connect(ctx.destination);
+        enc=new lamejs.Mp3Encoder(1,ctx.sampleRate,96);
+      }catch(e){res(null);return}
+      const parts=[];job.mode="cap";
+      sp.onaudioprocess=e=>{
+        if(au.paused)return;
+        const f=e.inputBuffer.getChannelData(0),n=f.length,i16=new Int16Array(n);let pk=0;
+        for(let i=0;i<n;i++){const v=Math.max(-1,Math.min(1,f[i]));if(Math.abs(v)>pk)pk=Math.abs(v);i16[i]=v<0?v*32768:v*32767}
+        if(pk>.002)job.heard=true;
+        const d=enc.encodeBuffer(i16);if(d.length)parts.push(new Uint8Array(d));
+      };
+      job.stop=()=>{
+        job.stopped=true;
+        try{sp.onaudioprocess=null;src.disconnect();sp.disconnect()}catch(e){}
+        try{const d=enc.flush();if(d.length)parts.push(new Uint8Array(d))}catch(e){}
+        try{ctx.close()}catch(e){}
+        res(job.heard&&parts.length?{blob:new Blob(parts,{type:"audio/mpeg"}),type:"audio/mpeg"}:null);
+      };
+    });
+  }
+
+  function begin(){
+    const s=cur>=0?all[cur]:null;
+    if(!s||s.type!=="radio"||rec)return;
+    const job={s,ctl:new AbortController(),stopped:false,heard:false,mode:"",t0:Date.now()};
+    job.stop=()=>{job.stopped=true;job.ctl.abort()};
+    rec=job;closeCard();ui(true,0);fb("Recording · "+fmt(MAX)+" left","rec",0);
+    tick=setInterval(()=>{
+      const n=Math.floor((Date.now()-job.t0)/1000);ui(true,n);
+      fb("Recording · "+fmt(Math.max(0,MAX-n))+" left","rec",0);
+      if(n>=MAX||(job.mode==="cap"&&!job.heard&&n>=10))stop();
+    },1000);
+    (async()=>{
+      let r=null;
+      if(!/\.m3u8/i.test(s.url))r=await viaFetch(job);
+      if(!r&&!job.stopped)r=await viaCapture(job);
+      finish(job,r);
+    })();
+  }
+  function stop(){if(rec&&!rec.stopped)rec.stop()}
+  function finish(job,r){
+    clearInterval(tick);
+    const n=Math.max(1,Math.round((Date.now()-job.t0)/1000));
+    if(rec===job)rec=null;ui(false,0);
+    if(!r||!r.blob.size){fb("This station does not allow recording. Try another one.","err",8000);return}
+    if(n<3){fb("Recording too short, not saved.","err",6000);return}
+    save(r.blob,r.type,n,job.s);
+  }
+  b.onclick=e=>{e.stopPropagation();rec?stop():begin()};
+
+  /* stop and save if the player closes or the station changes */
+  setInterval(()=>{
+    if(!rec)return;
+    const s=cur>=0?all[cur]:null;
+    if(!B.classList.contains("stage-on")||!s||s.id!==rec.s.id)stop();
+  },700);
+
+  /* stop = save straight to Downloads, no card */
+  function save(blob,type,n,s){
+    const ext=extOf(type),d=new Date(),p=x=>String(x).padStart(2,"0");
+    const fname=(String(s.name).replace(/[^\w\u00C0-\u024F-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40)||"radio")
+      +"_"+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"_"+p(d.getHours())+"-"+p(d.getMinutes())+"."+ext;
+    const url=URL.createObjectURL(blob);
+    const go=()=>{
+      const a=document.createElement("a");a.href=url;a.download=fname;a.style.display="none";
+      B.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},4000);
+      fb("Saved to Downloads · "+fmt(n),"ok",5000);
+    };
+    try{
+      const file=new File([blob],fname,{type:type.split(";")[0]});
+      if(wv&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:fname}).then(()=>{fb("Done. Choose Save to Files.","ok",5000)}).catch(e=>{if(!e||e.name!=="AbortError")go()});
+        return;
+      }
+    }catch(e){}
+    go();
+  }
+
+  /* result card */
+  function closeCard(){
+    const c=$("rsv");if(c){const a=c.querySelector("audio");try{a&&a.pause()}catch(e){}c.remove()}
+    urls.forEach(u=>setTimeout(()=>URL.revokeObjectURL(u),2000));urls=[];
+  }
+  function card(blob,type,n,s){
+    closeCard();
+    const ext=extOf(type),d=new Date(),p=x=>String(x).padStart(2,"0");
+    const fname=(String(s.name).replace(/[^\w\u00C0-\u024F-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40)||"radio")
+      +"_"+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"_"+p(d.getHours())+"-"+p(d.getMinutes())+"."+ext;
+    const size=blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB";
+    const url=URL.createObjectURL(blob);urls.push(url);
+    const c=document.createElement("div");c.id="rsv";
+    c.innerHTML='<div class="h"><div class="t"><div class="n"></div><div class="m"></div></div><button type="button" class="x" aria-label="Close">✕</button></div><audio controls preload="metadata"></audio><button type="button" class="sv">Save to phone</button><div class="s" hidden></div>';
+    c.querySelector(".n").textContent=s.name;
+    c.querySelector(".m").textContent=ext.toUpperCase()+" · "+fmt(n)+" · "+size;
+    const pl=c.querySelector("audio");pl.src=url;
+    const say=(t,k)=>{const e=c.querySelector(".s");e.hidden=false;e.className="s "+k;e.textContent=t};
+    /* radio waits while you listen, then reconnects live */
+    let was=false;
+    pl.addEventListener("play",()=>{if(!au.paused){was=true;au.pause()}});
+    const back=()=>{
+      if(!was)return;was=false;
+      if(!B.classList.contains("stage-on")||cur<0)return;
+      try{if(!hls)au.load();au.play().catch(()=>{})}catch(e){}
+    };
+    pl.addEventListener("pause",back);pl.addEventListener("ended",back);
+    c.querySelector(".x").onclick=()=>{try{pl.pause()}catch(e){}closeCard();back()};
+    c.querySelector(".sv").onclick=async()=>{
+      say("Saving…","ok");
+      try{
+        const file=new File([blob],fname,{type:type.split(";")[0]});
+        if(wv&&navigator.canShare&&navigator.canShare({files:[file]})){
+          await navigator.share({files:[file],title:fname});
+          say("Done. Choose Save to Files to keep it.","ok");return;
+        }
+        const a=document.createElement("a");a.href=url;a.download=fname;a.style.display="none";
+        B.appendChild(a);a.click();setTimeout(()=>a.remove(),3000);
+        say("Saved to your Downloads: "+fname,"ok");
+      }catch(e){
+        say(e&&e.name==="AbortError"?"Save cancelled. Tap Save to try again.":"Save failed. Open Menya in Chrome and try again.","err");
+      }
+    };
+    B.appendChild(c);
+  }
+})();
+</script>
+<script>
+/* ===== SHOW LOVE ===== */
+(()=>{
+const B=document.body,$=id=>document.getElementById(id);
+const btn=$("loveBtn");if(!btn)return;
+const CODE="*182*8*1*2338869#";
+const S=[
+["1. Connecting the World Through One Platform",[
+"The world is full of stories, cultures, knowledge, and information waiting to be discovered. However, accessing television channels from different countries is not always easy. MENYA changes this experience by bringing television channels from around the world together in one accessible platform.",
+"With coverage spanning more than 180 countries, MENYA helps people explore international television, discover different cultures, follow global events, and stay connected to what is happening beyond their borders.",
+"Whether someone wants to watch local news, explore international broadcasting, follow educational programmes, or discover entertainment from another country, MENYA makes global television more accessible.",
+"Our vision is simple: make the world more connected by making television from different parts of the world easier to discover and access."]],
+["2. Solving Real Problems and Making Information Accessible",[
+"Access to information is important for every society. Yet many people face difficulties finding television channels from other countries, especially when they want to follow international news, understand different cultures, or access information beyond their local broadcasting environment.",
+"MENYA helps address these challenges by bringing international television channels together in one place.",
+"It reduces the need to search across multiple websites and platforms to discover television from different countries. It also makes it easier for people living abroad to remain connected to information and broadcasting from their home countries.",
+"For students, researchers, journalists, travellers, and curious individuals, MENYA creates an opportunity to explore perspectives from different parts of the world.",
+"By improving access to international broadcasting, MENYA supports a more informed, connected, and culturally aware society."]],
+["3. Creating Benefits for Individuals and Society",[
+"MENYA is more than a television streaming platform. It is an opportunity to connect people with the wider world.",
+"It helps individuals discover international news, learn about other societies, explore different languages, and understand global events from different perspectives.",
+"It can help students discover educational content, help people abroad stay connected to their home countries, and allow viewers to explore television beyond geographical boundaries.",
+"For society, greater access to international broadcasting can encourage cultural understanding, information sharing, curiosity, and awareness of global developments.",
+"MENYA also creates an opportunity for people to discover broadcasters they might never have encountered before.",
+"Our ambition is to make international television discovery easier, more accessible, and more inclusive."]]
+];
+let h = '<div class="lv-w"><div class="lv-top"><b>Show love</b></div>' +
+  '<div class="lv-intro"><p class="lv-lead">Menya fixes a problem millions of people face every day.</p>' +
+  '<p>Finding good television and radio from around the world used to mean searching endlessly, paying for subscriptions, or missing home while living far away. Menya brings it all into one place, free for everyone.</p>' +
+  '<p>Take a few minutes to read why Menya matters. It might change how you see it.</p></div>';
+S.forEach(s=>{h+="<h2>"+s[0]+"</h2>"+s[1].map(p=>"<p>"+p+"</p>").join("")});
+h+='<p class="lv-tag">MENYA: One platform. 180+ countries. A world of perspectives.</p>'
+ +'<div class="lv-card"><h2>Show love</h2><p>Show love and donate to Menya to continue helping millions for free.</p>'
+ +'<p>Use mobile money code</p><div class="lv-code">'+CODE+'</div>'
+ +'<a class="zbtn" href="tel:'+encodeURIComponent(CODE)+'">Dial to donate</a>'
+ +'<button type="button" class="zbtn alt" id="lvCopy">Copy code</button></div></div>';
+const o=document.createElement("div");o.id="love";o.setAttribute("aria-hidden","true");o.innerHTML=h;B.appendChild(o);
+
+function open(){
+  if(B.classList.contains("love-on"))return;
+  try{history.pushState({ov:"love"},"")}catch(e){}
+  B.classList.add("love-on");o.setAttribute("aria-hidden","false");o.scrollTop=0;
+  try{gtag("event","show_love")}catch(e){}
+}
+function close(){
+  if(!B.classList.contains("love-on"))return;
+  B.classList.remove("love-on");o.setAttribute("aria-hidden","true");
+}
+btn.onclick=open;
+
+addEventListener("popstate",close);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+$("lvCopy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(CODE);notify("Code copied. Thank you for showing love.")}
+  catch(e){notify("Dial "+CODE+" to donate.")}
+};
+})();
 </script>
 </body>
 </html>
