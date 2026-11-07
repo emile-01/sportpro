@@ -9,7 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--font:"Figtree",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--bg:#fff;--ink:#0f1115;--mute:#5b6372;--tint:#f1f3f5;--tint2:#e7eaee;--divider:#e8eaee;--band:#eceef1;--bad:#c5221f;--good:#137333;--r:12px}
-@media(prefers-color-scheme:dark){:root{--bg:#121418;--ink:#f1f3f6;--mute:#a3abb8;--tint:#23262d;--tint2:#2e323a;--divider:#2c3038;--band:#1a1d22;--bad:#ff6b66;--good:#6fdc8c}}
+:root[data-theme=black]{color-scheme:dark;--bg:#000;--ink:#fff;--mute:#9a9aa2;--tint:#111113;--tint2:#1d1d21;--divider:#27272b;--band:#09090a;--bad:#ff6b66;--good:#6fdc8c}
+@media print{:root[data-theme=black]{color-scheme:light;--bg:#fff;--ink:#0f1115;--mute:#5b6372;--tint:#f1f3f5;--tint2:#e7eaee;--divider:#e8eaee;--band:#eceef1;--bad:#c5221f;--good:#137333}}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/24px var(--font);-webkit-font-smoothing:antialiased}
 html{overflow-x:hidden;overscroll-behavior-x:none}
@@ -238,17 +239,66 @@ input,select,textarea{font:400 16px/24px var(--font)}
 .tw:not(.rt) th:last-child,.tw:not(.rt) td:last-child{border-right:1px solid var(--line,var(--divider))!important}
 .tw:not(.rt) th:last-child{border-top-right-radius:12px}
 .tw:not(.rt) tr:last-child td:last-child{border-bottom-right-radius:12px}
+.dlg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+.dlg .dbox{background:var(--bg);color:var(--ink);border-radius:var(--r);padding:20px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.dlg h3{font:600 18px/26px var(--font);margin:0}
+.dlg p{margin:0;color:var(--mute);font:400 15px/22px var(--font)}
+.dlg label{display:flex;flex-direction:column;gap:6px;font:400 14px/20px var(--font);color:var(--mute)}
+.dlg .dact{display:flex;gap:10px}
+.dlg .dact .btn{flex:1}
+.dlg .btn.dng{background:var(--bad);color:#fff}
+#bbspin{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:99}
+#bbspin i{width:46px;height:46px;border:4px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:bbs .7s linear infinite}
+@keyframes bbs{to{transform:rotate(360deg)}}
+.mi.th.sun{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E")}
+.mi.th{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E")}
+.mi.out{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpath d='m16 17 5-5-5-5M21 12H9'/%3E%3C/svg%3E")}
 </style>
 </head>
 <body>
 <div class="hdr"><b onclick="authView='land';if(!D)render()" style="cursor:pointer">Biz Books</b><span id="who"></span></div>
 <div id="nav"></div>
 <div class="main" id="app"></div>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-46Y1K4H98M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-46Y1K4H98M')</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const K='bb_db',SK='bb_sess';
 let db=JSON.parse(localStorage.getItem(K)||'{"u":{}}'),me=localStorage.getItem(SK),D=null,page='home',authTab='in',authView='land';
 if(me&&db.u[me])D=db.u[me].d;else me=null;
-const save=()=>localStorage.setItem(K,JSON.stringify(db));
+firebase.initializeApp({apiKey:"AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",authDomain:"sportpre-69123.firebaseapp.com",projectId:"sportpre-69123",storageBucket:"sportpre-69123.firebasestorage.app",messagingSenderId:"210702903592",appId:"1:210702903592:web:63ea951f2243f52de5c81d"});
+const bbAuth=firebase.auth(),bbDb=firebase.firestore();let bbBusy=0,_t,_sp;
+const spin=on=>{clearTimeout(_sp);let s=document.getElementById('bbspin');if(!on){s&&s.remove();return}if(!s){s=document.createElement('div');s.id='bbspin';s.innerHTML='<i></i>';document.body.appendChild(s)}_sp=setTimeout(()=>spin(0),20000)};
+const authErr=x=>({'auth/email-already-in-use':'Account already exists. Log in instead.','auth/invalid-credential':'Wrong email or password','auth/wrong-password':'Wrong email or password','auth/user-not-found':'Wrong email or password','auth/weak-password':'Password must be at least 6 characters','auth/invalid-email':'Enter a valid email','auth/too-many-requests':'Too many tries. Wait a bit and try again','auth/network-request-failed':'No internet connection','auth/operation-not-allowed':'Email sign-in is not turned on in Firebase'}[x&&x.code]||('Something went wrong ('+((x&&(x.code||x.message))||'unknown')+')'));
+const cloudOn=()=>!!(db.u[me]||{}).cloud;
+const cloudPush=()=>{const u=bbAuth.currentUser;if(!u||!D)return Promise.reject({code:'auth/no-user'});return bbDb.collection('bb_users').doc(u.uid).set({email:u.email,name:(db.u[me]||{}).name||'',d:JSON.stringify(D),upd:firebase.firestore.FieldValue.serverTimestamp()},{merge:true})};
+const cloud=()=>{clearTimeout(_t);_t=setTimeout(()=>{if(cloudOn())cloudPush().catch(x=>console.warn('sync',x.code));teamPub()},600)};
+let tw=[],TM=[],WS='',WT=null;
+const isW=()=>((db.u[me]||{}).role==='worker'),WPAGES=[['wk','Work']];
+const FV=()=>firebase.firestore.FieldValue.serverTimestamp();
+const teamDoc=c=>({code:c,name:D.biz.name,cur:D.biz.cur,products:D.products.map(p=>({id:p.id,name:p.name,kind:p.kind,price:p.price})),upd:FV()});
+const teamPub=()=>{const u=bbAuth.currentUser,o=db.u[me]||{};if(!u||!D||!o.own)return;bbDb.collection('bb_teams').doc(u.uid).set(teamDoc(o.own.code)).catch(()=>{})};
+const teamLink=()=>location.href.split(/[?#]/)[0]+'?join='+db.u[me].own.code;
+const tmList=()=>TM.length?TM.map(w=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--divider)"><div><b>${esc(w.name)}</b><br><small>${esc(w.email)} · ${w.status==='approved'?'Approved':'Waiting'}</small></div><div style="display:flex;gap:6px">${w.status==='approved'?`<button class="btn sm alt" onclick="F.tmDel('${w.id}')">Remove</button>`:`<button class="btn sm" onclick="F.tmOk('${w.id}')">Approve</button><button class="btn sm alt" onclick="F.tmDel('${w.id}')">Reject</button>`}</div></div>`).join(''):'<p>No one has asked to join yet.</p>';
+const startTeam=()=>{tw.forEach(f=>f());tw=[];TM=[];WS='';WT=null;const o=db.u[me]||{},u=bbAuth.currentUser;if(!u||!D)return;
+ if(o.role==='worker'){const t=o.team;let on=0;
+  tw.push(bbDb.collection('bb_teams').doc(t.owner).collection('members').doc(u.uid).onSnapshot(s=>{const ns=s.exists?s.data().status:'removed';if(ns===WS)return;WS=ns;
+   if(ns==='approved'&&!on){on=1;tw.push(bbDb.collection('bb_teams').doc(t.owner).onSnapshot(q=>{const f=!WT;WT=q.exists?q.data():null;if(f)render()},()=>{}))}
+   render()},()=>{}));return}
+ if(!o.own)return;const tr=bbDb.collection('bb_teams').doc(u.uid);teamPub();
+ tw.push(tr.collection('members').onSnapshot(s=>{TM=s.docs.map(d=>({id:d.id,...d.data()}));const el=$('tmlist');if(el)el.innerHTML=tmList()},()=>{}));
+ tw.push(tr.collection('entries').onSnapshot(s=>{let n=0;const rf=[];
+  s.docs.forEach(d=>{const x=d.data(),r=x.rec||{},p=D.products.find(y=>y.id===r.pid),by=String(x.byName||'Worker').slice(0,40);rf.push(d.ref);
+   const ok=p&&+r.qty>0&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&typeof r.id==='string';
+   if(ok&&x.kind==='sale'&&+r.price>=0&&!D.sales.some(y=>y.id===r.id)){D.sales.push({id:r.id,date:r.date,pid:p.id,name:p.name+' · '+by,qty:+r.qty,price:+r.price,cost:p.kind==='product'?p.cost:0,pay:r.pay==='credit'?'credit':'cash'});n++}
+   if(ok&&x.kind==='damage'&&!D.damages.some(y=>y.id===r.id)){D.damages.push({id:r.id,date:r.date,pid:p.id,name:p.name,qty:+r.qty,cost:p.cost,why:String(r.why||'').slice(0,100)+' · '+by});n++}
+  });
+  if(rf.length){if(n){save();toast(n+' new from your team');render()}rf.forEach(r=>r.delete().catch(()=>{}))}},()=>{}));
+};
+const save=()=>{if(D)D._u=Date.now();localStorage.setItem(K,JSON.stringify(db));cloud()};
+const track=(ev,extra)=>{try{const nv=!localStorage.bb_vid;const vid=localStorage.bb_vid||(localStorage.bb_vid=Math.random().toString(36).slice(2)+Date.now().toString(36));bbDb.collection('bb_visits').add(Object.assign({vid,ev,nv,page:location.pathname,ref:document.referrer||'',lang:navigator.language||'',tz:Intl.DateTimeFormat().resolvedOptions().timeZone||'',scr:screen.width+'x'+screen.height,ua:navigator.userAgent.slice(0,200),uid:bbAuth.currentUser?bbAuth.currentUser.uid:'',t:firebase.firestore.FieldValue.serverTimestamp()},extra||{})).catch(()=>{});gtag('event',ev,extra)}catch(e){}};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Math.random().toString(36).slice(2,9);
 const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
@@ -257,7 +307,15 @@ const m=n=>{n=+n||0;return(n<0?'-':'')+Math.abs(n).toLocaleString(undefined,{min
 const cls=n=>n<0?'neg':'';
 const $=id=>document.getElementById(id);
 const fd=e=>Object.fromEntries(new FormData(e.target));
-const toast=t=>{const x=document.createElement('div');x.className='toast';x.textContent=t;document.body.appendChild(x);setTimeout(()=>x.remove(),2200)};
+const dlg=o=>new Promise(res=>{
+ document.querySelectorAll('.mnu.open').forEach(m=>m.classList.remove('open'));
+ const w=document.createElement('div');w.className='dlg';
+ w.innerHTML=`<form class="dbox"><h3>${esc(o.title)}</h3>${o.text?`<p>${esc(o.text)}</p>`:''}${(o.fields||[]).map((f,i)=>`<label>${esc(f.label)}<input type="${f.type||'text'}" ${f.type==='number'?`inputmode="decimal" step="any" min="${f.min??0}"`:''} value="${esc(String(f.value??''))}" required></label>`).join('')}<div class="dact"><button type="button" class="btn alt" data-x>Cancel</button><button class="btn${o.danger?' dng':''}">${esc(o.ok||'OK')}</button></div></form>`;
+ const x=v=>{w.remove();res(v)};
+ w.onclick=e=>{if(e.target===w||e.target.hasAttribute('data-x'))x(null)};
+ w.querySelector('form').onsubmit=e=>{e.preventDefault();x([...w.querySelectorAll('input')].map(i=>i.value))};
+ document.body.appendChild(w);const i=w.querySelector('input');i&&i.focus()});
+const toast=t=>{spin(0);const x=document.createElement('div');x.className='toast';x.textContent=t;document.body.appendChild(x);setTimeout(()=>x.remove(),2200)};
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('bb:'+s)))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const COUNTRIES={Africa:"Algeria|DZD,Angola|AOA,Benin|XOF,Botswana|BWP,Burkina Faso|XOF,Burundi|BIF,Cabo Verde|CVE,Cameroon|XAF,Central African Republic|XAF,Chad|XAF,Comoros|KMF,Congo (Brazzaville)|XAF,DR Congo|CDF,Côte d'Ivoire|XOF,Djibouti|DJF,Egypt|EGP,Equatorial Guinea|XAF,Eritrea|ERN,Eswatini|SZL,Ethiopia|ETB,Gabon|XAF,Gambia|GMD,Ghana|GHS,Guinea|GNF,Guinea-Bissau|XOF,Kenya|KES,Lesotho|LSL,Liberia|LRD,Libya|LYD,Madagascar|MGA,Malawi|MWK,Mali|XOF,Mauritania|MRU,Mauritius|MUR,Morocco|MAD,Mozambique|MZN,Namibia|NAD,Niger|XOF,Nigeria|NGN,Rwanda|RWF,São Tomé and Príncipe|STN,Senegal|XOF,Seychelles|SCR,Sierra Leone|SLE,Somalia|SOS,South Africa|ZAR,South Sudan|SSP,Sudan|SDG,Tanzania|TZS,Togo|XOF,Tunisia|TND,Uganda|UGX,Zambia|ZMW,Zimbabwe|ZWG",Asia:"Bangladesh|BDT,China|CNY,India|INR,Indonesia|IDR,Japan|JPY,Malaysia|MYR,Pakistan|PKR,Philippines|PHP,Saudi Arabia|SAR,Singapore|SGD,Thailand|THB,Turkey|TRY,United Arab Emirates|AED,Vietnam|VND,Other Asia|USD",Europe:"France|EUR,Germany|EUR,Italy|EUR,Netherlands|EUR,Poland|PLN,Spain|EUR,Sweden|SEK,Switzerland|CHF,United Kingdom|GBP,Other Europe|EUR","North America":"Canada|CAD,Mexico|MXN,United States|USD,Other North America|USD","South America":"Argentina|ARS,Brazil|BRL,Chile|CLP,Colombia|COP,Peru|PEN,Other South America|USD",Oceania:"Australia|AUD,New Zealand|NZD,Other Oceania|USD"};
 const countryOpts=()=>Object.entries(COUNTRIES).map(([g,l])=>`<optgroup label="${g}">${l.split(',').map(x=>{const[n,c]=x.split('|');return`<option value="${esc(n)}" data-c="${c}">${esc(n)}</option>`}).join('')}</optgroup>`).join('');
@@ -289,8 +347,8 @@ const closeMn=()=>document.querySelectorAll('.mnu.open').forEach(x=>x.classList.
 const PAGES=[['home','Home'],['sell','Sales'],['products','Products'],['damaged','Damaged'],['cash','Cashbook'],['reports','Reports'],['settings','Settings']];
 function render(){
  $('who').innerHTML=D?`<button class="mbtn" onclick="tm()" aria-label="Menu"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>`:'';
- $('nav').innerHTML=D?`<div class="mback" id="mback" onclick="tm()"></div><div class="menu" id="menu">${PAGES.map(([k,n])=>`<button class="mi ${page===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}<button class="mi out" onclick="F.logout()">Log out</button></div>`:'';
- $('app').innerHTML=D?V[page]():V.auth();$('app').dataset.v=D?'':authView;document.querySelector('.hdr b').textContent=!D&&authView==='form'?(authTab==='in'?'Log in to your account':'Create your account'):'Biz Books';
+ $('nav').innerHTML=D?`<div class="mback" id="mback" onclick="tm()"></div><div class="menu" id="menu">${(isW()?WPAGES:PAGES).map(([k,n])=>`<button class="mi ${page===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}<button class="mi th${document.documentElement.dataset.theme==='black'?' sun':''}" onclick="setTheme(document.documentElement.dataset.theme==='black'?'light':'black');render()">${document.documentElement.dataset.theme==='black'?'Light theme':'Black theme'}</button><button class="mi out" onclick="F.logout()">Log out</button></div>`:'';
+ $('app').innerHTML=D?V[isW()?'wk':page]():V.auth();$('app').dataset.v=D?'':authView;document.querySelector('.hdr b').textContent=!D&&authView==='form'?(authTab==='in'?'Log in to your account':'Create your account'):'Biz Books';
  if(!D)bindCountry();
  window.scrollTo(0,0);skin()}
 const place=(o,b,w)=>{const r=b.getBoundingClientRect();w=Math.min(w,innerWidth-24);o.style.width=w+'px';const h=o.offsetHeight;let t=r.bottom+6;if(t+h>innerHeight-8&&r.top-h-6>8)t=r.top-h-6;o.style.left=Math.min(Math.max(12,r.left),innerWidth-w-12)+scrollX+'px';o.style.top=t+scrollY+'px'};
@@ -308,6 +366,7 @@ for(let d=1;d<=dm;d++){const s=iso(y,m,d);g+=`<button type="button" class="dy ${
 o.innerHTML=`<div class="ch"><button type="button" data-n="-1">‹</button><b>${new Date(y,m,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}</b><button type="button" data-n="1">›</button></div><div class="cw">${'SMTWTFS'.split('').map(x=>`<span>${x}</span>`).join('')}</div><div class="cg">${g}</div><div class="ca"><button type="button" data-t="1">Today</button><button type="button" data-x="1">Cancel</button></div>`;place(o,b,320)};
 o.onclick=e=>{const t=e.target.closest('button');if(!t)return;if(t.dataset.n){m+=+t.dataset.n;if(m<0){m=11;y--}if(m>11){m=0;y++}draw()}
 else if(t.dataset.d||t.dataset.t){el.value=t.dataset.d||td;el.dispatchEvent(new Event('change',{bubbles:true}));lab();o.remove()}else if(t.dataset.x)o.remove()};draw()}
+const setTheme=t=>{try{localStorage.bb_theme=t}catch(e){}document.documentElement.dataset.theme=t;const m=document.getElementById('tc');if(m)m.content=t==='black'?'#000000':'#ffffff';document.querySelectorAll('[data-th]').forEach(b=>b.classList.toggle('alt',b.dataset.th!==t))};
 const go=p=>{page=p;render()};
 const tm=()=>{$('menu').classList.toggle('open');$('mback').classList.toggle('open')};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('menu')&&$('menu').classList.contains('open'))tm()});
@@ -317,10 +376,19 @@ const prodOpts=()=>D.products.map(p=>`<option value="${p.id}">${esc(p.name)}${p.
 const C=()=>D.biz.cur;
 
 const V={
-auth(){return`<div class="hero"><h1>Know your business. Every day.</h1><p>Free bookkeeping for small businesses in <b>Africa and around the world</b>. Record what you sell, what gets damaged, and see your <b>profit, cashbook and balance sheet</b> automatically.</p></div>
+join(){const c=localStorage.bb_join;bbDb.collection('bb_invites').doc(c).get().then(s=>{const e=$('jn');if(e)e.textContent=s.exists?'You were invited to '+s.data().name+'. Create an account or log in, then wait for the owner to approve you.':'This invite link is not valid.'}).catch(()=>{});
+ return`<div class="hero"><h1>Join the team</h1><p id="jn">Checking your invite…</p></div><form class="f" onsubmit="return F.joinGo(event)"><div><label>Your name</label><input name="name" required></div><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password</label><input name="pw" type="password" minlength="6" required></div><button class="btn">Send request to join</button><p class="sw"><a href="#" onclick="F.joinCancel();return false">Not a team member? Go back</a></p></form>`},
+wk(){const t=db.u[me].team,P=(WT&&WT.products)||[],c=WT?WT.cur:'';const h=`<h1>${esc(t.name)}</h1><p>Signed in as ${esc(db.u[me].name)}</p>`;
+ if(WS!=='approved')return h+`<div class="card"><h3>${WS==='removed'?'Not approved':'Waiting for approval'}</h3><p>${WS==='removed'?'The owner has not approved this request, or removed you. Ask the owner for a new link.':'The business owner must approve you first. This page updates by itself.'}</p></div>`;
+ if(!WT)return h+'<p>Loading items…</p>';
+ const o=P.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')||'<option value="">The owner has not added items yet</option>',d=today();
+ return h+`<h2>Add a sale</h2><form class="f" onsubmit="return F.wkSale(event)"><div><label>Item</label><select name="pid" id="wsp" onchange="F.wkPrice()" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${esc(c)})</label><input name="price" id="wspr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div class="r2"><div><label>Paid</label><select name="pay"><option value="cash">Cash / mobile money</option><option value="credit">On credit (pay later)</option></select></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><button class="btn">Send sale</button></form>
+<h2>Report a damaged item</h2><form class="f" onsubmit="return F.wkDmg(event)"><div><label>Item</label><select name="pid" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><div><label>Reason</label><input name="why"></div><button class="btn">Send</button></form>
+<h2>Sent from this phone</h2>${tbl(['Date','Item','#Qty','Type'],[...D.sales.map(x=>({...x,k:'Sale'})),...D.damages.map(x=>({...x,k:'Damaged'}))].sort((a,b)=>a.date<b.date?1:-1).slice(0,30).map(x=>`<tr><td>${x.date}</td><td>${esc(x.name)}</td><td class="n">${x.qty}</td><td>${x.k}</td></tr>`),'Nothing sent yet.')}`},
+auth(){if(localStorage.bb_join)return V.join();return`<div class="hero"><h1>Know your business. Every day.</h1><p>Free bookkeeping for small businesses in <b>Africa and around the world</b>. Record what you sell, what gets damaged, and see your <b>profit, cashbook and balance sheet</b> automatically.</p></div>
 <div class="two"><div>
 <div class="cta"><button class="btn" onclick="authTab='up';authView='form';render()">Start now</button><button class="btn alt" onclick="authTab='in';authView='form';render()">Log in to your account</button></div><h1 class="ftitle">${authTab==='in'?'Log in to your account':'Create your account'}</h1><div class="tabs"><button class="chip ${authTab==='in'?'on':''}" onclick="authTab='in';authView='form';render()">Log in</button><button class="chip ${authTab==='up'?'on':''}" onclick="authTab='up';authView='form';render()">Create account</button></div>
-${authTab==='in'?`<p class="lead">Log in to your account to <b>continue where you left off</b> and stay <b>up to date</b> every time you come back.</p><form class="f" onsubmit="return F.login(event)"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password</label><input name="pw" type="password" required autocomplete="current-password"></div><button class="btn">Log in</button></form><p class="sw">New here? <a href="#" onclick="authTab='up';render();return false">Create an account</a></p>`:
+${authTab==='in'?`<p class="lead">Log in to your account to <b>continue where you left off</b> and stay <b>up to date</b> every time you come back.</p><form class="f" onsubmit="return F.login(event)"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password</label><input name="pw" type="password" required autocomplete="current-password"></div><button class="btn">Log in</button><p class="sw"><a href="#" onclick="F.reset();return false">Forgot password?</a></p></form><p class="sw">New here? <a href="#" onclick="authTab='up';render();return false">Create an account</a></p>`:
 `<form class="f s1" onsubmit="return F.signup(event)"><div class="st1"><p class="lead">Biz Books is ready to help you <b>track everything you need</b>. Keep track of everything you make <b>in a whole day, day by day or even hour by hour</b>, just by typing simply.</p><svg style="display:none" viewBox="0 0 206 444" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M120 0 104 0 86 18 67 49 54 49 39 81 18 105 0 181 4 276 18 331 32 443 167 441 157 396 151 345 171 321 185 275 197 254 197 229 205 212 205 201 193 174 173 171 181 150 181 135 173 126 161 124 152 128 137 149 131 149 153 96 151 81 143 72 136 70 122 72 112 82 93 119 89 117 99 79 125 18 125 5ZM193 205 193 208 187 219 196 218 197 220 190 224 181 224 170 233 171 235 187 242 187 245 166 237 149 255 134 262 129 262 126 259 127 257 136 257 142 255 148 251ZM79 205 84 211 90 230 94 237 96 248 100 257 100 264 102 267 102 290 100 293 100 302 96 311 96 316 92 320 91 315 97 294 97 265 95 262 89 235 78 206ZM73 175 75 174 103 203 100 203 90 193 86 191 78 183ZM133 162 133 165 126 177 124 184 114 203 110 217 111 226 116 231 123 233 131 231 140 222 158 194 161 192 161 195 153 209 135 233 123 238 112 233 108 229 105 224 107 209 104 204 109 204 111 202 126 170ZM106 110 107 113 100 129 98 156 101 160 107 163 118 163 131 150 131 153 129 157 118 168 107 168 98 163 93 156 93 145 95 142 97 125ZM73 59 76 65 76 86 69 101 58 119 57 139 60 143 60 154 57 158 58 164 54 167 53 163 56 159 56 138 53 134 53 119 63 104 71 88 71 79 73 76 71 72Z"/></svg><svg style="display:none" viewBox="-4 -6 257 90"fill="currentColor" aria-hidden="true"><path d="M0 26C2 33 3 60 14 64C25 69 44 52 66 54C88 56 133 72 147 75C162 78 146 77 153 73C160 69 183 54 188 50C194 46 185 49 187 48C189 47 194 47 199 44C204 41 210 35 217 29C225 24 239 16 244 12C249 8 248 7 248 6C249 4 248 3 247 2C246 1 247 0 243 0C239 0 228 0 223 2C217 3 214 6 211 7C208 8 212 3 202 5C192 7 165 21 148 20C132 20 116 5 104 1C91 -2 82 -2 72 0C62 2 53 7 42 11C31 15 10 20 3 22C-4 24 -2 19 0 26Z"/></svg><svg style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg><p class="stp">Step 1 of 2</p><h3>Your account</h3><div><label>Your full name</label><input name="name" required></div><div class="r2"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password (6+ characters)</label><input name="pw" type="password" minlength="6" required autocomplete="new-password"></div></div>
 <button type="button" class="btn" onclick="F.next()">Continue</button></div><div class="st2"><p class="stp">Step 2 of 2</p><h3>Register your business</h3><div><label>Business name</label><input name="bname" required></div>
 <div class="r2"><div><label>Business type</label><select name="btype">${TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><label>Registration number (optional)</label><input name="reg"></div></div>
@@ -390,7 +458,7 @@ ${T('4. Statement of changes in equity',R('Equity at start of period',bo.eq)+R('
 <p><b>6. Loans.</b> Loans received less repayments. Interest paid should be recorded as an expense.</p>
 <p><b>7. Owner’s notes.</b> ${esc(D.notes)||'None.'}</p></div></div>`},
 
-settings(){const b=D.biz;return`<h1>Settings</h1><form class="f" onsubmit="return F.saveBiz(event)"><h3>Business details</h3><div><label>Business name</label><input name="name" value="${esc(b.name)}" required></div>
+settings(){const b=D.biz;return`<h1>Settings</h1><div class="card" style="margin-bottom:12px"><h3>Cloud backup</h3><p>${cloudOn()?'On. Your data is backed up to your account and updates automatically.':'Off. Your data is kept only on this phone. Turn it on to back it up and open it on other phones.'}</p>${cloudOn()?'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn sm" onclick="F.cloudNow()">Back up now</button><button class="btn sm alt" onclick="F.cloudDisable()">Turn off</button></div>':'<button class="btn sm" onclick="F.cloudEnable()">Turn on cloud backup</button>'}</div><div class="card" style="margin-bottom:12px"><h3>Team (Pro)</h3>${db.u[me].own?`<p>Share this link with your workers. They create an account, then you approve them below.</p><input readonly value="${esc(teamLink())}" onclick="this.select()"><div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0"><button class="btn sm" onclick="F.teamShare()">Share link</button><button class="btn sm alt" onclick="F.teamNew()">New link</button><button class="btn sm alt" onclick="F.teamOff()">Turn off</button></div><div id="tmlist">${tmList()}</div>`:`<p>Let workers add sales and damaged items from their own phones. You approve every worker first.</p><button class="btn sm" onclick="F.teamOn()">Turn on Team</button>`}</div><form class="f" onsubmit="return F.saveBiz(event)"><h3>Business details</h3><div><label>Business name</label><input name="name" value="${esc(b.name)}" required></div>
 <div class="r2"><div><label>Registration number</label><input name="reg" value="${esc(b.reg)}"></div><div><label>Tax ID / TIN</label><input name="tin" value="${esc(b.tin)}"></div></div>
 <div class="r2"><div><label>Phone</label><input name="phone" value="${esc(b.phone)}"></div><div><label>Currency</label><input name="cur" value="${esc(b.cur)}" maxlength="5" required></div></div>
 <div><label>Address</label><input name="addr" value="${esc(b.addr)}"></div><div><label>Extra notes for your financial statements</label><textarea name="notes" rows="3">${esc(D.notes)}</textarea></div><button class="btn">Save</button></form>
@@ -402,35 +470,81 @@ function cashEntries(){const e=[];D.sales.forEach(x=>{if(x.pay==='cash')e.push({
 
 /* ---------- actions ---------- */
 const F={
-async signup(e){e.preventDefault();if(e.target.classList.contains('s1')){F.next();return false}const v=fd(e),k=v.email.trim().toLowerCase();if(db.u[k])return toast('Account already exists'),false;
- db.u[k]={name:v.name,h:await sha(v.pw),d:{biz:{name:v.bname,type:v.btype,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,country:v.country,cur:v.cur.toUpperCase(),owner:v.name},products:[],sales:[],damages:[],tx:[],notes:''}};
- save();F.enter(k);return false},
-async login(e){e.preventDefault();const v=fd(e),k=v.email.trim().toLowerCase(),u=db.u[k];if(!u||u.h!==await sha(v.pw))return toast('Wrong email or password'),false;F.enter(k);return false},
-next(){const f=document.querySelector('form.f');if([...f.querySelectorAll('.st1 input')].every(i=>i.reportValidity())){f.classList.replace('s1','s2');scrollTo(0,0)}},
+async signup(e){e.preventDefault();if(e.target.classList.contains('s1')){F.next();return false}const v=fd(e),k=v.email.trim().toLowerCase();bbBusy=1;spin(1);if((v.pw||'').length<6)return bbBusy=0,toast('Password must be at least 6 characters'),false;try{await bbAuth.createUserWithEmailAndPassword(k,v.pw)}catch(x){return bbBusy=0,toast(authErr(x)),false}await bbAuth.currentUser.updateProfile({displayName:v.name}).catch(()=>{});
+ db.u[k]={name:v.name,d:{biz:{name:v.bname,type:v.btype,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,country:v.country,cur:v.cur.toUpperCase(),owner:v.name},products:[],sales:[],damages:[],tx:[],notes:''}};
+ save();bbBusy=0;spin(0);track('sign_up');F.enter(k);return false},
+async login(e){e.preventDefault();spin(1);const v=fd(e),k=v.email.trim().toLowerCase();
+ try{await bbAuth.signInWithEmailAndPassword(k,v.pw)}catch(x){const o=db.u[k];
+  if(o&&o.h&&/user-not-found|invalid-credential/.test(x.code)&&o.h===await sha(v.pw)){try{await bbAuth.createUserWithEmailAndPassword(k,v.pw);track('login');return false}catch(y){x=y}}
+  return toast(authErr(x)),false}
+ track('login');return false},
+async reset() { const r = await dlg({ title: 'Reset password', text: 'We will email you a link to choose a new password.', ok: 'Send link', fields: [{ label: 'Email', type: 'email' }] }); if (!r) return; try { await bbAuth.sendPasswordResetEmail(r[0].trim()) } catch (x) { return toast(authErr(x)) } toast('Check your email') },
+ next() { const f = document.querySelector('form.f');if([...f.querySelectorAll('.st1 input')].every(i=>i.reportValidity())){f.classList.replace('s1','s2');scrollTo(0,0)}},
 back(){document.querySelector('form.f').classList.replace('s2','s1');scrollTo(0,0)},
 enter(k){me=k;D=db.u[k].d;localStorage.setItem(SK,k);page='home';render()},
-logout(){localStorage.removeItem(SK);me=D=null;authTab='in';authView='land';render()},
+async teamOn(){if(!await dlg({title:'Turn on Team?',text:'Your product names and selling prices (not your costs) will be shared so workers can pick items. Workers can only add sales and damaged items, and only after you approve them.',ok:'Turn on'}))return;spin(1);const u=bbAuth.currentUser,code=uid()+uid()+uid();try{await bbDb.collection('bb_invites').doc(code).set({owner:u.uid,name:D.biz.name});await bbDb.collection('bb_teams').doc(u.uid).set(teamDoc(code));db.u[me].own={code};localStorage.setItem(K,JSON.stringify(db));startTeam();toast('Team is on')}catch(x){toast(authErr(x))}spin(0);render()},
+teamShare(){const l=teamLink();if(navigator.share)navigator.share({title:'Join '+D.biz.name,text:'Join my team on Biz Books',url:l}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(l).then(()=>toast('Link copied'))},
+async teamNew(){if(!await dlg({title:'Make a new link?',text:'The old link stops working. Approved workers keep working.',ok:'New link'}))return;spin(1);const u=bbAuth.currentUser,old=db.u[me].own.code,code=uid()+uid()+uid();try{await bbDb.collection('bb_invites').doc(code).set({owner:u.uid,name:D.biz.name});await bbDb.collection('bb_invites').doc(old).delete();db.u[me].own.code=code;localStorage.setItem(K,JSON.stringify(db));teamPub()}catch(x){return toast(authErr(x))}spin(0);render()},
+async teamOff(){if(!await dlg({title:'Turn off Team?',text:'The link stops working and all workers lose access. Entries already in your books stay.',ok:'Turn off',danger:true}))return;spin(1);const tr=bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid);try{for(const w of TM)await tr.collection('members').doc(w.id).delete();await bbDb.collection('bb_invites').doc(db.u[me].own.code).delete();await tr.delete()}catch(x){return toast(authErr(x))}tw.forEach(f=>f());tw=[];TM=[];delete db.u[me].own;localStorage.setItem(K,JSON.stringify(db));spin(0);toast('Team is off');render()},
+async tmOk(id){if(!await dlg({title:'Approve this person?',text:'They will be able to add sales and damaged items to your books.',ok:'Approve'}))return;bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).update({status:'approved'}).then(()=>toast('Approved')).catch(x=>toast(authErr(x)))},
+async tmDel(id){if(!await dlg({title:'Remove this person?',text:'They will not be able to add anything.',ok:'Remove',danger:true}))return;bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).delete().catch(x=>toast(authErr(x)))},
+wkPrice(){const p=(WT.products||[]).find(x=>x.id===$('wsp').value);if(p)$('wspr').value=p.price},
+async wkSend(kind,rec,fn){const t=db.u[me].team;spin(1);try{await bbDb.collection('bb_teams').doc(t.owner).collection('entries').doc(rec.id).set({by:bbAuth.currentUser.uid,byName:db.u[me].name,kind,rec,t:FV()});fn();save();toast('Sent to the owner');render()}catch(x){toast(authErr(x))}spin(0);return false},
+wkSale(e){e.preventDefault();const v=fd(e),p=(WT.products||[]).find(x=>x.id===v.pid);if(!p)return false;const r={id:uid(),date:v.date,pid:p.id,qty:+v.qty,price:+v.price,pay:v.pay};return F.wkSend('sale',r,()=>D.sales.push({...r,name:p.name,cost:0}))},
+wkDmg(e){e.preventDefault();const v=fd(e),p=(WT.products||[]).find(x=>x.id===v.pid);if(!p)return false;const r={id:uid(),date:v.date,pid:p.id,qty:+v.qty,why:v.why||''};return F.wkSend('damage',r,()=>D.damages.push({...r,name:p.name,cost:0}))},
+async joinGo(e){e.preventDefault();const v=fd(e),k=v.email.trim().toLowerCase(),c=localStorage.bb_join;
+ if(db.u[k]&&db.u[k].role!=='worker')return toast('This email already has a business account. Use another email.'),false;
+ spin(1);bbBusy=1;
+ try{const iv=await bbDb.collection('bb_invites').doc(c).get();if(!iv.exists)throw{code:'invite'};const inv=iv.data();
+  try{await bbAuth.signInWithEmailAndPassword(k,v.pw)}catch(x){if(!/user-not-found|invalid-credential/.test(x.code))throw x;try{await bbAuth.createUserWithEmailAndPassword(k,v.pw);await bbAuth.currentUser.updateProfile({displayName:v.name}).catch(()=>{})}catch(y){throw y.code==='auth/email-already-in-use'?{code:'auth/invalid-credential'}:y}}
+  const u=bbAuth.currentUser,mr=bbDb.collection('bb_teams').doc(inv.owner).collection('members').doc(u.uid);
+  if(!(await mr.get()).exists)await mr.set({name:v.name,email:k,status:'pending',t:FV()});
+  const old=db.u[k];db.u[k]={name:v.name,role:'worker',team:{owner:inv.owner,code:c,name:inv.name},d:old&&old.d?old.d:{biz:{name:inv.name,type:'',country:'',cur:'',owner:''},products:[],sales:[],damages:[],tx:[],notes:''}};
+  localStorage.removeItem('bb_join');localStorage.setItem(K,JSON.stringify(db));bbBusy=0;spin(0);F.enter(k);startTeam()
+ }catch(x){bbBusy=0;toast(x.code==='invite'?'This invite link is not valid':authErr(x))}
+ return false},
+joinCancel(){localStorage.removeItem('bb_join');render()},
+async cloudEnable(){if(!await dlg({title:'Back up to cloud?',text:'Your business data will be uploaded to your Biz Books account so you can open it on other phones. Only you can read it. You can turn this off at any time.',ok:'Turn on'}))return;spin(1);db.u[me].cloud=true;localStorage.setItem(K,JSON.stringify(db));try{await cloudPush();spin(0);toast('Cloud backup is on')}catch(x){db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));toast(authErr(x))}render()},
+async cloudNow(){spin(1);try{await cloudPush();toast('Backed up')}catch(x){toast(authErr(x))}spin(0)},
+async cloudDisable(){if(!await dlg({title:'Turn off cloud backup?',text:'Your data stays on this phone. The copy in the cloud will be deleted.',ok:'Turn off and delete',danger:true}))return;spin(1);try{await bbDb.collection('bb_users').doc(bbAuth.currentUser.uid).delete()}catch(x){return toast(authErr(x))}db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));spin(0);toast('Cloud backup is off');render()},
+logout(){tw.forEach(f=>f());tw=[];TM=[];WS='';WT=null;bbAuth.signOut().catch(()=>{});localStorage.removeItem(SK);me=D=null;authTab='in';authView='land';render()},
 fillPrice(){const p=D.products.find(x=>x.id===$('sp').value);if(p)$('spr').value=p.price},
-sell(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid);if(!p)return toast('Add a product first'),false;const q=+v.qty;
- if(p.kind==='product'&&q>units(p)&&!confirm(`Only ${units(p)} in stock. Sell ${q} anyway?`))return false;
+async sell(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid);if(!p)return toast('Add a product first'),false;const q=+v.qty;
+ if(p.kind==='product'&&q>units(p)&&!await dlg({title:'Low stock',text:`Only ${units(p)} in stock. Sell ${q} anyway?`,ok:'Sell anyway'}))return false;
  D.sales.push({id:uid(),date:v.date,pid:p.id,name:p.name,qty:q,price:+v.price,cost:p.kind==='product'?p.cost:0,pay:v.pay});save();toast('Sale saved');render();return false},
 paid(id){const x=D.sales.find(s=>s.id===id);x.paidOn=today();save();render()},
 addProd(e){e.preventDefault();const v=fd(e),p={id:uid(),name:v.name.trim(),kind:v.kind,cost:v.kind==='service'?0:+v.cost,price:+v.price};D.products.push(p);
  if(v.kind==='product'&&+v.qty>0)D.tx.push({id:uid(),date:today(),type:'stock',pid:p.id,qty:+v.qty,amt:+v.qty*p.cost,desc:'Opening stock: '+p.name});save();toast('Added');render();return false},
-restock(id){const p=D.products.find(x=>x.id===id),q=+prompt(`How many ${p.name} did you buy?`);if(!q||q<0)return;const c=prompt('Cost price each',p.cost);if(c===null)return;p.cost=+c||p.cost;
+async edit(id){const p=D.products.find(x=>x.id===id),r=await dlg({title:'Edit item',ok:'Save',fields:[{label:'Name',value:p.name},{label:'Selling price',type:'number',value:p.price}]});if(!r)return;p.name=r[0].trim()||p.name;p.price=+r[1]||0;save();render()},
+ async restock(id){const p=D.products.find(x=>x.id===id),r=await dlg({title:'Restock '+p.name,ok:'Restock',fields:[{label:'How many did you buy?',type:'number',min:1},{label:'Cost price each',type:'number',value:p.cost}]});if(!r)return;const q=+r[0];p.cost=+r[1]||p.cost;
  D.tx.push({id:uid(),date:today(),type:'stock',pid:id,qty:q,amt:q*p.cost,desc:'Restock: '+p.name});save();render()},
-edit(id){const p=D.products.find(x=>x.id===id),n=prompt('Name',p.name);if(n===null)return;const s=prompt('Selling price',p.price);if(s===null)return;p.name=n||p.name;p.price=+s||0;save();render()},
 menu(e){e.stopPropagation();const b=e.currentTarget,n=b.nextElementSibling,o=n.classList.contains('open');document.querySelectorAll('.mnu.open').forEach(x=>x.classList.remove('open'));if(o)return;n.classList.add('open');const r=b.getBoundingClientRect();n.style.top=Math.min(r.bottom+4,innerHeight-n.offsetHeight-8)+'px';n.style.left=Math.max(8,r.right-n.offsetWidth)+'px'},
-delProd(id){if(!confirm('Delete this item? Past sales stay in your records.'))return;D.products=D.products.filter(x=>x.id!==id);save();render()},
+async delProd(id){if(!await dlg({title:'Delete this item?',text:'Past sales stay in your records.',ok:'Delete',danger:true}))return;D.products=D.products.filter(x=>x.id!==id);save();render()},
 dmg(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid);if(!p)return toast('Add a product first'),false;D.damages.push({id:uid(),date:v.date,pid:p.id,name:p.name,qty:+v.qty,cost:p.cost,why:v.why});save();toast('Saved');render();return false},
 addTx(e){e.preventDefault();const v=fd(e);D.tx.push({id:uid(),date:v.date,type:v.type,amt:+v.amt,desc:v.desc,cat:v.type==='expense'?v.cat:''});save();toast('Added');render();return false},
-del(k,id){if(!confirm('Delete this record?'))return;D[k]=D[k].filter(x=>x.id!==id);save();render()},
+async del(k,id){if(!await dlg({title:'Delete this record?',ok:'Delete',danger:true}))return;D[k]=D[k].filter(x=>x.id!==id);save();render()},
 saveBiz(e){e.preventDefault();const v=fd(e);Object.assign(D.biz,{name:v.name,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,cur:v.cur.toUpperCase()});D.notes=v.notes;save();toast('Saved');render();return false},
 exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download='bizbooks-backup-'+today()+'.json';a.click()},
 imp(e){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.biz||!d.sales)throw 0;db.u[me].d=D=d;save();toast('Restored');render()}catch{toast('Invalid backup file')}};r.readAsText(e.target.files[0])},
-wipe(){if(!confirm('Delete your account and all data on this device?'))return;delete db.u[me];save();F.logout()}
+async wipe(){const r=await dlg({title:'Delete your account?',text:'Your login and all your business data will be deleted for good.',ok:'Delete',danger:true,fields:[{label:'Confirm your password',type:'password'}]});if(!r)return;const u=bbAuth.currentUser;
+ try{await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,r[0]));await bbDb.collection('bb_users').doc(u.uid).delete();bbBusy=1;await u.delete()}catch(x){bbBusy=0;return toast(authErr(x)),false}
+ bbBusy=0;delete db.u[me];localStorage.setItem(K,JSON.stringify(db));localStorage.removeItem(SK);me=D=null;authTab='in';authView='land';render()}
 };
 render();
+if(!sessionStorage.bb_s){sessionStorage.bb_s=1;track('visit')}
+{const jc=new URLSearchParams(location.search).get('join');if(jc){if(!D){localStorage.bb_join=jc;render()}history.replaceState(null,'',location.pathname)}}
+bbAuth.onAuthStateChanged(async u=>{
+ if(bbBusy)return;
+ if(!u){if(me){localStorage.removeItem(SK);me=D=null;authView='land';render()}return}
+ const k=(u.email||'').toLowerCase();let c=null;
+ try{const s=await bbDb.collection('bb_users').doc(u.uid).get();if(s.exists)c=JSON.parse(s.data().d)}catch(x){}
+ const o=db.u[k];
+ if(c&&(!o||(c._u||0)>((o.d||{})._u||0)))db.u[k]={name:u.displayName||'',d:c,cloud:true};
+ else if(!o){toast('No data for this account on this phone. Turn on Cloud backup on your other phone first, or create a new account.');bbAuth.signOut();return}
+ delete db.u[k].h;const fresh=me!==k;me=k;D=db.u[k].d;
+ localStorage.setItem(SK,k);localStorage.setItem(K,JSON.stringify(db));
+ if(fresh)page='home';spin(0);render();cloud();startTeam();
+});
 </script>
 </body>
 </html>
