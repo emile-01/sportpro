@@ -253,6 +253,8 @@ input,select,textarea{font:400 16px/24px var(--font)}
 .mi.th.sun{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E")}
 .mi.th{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E")}
 .mi.out{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpath d='m16 17 5-5-5-5M21 12H9'/%3E%3C/svg%3E")}
+[data-v=join] .hero,[data-v=join] form.f{max-width:480px;margin-left:auto;margin-right:auto}
+[data-v=join] .sw{margin:24px 0 48px;text-align:center}
 </style>
 </head>
 <body>
@@ -348,7 +350,7 @@ const PAGES=[['home','Home'],['sell','Sales'],['products','Products'],['damaged'
 function render(){
  $('who').innerHTML=D?`<button class="mbtn" onclick="tm()" aria-label="Menu"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>`:'';
  $('nav').innerHTML=D?`<div class="mback" id="mback" onclick="tm()"></div><div class="menu" id="menu">${(isW()?WPAGES:PAGES).map(([k,n])=>`<button class="mi ${page===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}<button class="mi th${document.documentElement.dataset.theme==='black'?' sun':''}" onclick="setTheme(document.documentElement.dataset.theme==='black'?'light':'black');render()">${document.documentElement.dataset.theme==='black'?'Light theme':'Black theme'}</button><button class="mi out" onclick="F.logout()">Log out</button></div>`:'';
- $('app').innerHTML=D?V[isW()?'wk':page]():V.auth();$('app').dataset.v=D?'':authView;document.querySelector('.hdr b').textContent=!D&&authView==='form'?(authTab==='in'?'Log in to your account':'Create your account'):'Biz Books';
+ $('app').innerHTML=D?V[isW()?'wk':page]():V.auth();$('app').dataset.v=D?'':(localStorage.bb_join?'join':authView);document.querySelector('.hdr b').textContent=!D&&authView==='form'?(authTab==='in'?'Log in to your account':'Create your account'):'Biz Books';
  if(!D)bindCountry();
  window.scrollTo(0,0);skin()}
 const place=(o,b,w)=>{const r=b.getBoundingClientRect();w=Math.min(w,innerWidth-24);o.style.width=w+'px';const h=o.offsetHeight;let t=r.bottom+6;if(t+h>innerHeight-8&&r.top-h-6>8)t=r.top-h-6;o.style.left=Math.min(Math.max(12,r.left),innerWidth-w-12)+scrollX+'px';o.style.top=t+scrollY+'px'};
