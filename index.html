@@ -3,8 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Biz Books – Bookkeeping for small businesses</title>
-<meta name="description" content="Free bookkeeping for small businesses in Africa and worldwide: sales, damages, cashbook, profit and loss, balance sheet.">
+<title>Menya Books – Free Bookkeeping App for Small Businesses</title>
+<meta name="description" content="Menya Books: free bookkeeping app for small businesses. Record sales, damaged items and credit. Get profit, cashbook and balance sheet automatically.">
+<meta name="keywords" content="Menya Books, bookkeeping app, small business accounting, cashbook, profit and loss, balance sheet, sales record, stock, Africa, Rwanda, Biz Books, Menya Business">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="bingbot" content="index, follow">
+<meta name="author" content="Menya Books">
+<meta name="application-name" content="Menya Books">
+<meta name="apple-mobile-web-app-title" content="Menya Books">
+<meta name="theme-color" id="tc" content="#ffffff">
+<link rel="canonical" href="https://menya.site/">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Menya Books">
+<meta property="og:title" content="Menya Books – Free Bookkeeping App for Small Businesses">
+<meta property="og:description" content="Record sales, damaged items and customer credit. See profit, cashbook and balance sheet automatically. Free for small businesses in Africa and worldwide.">
+<meta property="og:url" content="https://menya.site/">
+<meta property="og:image" content="https://menya.site/menya-books.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Menya Books – Free Bookkeeping App for Small Businesses">
+<meta name="twitter:description" content="Record sales, damaged items and customer credit. See profit, cashbook and balance sheet automatically.">
+<meta name="twitter:image" content="https://menya.site/menya-books.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://menya.site/#site","url":"https://menya.site/","name":"Menya Books","alternateName":["Menya Business","Biz Books"],"inLanguage":"en"},{"@type":"WebApplication","@id":"https://menya.site/#app","name":"Menya Books","alternateName":["Menya Business","Biz Books"],"url":"https://menya.site/","description":"Free bookkeeping app for small businesses in Africa and worldwide. Record sales, damaged items and customer credit, and get profit and loss, cashbook and balance sheet automatically.","applicationCategory":"BusinessApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Sales and stock records","Damaged items","Customer credit","Cashbook","Profit and loss","Balance sheet","Worker accounts and attendance","Cloud backup and PDF"]}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -88,8 +115,11 @@ tr.sec td{font-weight:600;color:var(--mute);background:var(--bg);font-size:13px;
 [data-v=form] .two{padding-top:8px}
 .two form.f{gap:18px}
 .two form.f h3{font:500 17px/24px var(--font);margin:12px 0 0}
-[data-v=form] .sw{margin:32px 0 48px}
+[data-v=form] .sw{margin:0}
 form.s1 .st2,form.s2 .st1{display:none}
+[data-v=join] .two{display:block;max-width:480px;margin:0 auto;padding-top:8px}
+.two .sw+.sw{margin-top:12px}
+[data-v=form] form.f+.sw,[data-v=join] form.f+.sw{margin-top:20px}
 .st1,.st2{display:grid;gap:18px}
 .stp{margin:0;font:500 13px/18px var(--font);color:var(--mute)}
 .hand{display:block;justify-self:center;margin:8px auto 4px;height:120px;width:auto;color:var(--ink);transform-origin:50% 100%;animation:beckon 2.6s ease-in-out infinite}
@@ -138,8 +168,9 @@ tr.tot td,tr.sec td{font-weight:500}
 .row{gap:12px}
 .row>.btn:not(.del){flex:1 1 100%;text-align:center}
 .btn.sm{border-radius:10px;font:600 14px/20px var(--font)}
-h2[style*="underline"]+p{color:var(--ink);font:400 16px/26px var(--font)}
-h2[style*="underline"]+p b{font-weight:600}
+h2[style*="underline"]{text-decoration:none!important;margin:24px 0 8px}
+h2[style*="underline"]+p{color:var(--mute);font:400 15px/22px var(--font)}
+h2[style*="underline"]+p b{font-weight:600;color:var(--ink)}
 table{font-size:15px}
 .tw{border-radius:14px}
 .sk-h{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;padding:0!important;border:0!important}
@@ -165,11 +196,17 @@ table{font-size:15px}
 .ca button{background:none;border:0;font-weight:600;font-size:15px;padding:10px 6px}
 .mc{text-align:right;width:44px}
 .dots{background:none;border:0;font-size:22px;line-height:1;padding:6px 10px;cursor:pointer;color:var(--ink)}
-.mnu{display:none;position:fixed;z-index:50;background:var(--bg);border:1px solid var(--divider);border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.18);padding:4px;min-width:130px}
-.mnu.open{display:block}
-.mnu button{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 14px;font:500 15px var(--font);color:var(--ink);border-radius:8px;cursor:pointer}
+.mnu{display:none;position:fixed;z-index:50;background:var(--bg);border:1px solid var(--divider);border-radius:24px;box-shadow:0 12px 32px rgba(15,17,21,.14);padding:8px 0;min-width:230px;transform-origin:top right}
+.mnu.open{display:block;animation:pop .14s ease-out}
+.mnu button{display:block;width:100%;text-align:left;background:none;border:0;padding:15px 22px;font:500 17px/24px var(--font);color:var(--ink);border-radius:0;cursor:pointer}
+.mnu button:active{background:var(--tint)}
 .mnu button:hover{background:var(--tint)}
 .mnu .red{color:var(--bad)}
+.sgw{position:relative}
+.sgl{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:30;background:var(--bg);border:0;border-radius:24px;box-shadow:0 12px 32px rgba(15,17,21,.14);padding:8px 0;max-height:260px;overflow:auto;animation:pop .14s ease-out}
+.sgl[hidden]{display:none}
+.sgl button{display:block;width:100%;text-align:left;background:none;border:0;padding:15px 22px;font:500 17px/24px var(--font);color:var(--ink);border-radius:0;cursor:pointer}
+.sgl button:active,.sgl button:hover{background:var(--tint)}
 .acts{display:flex;flex-direction:column;gap:6px;min-width:80px}
 .acts .btn{width:100%!important;padding:6px 8px!important;min-height:0!important;font-size:12px!important;margin:0!important}
 th{text-transform:uppercase;letter-spacing:.04em;font-size:12px}
@@ -242,6 +279,8 @@ input,select,textarea{font:400 16px/24px var(--font)}
 .dlg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px}
 .dlg .dbox{background:var(--bg);color:var(--ink);border-radius:var(--r);padding:20px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .dlg h3{font:600 18px/26px var(--font);margin:0}
+.dlg p{white-space:pre-line}
+.dlg .dbox{max-height:90vh;overflow:auto}
 .dlg p{margin:0;color:var(--mute);font:400 15px/22px var(--font)}
 .dlg label{display:flex;flex-direction:column;gap:6px;font:400 14px/20px var(--font);color:var(--mute)}
 .dlg .dact{display:flex;gap:10px}
@@ -254,7 +293,7 @@ input,select,textarea{font:400 16px/24px var(--font)}
 .mi.th{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E")}
 .mi.out{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpath d='m16 17 5-5-5-5M21 12H9'/%3E%3C/svg%3E")}
 [data-v=join] .hero,[data-v=join] form.f{max-width:480px;margin-left:auto;margin-right:auto}
-[data-v=join] .sw{margin:24px 0 48px;text-align:center}
+[data-v=join] .sw{margin:0;text-align:center}
 .mi.wkm{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8'/%3E%3C/svg%3E")}
 body .toast{top:calc(env(safe-area-inset-top,0px) + 14px);bottom:auto;left:16px;right:16px;transform:none;max-width:440px;margin:0 auto;text-align:center;padding:14px 16px;border-radius:14px;font:500 15px/22px var(--font);box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:300;animation:tin .2s ease}
 body .toast.err{background:var(--bad);color:#fff}
@@ -267,17 +306,205 @@ html body .toast.err{color:#d93025}
 html body .toast,html body .toast.err{left:50%;right:auto;width:max-content;max-width:calc(100% - 32px);transform:translateX(-50%);background:var(--tint);border:1px solid currentColor;border-radius:14px;padding:9px 16px;font:600 15px/21px var(--font);box-shadow:0 4px 14px rgba(0,0,0,.18);text-shadow:none;pointer-events:auto;animation:tup .18s ease}
 @keyframes tup{from{opacity:0;transform:translate(-50%,8px)}}
 .mi.bpm{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='7' width='20' height='14' rx='2'/%3E%3Cpath d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'/%3E%3C/svg%3E")}
+/* ===== desktop layout ===== */
+@media(min-width:900px){
+body:has(#menu) .hdr{max-width:none;justify-content:flex-start;padding:0 24px;border-bottom:1px solid var(--divider);position:sticky;top:0;z-index:30;background:var(--bg)}
+.hdr #who,.mback,.mback.open{display:none!important}
+#menu{display:flex!important;flex-direction:column;position:fixed;top:57px;left:0;bottom:0;width:240px;margin:0;padding:12px 10px;border:0;border-right:1px solid var(--divider);border-radius:0;box-shadow:none;background:var(--bg);overflow-y:auto;animation:none;z-index:25}
+#menu .mi{padding:11px 14px;border-radius:10px;gap:14px;font:500 15px/22px var(--font)}
+#menu .mi:hover{background:var(--tint)}
+#menu .mi.on{background:var(--tint2);font-weight:600}
+#menu .mi.th{margin-top:auto}
+#nav:has(#menu)~.main{max-width:1040px;margin:0 0 0 calc(240px + max(0px,(100vw - 1280px)/2));padding:0 32px 80px}
+h1{font-size:24px;line-height:30px;margin-top:32px}
+.grid>.card{padding:20px!important}
+.card strong{font-size:22px;line-height:28px}
+.row>.btn:not(.del){flex:0 0 auto;padding:12px 24px}
+.main[data-v=""] form.f{max-width:720px}
+.main[data-v=""] form.f>.btn{justify-self:start;min-width:200px}
+.tw tr:not(:first-child):hover td{background:var(--tint)}
+[data-v=land] .hero h1{font:600 44px/50px var(--font);letter-spacing:-.02em;margin-top:48px}
+[data-v=land] .hero p{font-size:18px;line-height:28px;max-width:640px}
+}
+@media print{#menu{display:none!important}#nav:has(#menu)~.main{margin:0!important;max-width:none!important;padding:0!important}}
+/* ===== attendance box ===== */
+.att{border:1px solid var(--divider);border-radius:14px;padding:4px 16px 16px;margin:0 0 8px}
+.att-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--divider)}
+.att-r span{color:var(--mute);font:400 14px/20px var(--font)}
+.att-r b{font:500 16px/22px var(--font)}
+.att.on .att-r:first-child b{color:var(--good)}
+.att .btn{width:100%;margin-top:14px}
+.att.on .btn{background:var(--tint2);color:var(--ink)}
+.pl{border:1px solid var(--divider);border-radius:14px;padding:4px 16px 16px;margin:0 0 12px}
+.pl.cur{border-color:var(--ink)}
+.pl-h,.pl-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--divider)}
+.pl-h span,.pl-h b{font:600 17px/24px var(--font)}
+.pl-r span{color:var(--mute);font:400 14px/20px var(--font)}
+.pl-r b{font:500 16px/22px var(--font)}
+.pl p{margin:10px 0 0}
+.pl .btn{width:100%;margin-top:14px}
+.pl .btn:disabled{opacity:.55}
+.pp{padding:20px 0;border-bottom:1px solid var(--divider)}
+.pp h2{margin:0 0 4px}
+.pp-p{font:600 28px/36px var(--font);letter-spacing:-.02em;margin-bottom:8px}
+.pp-p small{font:400 15px/22px var(--font);color:var(--mute);letter-spacing:0}
+.pp ul{margin:0 0 16px;padding-left:20px;color:var(--mute);font:400 15px/24px var(--font)}
+.pp li{padding:2px 0}
+.pp .btn{width:100%}
+.pp .btn:disabled{opacity:.55}
+.pp-n{margin-top:16px;text-align:center;font-size:14px}
+.pp ol{margin:0 0 20px;padding-left:20px;color:var(--mute);font:400 15px/24px var(--font)}
+.pp ol li{padding:2px 0}
+.pp h2.sp{margin:24px 0 8px}
+.st-g{font:500 20px/26px var(--font);margin:28px 0 4px;letter-spacing:-.01em}
+.st-r{display:flex;align-items:center;gap:16px;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:500 16px/22px var(--font);padding:14px 0;cursor:pointer}
+.st-r:active{opacity:.6}
+.st-r svg{flex:none}
+.st-r span{display:flex;flex-direction:column}
+.st-r small{font:400 13px/18px var(--font);color:var(--mute)}
+.idb{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--divider);border-radius:14px;padding:16px;margin:16px 0 8px}
+.idb span{color:var(--mute);font:400 14px/20px var(--font)}
+.idb b{font:600 22px/28px var(--font);letter-spacing:.12em}
+.hero{display:flex;flex-direction:column;align-items:center;padding:24px 0 0}
+.hero .ic{width:auto;height:auto;background:none;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.hero .ic svg{width:38px;height:38px}
+.pill{display:none}
+.pill.on{color:var(--good)}
+.fl{list-style:none;padding:0;margin:18px 0 24px}
+.fl li{display:flex;gap:12px;padding:9px 0;font:400 15px/22px var(--font)}
+.fl li::before{content:"✓";color:var(--good);font-weight:700}
+.btn.big{display:block;width:100%;min-height:54px;border-radius:14px;font:600 17px/24px var(--font)}
+.st-r.red{color:var(--bad)}
+.idc{text-align:center;padding:28px 0 20px}
+.idc span{display:block;color:var(--mute);font:400 14px/20px var(--font);margin-bottom:6px}
+.idc b{display:block;font:600 30px/38px var(--font);letter-spacing:.14em;word-break:break-all}
+.wk-b{display:flex;justify-content:center;gap:12px;margin-bottom:8px}
+.wk-b button{display:flex;align-items:center;gap:8px;border:1px solid var(--divider);background:none;color:var(--ink);font:500 15px/20px var(--font);padding:10px 16px;border-radius:99px;cursor:pointer}
+.wk-b svg{width:18px;height:18px}
+.wk-p{text-align:center;margin:16px 0 0;font-size:14px}
+.wk-p a{color:var(--ink);font-weight:600;text-decoration:underline}
+.wk-n{margin-top:20px;font-size:14px}
+.wk-h{font:500 13px/18px var(--font);color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin:28px 0 0}
+.wk{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--divider)}
+.wk-a{flex:none;width:44px;height:44px;border-radius:50%;background:var(--tint2);display:flex;align-items:center;justify-content:center;font:600 17px/1 var(--font);text-transform:uppercase}
+.wk-i{flex:1;min-width:0}
+.wk-i b{display:block;font:500 16px/22px var(--font);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wk-i small{display:block;color:var(--mute);font:400 13px/18px var(--font);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wk-x{display:flex;gap:8px;align-items:center;flex:none}
+.sr{position:relative;margin:4px 0 8px}
+.sr svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--mute);pointer-events:none}
+.sr input{border-radius:99px;background:var(--tint);border:1px solid transparent;padding:13px 46px 13px 46px}
+.sr input:focus{background:var(--tint);border-color:var(--divider)}
+.sr input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.sr-x{display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:50%;background:var(--tint2);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;padding:0}
+.sr.has .sr-x{display:block}
+.sr-c{margin:8px 0 0;font-size:13px;color:var(--mute)}
+.sr-e{text-align:center;padding:28px 0}
+.sr-e b{display:block;font:500 17px/24px var(--font);color:var(--ink)}
+.sr-e span{display:block;color:var(--mute);font-size:15px}
+mark{background:rgba(255,200,0,.35);color:inherit;border-radius:3px;padding:0 1px}
+.sr{margin:8px 0}
+.sr input{border-radius:10px;background:var(--bg);border:1px solid var(--divider);padding:11px 40px 11px 42px;font:400 16px/24px var(--font)}
+.sr input:focus{background:var(--bg);border-color:var(--ink)}
+.sr svg{left:14px;width:18px;height:18px}
+.sr-x{right:6px;width:28px;height:28px;background:none;color:var(--mute);font-size:22px}
+.wk{border-bottom:0}
+.ws-h{text-align:center;padding:20px 0 4px}
+.ws-h .wk-a{width:64px;height:64px;font-size:26px;margin:0 auto 12px}
+.ws-h b{display:block;font:600 20px/26px var(--font)}
+.ws-h span{display:block;color:var(--mute);font:400 15px/22px var(--font)}
+.ws-ch{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none}
+.ws-ch::-webkit-scrollbar{display:none}
+.ws-big{text-align:center;padding:20px 0 12px}
+.ws-big span{display:block;color:var(--mute);font:400 14px/20px var(--font)}
+.ws-big b{display:block;font:600 32px/40px var(--font);letter-spacing:-.02em;word-break:break-word}
+.ws-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0}
+.ws-r span{color:var(--mute);font:400 15px/22px var(--font)}
+.ws-r b{font:500 16px/22px var(--font)}
+.ws-p{font:400 16px/27px var(--font);color:var(--ink);margin:0 0 22px}
+.ws-p .ws-l{font:600 17px/27px var(--font)}
+.main .tw:not(.rt) th{font-size:13px!important;line-height:18px!important;padding:12px 12px!important}
+.main .tw:not(.rt) td{font-size:16px!important;line-height:24px!important;font-weight:400!important;padding:14px 12px!important}
+.main .tw:not(.rt) td b{font-weight:400}
+.td{margin:0 0 12px;padding-left:20px;color:var(--ink);font:400 15px/26px var(--font)}
+.td li{padding:3px 0}
+.mi.crm{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E")}
+.cr-amt{flex:none;font:500 16px/22px var(--font)}
+.cw,.cg{grid-template-columns:repeat(7,minmax(0,1fr))}
+.dy{aspect-ratio:auto;width:100%;min-width:0;height:40px;padding:0}
+.pcard{overflow:hidden;max-width:calc(100vw - 24px)}
+.menu.ow .mi:nth-child(4){--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h14v4'/%3E%3Cpath d='M3 7v11a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2z'/%3E%3Ccircle cx='17' cy='14.5' r='1'/%3E%3C/svg%3E")}
+.menu.ow .mi:nth-child(5){--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4'/%3E%3C/svg%3E")}
+.gt{display:flex;gap:4px;padding:4px;margin:6px 0 22px;background:var(--tint);border-radius:14px}
+.gt button{flex:1;border:0;background:none;color:var(--mute);font:500 15px/20px var(--font);padding:10px 8px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.gt button.on{background:var(--bg);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(15,17,21,.14)}
+#wa{border:2px solid var(--ink)!important;background:var(--bg);font-weight:500}
+#wa:focus{outline:3px solid var(--tint2);outline-offset:1px}
+#wa.bad{border-color:var(--bad)!important}
+.hdr b{display:inline-flex;align-items:center;gap:8px}
+body:has(#menu) .hdr b::after,body:has(#app[data-v=land]) .hdr b::after{content:"";flex:none;width:24px;height:24px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h14v4'/%3E%3Cpath d='M3 7v11a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2z'/%3E%3Ccircle cx='17' cy='14.5' r='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h14v4'/%3E%3Cpath d='M3 7v11a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2z'/%3E%3Ccircle cx='17' cy='14.5' r='1'/%3E%3C/svg%3E") center/contain no-repeat}
+body:has(#menu) .hdr,body:has(#app[data-v=land]) .hdr{justify-content:flex-start!important}
+.brand{display:none}
+@media(min-width:900px){
+body:not(:has(#menu)) .brand{display:flex;flex-direction:column;justify-content:space-between;position:fixed;top:0;bottom:0;left:0;width:46%;padding:56px 64px;background:radial-gradient(circle at 88% 10%,rgba(255,255,255,.10),transparent 38%),radial-gradient(circle at 8% 96%,rgba(255,255,255,.07),transparent 42%),#111317;color:#fff;z-index:2;overflow:hidden}
+.brand .lg{display:flex;align-items:center;gap:10px;font:600 22px/28px var(--font)}
+.brand .lg svg{width:30px;height:30px}
+.brand h2{font:600 clamp(30px,3.2vw,44px)/1.12 var(--font);letter-spacing:-.02em;margin:0 0 30px;max-width:460px;color:#fff}
+.brand ul{list-style:none;margin:0;padding:0;display:grid;gap:18px;max-width:460px}
+.brand li{display:flex;gap:14px;font:400 17px/26px var(--font);color:#c9ced8}
+.brand li svg{flex:none;width:22px;height:22px;margin-top:2px;color:#fff}
+.brand small{font:400 14px/20px var(--font);color:#8a909c}
+body:not(:has(#menu)) .hdr{margin-left:46%;max-width:none}
+body:not(:has(#menu)) .main{margin-left:46%;max-width:none;padding:0 48px 56px;min-height:calc(100dvh - 56px);display:flex;align-items:center;justify-content:center}
+body:not(:has(#menu)) .main .two{width:100%;max-width:440px;margin:0 auto;padding-top:0}
+}
+@media print{.brand{display:none!important}}
+.mi.ins{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3'/%3E%3C/svg%3E")}
+/* v12 clock card */
+.ck{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--divider);border-radius:16px;padding:14px 14px 14px 16px;margin:16px 0 8px}
+.ck-l{display:flex;align-items:center;gap:12px;min-width:0}
+.ck-d{flex:none;width:12px;height:12px;border-radius:50%;background:var(--mute);opacity:.5}
+.ck.on .ck-d{background:var(--good);opacity:1;box-shadow:0 0 0 5px rgba(19,115,51,.16);animation:ckp 2s ease-in-out infinite}
+@keyframes ckp{50%{box-shadow:0 0 0 9px rgba(19,115,51,0)}}
+.ck-l b{display:block;font:600 16px/22px var(--font)}
+.ck-l small{display:block;color:var(--mute);font:400 13px/18px var(--font)}
+.ck-b{flex:none;border:0;border-radius:99px;background:var(--ink);color:var(--bg);font:600 15px/20px var(--font);padding:11px 18px;cursor:pointer}
+.ck.on .ck-b{background:var(--tint2);color:var(--ink)}
+/* v12 worker header */
+.wh{display:flex;align-items:center;gap:12px;margin:20px 0 0}
+.wh-a{flex:none;width:44px;height:44px;border-radius:50%;background:var(--tint2);display:flex;align-items:center;justify-content:center;font:600 17px/1 var(--font);text-transform:uppercase}
+.wh>div:nth-child(2){flex:1;min-width:0}
+.wh b{display:block;font:500 18px/24px var(--font);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wh small{display:block;color:var(--mute);font:400 13px/18px var(--font)}
+
+
+/* v12 join page */
+.jn{padding-top:8px}
+.jn-ic{width:56px;height:56px;border-radius:16px;background:var(--tint2);display:flex;align-items:center;justify-content:center;margin:8px 0 16px}
+.jn-ic svg{width:28px;height:28px}
+.jn h1{margin:0 0 8px;font:600 28px/34px var(--font);letter-spacing:-.02em}
+.jn-s{margin:0 0 20px}
+.jn-st{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px}
+.jn-st li{display:flex;align-items:center;gap:12px;font:400 15px/22px var(--font);color:var(--mute)}
+.jn-st b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font:600 13px/1 var(--font)}
+.jn .f{border:1px solid var(--divider);border-radius:16px;padding:18px!important;gap:16px}
+.jn #bid{letter-spacing:.14em;font-weight:600;text-transform:uppercase}
+.ck.done .ck-d{background:var(--good);opacity:1}
+.ck-b:disabled{opacity:.5;cursor:default}
 </style>
-</head>
+<script>try{if(localStorage.bb_theme==='black')document.documentElement.dataset.theme='black'}catch(e){}</script></head>
 <body>
-<div class="hdr"><b onclick="authView='land';if(!D)render()" style="cursor:pointer">Biz Books</b><span id="who"></span></div>
+<div class="hdr"><b onclick="authView='land';if(!D)render()" style="cursor:pointer">Menya Books</b><span id="who"></span></div>
 <div id="nav"></div>
-<div class="main" id="app"></div>
+<aside class="brand"><div class="lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14v4"/><path d="M3 7v11a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2z"/><circle cx="17" cy="14.5" r="1"/></svg>Menya Books</div><div><h2>Know your business. Every day.</h2><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Record sales and damaged items in seconds</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>See profit, cashbook and balance sheet automatically</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Let your workers send their work from their own phones</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Cloud backup and PDF, so your records are always safe</li></ul></div><small>Free bookkeeping for small businesses in Africa and around the world.</small></aside><div class="main" id="app"></div>
+<noscript><main style="padding:24px;font-family:sans-serif"><h1>Menya Books – Free Bookkeeping App for Small Businesses</h1><p>Menya Books helps small businesses in Africa and around the world record sales, damaged items and customer credit, and see profit, cashbook and balance sheet automatically. Workers can send their work from their own phones, and your records are backed up to the cloud. Please turn on JavaScript to use the app.</p></main></noscript>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-46Y1K4H98M"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-46Y1K4H98M')</script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <script>
 const K='bb_db',SK='bb_sess';
 let db=JSON.parse(localStorage.getItem(K)||'{"u":{}}'),me=localStorage.getItem(SK),D=null,page='home',authTab='in',authView='land';
@@ -286,20 +513,74 @@ firebase.initializeApp({apiKey:"AIzaSyC8pmK_gQsjFlYID9uwlxoeoUp0NGtmxZQ",authDom
 const bbAuth=firebase.auth(),bbDb=firebase.firestore();let bbBusy=0,_t,_sp;
 const spin=on=>{clearTimeout(_sp);let s=document.getElementById('bbspin');if(!on){s&&s.remove();return}if(!s){s=document.createElement('div');s.id='bbspin';s.innerHTML='<i></i>';document.body.appendChild(s)}_sp=setTimeout(()=>spin(0),20000)};
 const authErr=x=>({'auth/email-already-in-use':'Account already exists. Log in instead.','auth/invalid-credential':'Wrong email or password','auth/wrong-password':'Wrong email or password','auth/user-not-found':'Wrong email or password','auth/weak-password':'Password must be at least 6 characters','auth/invalid-email':'Enter a valid email','auth/too-many-requests':'Too many tries. Wait a bit and try again','auth/network-request-failed':'No internet connection','auth/operation-not-allowed':'Email sign-in is not turned on in Firebase'}[x&&x.code]||('Something went wrong ('+((x&&(x.code||x.message))||'unknown')+')'));
-const cloudOn=()=>!!(db.u[me]||{}).cloud;
-const cloudPush=()=>{const u=bbAuth.currentUser;if(!u||!D)return Promise.reject({code:'auth/no-user'});return bbDb.collection('bb_users').doc(u.uid).set({email:u.email,name:(db.u[me]||{}).name||'',d:JSON.stringify(D),upd:firebase.firestore.FieldValue.serverTimestamp()},{merge:true})};
-const cloud=()=>{clearTimeout(_t);_t=setTimeout(()=>{if(cloudOn())cloudPush().catch(x=>console.warn('sync',x.code));teamPub()},600)};
-let tw=[],TM=[],WS='',WT=null;
+const cloudOn=()=>!!(db.u[me]||{}).cloud&&planKey()!=='free';
+const CH=250000;
+const cloudPush=()=>{const u=bbAuth.currentUser;if(!u||!D)return Promise.reject({code:'auth/no-user'});
+ const s=JSON.stringify(D),P=[];let a=0;while(a<s.length){let e=Math.min(a+CH,s.length);const c=s.charCodeAt(e-1);if(e<s.length&&c>=0xD800&&c<=0xDBFF)e--;P.push(s.slice(a,e));a=e}
+ const n=P.length,r=bbDb.collection('bb_users').doc(u.uid),b=bbDb.batch();
+ P.forEach((t,i)=>b.set(r.collection('parts').doc(String(i).padStart(4,'0')),{i,s:t}));
+ b.set(r,{email:u.email,name:(db.u[me]||{}).name||'',v:2,n,d:firebase.firestore.FieldValue.delete(),upd:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+ return r.collection('parts').get().then(q=>{q.docs.forEach(d=>{if(+d.data().i>=n)b.delete(d.ref)});return b.commit()})};
+const cloudPull=async u=>{const r=bbDb.collection('bb_users').doc(u.uid),s=await r.get();if(!s.exists)return null;const x=s.data();
+ if(x.v===2){const q=await r.collection('parts').get(),P=q.docs.map(d=>d.data()).filter(p=>p.i<x.n).sort((a,b)=>a.i-b.i);if(P.length!==x.n)throw 0;return JSON.parse(P.map(p=>p.s).join(''))}
+ return JSON.parse(x.d)};
+const cloudDel=async u=>{const r=bbDb.collection('bb_users').doc(u.uid),q=await r.collection('parts').get(),b=bbDb.batch();q.docs.forEach(d=>b.delete(d.ref));b.delete(r);await b.commit()};
+const cloudPushOld=()=>{const u=bbAuth.currentUser;if(!u||!D)return Promise.reject({code:'auth/no-user'});return bbDb.collection('bb_users').doc(u.uid).set({email:u.email,name:(db.u[me]||{}).name||'',d:JSON.stringify(D),upd:firebase.firestore.FieldValue.serverTimestamp()},{merge:true})};
+let _bd=0,_bl=+(localStorage.bb_lastbk||0);
+const bkFlush=()=>{if(!_bd||!cloudOn())return;_bd=0;_bl=Date.now();try{localStorage.bb_lastbk=_bl}catch(e){}cloudPush().catch(()=>{_bd=1})};
+const cloud=()=>{_bd=1;clearTimeout(_t);_t=setTimeout(()=>{teamPub();if(Date.now()-_bl>18e5)bkFlush()},600)};
+setInterval(()=>{if(Date.now()-_bl>18e5)bkFlush()},3e5);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&Date.now()-_bl>3e5)bkFlush()});
+let tw=[],TM=[],WS='',WT=null,WE=1;
+const PLANS={free:{n:'Free',w:1,e:1,p:0},solo:{n:'Solo',w:0,e:0,p:1500},pers:{n:'Personal Pro',w:0,e:0,p:1000},p30:{n:'Pro 30',w:30,e:3,p:4500},p100:{n:'Pro 100',w:100,e:20,p:8500},unl:{n:'Pro Unlimited',w:1e9,e:1e9,p:40000}};
+const ofn=(a,n)=>n>=1e9?a:a+' of '+n;
+let PL=null,FXL=null;
+const FX={USD:1,RWF:1440,DZD:134,AOA:912,XOF:565,XAF:565,BWP:13.5,BIF:2950,CVE:95,KMF:425,CDF:2850,DJF:178,EGP:49,ERN:15,SZL:18,ETB:135,GMD:72,GHS:12,GNF:8650,KES:129,LSL:18,LRD:200,LYD:5.4,MGA:4500,MWK:1740,MRU:40,MUR:45,MAD:9.2,MZN:64,NAD:18,NGN:1550,STN:21,SCR:14.5,SLE:22.7,SOS:570,ZAR:18,SSP:4600,SDG:600,TZS:2600,TND:3,UGX:3600,ZMW:25,ZWG:26,BDT:122,CNY:7.2,INR:85,IDR:16300,JPY:148,MYR:4.3,PKR:281,PHP:57,SAR:3.75,SGD:1.3,THB:33,TRY:38,AED:3.67,VND:25500,EUR:.92,PLN:3.9,SEK:10,CHF:.85,GBP:.78,CAD:1.38,MXN:19.5,ARS:1100,BRL:5.5,CLP:950,COP:4100,PEN:3.7,AUD:1.55,NZD:1.68};
+const fxRate=c=>FXL&&FXL[c]?FXL[c]:FX[c]?FX[c]/FX.RWF:0;
+const fxNice=v=>{const s=v>=10000?100:v>=1000?10:v>=100?5:v>=10?1:.01;return Math.round(v/s)*s};
+const priceTxt=r=>{const c=(D&&D.biz&&D.biz.cur||'RWF').toUpperCase(),x=c==='RWF'?1:fxRate(c);return x?fxNice(r*x).toLocaleString(undefined,{maximumFractionDigits:2})+' '+c:r.toLocaleString()+' RWF'};
+try{fetch('https://open.er-api.com/v6/latest/RWF').then(r=>r.json()).then(j=>{if(j&&j.rates){FXL=j.rates;if(['plans','bizpro'].includes(page))render()}}).catch(()=>{})}catch(e){}
+const planUntil=()=>{const u=PL&&PL.until;return u&&u.toMillis?u.toMillis():+u||0};
+const planKey=()=>{const k=PL&&PL.plan,u=planUntil();return PLANS[k]&&k!=='free'&&(!u||u>Date.now())?k:'free'};
+const planNow=()=>PLANS[planKey()];
+const wkAppr=()=>TM.filter(w=>w.status==='approved');
+const wkEntry=()=>wkAppr().filter(w=>w.entry!==false);
+const planCard=()=>{const p=planNow(),u=planUntil(),f=planKey()==='free';return`<div class="idc" style="padding:20px 0 8px"><span>Your plan</span><b style="letter-spacing:0">${p.n}</b></div><p style="text-align:center;margin:0 0 8px">${p.w<1?'For one person':ofn(wkAppr().length,p.w)+' workers · '+ofn(wkEntry().length,p.e)+' can send sales'}${!f&&u?' · ends '+new Date(u).toLocaleDateString():''}</p>${sRow('star',f?'Upgrade plan':'Change plan',f?'Cloud backup and more workers':'See all plans',"go('plans')")}`};
+const planCardOld=()=>{const p=planNow(),u=planUntil(),f=planKey()==='free';return`<div class="pl"><div class="pl-h"><span>Your plan</span><b>${p.n}</b></div><div class="pl-r"><span>Workers</span><b>${wkAppr().length} / ${p.w}</b></div><div class="pl-r"><span>Can send sales</span><b>${wkEntry().length} / ${p.e}</b></div>${!f&&u?`<div class="pl-r"><span>Ends on</span><b>${new Date(u).toLocaleDateString()}</b></div>`:''}<button class="btn" onclick="go('plans')">${f?'Upgrade plan':'Change plan'}</button></div>`};
 const isW=()=>((db.u[me]||{}).role==='worker'),WPAGES=[['wk','Work']];
 const FV=()=>firebase.firestore.FieldValue.serverTimestamp();
-const teamDoc=c=>({code:c,name:D.biz.name,cur:D.biz.cur,products:D.products.map(p=>({id:p.id,name:p.name,kind:p.kind,price:p.price,left:p.kind==='product'?units(p):null})),upd:FV()});
+const teamDoc=c=>({owe:bizOwe(),code:c,name:D.biz.name,cur:D.biz.cur,products:D.products.map(p=>({id:p.id,name:p.name,kind:p.kind,price:p.price,left:p.kind==='product'?units(p):null})),sum:bizSum(),upd:FV()});
 const teamPub=()=>{const u=bbAuth.currentUser,o=db.u[me]||{};if(!u||!D||!o.own)return;bbDb.collection('bb_teams').doc(u.uid).set(teamDoc(o.own.code)).catch(()=>{})};
 const dstr=ms=>{const d=new Date(ms);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const hm=ms=>new Date(ms).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 const AT=(x,r,by)=>{const a=D.att=D.att||[],t=+r.at;if(!(t>0)||Math.abs(t-Date.now())>1728e5||typeof r.id!=='string')return 0;
- if(r.t==='in'){if(a.some(y=>y.id===r.id))return 0;a.push({id:r.id,wn:by,wid:x.by,date:dstr(t),inAt:t,outAt:0});return 1}
+ if(r.t==='in'){if(a.some(y=>y.id===r.id||(y.wid===x.by&&y.date===dstr(t))))return 0;a.push({id:r.id,wn:by,wid:x.by,date:dstr(t),inAt:t,outAt:0});return 1}
  if(r.t==='out'){if(a.some(y=>y.outId===r.id))return 0;const o=[...a].reverse().find(y=>y.wid===x.by&&!y.outAt);if(!o)return 0;o.outAt=t;o.outId=r.id;return 1}return 0};
-const clockBox=()=>{const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt);return`<div style="margin:14px 0"><p style="margin:0 0 8px">${o?'You clocked in at '+hm(o.inAt)+(o.date!==today()?' ('+o.date+')':''):'You are not clocked in.'}</p><button class="btn" onclick="F.wkClock()">${o?'Clock out':'Clock in'}</button></div>`};
+const clockBox=()=>{const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt),w=o?Math.max(0,Date.now()-o.inAt):0,h=Math.floor(w/36e5),mn=Math.floor(w%36e5/6e4),td=a.filter(y=>y.date===today()&&y.outAt).reduce((s,y)=>s+y.outAt-y.inAt,0);
+const dn=!o&&a.some(y=>y.date===today());return`<div class="ck${o?' on':''}${dn?' done':''}"><div class="ck-l"><i class="ck-d"></i><div><b>${o?'You are at work':dn?'Done for today':'Off duty'}</b><small>${o?'Since '+hm(o.inAt)+(o.date!==today()?' · '+o.date:'')+' · '+h+'h '+mn+'m':(td?'Worked '+(td/36e5).toFixed(1)+' h today · see you tomorrow':'Tap to start your day')}</small></div></div><button class="ck-b" onclick="F.wkClock()"${dn?' disabled':''}>${o?'Clock out':dn?'Done':'Clock in'}</button></div>`};
+const clockBoxV1=()=>{const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt),w=o?((Date.now()-o.inAt)/36e5).toFixed(1):0;return`<h2>Attendance</h2><div class="att${o?' on':''}"><div class="att-r"><span>Status</span><b>${o?'Clocked in':'Not clocked in'}</b></div><div class="att-r"><span>${o?'Started':'Start time'}</span><b>${o?hm(o.inAt)+(o.date!==today()?' · '+o.date:''):'--:--'}</b></div>${o?`<div class="att-r"><span>Working for</span><b>${w} h</b></div>`:''}<button class="btn" onclick="F.wkClock()">${o?'Clock out':'Clock in'}</button></div>`};
+const bizSum=()=>{const t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},R={d:t,w:bk(6),m:mstart()},o={};
+ for(const k in R){const f=R[k],s={c:0,q:0,a:0,x:0};
+  D.sales.forEach(y=>{if(y.date>=f&&y.date<=t){s.c++;s.q+=y.qty;s.a+=y.qty*y.price}});
+  D.damages.forEach(y=>{if(y.date>=f&&y.date<=t)s.x+=y.qty});o[k]=s}
+ const it={};D.sales.forEach(y=>{if(y.date>=R.m&&y.date<=t){const n=String(y.name).split(' · ')[0],e=it[n]||(it[n]={q:0,a:0});e.q+=y.qty;e.a+=y.qty*y.price}});
+ o.top=Object.entries(it).sort((a,b)=>b[1].a-a[1].a).slice(0,5).map(([n,v])=>({n,q:v.q,a:v.a}));return o};
+const viewOnly=(P,c)=>{const S=WT&&WT.sum,q=n=>n%1?m(n):Math.round(n).toLocaleString(),cu=esc(c||''),
+ note='<p>The team that can send sales is full, so you cannot add sales right now. You can still follow how the business is doing.</p>';
+ if(!S)return note+'<div class="empty card">The business summary is not ready yet. It appears after the owner opens the app.</div>';
+ const rows=[['Today',S.d],['7 days',S.w],['Month',S.m]],sk=(P||[]).filter(p=>p.left!=null).sort((a,b)=>a.left-b.left).slice(0,10),
+ fin=sk.filter(p=>p.left<=0).map(p=>esc(p.name)),low=sk.filter(p=>p.left>0&&p.left<=5),o=[...(D.att||[])].reverse().find(y=>!y.outAt),top=(S.top||[])[0],td=[];
+ td.push(o?'You are clocked in. Remember to clock out when you finish.':'Clock in above when you start work.');
+ if(fin.length)td.push('Tell the owner to restock: <b>'+fin.join(', ')+'</b> (finished).');
+ if(low.length)td.push('Running low: '+low.map(p=>'<b>'+esc(p.name)+'</b> ('+p.left+' left)').join(', ')+'. Tell the owner before it finishes.');
+ if(S.d.x>0)td.push('<b>'+q(S.d.x)+'</b> item(s) were damaged today. Check how they are stored and handled.');
+ if(top)td.push('Best seller this month: <b>'+esc(top.n)+'</b>. Make sure customers can always find it.');
+ if(!S.d.c)td.push('No sale has been recorded today yet.');
+ td.push('To add sales yourself, ask the owner to give you a place. The owner\'s plan limits how many people can send sales.');
+ return note+'<h2>Sales summary ('+cu+')</h2>'+tbl(['Period','#Sales','#Amount','#Damaged'],rows.map(([n,s])=>`<tr><td>${n}</td><td class="n">${s.c}</td><td class="n">${q(s.a)}</td><td class="n ${s.x>0?'neg':''}">${q(s.x)}</td></tr>`))+'<h2>Best sellers this month</h2>'+tbl(['Item','#Sold','#Amount'],(S.top||[]).map(x=>`<tr><td>${esc(x.n)}</td><td class="n">${q(x.q)}</td><td class="n">${q(x.a)}</td></tr>`),'No sales this month yet.')+'<h2>Stock</h2>'+tbl(['Item','#Left','Status'],sk.map(p=>`<tr><td>${esc(p.name)}</td><td class="n ${p.left<=0?'neg':''}">${q(p.left)}</td><td>${p.left<=0?'Finished':p.left<=5?'Running low':'OK'}</td></tr>`),'No stock items yet.')+'<h2>What to do</h2><ol class="td">'+td.map(x=>'<li>'+x+'</li>').join('')+'</ol>'};
+const owedBox=()=>{const L=(WT&&WT.owe)||[],ms=WT&&WT.upd&&WT.upd.toMillis?WT.upd.toMillis():0,c=esc((WT&&WT.cur)||''),pend=k=>(D.wpay||[]).filter(y=>y.k===k&&y.at>ms).reduce((s,y)=>s+y.amt,0),R=L.map(y=>({...y,left:Math.round((y.ow-pend(y.k))*100)/100})).filter(y=>y.left>.005);
+ return'<h2>Customers who owe</h2>'+(R.length?R.map(y=>`<div class="wk"><div class="wk-a">${esc(y.n.charAt(0))}</div><div class="wk-i"><b>${esc(y.n)}</b><small>Owes ${c} ${m(y.left)}${y.due?' · pay by '+y.due:''}</small></div><div class="wk-x"><button class="btn sm" data-k="${esc(y.k)}" data-a="${y.left}" onclick="F.wkPay(this.dataset.k,+this.dataset.a)">Customer paid</button></div></div>`).join(''):'<div class="empty card">No customer owes money now.</div>')};
+const clockBoxOld=()=>{const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt);return`<div style="margin:14px 0"><p style="margin:0 0 8px">${o?'You clocked in at '+hm(o.inAt)+(o.date!==today()?' ('+o.date+')':''):'You are not clocked in.'}</p><button class="btn" onclick="F.wkClock()">${o?'Clock out':'Clock in'}</button></div>`};
 const bpRes=()=>{const q=(window.bpQ||'').trim().toLowerCase();if(!q)return`<p>Type a worker's name to see their stats.</p>`;
  const t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},R=[t,bk(6),mstart(),'0000-01-01'],at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',N=new Set();
  TM.filter(w=>w.status==='approved').forEach(w=>N.add(w.name));D.sales.forEach(x=>{const n=x.wn||nm(x.name);if(n)N.add(n)});D.damages.forEach(x=>{const n=x.wn||nm(x.why);if(n)N.add(n)});at.forEach(x=>{if(x.wn)N.add(x.wn)});
@@ -310,9 +591,62 @@ const bpRes=()=>{const q=(window.bpQ||'').trim().toLowerCase();if(!q)return`<p>T
   at.forEach(x=>{if(x.wn===n&&x.date>=f&&x.date<=t){s.d.add(x.date);if(x.outAt)s.ms+=x.outAt-x.inAt}});return s});
   const row=(l,fn)=>`<tr><td><b>${l}</b></td>${S.map(s=>`<td class="n">${fn(s)}</td>`).join('')}</tr>`;
   return`<h3>${esc(n)}</h3>${tbl(['','#Today','#7 days','#Month','#All time'],[row('Sales made',s=>s.c),row('Sales amount',s=>m(s.a)),row('Profit',s=>m(s.p)),row('Damaged loss',s=>m(s.l)),row('Days worked',s=>s.d.size),row('Hours worked',s=>(s.ms/36e5).toFixed(1))])}`}).join('')};
-const bpList=()=>{const q=(window.bpQ||'').trim().toLowerCase(),L=TM.filter(w=>w.status==='approved'&&(!q||(w.name+' '+w.email).toLowerCase().includes(q)));
- return L.length?L.map(w=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0"><div><b>${esc(w.name)}</b><br><small>${esc(w.email)}</small></div><button class="btn sm" onclick="window.bpWho='${w.id}';render()">View stats</button></div>`).join(''):`<p>${q?'No worker found.':'No approved workers yet.'}</p>`};
+const bpEmpty = () => `<div class="sr-e" style="padding:36px 0 12px"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--mute);margin-bottom:12px">${SI.team}</svg><b>No workers yet</b><span>Share your Business ID so your workers can join. After you approve them, their attendance and sales stats appear here.</span><button class="btn" style="margin-top:20px;width:100%" onclick="F.teamShare()">Share Business ID</button></div>`;
+const hl = (s, q) => {s=String(s||'');if(!q)return esc(s);const i=s.toLowerCase().indexOf(q);return i<0?esc(s):esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+q.length))+'</mark>'+esc(s.slice(i+q.length))};
+const bpSr=v=>{window.bpQ=v;const r=$('bpres');if(r)r.innerHTML=bpList();const x=document.querySelector('.sr');if(x)x.classList.toggle('has',!!v)};
+const bpList=()=>{const q=(window.bpQ||'').trim().toLowerCase(),A=wkAppr(),L=A.filter(w=>!q||(w.name+' '+w.email).toLowerCase().includes(q));
+ if(!A.length)return'<div class="sr-e"><b>No workers yet</b><span>Approved workers will appear here.</span></div>';
+ if(!L.length)return`<div class="sr-e"><b>No worker found</b><span>Nothing matches "${esc(window.bpQ.trim())}". Try a name or an email.</span></div>`;
+ return`<p class="sr-c">${q?L.length+' of '+A.length+' workers':A.length+(A.length>1?' workers':' worker')}</p>`+L.map(w=>`<div class="wk" onclick="window.bpWho='${w.id}';render()" style="cursor:pointer"><div class="wk-a">${esc(w.name.trim().charAt(0))}</div><div class="wk-i"><b>${hl(w.name,q)}</b><small>${hl(w.email,q)}</small></div><small style="flex:none;font-size:13px;color:var(--mute)">View stats ›</small></div>`).join('')};
+const bpListOld=()=>{const q=(window.bpQ||'').trim().toLowerCase(),L=TM.filter(w=>w.status==='approved'&&(!q||(w.name+' '+w.email).toLowerCase().includes(q)));
+ return L.length?L.map(w=>`<div class="wk" onclick="window.bpWho='${w.id}';render()" style="cursor:pointer"><div class="wk-a">${esc(w.name.trim().charAt(0))}</div><div class="wk-i"><b>${esc(w.name)}</b><small>${esc(w.email)}</small></div><small style="flex:none;font-size:13px;color:var(--mute)">View stats ›</small></div>`).join(''):`<p>${q?'No worker found.':'No approved workers yet.'}</p>`};
 const bpStats=id=>{const w=TM.find(x=>x.id===id);if(!w)return`<p>Worker not found.</p>`;
+ const t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',dup=TM.filter(x=>x.name===w.name).length>1,mine=(wid,n)=>wid?wid===w.id:(!dup&&n===w.name),c=C(),q=n=>n%1?m(n):Math.round(n).toLocaleString();
+ const R=[['Today',t],['7 days',bk(6)],['Month',mstart()],['All time','0000-01-01']].map(([n,f])=>{const s={n,c:0,a:0,p:0,x:0,d:new Set(),ms:0};
+  D.sales.forEach(y=>{if(mine(y.wid,y.wn||nm(y.name))&&y.date>=f&&y.date<=t){s.c++;s.a+=y.qty*y.price;s.p+=y.qty*(y.price-y.cost)}});
+  D.damages.forEach(y=>{if(mine(y.wid,y.wn||nm(y.why))&&y.date>=f&&y.date<=t)s.x+=y.qty*y.cost});
+  at.forEach(y=>{if(y.wid===w.id&&y.date>=f&&y.date<=t){s.d.add(y.date);if(y.outAt)s.ms+=y.outAt-y.inAt}});return s});
+ const sa=D.sales.filter(y=>mine(y.wid,y.wn||nm(y.name))).map(y=>({d:y.date,w:'Sale · '+y.name.split(' · ')[0],q:y.qty,a:y.qty*y.price})),da=D.damages.filter(y=>mine(y.wid,y.wn||nm(y.why))).map(y=>({d:y.date,w:'Damaged · '+y.name,q:y.qty,a:-y.qty*y.cost})),ac=[...sa,...da].sort((a,b)=>a.d<b.d?1:-1).slice(0,15),o=[...at].reverse().find(y=>y.wid===w.id&&!y.outAt);
+ return`<h1 class="wsh">${esc(w.name)}</h1><p style="margin:8px 0 0">${(()=>{const f=esc(w.name.trim().split(' ')[0]),j=w.t&&w.t.toMillis?new Date(w.t.toMillis()).toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'}):'',B=v=>'<b>'+v+'</b>',ts=sa.length,tot=sa.reduce((s,x)=>s+x.a,0),ls=[...sa].sort((a,b)=>a.d<b.d?1:-1)[0],lc=[...at].filter(y=>y.wid===w.id).sort((a,b)=>b.inAt-a.inAt)[0],r=[];
+r.push(f+(j?' joined your team on '+B(j)+'.':' is part of your team.'));
+r.push(w.entry===false?'Can view only and cannot send sales.':'Can send sales and damaged items.');
+r.push(o?'Right now '+f+' is at work since '+B(hm(o.inAt))+'.':'Right now '+f+' is not clocked in'+(lc?', last at work on '+B(lc.date):'')+'.');
+r.push(ts?'So far '+f+' has made '+B(ts)+' sale'+(ts>1?'s':'')+' worth '+B(c+' '+q(tot))+', the last one on '+B(ls.d)+'.':'No sale has been recorded yet.');
+return r.join(' ')})()}</p><h2>Sales (${esc(c)})</h2>${tbl(['Period','#Sales','#Amount','#Profit'],R.map(s=>`<tr><td><b>${s.n}</b></td><td class="n">${s.c}</td><td class="n">${q(s.a)}</td><td class="n ${cls(s.p)}">${q(s.p)}</td></tr>`))}<h2>Losses and attendance</h2>${tbl(['Period',`#Damaged (${esc(c)})`,'#Days','#Hours'],R.map(s=>`<tr><td><b>${s.n}</b></td><td class="n ${s.x>0?'neg':''}">${q(s.x)}</td><td class="n">${s.d.size}</td><td class="n">${(s.ms/36e5).toFixed(1)}</td></tr>`))}<h2>Recent work</h2>${tbl(['Date','What','#Qty','#Amount'],ac.map(x=>`<tr><td>${x.d.slice(5)}</td><td>${esc(x.w)}</td><td class="n">${x.q}</td><td class="n ${cls(x.a)}">${q(x.a)}</td></tr>`),'No work sent yet.')}${dup?'<p style="font-size:13px;margin-top:12px">Another worker has the same name. Sales sent before this update can’t be told apart, so they are not counted here.</p>':''}`};
+const bpStatsV4=id=>{const w=TM.find(x=>x.id===id);if(!w)return`<p>Worker not found.</p>`;
+ const t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',dup=TM.filter(x=>x.name===w.name).length>1,mine=(wid,n)=>wid?wid===w.id:(!dup&&n===w.name),c=C(),nf=esc(w.name.trim().split(' ')[0]),B=v=>`<b>${v}</b>`,M=v=>B(c+' '+m(v)),pm=mshift(t.slice(0,7),-1);
+ const S=(f,e)=>{const s={c:0,q:0,a:0,p:0,l:0,dq:0,d:new Set(),ms:0};
+  D.sales.forEach(x=>{if(mine(x.wid,x.wn||nm(x.name))&&x.date>=f&&x.date<=e){s.c++;s.q+=x.qty;s.a+=x.qty*x.price;s.p+=x.qty*(x.price-x.cost)}});
+  D.damages.forEach(x=>{if(mine(x.wid,x.wn||nm(x.why))&&x.date>=f&&x.date<=e){s.l+=x.qty*x.cost;s.dq+=x.qty}});
+  at.forEach(x=>{if(x.wid===w.id&&x.date>=f&&x.date<=e){s.d.add(x.date);if(x.outAt)s.ms+=x.outAt-x.inAt}});return s};
+ const T=(lbl,f,e,pf,pe,pl,extra)=>{const s=S(f,e),r=[];
+  if(s.c){r.push(`${nf} made ${B(s.c)} sale${s.c>1?'s':''} and sold ${B(s.q)} item${s.q>1?'s':''} for ${M(s.a)}, with a profit of <b style="color:${s.p<0?'var(--bad)':'var(--good)'}">${c+' '+m(s.p)}</b>.`);
+   if(pf){const o=S(pf,pe);if(o.a>0){const k=Math.round((s.a-o.a)/o.a*100);r.push(k===0?`That is the same as ${pl}.`:`That is ${B(Math.abs(k)+'%')} ${k>0?'more':'less'} than ${pl}.`)}else r.push(`Nothing was sold ${pl}.`)}}
+  else r.push(`${nf} made no sales.`);
+  r.push(s.l>0?`${B(s.dq)} item${s.dq>1?'s were':' was'} damaged, a loss of <b style="color:var(--bad)">${c+' '+m(s.l)}</b>.`:'No damaged items.');
+  if(s.d.size)r.push(`Worked ${B(s.d.size)} day${s.d.size>1?'s':''}${s.ms>0?', '+B((s.ms/36e5).toFixed(1)+' hours')+' in total':''}.`);
+  return`<p class="ws-p"><span class="ws-l">${lbl}:</span> ${r.join(' ')}${extra||''}</p>`};
+ const o=[...at].reverse().find(y=>y.wid===w.id&&!y.outAt),now=o?` Right now ${nf} is at work since ${B(hm(o.inAt))}.`:` Right now ${nf} is not clocked in.`;
+ return`<h1>${esc(w.name)}</h1><p style="margin:0 0 24px">${esc(w.email)}</p>${T('Today',t,t,bk(1),bk(1),'yesterday',now)}${T('Last 7 days',bk(6),t,bk(13),bk(7),'the 7 days before')}${T('This month',mstart(),t,pm+'-01',dayBefore(mstart()),'last month')}${T('All time','0000-01-01',t)}${dup?'<p style="font-size:13px">Another worker has the same name. Sales sent before this update can’t be told apart, so they are not counted here.</p>':''}`};
+const bpStatsV3=id=>{const w=TM.find(x=>x.id===id);if(!w)return`<p>Worker not found.</p>`;
+ const P=window.bpP||'today',t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},f=({today:t,week:bk(6),month:mstart(),all:'0000-01-01'})[P]||t,at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',dup=TM.filter(x=>x.name===w.name).length>1,mine=(wid,n)=>wid?wid===w.id:(!dup&&n===w.name),c=C(),when=({today:'today',week:'in the last 7 days',month:'this month',all:'since the start'})[P]||'today',s={c:0,q:0,a:0,p:0,cash:0,cr:0,l:0,dq:0,d:new Set(),ms:0,it:{}};let tot=0;
+ D.sales.forEach(x=>{if(x.date<f||x.date>t)return;const a=x.qty*x.price;tot+=a;if(mine(x.wid,x.wn||nm(x.name))){s.c++;s.q+=x.qty;s.a+=a;s.p+=x.qty*(x.price-x.cost);if(x.pay==='cash'||x.paidOn)s.cash+=a;else s.cr+=a;const n=x.name.split(' · ')[0];s.it[n]=(s.it[n]||0)+x.qty}});
+ D.damages.forEach(x=>{if(mine(x.wid,x.wn||nm(x.why))&&x.date>=f&&x.date<=t){s.l+=x.qty*x.cost;s.dq+=x.qty}});
+ at.forEach(x=>{if(x.wid===w.id&&x.date>=f&&x.date<=t){s.d.add(x.date);if(x.outAt)s.ms+=x.outAt-x.inAt}});
+ const nf=esc(w.name.trim().split(' ')[0]),B=v=>`<b>${v}</b>`,M=v=>B(c+' '+m(v)),top=Object.entries(s.it).sort((a,b)=>b[1]-a[1])[0],hrs=s.ms/36e5,net=s.p-s.l,share=tot>0?Math.round(s.a/tot*100):0,o=[...at].reverse().find(y=>y.wid===w.id&&!y.outAt),h=x=>`<h2 style="text-decoration:underline">${x}</h2>`,
+ sale=s.c?`${nf} made ${B(s.c)} sale${s.c>1?'s':''} ${when} and sold ${B(s.q)} item${s.q>1?'s':''} for ${M(s.a)} in total. ${s.cash>0?M(s.cash)+' was paid at the time of sale. ':''}${s.cr>0?'Customers still owe '+M(s.cr)+'. ':''}${top?'The best seller was '+B(esc(top[0]))+' ('+top[1]+' sold). ':''}${share?'This is '+B(share+'%')+' of all sales of the business '+when+'.':''}`:`${nf} did not record any sale ${when}.`,
+ dmg=s.l>0?`${nf} reported ${B(s.dq)} damaged item${s.dq>1?'s':''} ${when}, a loss of <b style="color:var(--bad)">${c+' '+m(s.l)}</b>.`:`${nf} reported no damaged items ${when}.`,
+ att=(s.d.size?`${nf} worked ${B(s.d.size)} day${s.d.size>1?'s':''} ${when}${hrs>0?', '+B(hrs.toFixed(1)+' hours')+' in total (about '+B((hrs/s.d.size).toFixed(1))+' hours a day)':''}.`:`${nf} has no clock-in ${when}.`)+(o?` Right now ${nf} is at work since ${B(hm(o.inAt))}.`:` Right now ${nf} is not clocked in.`),
+ ov=s.c||s.l?`The sales made by ${nf} brought a profit of <b style="color:${s.p<0?'var(--bad)':'var(--good)'}">${c+' '+m(s.p)}</b> before losses. After damaged items, the result is <b style="color:${net<0?'var(--bad)':'var(--good)'}">${net<0?'a loss of ':'a net profit of '}${c+' '+m(Math.abs(net))}</b>.`:`There is no work to report ${when}. Choose a longer period to see more.`;
+ return`<h1>${esc(w.name)}</h1><p style="margin:0">${esc(w.email)}</p><div class="ws-ch">${[['today','Today'],['week','7 days'],['month','This month'],['all','All time']].map(([k,l])=>`<button class="chip${P===k?' on':''}" onclick="window.bpP='${k}';render()">${l}</button>`).join('')}</div>${h('Sales summary')}<p>${sale}</p>${h('Damaged summary')}<p>${dmg}</p>${h('Attendance summary')}<p>${att}</p>${h('Overall report')}<p>${ov}</p>${dup?'<p style="font-size:13px">Another worker has the same name. Sales sent before this update can’t be told apart, so they are not counted here.</p>':''}`};
+const bpStatsV2=id=>{const w=TM.find(x=>x.id===id);if(!w)return`<p>Worker not found.</p>`;
+ const P=window.bpP||'today',t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},f=({today:t,week:bk(6),month:mstart(),all:'0000-01-01'})[P]||t,at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',dup=TM.filter(x=>x.name===w.name).length>1,mine=(wid,n)=>wid?wid===w.id:(!dup&&n===w.name),s={c:0,a:0,p:0,l:0,d:new Set(),ms:0};
+ D.sales.forEach(x=>{if(mine(x.wid,x.wn||nm(x.name))&&x.date>=f&&x.date<=t){s.c++;s.a+=x.qty*x.price;s.p+=x.qty*(x.price-x.cost)}});
+ D.damages.forEach(x=>{if(mine(x.wid,x.wn||nm(x.why))&&x.date>=f&&x.date<=t)s.l+=x.qty*x.cost});
+ at.forEach(x=>{if(x.wid===w.id&&x.date>=f&&x.date<=t){s.d.add(x.date);if(x.outAt)s.ms+=x.outAt-x.inAt}});
+ const r=(l,v,c)=>`<div class="ws-r"><span>${l}</span><b${c?` style="color:${c}"`:''}>${v}</b></div>`,c=C();
+ return`<div class="ws-h"><div class="wk-a">${esc(w.name.trim().charAt(0))}</div><b>${esc(w.name)}</b><span>${esc(w.email)}</span></div><div class="ws-ch">${[['today','Today'],['week','7 days'],['month','This month'],['all','All time']].map(([k,l])=>`<button class="chip${P===k?' on':''}" onclick="window.bpP='${k}';render()">${l}</button>`).join('')}</div><div class="ws-big"><span>Sales amount</span><b>${c} ${m(s.a)}</b></div>${r('Sales made',s.c)}${r('Profit',c+' '+m(s.p),s.p<0?'var(--bad)':s.p>0?'var(--good)':'')}${r('Damaged loss',c+' '+m(s.l),s.l>0?'var(--bad)':'')}${r('Days worked',s.d.size)}${r('Hours worked',(s.ms/36e5).toFixed(1))}${dup?'<p style="font-size:13px;margin-top:12px">Another worker has the same name. Sales sent before this update can’t be told apart, so they are not counted here.</p>':''}`};
+const bpStatsOld=id=>{const w=TM.find(x=>x.id===id);if(!w)return`<p>Worker not found.</p>`;
  const t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},R=[t,bk(6),mstart(),'0000-01-01'],at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',dup=TM.filter(x=>x.name===w.name).length>1,mine=(wid,n)=>wid?wid===w.id:(!dup&&n===w.name);
  const S=R.map(f=>{const s={c:0,a:0,p:0,l:0,d:new Set(),ms:0};
   D.sales.forEach(x=>{if(mine(x.wid,x.wn||nm(x.name))&&x.date>=f&&x.date<=t){s.c++;s.a+=x.qty*x.price;s.p+=x.qty*(x.price-x.cost)}});
@@ -324,18 +658,25 @@ const isP=()=>((db.u[me]||{}).role==='personal'),PPAGES=[['pov','Overview'],['pi
 const PC=['Food','Transport','Rent','Bills','Airtime & data','Health','School','Clothes','Family','Fun','Other'];
 const mshift=(ym,n)=>{const d=new Date(+ym.slice(0,4),+ym.slice(5)-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')};
 const teamLink=()=>location.href.split(/[?#]/)[0]+'?join='+db.u[me].own.code;
-const tmList=()=>TM.length?[...TM].sort((a,b)=>(a.status==='approved')-(b.status==='approved')).map(w=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0"><div><b>${esc(w.name)}</b><br><small>${esc(w.email)} · ${w.status==='approved'?'Approved':'Waiting'}</small></div><div style="display:flex;gap:6px">${w.status==='approved'?`<button class="btn sm alt" onclick="F.tmDel('${w.id}')">Remove</button>`:`<button class="btn sm" onclick="F.tmOk('${w.id}')">Approve</button><button class="btn sm alt" onclick="F.tmDel('${w.id}')">Reject</button>`}</div></div>`).join(''):'<p>No one has asked to join yet.</p>';
+const wkRow=(w,pend)=>{const v=w.entry===false;return`<div class="wk"><div class="wk-a">${esc((w.name||'?').trim().charAt(0))}</div><div class="wk-i"><b>${esc(w.name)}</b><small>${esc(w.email)}</small>${pend?'':`<small style="color:${v?'var(--mute)':'var(--good)'}">${v?'View only':'Can send sales'}</small>`}</div><div class="wk-x">${pend?`<button class="btn sm" onclick="F.tmOk('${w.id}')">Approve</button><button class="btn sm alt" onclick="F.tmDel('${w.id}')">Reject</button>`:`<button class="dots" onclick="F.menu(event)">⋮</button><div class="mnu"><button onclick="F.tmEntry('${w.id}')">${v?'Allow sales':'Stop sales'}</button><button class="red" onclick="F.tmDel('${w.id}')">Remove</button></div>`}</div></div>`};
+const tmList=()=>{const p=planNow(),P=TM.filter(w=>w.status!=='approved'),A=TM.filter(w=>w.status==='approved'),pl=`<p class="wk-p">${esc(p.n)} plan${p.w<1?'':' · '+ofn(A.length,p.w)+' workers · '+ofn(wkEntry().length,p.e)+' can send sales'} · <a href="#" onclick="go('plans');return false">${planKey()==='free'?'Upgrade':'Change plan'}</a></p>`;
+ if(!TM.length)return pl+'<p style="text-align:center;margin-top:20px">No one has asked to join yet. Share your Business ID from Settings, Team (Pro).</p>';
+ return pl+(P.length?`<h2 class="wk-h">Waiting for approval (${P.length})</h2>`+P.map(w=>wkRow(w,1)).join(''):'')+(A.length?`<h2 class="wk-h">Approved (${A.length})</h2>`+A.map(w=>wkRow(w,0)).join(''):'')};
+const tmListOld=()=>TM.length?[...TM].sort((a,b)=>(a.status==='approved')-(b.status==='approved')).map(w=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0"><div><b>${esc(w.name)}</b><br><small>${esc(w.email)} · ${w.status==='approved'?(w.entry===false?'Approved · view only':'Approved'):'Waiting'}</small></div><div style="display:flex;gap:6px">${w.status==='approved'?`<button class="btn sm alt" onclick="F.tmEntry('${w.id}')">${w.entry===false?'Allow sales':'Stop sales'}</button><button class="btn sm alt" onclick="F.tmDel('${w.id}')">Remove</button>`:`<button class="btn sm" onclick="F.tmOk('${w.id}')">Approve</button><button class="btn sm alt" onclick="F.tmDel('${w.id}')">Reject</button>`}</div></div>`).join(''):'<p>No one has asked to join yet.</p>';
 const startTeam=()=>{tw.forEach(f=>f());tw=[];TM=[];WS='';WT=null;const o=db.u[me]||{},u=bbAuth.currentUser;if(!u||!D)return;
+ PL=null;if(o.role!=='worker')tw.push(bbDb.collection('bb_plans').doc(u.uid).onSnapshot(s=>{const n=s.exists?s.data():null,g=x=>x?x.plan+'|'+(x.until&&x.until.toMillis?x.until.toMillis():x.until):'',ch=g(n)!==g(PL);PL=n;if(ch&&['bizpro','plans','settings','pacc','workers'].includes(page))render()},()=>{}));
  if(o.role==='worker'){const t=o.team;let on=0;
-  tw.push(bbDb.collection('bb_teams').doc(t.owner).collection('members').doc(u.uid).onSnapshot(s=>{const ns=s.exists?s.data().status:'removed';if(ns===WS)return;WS=ns;
-   if(ns==='approved'&&!on){on=1;tw.push(bbDb.collection('bb_teams').doc(t.owner).onSnapshot(q=>{const f=!WT;WT=q.exists?q.data():null;if(f)render()},()=>{}))}
+  tw.push(bbDb.collection('bb_teams').doc(t.owner).collection('members').doc(u.uid).onSnapshot(s=>{const ns=s.exists?s.data().status:'removed',ne=s.exists&&s.data().entry===false?0:1;if(ns===WS&&ne===WE)return;WS=ns;WE=ne;
+   if(ns==='approved'&&!on){on=1;tw.push(bbDb.collection('bb_teams').doc(t.owner).onSnapshot(q=>{const f=!WT,ps=JSON.stringify((WT||{}).sum);WT=q.exists?q.data():null;if(WT&&WT.cur&&D.biz.cur!==WT.cur){if(!D.biz.cur||convCur(D.biz.cur,WT.cur)){D.biz.cur=WT.cur;save()}}if(f)render();else if(!WE&&ps!==JSON.stringify((WT||{}).sum)){const y=scrollY;render();scrollTo(0,y)}},()=>{}))}
    render()},()=>{}));return}
  if(!o.own)return;const tr=bbDb.collection('bb_teams').doc(u.uid);teamPub();
+ 
  tw.push(tr.collection('members').onSnapshot(s=>{TM=s.docs.map(d=>({id:d.id,...d.data()}));const el=$('tmlist');if(el)el.innerHTML=tmList();const bg=$('wkb');if(bg){const n=TM.filter(w=>w.status==='pending').length;bg.textContent=n?' ('+n+')':''}},()=>{}));
  tw.push(tr.collection('entries').onSnapshot(s=>{let n=0;const rf=[];
-  [...s.docs].sort((a,b)=>((a.data().rec||{}).at||0)-((b.data().rec||{}).at||0)).forEach(d=>{const x=d.data(),r=x.rec||{},p=D.products.find(y=>y.id===r.pid),by=String(x.byName||'Worker').slice(0,40);rf.push(d.ref);if(x.kind==='attend'){if(AT(x,r,by))n++;return}
-   const ok=p&&+r.qty>0&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&typeof r.id==='string';
-   if(ok&&x.kind==='sale'&&+r.price>=0&&!D.sales.some(y=>y.id===r.id)){D.sales.push({id:r.id,date:r.date,pid:p.id,name:p.name+' · '+by,qty:+r.qty,price:+r.price,cost:p.kind==='product'?p.cost:0,pay:r.pay==='credit'?'credit':'cash',wn:by,wid:x.by});n++}
+  [...s.docs].sort((a,b)=>((a.data().rec||{}).at||0)-((b.data().rec||{}).at||0)).forEach(d=>{const x=d.data(),r=x.rec||{},p=D.products.find(y=>y.id===r.pid),by=String(x.byName||'Worker').slice(0,40);rf.push(d.ref);{const mb=TM.find(y=>y.id===x.by);if(mb&&mb.entry===false&&x.kind!=='attend')return}if(x.kind==='attend'){if(AT(x,r,by))n++;return}
+   if(x.kind==='payment'){const a=+r.amt,nm=String(r.cust||'').trim().slice(0,60),c=crData().find(y=>y.k===nm.toLowerCase());if(a>0&&nm&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&typeof r.id==='string'&&!D.tx.some(y=>y.id===r.id)){const cap=c?Math.max(0,c.ow):0;if(cap>.005){D.tx.push({id:r.id,date:r.date,type:'collect',amt:Math.min(a,cap),cust:c.n,desc:c.n+' · '+by,wn:by,wid:x.by});n++}}return}
+const ok=p&&+r.qty>0&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&typeof r.id==='string';
+   if(ok&&x.kind==='sale'&&+r.price>=0&&!D.sales.some(y=>y.id===r.id)){D.sales.push({id:r.id,date:r.date,pid:p.id,name:p.name+' · '+by,qty:+r.qty,price:+r.price,cost:p.kind==='product'?p.cost:0,pay:r.pay==='credit'?'credit':'cash',cust:r.pay==='credit'?String(r.cust||'').slice(0,60):'',due:/^\d{4}-\d{2}-\d{2}$/.test(r.due||'')?r.due:'',wn:by,wid:x.by});n++}
    if(ok&&x.kind==='damage'&&!D.damages.some(y=>y.id===r.id)){D.damages.push({id:r.id,date:r.date,pid:p.id,name:p.name,qty:+r.qty,cost:p.cost,why:String(r.why||'').slice(0,100)+' · '+by,wn:by,wid:x.by});n++}
   });
   if(rf.length){if(n){save();toast(n+' new from your team');render()}rf.forEach(r=>r.delete().catch(()=>{}))}},()=>{}));
@@ -376,7 +717,7 @@ function st(f,t){
  D.tx.forEach(x=>{if(!inr(x.date))return;const a=x.amt;
   if(x.type==='expense'){r.exp+=a;const c=x.cat||'Other';r.expBy[c]=(r.expBy[c]||0)+a}
   else if(x.type==='stock')r.stock+=a;else if(x.type==='asset')r.asset+=a;else if(x.type==='capital')r.cap+=a;
-  else if(x.type==='loan')r.loan+=a;else if(x.type==='repay')r.repay+=a;else if(x.type==='drawing')r.draw+=a});
+  else if(x.type==='loan')r.loan+=a;else if(x.type==='repay')r.repay+=a;else if(x.type==='drawing')r.draw+=a;else if(x.type==='collect')r.collect+=a});
  r.cashIn=r.cashSales+r.collect+r.cap+r.loan;r.cashOut=r.exp+r.stock+r.asset+r.draw+r.repay;
  r.gross=r.rev-r.cogs;r.net=r.gross-r.dmg-r.exp;return r}
 const dayBefore=d=>{const x=new Date(d+'T00:00:00Z');x.setUTCDate(x.getUTCDate()-1);return x.toISOString().slice(0,10)};
@@ -387,17 +728,22 @@ const units=p=>D.tx.filter(x=>x.type==='stock'&&x.pid===p.id).reduce((s,x)=>s+x.
 
 /* ---------- shell ---------- */
 const closeMn=()=>document.querySelectorAll('.mnu.open').forEach(x=>x.classList.remove('open'));document.addEventListener('click',closeMn);window.addEventListener('scroll',closeMn,true);
-const PAGES=[['home','Home'],['sell','Sales'],['products','Products'],['damaged','Damaged'],['cash','Cashbook'],['reports','Reports'],['settings','Settings']];
-function render(){
+const PAGES=[['home','Home'],['sell','Sales'],['products','Products'],['cash','Money'],['settings','Settings']];
+const GROUPS={sell:[['sell','New sale'],['credit','Customers']],products:[['products','Products'],['damaged','Damaged']],cash:[['cash','Cashbook'],['reports','Reports']],workers:[['workers','Workers'],['bizpro','Business Pro']]};
+const grpOf=p=>Object.keys(GROUPS).find(k=>GROUPS[k].some(x=>x[0]===p))||p;
+const tabBar=()=>{const g=GROUPS[grpOf(page)];if(!g||isW()||isP())return'';return`<div class="gt">${g.map(([k,n])=>`<button class="${page===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}</div>`};
+function render(){if(!D&&authView==='land')authView='form';if(isP()&&!PPAGES.some(p=>p[0]===page))page='pov';
  $('who').innerHTML=D?`<button class="mbtn" onclick="tm()" aria-label="Menu"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>`:'';
- $('nav').innerHTML=D?`<div class="mback" id="mback" onclick="tm()"></div><div class="menu" id="menu">${(isW()?WPAGES:isP()?PPAGES:PAGES).map(([k,n])=>`<button class="mi ${page===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}${(db.u[me]||{}).own?`<button class="mi wkm ${page==='workers'?'on':''}" onclick="go('workers')">Workers<span id="wkb">${TM.filter(w=>w.status==='pending').length?' ('+TM.filter(w=>w.status==='pending').length+')':''}</span></button>`:''}${(db.u[me]||{}).own?`<button class="mi bpm ${page==='bizpro'?'on':''}" onclick="go('bizpro')">Business Pro</button>`:''}<button class="mi th${document.documentElement.dataset.theme==='black'?' sun':''}" onclick="setTheme(document.documentElement.dataset.theme==='black'?'light':'black');render()">${document.documentElement.dataset.theme==='black'?'Light theme':'Black theme'}</button><button class="mi out" onclick="F.logout()">Log out</button></div>`:'';
- $('app').innerHTML=D?V[isW()?'wk':page]():V.auth();$('app').dataset.v=D?'':(localStorage.bb_join||localStorage.bb_pers?'join':authView);document.querySelector('.hdr b').textContent=!D&&authView==='form'?(authTab==='in'?'Log in to your account':'Create your account'):'Biz Books';
+ $('nav').innerHTML=D?`<div class="mback" id="mback" onclick="tm()"></div><div class="menu${!isW()&&!isP()?' ow':''}" id="menu">${(isW()?WPAGES:isP()?PPAGES:PAGES).map(([k,n])=>`<button class="mi ${grpOf(page)===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('')}${(db.u[me]||{}).own?`<button class="mi wkm ${page==='workers'||page==='bizpro'?'on':''}" onclick="go('workers')">Team<span id="wkb">${TM.filter(w=>w.status==='pending').length?' ('+TM.filter(w=>w.status==='pending').length+')':''}</span></button>`:''}${isW()&&!isInst()?`<button class="mi ins" onclick="$('menu').classList.remove('open');$('mback').classList.remove('open');F.install()">Install app</button>`:''}<button class="mi th${document.documentElement.dataset.theme==='black'?' sun':''}" onclick="setTheme(document.documentElement.dataset.theme==='black'?'light':'black');render()">${document.documentElement.dataset.theme==='black'?'Light theme':'Black theme'}</button><button class="mi out" onclick="F.logout()">Log out</button></div>`:'';
+ $('app').innerHTML=D?tabBar()+V[isW()?'wk':page]():V.auth();$('app').dataset.v=D?'':(localStorage.bb_join||localStorage.bb_pers?'join':authView);document.querySelector('.hdr b').textContent=!D&&authView==='form'?(localStorage.bb_join?'Join a team':localStorage.bb_pers?'Create your account':authTab==='in'?'Log in to your account':'Create your account'):'Menya Books';
  if(!D)bindCountry();
- window.scrollTo(0,0);skin()}
+ window.scrollTo(0,0);skin();hist()}
 const place=(o,b,w)=>{const r=b.getBoundingClientRect();w=Math.min(w,innerWidth-24);o.style.width=w+'px';const h=o.offsetHeight;let t=r.bottom+6;if(t+h>innerHeight-8&&r.top-h-6>8)t=r.top-h-6;o.style.left=Math.min(Math.max(12,r.left),innerWidth-w-12)+scrollX+'px';o.style.top=t+scrollY+'px'};
 const sheet=(h,b,w)=>{document.querySelectorAll('.pcard').forEach(x=>x.remove());const o=document.createElement('div');o.className='pcard';o.innerHTML=h;o.addEventListener('click',e=>e.stopPropagation());document.body.appendChild(o);place(o,b,w);return o};
 document.addEventListener('click',e=>{if(!e.target.closest('.pcard,.pk'))document.querySelectorAll('.pcard').forEach(x=>x.remove())});
-function skin(){document.querySelectorAll('.pcard').forEach(x=>x.remove());document.querySelectorAll('#app select,#app input[type=date]').forEach(el=>{if(el.dataset.sk)return;el.dataset.sk=1;const isD=el.type==='date',b=document.createElement('button');b.type='button';b.className='pk'+(isD?' dt':'');
+function skin(){document.querySelectorAll('.pcard').forEach(x=>x.remove());
+const PH=[['Your full name','John Doe'],['Email','john@gmail.com'],['Password','At least 6 characters'],['Currency','RWF'],['Business name','Doe General Shop'],['Registration number','Optional'],['Tax ID','Optional'],['Phone','0788 123 456'],['Address','Kigali, Gasabo'],['Business ID','BBXXXXXX'],['Customer name','Jane Smith'],['What do you need','Laptop'],['How much will it cost','50000'],['Where from','Salary'],['What for','Bus ticket'],['Amount','5000'],['Description','Rent for November'],['Reason','Expired'],['Item or service','Haircut'],['Quantity','1'],['Opening stock','0'],['Cost price','800'],['Selling price','1000'],['Price each','1000'],['Extra notes','Example: Rent is paid every month'],['Name','Rice 1 kg']];
+document.querySelectorAll('#app input:not([type=date]):not([type=hidden]):not([type=file]):not([placeholder]),#app textarea:not([placeholder])').forEach(i=>{const l=i.parentNode.querySelector('label');if(!l)return;const t=l.textContent.trim(),p=PH.find(x=>t.startsWith(x[0]));if(p)i.placeholder=p[1]});document.querySelectorAll('#app select,#app input[type=date]').forEach(el=>{if(el.dataset.sk)return;el.dataset.sk=1;const isD=el.type==='date',b=document.createElement('button');b.type='button';b.className='pk'+(isD?' dt':'');
 const lab=()=>{b.textContent=isD?(el.value?new Date(el.value+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'Select date'):(el.selectedOptions[0]?el.selectedOptions[0].text:'Select')};
 lab();el.classList.add('sk-h');el.after(b);el.addEventListener('change',lab);b.onclick=()=>isD?pickDate(el,lab,b):pickOpt(el,lab,b)})}
 function pickOpt(el,lab,b){const o=sheet('<div class="ol">'+[...el.options].filter(x=>!x.disabled).map(x=>`<button type="button" class="op ${x.value===el.value?'on':''}" data-v="${x.value.replace(/"/g,'&quot;')}"><span>${esc(x.text)}</span><i>✓</i></button>`).join('')+'</div>',b,Math.max(b.offsetWidth,240));
@@ -410,25 +756,70 @@ o.innerHTML=`<div class="ch"><button type="button" data-n="-1">‹</button><b>${
 o.onclick=e=>{const t=e.target.closest('button');if(!t)return;if(t.dataset.n){m+=+t.dataset.n;if(m<0){m=11;y--}if(m>11){m=0;y++}draw()}
 else if(t.dataset.d||t.dataset.t){el.value=t.dataset.d||td;el.dispatchEvent(new Event('change',{bubbles:true}));lab();o.remove()}else if(t.dataset.x)o.remove()};draw()}
 const setTheme=t=>{try{localStorage.bb_theme=t}catch(e){}document.documentElement.dataset.theme=t;const m=document.getElementById('tc');if(m)m.content=t==='black'?'#000000':'#ffffff';document.querySelectorAll('[data-th]').forEach(b=>b.classList.toggle('alt',b.dataset.th!==t))};
-const go=p=>{page=p;render()};
+const go=p=>{page=p;window.setSub='';render()};
+let HS='',HK='',HB=0;
+const hsnap=()=>{const f=document.querySelector('form.f');return D?{k:'p',page,bw:window.bpWho||'',ss:window.setSub||''}:{k:'a',av:authView,at:authTab,ap:window.acctPick?1:0,j:localStorage.bb_join||'',pe:localStorage.bb_pers||'',st:f&&f.classList.contains('s2')?2:1}};
+const hist=()=>{if(HB)return;const s=hsnap(),g=JSON.stringify(s);if(g===HS)return;const rep=!HS||s.k!==HK;HS=g;HK=s.k;history[rep?'replaceState':'pushState'](s,'')};
+addEventListener('popstate',e=>{const s=e.state;if(!s)return;
+ if(D){if(s.k!=='p')return;page=s.page;window.bpWho=s.bw;window.setSub=s.ss||''}
+ else{if(s.k!=='a')return;authView=s.av;authTab=s.at;window.acctPick=s.ap;if(s.j)localStorage.bb_join=s.j;else localStorage.removeItem('bb_join');if(s.pe)localStorage.bb_pers=s.pe;else localStorage.removeItem('bb_pers')}
+ HB=1;HS=JSON.stringify(s);HK=s.k;render();
+ if(!D&&s.st===2){const f=document.querySelector('form.f');f&&f.classList.replace('s1','s2')}
+ HB=0});
 const tm=()=>{$('menu').classList.toggle('open');$('mback').classList.toggle('open')};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('menu')&&$('menu').classList.contains('open'))tm()});
 function bindCountry(){const s=$('ctry'),c=$('cur');if(s&&c){const f=()=>c.value=s.selectedOptions[0].dataset.c;s.onchange=f;f()}}
 const tbl=(h,rows,empty='Nothing here yet.',k='')=>rows.length?`<div class="tw ${k}"><table><tr>${h.map(x=>`<th class="${x[0]=='#'?'n':''}">${x.replace('#','')}</th>`).join('')}</tr>${rows.map(r=>{let i=0;return r.replace(/<td/g,()=>`<td data-l="${(h[i++]||'').replace('#','')}"`)}).join('')}</table></div>`:`<div class="empty card">${empty}</div>`;
 const prodOpts=()=>D.products.map(p=>`<option value="${p.id}">${esc(p.name)}${p.kind==='product'?` (${units(p)>0?units(p)+' left':'finished'})`:''}</option>`).join('');
 const C=()=>D.biz.cur;
+const convCur=(from,to)=>{const a=fxRate(from),b=fxRate(to);if(!a||!b)return false;const k=b/a,r=n=>Math.round((+n||0)*k*1e4)/1e4;
+ D.products.forEach(p=>{p.cost=r(p.cost);p.price=r(p.price)});
+ D.sales.forEach(x=>{x.price=r(x.price);x.cost=r(x.cost)});
+ D.damages.forEach(x=>{x.cost=r(x.cost)});
+ D.tx.forEach(x=>{x.amt=r(x.amt)});
+ (D.wpay||[]).forEach(x=>{x.amt=r(x.amt)});
+ if(D.pers){D.pers.in.forEach(x=>{x.amt=r(x.amt)});D.pers.out.forEach(x=>{x.amt=r(x.amt)});D.pers.need.forEach(x=>{x.amt=r(x.amt)})}
+ return true};
+const SI={biz:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',cloud:'<path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 0 1 0 9z"/>',team:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',dl:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',up:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',del:'<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>'};
+const sIc=k=>`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${SI[k]}</svg>`;
+const sRow=(k,t,s,a)=>`<button class="st-r" onclick="${a}">${sIc(k)}<span>${t}${s?`<small>${s}</small>`:''}</span></button>`;
+const sGo=x=>{window.setSub=x;render()};
+const bizOwe = () => crData().filter(y => y.n && y.ow > .005).slice(0, 150).map(y => ({ k: y.k, n: y.n, ow: y.ow, due: y.due || '' }));
+const crData = () => {const M={},g=n=>{const t=(n||'').trim(),k=t.toLowerCase();return M[k]||(M[k]={k,n:t,it:[],pay:[],ow:0,tot:0,due:''})};
+ D.sales.forEach(x=>{if(x.pay!=='credit')return;const c=g(x.cust),a=x.qty*x.price;c.it.push(x);c.tot+=a;if(!x.paidOn){c.ow+=a;if(x.due&&(!c.due||x.due<c.due))c.due=x.due}});
+ D.tx.forEach(x=>{if(x.type==='collect'){const c=g(x.cust);c.pay.push(x);c.ow-=x.amt}});
+ return Object.values(M).map(c=>(c.ow=Math.round(c.ow*100)/100,c)).filter(c=>c.it.length||c.pay.length).sort((a,b)=>b.ow-a.ow)};
+SI.share='<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>';SI.ref='<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>';SI.star='<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>';SI.off='<path d="M18.4 6.6a9 9 0 1 1-12.8 0M12 2v10"/>';
 
 const V={
 join(){const c=localStorage.bb_join;bbDb.collection('bb_invites').doc(c).get().then(s=>{const e=$('jn');if(e)e.textContent=s.exists?'You were invited to '+s.data().name+'. Create an account or log in, then wait for the owner to approve you.':'This invite link is not valid.'}).catch(()=>{});
  return`<div class="hero"><h1>Join the team</h1><p id="jn">Checking your invite…</p></div><form class="f" onsubmit="return F.joinGo(event)"><div><label>Your name</label><input name="name" required></div><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password</label><input name="pw" type="password" minlength="6" required></div><button class="btn">Send request to join</button><p class="sw"><a href="#" onclick="F.joinCancel();return false">Not a team member? Go back</a></p></form>`},
-wk(){const t=db.u[me].team,P=(WT&&WT.products)||[],c=WT?WT.cur:'';const h=`<h1>${esc(t.name)}</h1><p>Signed in as ${esc(db.u[me].name)}</p>`;
- if(WS!=='approved')return h+`<div class="card"><h3>${WS==='removed'?'Not approved':'Waiting for approval'}</h3><p>${WS==='removed'?'The owner has not approved this request, or removed you. Ask the owner for a new link.':'The business owner must approve you first. This page updates by itself.'}</p></div>`;
+wk(){const t=db.u[me].team,P=(WT&&WT.products)||[],c=WT?WT.cur:'',T=window.wkTab||'sales',d=today();
+ const h=`<div class="wh"><div class="wh-a">${esc((db.u[me].name||'?').trim().charAt(0))}</div><div><b>${esc(t.name)}</b><small>${esc(db.u[me].name)}</small></div></div>`;
+ if(WS!=='approved')return h+`<div class="card" style="margin-top:20px"><h3>${WS==='removed'?'Not approved':'Waiting for approval'}</h3><p>${WS==='removed'?'The owner has not approved this request, or removed you. Ask the owner for a new link.':'The business owner must approve you first. This page updates by itself.'}</p></div>`;
  if(!WT)return h+'<p>Loading items…</p>';
+ if(!WE)return h+clockBox()+viewOnly(P,c);
+ const o=P.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')||'<option value="">The owner has not added items yet</option>',
+ tabs=[['sales','Sales'],['damaged','Damaged'],['credit','Credit'],['history','History']],
+ bar=`<div class="gt">${tabs.map(([k,n])=>`<button class="${T===k?'on':''}" onclick="window.wkTab='${k}';render()">${n}</button>`).join('')}</div>`,
+ qty=`<div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div>`;
+ let b='';
+ if(T==='sales')b=`<form class="f" onsubmit="return F.wkSale(event)"><div><label>Item</label><select name="pid" id="wsp" onchange="F.wkPrice()" required>${o}</select></div><div class="r2">${qty}<div><label>Price each (${esc(c)})</label><input name="price" id="wspr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div><input type="hidden" name="pay" value="cash"><button class="btn">Send sale</button></form>`;
+ else if(T==='damaged')b=`<form class="f" onsubmit="return F.wkDmg(event)"><div><label>Item</label><select name="pid" required>${o}</select></div><div class="r2">${qty}<div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><div><label>Reason</label><input name="why"></div><button class="btn">Send</button></form>`;
+ else if(T==='credit')b=`<form class="f" onsubmit="return F.wkCredit(event)"><div><label>Customer name</label><input name="cust" autocomplete="off" required></div><div><label>Item</label><select name="pid" onchange="{const p=(WT.products||[]).find(x=>x.id===this.value);if(p)$('wcpr').value=p.price}" required>${o}</select></div><div class="r2">${qty}<div><label>Price each (${esc(c)})</label><input name="price" id="wcpr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div class="r2"><div><label>Date</label><input name="date" type="date" value="${d}" required></div><div><label>Pay by (optional)</label><input name="due" type="date"></div></div><button class="btn">Send to owner</button></form>${owedBox()}`;
+ else{const nm=x=>String(x.name||'').split(' · ')[0],L=[...D.sales.map(x=>({d:x.date,k:x.pay==='credit'?'Credit':'Sale',w:nm(x)+' ×'+x.qty+(x.cust?' · '+x.cust:''),a:m(x.qty*x.price)})),...D.damages.map(x=>({d:x.date,k:'Damaged',w:nm(x)+' ×'+x.qty,a:'–'})),...(D.wpay||[]).map(x=>({d:dstr(x.at),k:'Payment',w:'Customer paid',a:m(x.amt)})),...(D.att||[]).map(x=>({d:x.date,k:'Attendance',w:hm(x.inAt)+(x.outAt?' to '+hm(x.outAt):' · at work'),a:x.outAt?((x.outAt-x.inAt)/36e5).toFixed(1)+' h':'–'}))].sort((a,b)=>a.d<b.d?1:-1).slice(0,60);
+  b=tbl(['Date','Type','What','#Amount'],L.map(x=>`<tr><td>${x.d.slice(5)}</td><td>${x.k}</td><td>${esc(x.w)}</td><td class="n">${x.a}</td></tr>`),'Nothing sent yet.')}
+ return h+clockBox()+bar+b},
+wkOld(){const t=db.u[me].team,P=(WT&&WT.products)||[],c=WT?WT.cur:'';const h=`<h1>${esc(t.name)}</h1><p>Signed in as ${esc(db.u[me].name)}</p>`;
+ if(WS!=='approved')return h+`<div class="card"><h3>${WS==='removed'?'Not approved':'Waiting for approval'}</h3><p>${WS==='removed'?'The owner has not approved this request, or removed you. Ask the owner for a new link.':'The business owner must approve you first. This page updates by itself.'}</p></div>`;
+ if (!WT) return h + '<p>Loading items…</p>';
+if(!WE)return h+clockBox()+viewOnly(P,c);
  const o=P.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')||'<option value="">The owner has not added items yet</option>',d=today();
- return h+`${clockBox()}<h2>Add a sale</h2><form class="f" onsubmit="return F.wkSale(event)"><div><label>Item</label><select name="pid" id="wsp" onchange="F.wkPrice()" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${esc(c)})</label><input name="price" id="wspr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div class="r2"><div><label>Paid</label><select name="pay"><option value="cash">Cash / mobile money</option><option value="credit">On credit (pay later)</option></select></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><button class="btn">Send sale</button></form>
-<h2>Report a damaged item</h2><form class="f" onsubmit="return F.wkDmg(event)"><div><label>Item</label><select name="pid" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><div><label>Reason</label><input name="why"></div><button class="btn">Send</button></form>
+ return h+`${clockBox()}<h2>Add a sale</h2><form class="f" onsubmit="return F.wkSale(event)"><div><label>Item</label><select name="pid" id="wsp" onchange="F.wkPrice()" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${esc(c)})</label><input name="price" id="wspr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div><input type="hidden" name="pay" value="cash"><button class="btn">Send sale</button></form>
+<h2>Customer takes on credit</h2><form class="f" onsubmit="return F.wkCredit(event)"><div><label>Customer name</label><input name="cust" autocomplete="off" required></div><div><label>Item</label><select name="pid" onchange="{const p=(WT.products||[]).find(x=>x.id===this.value);if(p)$('wcpr').value=p.price}" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${esc(c)})</label><input name="price" id="wcpr" type="number" min="0" step="any" value="${P[0]?P[0].price:''}" required></div></div><div class="r2"><div><label>Date</label><input name="date" type="date" value="${d}" required></div><div><label>Pay by (optional)</label><input name="due" type="date"></div></div><button class="btn">Send to owner</button></form>${owedBox()}<h2>Report a damaged item</h2><form class="f" onsubmit="return F.wkDmg(event)"><div><label>Item</label><select name="pid" required>${o}</select></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Date</label><input name="date" type="date" value="${d}" required></div></div><div><label>Reason</label><input name="why"></div><button class="btn">Send</button></form>
 <h2>Sent from this phone</h2>${tbl(['Date','Item','#Qty','Type'],[...D.sales.map(x=>({...x,k:'Sale'})),...D.damages.map(x=>({...x,k:'Damaged'}))].sort((a,b)=>a.date<b.date?1:-1).slice(0,30).map(x=>`<tr><td>${x.date}</td><td>${esc(x.name)}</td><td class="n">${x.qty}</td><td>${x.k}</td></tr>`),'Nothing sent yet.')}`},
-join(){const c=localStorage.bb_join;return`<div class="hero"><h1>Join as a worker</h1><p>Enter your name, email, a password and the Business ID your boss gave you. The owner must approve you before you can start.</p></div><form class="f" onsubmit="return F.joinGo(event)"><div><label>Your name</label><input name="name" required></div><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password</label><input name="pw" type="password" minlength="6" autocomplete="current-password" required></div><div><label>Business ID</label><input name="bid" value="${c&&c.length>1?esc(c):''}" autocapitalize="characters" autocomplete="off" required></div><button class="btn">Send request</button><p class="sw"><a href="#" onclick="F.joinCancel();return false">Back</a></p></form>`},
+join() { const c = localStorage.bb_join; return `<div class="two"><div class="jn"><div class="jn-ic">${sIc('team')}</div><h1>Join your team</h1><p class="jn-s">Ask your boss for the <b>Business ID</b>. Send your request and the owner will approve you.</p><ol class="jn-st"><li><b>1</b><span>Fill in your details</span></li><li><b>2</b><span>Owner approves you</span></li><li><b>3</b><span>Clock in and send your work</span></li></ol><form class="f" onsubmit="return F.joinGo(event)"><div><label>Your full name</label><input name="name" required></div><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password (6+ characters)</label><input name="pw" type="password" minlength="6" autocomplete="current-password" required></div><div><label>Business ID</label><input name="bid" id="bid" value="${c&&c.length>1?esc(c):''}" autocomplete="off" required></div><button class="btn big">Send request to join</button></form><p class="sw"><a href="#" onclick="F.joinCancel();return false">Back</a></p></div></div>` },
+ joinOld2() { const c = localStorage.bb_join; return`<div class="two"><form class="f" onsubmit="return F.joinGo(event)"><div class="st1"><p class="lead">Enter <b>your name</b>, <b>email</b>, a <b>password</b> and the <b>Business ID</b> your boss gave you. The owner must approve you before you can start.</p><h3>Join as a worker</h3><div><label>Your full name</label><input name="name" required></div><div class="r2"><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password (6+ characters)</label><input name="pw" type="password" minlength="6" autocomplete="current-password" required></div></div><div><label>Business ID</label><input name="bid" value="${c&&c.length>1?esc(c):''}" autocapitalize="characters" autocomplete="off" required></div><button class="btn">Send request</button></div></form><p class="sw"><a href="#" onclick="F.joinCancel();return false">Back</a></p></div>`},
 bizpro(){const o=db.u[me].own;if(!o)return`<h1>Business Pro</h1><p>Turn on Team first so workers can join, clock in and send their work.</p><button class="btn sm" onclick="go('workers')">Open Workers</button>`;
  const P=window.bpP||'month',t=today(),bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},f=P==='today'?t:P==='week'?bk(6):P==='month'?mstart():'0000-01-01',inr=d=>d>=f&&d<=t,at=D.att||[],nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',S={};
  const g=n=>S[n]||(S[n]={n,c:0,a:0,p:0,l:0,d:new Set(),ms:0});
@@ -447,31 +838,49 @@ bizpro(){const o=db.u[me].own;if(!o)return`<h1>Business Pro</h1><p>Turn on Team 
  const roster=TM.filter(w=>w.status==='approved').map(w=>{const r=[...at].reverse().find(y=>y.wn===w.name&&(!y.outAt||y.date===t));const s=!r?'Not clocked in':!r.outAt?'At work since '+hm(r.inAt)+(r.date!==t?' ('+r.date+')':''):'Left at '+hm(r.outAt)+' · '+((r.outAt-r.inAt)/36e5).toFixed(1)+' h';return`<tr><td data-n="${esc(w.name)}" onclick="window.bpQ=this.dataset.n;render()"><b>${esc(w.name)}</b></td><td>${s}</td></tr>`});
  return`<h1>Business Pro</h1><h2>At work today</h2>${tbl(['Worker','Status'],roster,'No approved workers yet.')}<h2>Worker stats</h2><input id="bps" type="search" placeholder="Search worker name" autocomplete="off" value="${esc(window.bpQ||'')}" oninput="window.bpQ=this.value;$('bpres').innerHTML=bpRes()"><div id="bpres">${bpRes()}</div>`},
 bizpro(){const o=db.u[me].own;if(!o)return`<h1>Business Pro</h1><p>Turn on Team first so workers can join, clock in and send their work.</p><button class="btn sm" onclick="go('workers')">Open Workers</button>`;
- const W=TM.some(x=>x.id===window.bpWho)?window.bpWho:'';if(W)return`<h1>Business Pro</h1>${bpStats(W)}`;
- const t=today(),at=D.att||[],roster=TM.filter(w=>w.status==='approved').map(w=>{const r=[...at].reverse().find(y=>y.wid===w.id&&(!y.outAt||y.date===t));const s=!r?'Not clocked in':!r.outAt?'At work since '+hm(r.inAt)+(r.date!==t?' ('+r.date+')':''):'Left at '+hm(r.outAt)+' · '+((r.outAt-r.inAt)/36e5).toFixed(1)+' h';return`<tr><td onclick="window.bpWho='${w.id}';render()"><b>${esc(w.name)}</b></td><td>${s}</td></tr>`});
- return`<h1>Business Pro</h1><h2>At work today</h2>${tbl(['Worker','Status'],roster,'No approved workers yet.')}<h2>Worker stats</h2><input id="bps" type="search" placeholder="Search by name or email" autocomplete="off" value="${esc(window.bpQ||'')}" oninput="window.bpQ=this.value;$('bpres').innerHTML=bpList()"><div id="bpres">${bpList()}</div>`},
+ const W=TM.some(x=>x.id===window.bpWho)?window.bpWho:'';if(W)return bpStats(W);
+ const t=today(),at=D.att||[],roster=TM.filter(w=>w.status==='approved').map(w=>{const r=[...at].reverse().find(y=>y.wid===w.id&&(!y.outAt||y.date===t));const s=!r?'Not clocked in':!r.outAt?'At work since '+hm(r.inAt)+(r.date!==t?' ('+r.date+')':''):'Left at '+hm(r.outAt)+' · '+((r.outAt-r.inAt)/36e5).toFixed(1)+' h';return`<div class="wk" onclick="window.bpWho='${w.id}';render()" style="cursor:pointer"><div class="wk-a">${esc(w.name.trim().charAt(0))}</div><div class="wk-i"><b>${esc(w.name)}</b><small>${s}</small></div></div>`});
+ return`<h1>Business Pro</h1>${planCard()}${roster.length?'':bpEmpty()}<div${roster.length?'':' hidden'}><h2 class="st-g">At work today</h2>${roster.join('')}<h2 class="st-g">Worker stats</h2><div class="sr${window.bpQ?' has':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="bps" type="search" placeholder="Search workers" autocomplete="off" value="${esc(window.bpQ||'')}" oninput="bpSr(this.value)"><button type="button" class="sr-x" aria-label="Clear" onclick="bpSr('');$('bps').focus()">×</button></div><div id="bpres">${bpList()}</div></div>`},
 pov(){const ym=window.pm||today().slice(0,7),P=D.pers,sum=a=>a.reduce((t,x)=>t+(+x.amt||0),0),inM=P.in.filter(x=>x.date.slice(0,7)===ym),outM=P.out.filter(x=>x.date.slice(0,7)===ym),ei=sum(inM),eo=sum(outM),bal=sum(P.in)-sum(P.out),nt=sum(P.need.filter(x=>!x.done)),lab=new Date(ym+'-01T00:00:00').toLocaleDateString([],{month:'long',year:'numeric'}),by={};
  outM.forEach(x=>by[x.cat]=(by[x.cat]||0)+x.amt);
  const cats=Object.entries(by).sort((a,b)=>b[1]-a[1]),cl=n=>n<0?'var(--bad)':'var(--good)';
- return`<h1>Hello, ${esc(db.u[me].name.split(' ')[0])}</h1><div style="display:flex;align-items:center;gap:12px;margin:8px 0"><button class="btn sm alt" onclick="window.pm=mshift('${ym}',-1);render()">‹</button><b>${lab}</b><button class="btn sm alt" onclick="window.pm=mshift('${ym}',1);render()">›</button></div>
+ return`<h1>Hello, ${esc(db.u[me].name.split(' ')[0])}</h1><div style="display:flex;align-items:center;gap:12px;margin:8px 0"><button class="dots" style="margin-left:-10px" onclick="window.pm=mshift('${ym}',-1);render()">‹</button><b>${lab}</b><button class="dots" onclick="window.pm=mshift('${ym}',1);render()">›</button></div>
 ${tbl(['','#'+C()],[`<tr><td>Money earned</td><td class="n" style="color:var(--good)">${m(ei)}</td></tr>`,`<tr><td>Money spent</td><td class="n" style="color:var(--bad)">${m(eo)}</td></tr>`,`<tr><td><b>Left this month</b></td><td class="n" style="color:${cl(ei-eo)}"><b>${m(ei-eo)}</b></td></tr>`])}
 <h2>Total balance</h2><p>All the money you earned minus all you spent: <b style="color:${cl(bal)}">${m(bal)}</b></p>
-<h2>What I need</h2><p>${nt?`You still need <b>${m(nt)}</b>. ${bal>=nt?'Your balance covers it.':'You are short by <b>'+m(nt-bal)+'</b>.'}`:'Nothing on your list.'}</p><button class="btn sm alt" onclick="go('pneed')">Open my list</button>
+<h2>What I need</h2><p>${nt?`You still need <b>${m(nt)}</b>. ${bal>=nt?'Your balance covers it.':'You are short by <b>'+m(nt-bal)+'</b>.'}`:'Nothing on your list.'}</p>
 <h2>Where your money went</h2>${tbl(['Category','#'+C(),'#%'],cats.map(([c,v])=>`<tr><td>${esc(c)}</td><td class="n">${m(v)}</td><td class="n">${Math.round(v/eo*100)}%</td></tr>`),'No spending this month.')}`},
 pin(){const t=today(),r=[...D.pers.in].sort((a,b)=>a.date<b.date?1:-1).slice(0,40);
  return`<h1>Money earned</h1><form class="f" onsubmit="return F.padd(event,'in')"><div class="r2"><div><label>Amount (${C()})</label><input name="amt" type="number" min="0.01" step="any" required></div><div><label>Date</label><input name="date" type="date" value="${t}" required></div></div><div><label>Where from (salary, business, gift…)</label><input name="who" required></div><button class="btn">Save</button></form><h2>Recent</h2>${tbl(['Date','From','#Amount',''],r.map(x=>`<tr><td>${x.date}</td><td>${esc(x.who)}</td><td class="n">${m(x.amt)}</td><td><button class="btn del" onclick="F.pdel('in','${x.id}')">Delete</button></td></tr>`))}`},
 pout(){const t=today(),r=[...D.pers.out].sort((a,b)=>a.date<b.date?1:-1).slice(0,40);
  return`<h1>Money spent</h1><form class="f" onsubmit="return F.padd(event,'out')"><div class="r2"><div><label>Amount (${C()})</label><input name="amt" type="number" min="0.01" step="any" required></div><div><label>Date</label><input name="date" type="date" value="${t}" required></div></div><div><label>Category</label><select name="cat">${PC.map(c=>`<option>${c}</option>`).join('')}</select></div><div><label>What for (optional)</label><input name="note"></div><button class="btn">Save</button></form><h2>Recent</h2>${tbl(['Date','What','#Amount',''],r.map(x=>`<tr><td>${x.date}</td><td>${esc(x.cat)}${x.note?' · '+esc(x.note):''}</td><td class="n">${m(x.amt)}</td><td><button class="btn del" onclick="F.pdel('out','${x.id}')">Delete</button></td></tr>`))}`},
 pneed(){const P=D.pers,op=P.need.filter(x=>!x.done),dn=P.need.filter(x=>x.done),tot=op.reduce((t,x)=>t+x.amt,0);
- return`<h1>What I need</h1><form class="f" onsubmit="return F.pneedAdd(event)"><div><label>What do you need?</label><input name="name" required></div><div><label>How much will it cost (${C()})</label><input name="amt" type="number" min="0" step="any" required></div><button class="btn">Add</button></form><h2>Still needed${op.length?' · '+m(tot):''}</h2>${tbl(['Item','#Cost',''],op.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${m(x.amt)}</td><td><button class="btn sm" onclick="F.pbuy('${x.id}')">Bought</button> <button class="btn del" onclick="F.pdel('need','${x.id}')">Delete</button></td></tr>`),'Nothing on your list.')}${dn.length?`<h2>Already bought</h2>${tbl(['Item','#Cost',''],dn.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${m(x.amt)}</td><td><button class="btn del" onclick="F.pdel('need','${x.id}')">Delete</button></td></tr>`))}`:''}`},
-pacc(){return`<h1>Account</h1><p>${esc(db.u[me].name)} · ${esc(me)}</p><div class="card" style="margin:12px 0"><h3>Cloud backup</h3><p>${cloudOn()?'On. Your data is backed up to your account and updates automatically.':'Off. Your data is kept only on this phone. Turn it on to back it up and open it on other phones.'}</p>${cloudOn()?'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn sm" onclick="F.cloudNow()">Back up now</button><button class="btn sm alt" onclick="F.cloudDisable()">Turn off</button></div>':'<button class="btn sm" onclick="F.cloudEnable()">Turn on cloud backup</button>'}</div><button class="btn" onclick="F.psum()" style="margin-bottom:10px">Download summary</button><br><button class="btn alt" onclick="F.wipe()">Delete my account</button>`},
-workers(){const o=db.u[me].own;if(!o)return`<h1>Workers</h1><div><p>Team is off. Turn it on so workers can join your business.</p><button class="btn sm" onclick="F.teamOn()">Turn on Team</button></div>`;
+ return`<h1>What I need</h1><form class="f" onsubmit="return F.pneedAdd(event)"><div><label>What do you need?</label><input name="name" required></div><div><label>How much will it cost (${C()})</label><input name="amt" type="number" min="0" step="any" required></div><button class="btn">Add</button></form><h2>Still needed${op.length?' · '+m(tot):''}</h2>${tbl(['Item','#Cost',''],op.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${m(x.amt)}</td><td class="mc"><button class="dots" onclick="F.menu(event)">⋮</button><div class="mnu"><button onclick="F.pbuy('${x.id}')">Bought</button><button class="red" onclick="F.pdel('need','${x.id}')">Delete</button></div></td></tr>`),'Nothing on your list.')}${dn.length?`<h2>Already bought</h2>${tbl(['Item','#Cost',''],dn.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${m(x.amt)}</td><td class="mc"><button class="dots" onclick="F.menu(event)">⋮</button><div class="mnu"><button class="red" onclick="F.pdel('need','${x.id}')">Delete</button></div></td></tr>`))}`:''}`},
+pacc(){const S=window.setSub||'',cl=cloudOn(),pro=planKey()==='pers',u=planUntil(),h=t=>`<h2 class="st-g">${t}</h2>`;
+ if(S==='plan')return`<h1>Personal Pro</h1><div class="pp" style="border:0;padding-top:0"><div class="pp-p">${priceTxt(1000)} <small>per month</small></div>${pro?`<p><b>Your plan is active${u?' until '+new Date(u).toLocaleDateString():''}.</b></p>`:''}<p>Keep your money records safe and take them with you.</p><ul><li>Cloud backup that runs by itself, so you never lose your records</li><li>Open your records on any phone</li><li>Download your summary any time</li></ul>${pro?'':`<h2 class="sp">How to get Personal Pro</h2><ol><li>Tap the button below to send us an email. It already contains your plan.</li><li>We reply with the payment details.</li><li>Once we confirm your payment, we turn on your plan.</li></ol><form class="f" onsubmit="return false" style="margin:6px 0 16px"><div><label style="font-weight:700;font-size:16px;color:var(--ink)">Write your WhatsApp phone number <span style="color:var(--bad)">*</span></label><input id="wa" required oninput="this.classList.remove('bad')" type="tel" inputmode="tel" autocomplete="tel" placeholder="+250 788 123 456" value="${esc(localStorage.bb_wa||'')}"></div><p class="pp-n" style="margin:0;text-align:left">We will message you on WhatsApp with the payment details, and again when your plan is on.</p></form><button class="btn" onclick="window.planSel='pers';F.planMail()">Email us to get Personal Pro</button><p class="pp-n">Or write to us at <b>menyabusiness6@gmail.com</b></p>`}</div>`;
+ return`<h1>Account</h1><p>${esc(db.u[me].name)} · ${esc(me)}</p>${h('Plan')}${sRow('star',pro?'Personal Pro':'Upgrade to Personal Pro',pro?'Active'+(u?' · ends '+new Date(u).toLocaleDateString():''):priceTxt(1000)+' per month · Backup and download',"sGo('plan')")}${isInst()?'':h('App')+sRow('dl','Install Menya Books','Add it to your home screen',"F.install()")}${h('Backup')}${cl?sRow('cloud','Back up now','Cloud backup is on',"F.cloudNow()")+sRow('off','Turn off cloud backup','The copy in the cloud is deleted',"F.cloudDisable()"):sRow('cloud','Turn on cloud backup',pro?'Off · your data is only on this phone':'Off · Personal Pro',"F.cloudEnable()")}${h('Data')}${sRow('dl','Download summary',pro?'Money earned, spent and needed':'Personal Pro',"F.psum()")}${h('Account')}${sRow('del','Delete my account','Removes your login and all your data',"F.wipe()")}`},
+planinfo(){const k=window.planSel&&PLANS[window.planSel]?window.planSel:'p30',p=PLANS[k];
+ if(k==='solo')return`<div class="pp" style="border:0"><h1>${p.n}</h1><div class="pp-p">${priceTxt(p.p)} <small>per month</small></div><p>Made for one person running a business alone. Keep your records safe and take them with you anywhere.</p><h2 class="sp">How it helps you</h2><ul><li>Cloud backup runs by itself, so your sales, stock and cashbook are never lost.</li><li>Open your business on any phone or computer.</li><li>Download your sales, stock, cashbook and reports as PDF any time.</li><li>No team needed. This plan is made for one person.</li></ul><h2 class="sp">How to get ${p.n}</h2><ol><li>Tap the button below to send us an email. It already contains your business name and plan.</li><li>We reply with the payment details and confirm the exact amount in your currency.</li><li>Once we confirm your payment, we turn on your plan.</li></ol><form class="f" onsubmit="return false" style="margin:6px 0 16px"><div><label style="font-weight:700;font-size:16px;color:var(--ink)">Write your WhatsApp phone number <span style="color:var(--bad)">*</span></label><input id="wa" required oninput="this.classList.remove('bad')" type="tel" inputmode="tel" autocomplete="tel" placeholder="+250 788 123 456" value="${esc(localStorage.bb_wa||'')}"></div><p class="pp-n" style="margin:0;text-align:left">We will message you on WhatsApp with the payment details, and again when your plan is on.</p></form><button class="btn" onclick="F.planMail()">Email us to get ${p.n}</button><p class="pp-n">Or write to us at <b>menyabusiness6@gmail.com</b></p><p class="pp-n"><a href="#" onclick="go('plans');return false" style="color:var(--ink);font-weight:600;text-decoration:underline">See all plans</a></p></div>`;
+ return`<div class="pp" style="border:0"><h1>${p.n}</h1><div class="pp-p">${priceTxt(p.p)} <small>per month</small></div><p>Smart transactions and real support, so your business runs without the problems that cost you money. Your team works from their own phones, and you see the truth every day.</p><h2 class="sp">How it helps you</h2><ul><li>Your workers record every sale and damaged item themselves, so nothing is forgotten and nothing is written twice.</li><li>Stock goes down automatically, so you always know what is left and what to buy again.</li><li>Every entry carries a worker's name and time, which ends confusion and arguments about money and stock.</li><li>You see each worker's sales, profit, losses and hours in one place.</li><li>You decide who can send entries. You approve, pause or remove workers at any time.</li></ul><h2 class="sp">How to get ${p.n}</h2><ol><li>Tap the button below to send us an email. It already contains your business name and plan.</li><li>We reply with the payment details and confirm the exact amount in your currency.</li><li>Once we confirm your payment, we turn on your plan.</li></ol><form class="f" onsubmit="return false" style="margin:6px 0 16px"><div><label style="font-weight:700;font-size:16px;color:var(--ink)">Write your WhatsApp phone number <span style="color:var(--bad)">*</span></label><input id="wa" required oninput="this.classList.remove('bad')" type="tel" inputmode="tel" autocomplete="tel" placeholder="+250 788 123 456" value="${esc(localStorage.bb_wa||'')}"></div><p class="pp-n" style="margin:0;text-align:left">We will message you on WhatsApp with the payment details, and again when your plan is on.</p></form><button class="btn" onclick="F.planMail()">Email us to get ${p.n}</button><p class="pp-n">Or write to us at <b>menyabusiness6@gmail.com</b></p><p class="pp-n"><a href="#" onclick="go('plans');return false" style="color:var(--ink);font-weight:600;text-decoration:underline">See all plans</a></p></div>`},
+plans(){const k=planKey(),c=[['solo','Solo','1,500','Backup and PDF for one person.','No team needed. Just you and your books.','For a business run by one person. Keep your records safe and download them any time.'],['p30','Pro 30','4,500','Manage up to 30 workers.','Up to 3 workers can add sales and damaged items.','Perfect for a small shop or a growing business. Stop guessing what happens when you are away.'],['p100','Pro 100','8,500','Manage up to 100 workers.','Up to 20 workers can add sales and damaged items.','Built for big teams, many counters and many branches. Everyone records, you stay in control.'],['unl','Pro Unlimited','40,000','Unlimited workers.','Unlimited workers can add sales and damaged items.','For large businesses with many branches and many workers. No limits, no worries.']];
+ return`<h1>Choose your plan</h1><p>Let your workers record sales and damaged items from their own phones, while you see every number in one place. Prices are per month, shown in ${esc(D.biz.cur)}.</p>${c.map(x=>`<div class="pp"><h2>${x[1]}${k===x[0]?' · Your plan':''}</h2><div class="pp-p">${priceTxt(PLANS[x[0]].p)} <small>per month</small></div><p>${x[5]}</p><ul><li>${x[3]}</li><li>${x[4]}</li>${x[0]==='solo'?'':`<li>See every worker's sales, losses and hours</li>`}<li>Download all your records as PDF</li><li>Cloud backup, so you never lose your records</li>${x[0]==='solo'?'':`<li>Approve, pause or remove workers any time</li>`}</ul><button class="btn" ${k===x[0]?'disabled':''} onclick="F.planAsk('${x[0]}')">${k===x[0]?'Current plan':'Choose '+x[1]}</button></div>`).join('')}<p class="pp-n">Cancel any time. Your books and records always stay yours.</p>`},
+credit(){const S=window.setSub||'',L=crData(),c=C(),t=today(),M=n=>esc(c)+' '+m(n),od=x=>x.ow>.005&&x.due&&x.due<t;
+ if(S){const x=L.find(y=>y.k===(S==='~'?'':S));if(x){
+  const f=esc(x.n?x.n.split(' ')[0]:'This customer'),paid=x.tot-x.ow,
+  items=[...x.it].sort((a,b)=>a.date<b.date?1:-1).map(y=>`<tr><td>${y.date}</td><td>${esc(y.name)} ×${y.qty}</td><td class="n">${m(y.qty*y.price)}</td><td class="${!y.paidOn&&y.due&&y.due<t&&x.ow>.005?'neg':''}">${y.paidOn?'Paid':y.due?(y.due<t?'Overdue · ':'Pay by ')+y.due:'Owed'}</td><td><button class="btn del" onclick="F.del('sales','${y.id}')">Delete</button></td></tr>`),
+  pays=[...x.pay].sort((a,b)=>a.date<b.date?1:-1).map(y=>`<tr><td>${y.date}</td><td class="n">${m(y.amt)}</td><td>${esc(y.wn||'You')}</td><td><button class="btn del" onclick="F.del('tx','${y.id}')">Delete</button></td></tr>`);
+  return`<h1>${esc(x.n||'Not named')}</h1><p>${f} took <b>${x.it.length}</b> item${x.it.length>1?'s':''} on credit worth <b>${M(x.tot)}</b>${paid>.005?' and has paid <b>'+M(paid)+'</b>':''}. ${x.ow>.005?'Still owes <b style="color:var(--bad)">'+M(x.ow)+'</b>.':'Nothing is owed now.'}</p>${x.ow>.005?`<h2>Customer pays</h2><form class="f" data-k="${esc(S)}" onsubmit="return F.crPay(event)"><div class="r2"><div><label>Amount received (${esc(c)})</label><input name="amt" type="number" min="0.01" step="any" required></div><div><label>Date</label><input name="date" type="date" value="${t}" required></div></div><button type="button" class="btn alt" onclick="this.form.amt.value='${x.ow.toFixed(2)}'">Customer pays everything</button><button class="btn">Save payment</button></form>`:''}${x.n?`<p style="margin-top:12px"><button class="btn alt" data-n="${esc(x.n)}" onclick="window.crPre=this.dataset.n;window.setSub='';render()">Add another item for ${f}</button></p>`:''}<h2>Items taken</h2>${tbl(['Date','Item','#Amount','Status',''],items,'Nothing here yet.')}<h2>Payments</h2>${tbl(['Date','#Amount','Received by',''],pays,'No payments yet.')}`}}
+ const O=L.filter(y=>y.ow>.005),P=L.filter(y=>y.ow<=.005),tot=O.reduce((s,y)=>s+y.ow,0),pre=(()=>{const v=window.crPre||'';window.crPre='';return v})(),
+ row=y=>`<div class="wk" data-k="${esc(y.k||'~')}" onclick="sGo(this.dataset.k)" style="cursor:pointer"><div class="wk-a">${esc((y.n||'?').charAt(0))}</div><div class="wk-i"><b>${esc(y.n||'Not named')}</b><small${od(y)?' style="color:var(--bad)"':''}>${y.it.length} item${y.it.length===1?'':'s'}${y.ow>.005?(y.due?' · '+(od(y)?'Overdue, was due ':'Pay by ')+y.due:''):' · Paid in full'}</small></div><span class="cr-amt"${od(y)?' style="color:var(--bad)"':''}>${y.ow>.005?M(y.ow):''}</span></div>`;
+ return`<h1>Customers</h1><p>${O.length?'<b>'+O.length+'</b> customer'+(O.length>1?'s':'')+' still owe you <b>'+M(tot)+'</b>. This money is counted in Owed by customers on your Home page and in your reports.':'No customer owes you money now. When a customer takes something and will pay later, add it below.'}</p><h2>Customer takes on credit</h2><form class="f" onsubmit="return F.crAdd(event)"><div class="sgw"><label>Customer name</label><input name="cust" value="${esc(pre)}" autocomplete="off" required oninput="F.sg(this)" onfocus="F.sg(this)" onblur="setTimeout(()=>F.sgx(this),200)"><div class="sgl" hidden data-n="${esc(JSON.stringify(L.filter(y=>y.n).map(y=>y.n)))}"></div></div><div><label>What did the customer take?</label><select name="pid" id="cps" onchange="F.crPrice()">${prodOpts()}<option value="">Something else</option></select></div><div id="cw" style="${D.products.length?'display:none':''}"><label>Item or service</label><input name="what"></div><div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${esc(c)})</label><input name="price" id="cpr" type="number" min="0" step="any" value="${D.products[0]?D.products[0].price:''}" required></div></div><div class="r2"><div><label>Date</label><input name="date" type="date" value="${t}" required></div><div><label>Pay by (optional)</label><input name="due" type="date"></div></div><button class="btn">Save</button></form><p style="margin-top:12px">The amount owed is quantity × price each. Items from your list are taken out of your stock.</p><h2>Customers who owe you</h2>${O.length?O.map(row).join(''):'<div class="empty card">Nobody owes you yet.</div>'}${P.length?'<h2>Paid in full</h2>'+P.map(row).join(''):''}`},
+workers(){const o=db.u[me].own;if(!o)return`<h1>Workers</h1><p>Team is off. Turn it on so workers can join your business and send their sales.</p><button class="btn" onclick="F.teamOn()">Turn on Team</button>`;
+ return`<h1>Workers</h1><div id="tmlist">${tmList()}</div><p class="wk-n">Approved workers can add sales and damaged items only. Waiting requests cannot do anything until you approve them.</p>`},
+workersOld(){const o=db.u[me].own;if(!o)return`<h1>Workers</h1><div><p>Team is off. Turn it on so workers can join your business.</p><button class="btn sm" onclick="F.teamOn()">Turn on Team</button></div>`;
  return`<h1>Workers</h1><div style="margin-bottom:12px"><p style="margin:0">Your Business ID</p><b style="letter-spacing:.12em;font-size:24px">${esc(o.code)}</b><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><button class="btn sm" onclick="F.teamShare()">Share ID</button><button class="btn sm alt" onclick="F.teamNew()">New ID</button></div></div><h2>Requests and team</h2><div id="tmlist" class="wkl">${tmList()}</div><p style="margin-top:12px">Approved workers can add sales and damaged items only. Waiting requests cannot do anything until you approve them.</p>`},
-pers(){return`<div class="hero"><h1>Personal account</h1><p>A simple place to track the money you earn, the money you spend and what you need. No business set-up.</p></div><form class="f" onsubmit="return F.persGo(event)"><div><label>Your name</label><input name="name" required></div><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password</label><input name="pw" type="password" minlength="6" autocomplete="new-password" required></div><div><label>Currency (for example USD, DZD, KES)</label><input name="cur" maxlength="4" value="USD" required></div><button class="btn">Create personal account</button><p class="sw"><a href="#" onclick="localStorage.removeItem('bb_pers');render();return false">Back</a></p></form>`},
-auth(){if(localStorage.bb_pers)return V.pers();if(localStorage.bb_join)return V.join();return`<div class="hero"><h1>Know your business. Every day.</h1><p>Free bookkeeping for small businesses in <b>Africa and around the world</b>. Record what you sell, what gets damaged, and see your <b>profit, cashbook and balance sheet</b> automatically.</p></div>
+pick(){return`<div class="two"><div style="display:grid;gap:14px;padding-top:8px"><h1 style="margin:0">What kind of account?</h1><p>Business: track sales, stock, profit and your team.<br>Personal: track the money you earn, spend and need.</p><button class="btn" onclick="window.acctPick=1;render()">Create a business account</button><button class="btn alt" onclick="localStorage.bb_pers='1';render()">Create a personal account</button><p class="sw">Already have an account? <a href="#" onclick="authTab='in';render();return false">Log in instead</a></p></div></div>`}, pers(){return`<div class="two"><form class="f" onsubmit="return F.persGo(event)"><div class="st1"><p class="lead">Track <b>the money you earn</b>, <b>the money you spend</b> and <b>what you need</b>, just by typing simply. No business set-up.</p><h3>Your account</h3><div><label>Your full name</label><input name="name" required></div><div class="r2"><div><label>Email</label><input name="email" type="email" autocomplete="email" required></div><div><label>Password (6+ characters)</label><input name="pw" type="password" minlength="6" autocomplete="new-password" required></div></div><div><label>Currency (for example RWF, USD, KES)</label><input name="cur" maxlength="4" autocomplete="off" autocapitalize="characters" required></div><button class="btn">Create personal account</button></div></form><p class="sw">Already have an account? <a href="#" onclick="localStorage.removeItem('bb_pers');authTab='in';render();return false">Log in instead</a></p><p class="sw"><a href="#" onclick="localStorage.removeItem('bb_pers');render();return false">Back</a></p></div>`},
+auth(){if(localStorage.bb_pers)return V.pers();if(localStorage.bb_join)return V.join();if(authView==='form'&&authTab==='up'&&!window.acctPick)return V.pick();return`<div class="hero"><h1>Know your business. Every day.</h1><p>Free bookkeeping for small businesses in <b>Africa and around the world</b>. Record what you sell, what gets damaged, and see your <b>profit, cashbook and balance sheet</b> automatically.</p></div>
 <div class="two"><div>
-<div class="cta"><button class="btn" onclick="authTab='up';authView='form';render()">Start now</button><button class="btn alt" onclick="authTab='in';authView='form';render()">Log in to your account</button><button class="btn alt" onclick="localStorage.bb_join='1';render()">Join as a worker</button><button class="btn alt" onclick="localStorage.bb_pers='1';render()">Personal account</button></div><h1 class="ftitle">${authTab==='in'?'Log in to your account':'Create your account'}</h1><div class="tabs"><button class="chip ${authTab==='in'?'on':''}" onclick="authTab='in';authView='form';render()">Log in</button><button class="chip ${authTab==='up'?'on':''}" onclick="authTab='up';authView='form';render()">Create account</button></div>
-${authTab==='in'?`<p class="lead">Log in to your account to <b>continue where you left off</b> and stay <b>up to date</b> every time you come back.</p><form class="f" onsubmit="return F.login(event)"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password</label><input name="pw" type="password" required autocomplete="current-password"></div><button class="btn">Log in</button><p class="sw"><a href="#" onclick="F.reset();return false">Forgot password?</a></p><p class="sw"><a href="#" onclick="localStorage.bb_join='1';render();return false">Join a team as a worker</a></p></form><p class="sw">New here? <a href="#" onclick="authTab='up';render();return false">Create an account</a></p>`:
+<div class="cta"><button class="btn" onclick="authTab='up';authView='form';window.acctPick=0;render()">Start now</button><button class="btn alt" onclick="authTab='in';authView='form';render()">Log in to your account</button><button class="btn alt" onclick="localStorage.bb_join='1';render()">Join as a worker</button></div><h1 class="ftitle">${authTab==='in'?'Log in to your account':'Create your account'}</h1><div class="tabs"><button class="chip ${authTab==='in'?'on':''}" onclick="authTab='in';authView='form';render()">Log in</button><button class="chip ${authTab==='up'?'on':''}" onclick="authTab='up';authView='form';render()">Create account</button></div>
+${authTab==='in'?`<p class="lead">Log in to your account to <b>continue where you left off</b> and stay <b>up to date</b> every time you come back.</p><form class="f" onsubmit="return F.login(event)"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password</label><input name="pw" type="password" required autocomplete="current-password"></div><button class="btn">Log in</button><p class="sw"><a href="#" onclick="localStorage.bb_join='1';render();return false">Join a team as a worker</a></p></form><p class="sw">New here? <a href="#" onclick="authTab='up';render();return false">Create an account</a></p>`:
 `<form class="f s1" onsubmit="return F.signup(event)"><div class="st1"><p class="lead">Biz Books is ready to help you <b>track everything you need</b>. Keep track of everything you make <b>in a whole day, day by day or even hour by hour</b>, just by typing simply.</p><svg style="display:none" viewBox="0 0 206 444" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M120 0 104 0 86 18 67 49 54 49 39 81 18 105 0 181 4 276 18 331 32 443 167 441 157 396 151 345 171 321 185 275 197 254 197 229 205 212 205 201 193 174 173 171 181 150 181 135 173 126 161 124 152 128 137 149 131 149 153 96 151 81 143 72 136 70 122 72 112 82 93 119 89 117 99 79 125 18 125 5ZM193 205 193 208 187 219 196 218 197 220 190 224 181 224 170 233 171 235 187 242 187 245 166 237 149 255 134 262 129 262 126 259 127 257 136 257 142 255 148 251ZM79 205 84 211 90 230 94 237 96 248 100 257 100 264 102 267 102 290 100 293 100 302 96 311 96 316 92 320 91 315 97 294 97 265 95 262 89 235 78 206ZM73 175 75 174 103 203 100 203 90 193 86 191 78 183ZM133 162 133 165 126 177 124 184 114 203 110 217 111 226 116 231 123 233 131 231 140 222 158 194 161 192 161 195 153 209 135 233 123 238 112 233 108 229 105 224 107 209 104 204 109 204 111 202 126 170ZM106 110 107 113 100 129 98 156 101 160 107 163 118 163 131 150 131 153 129 157 118 168 107 168 98 163 93 156 93 145 95 142 97 125ZM73 59 76 65 76 86 69 101 58 119 57 139 60 143 60 154 57 158 58 164 54 167 53 163 56 159 56 138 53 134 53 119 63 104 71 88 71 79 73 76 71 72Z"/></svg><svg style="display:none" viewBox="-4 -6 257 90"fill="currentColor" aria-hidden="true"><path d="M0 26C2 33 3 60 14 64C25 69 44 52 66 54C88 56 133 72 147 75C162 78 146 77 153 73C160 69 183 54 188 50C194 46 185 49 187 48C189 47 194 47 199 44C204 41 210 35 217 29C225 24 239 16 244 12C249 8 248 7 248 6C249 4 248 3 247 2C246 1 247 0 243 0C239 0 228 0 223 2C217 3 214 6 211 7C208 8 212 3 202 5C192 7 165 21 148 20C132 20 116 5 104 1C91 -2 82 -2 72 0C62 2 53 7 42 11C31 15 10 20 3 22C-4 24 -2 19 0 26Z"/></svg><svg style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg><p class="stp">Step 1 of 2</p><h3>Your account</h3><div><label>Your full name</label><input name="name" required></div><div class="r2"><div><label>Email</label><input name="email" type="email" required autocomplete="username"></div><div><label>Password (6+ characters)</label><input name="pw" type="password" minlength="6" required autocomplete="new-password"></div></div>
 <button type="button" class="btn" onclick="F.next()">Continue</button></div><div class="st2"><p class="stp">Step 2 of 2</p><h3>Register your business</h3><div><label>Business name</label><input name="bname" required></div>
 <div class="r2"><div><label>Business type</label><select name="btype">${TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><label>Registration number (optional)</label><input name="reg"></div></div>
@@ -496,10 +905,10 @@ ${D.products.length?'':'<p class="card">Start here: add your products or service
 <h2 style="text-decoration:underline">Today's sales summary</h2>
 <p>${ts.length?'Today you made <b>'+ts.length+'</b> sale(s) and sold <b>'+ts.reduce((s,x)=>s+x.qty,0)+'</b> item(s) for <b>'+C()+' '+m(d.rev)+'</b>. You sold: '+ts.map(x=>x.qty+' '+esc(x.name)).join(', ')+'.'+(d.credit>0?' Customers have not paid <b>'+C()+' '+m(d.credit)+'</b> yet.':''):'You have not made any sale today yet.'}</p>`},
 
-sell(){const cr=D.sales.filter(x=>x.pay==='credit'&&!x.paidOn),t=today();
+sell(){const cr=[],t=today();
  return`<h1>Sales</h1><form class="f" onsubmit="return F.sell(event)"><div><label>Product or service</label><select name="pid" id="sp" onchange="F.fillPrice()" required>${prodOpts()||'<option value="">Add a product first</option>'}</select></div>
 <div class="r2"><div><label>Quantity</label><input name="qty" type="number" min="0.01" step="any" value="1" required></div><div><label>Price each (${C()})</label><input name="price" id="spr" type="number" min="0" step="any" required></div></div>
-<div class="r2"><div><label>Paid</label><select name="pay"><option value="cash">Cash / mobile money</option><option value="credit">On credit (pay later)</option></select></div><div><label>Date</label><input name="date" type="date" value="${t}" required></div></div><button class="btn">Save sale</button></form>
+<div><label>Date</label><input name="date" type="date" value="${t}" required></div><input type="hidden" name="pay" value="cash"><p style="margin:0">Customer takes it and pays later? Add it in <a href="#" onclick="go('credit');return false" style="color:var(--ink);font-weight:600;text-decoration:underline">Customers</a>.</p><button class="btn">Save sale</button></form>
 ${cr.length?`<h2>Customers who owe you</h2>${tbl(['Date','Item','#Amount',''],cr.map(x=>`<tr><td>${x.date}</td><td>${esc(x.name)} ×${x.qty}</td><td class="n">${m(x.qty*x.price)}</td><td><button class="btn sm" onclick="F.paid('${x.id}')">Mark paid</button></td></tr>`))}`:''}
 <h2>Recent sales</h2>${tbl(['Date','Item','#Qty','#Total','Paid',''],[...D.sales].reverse().slice(0,40).map(x=>`<tr><td>${x.date}</td><td>${esc(x.name)}</td><td class="n">${x.qty}</td><td class="n">${m(x.qty*x.price)}</td><td>${x.pay==='cash'?'Cash':x.paidOn?'Credit (paid)':'Credit'}</td><td><button class="btn del" onclick="F.del('sales','${x.id}')">Delete</button></td></tr>`))}`},
 
@@ -520,14 +929,14 @@ cash(){const f=window.cf||mstart(),t=window.ct||today(),e=cashEntries(),op=e.fil
 <div id="tcat"><label>Expense category</label><select name="cat">${CATS.map(c=>`<option>${c}</option>`).join('')}</select></div>
 <div class="r2"><div><label>Description</label><input name="desc"></div><div><label>Date</label><input name="date" type="date" value="${today()}" required></div></div><button class="btn">Add to cashbook</button></form>
 <p style="margin-top:12px">Sales, collections and stock purchases are added automatically. Add your starting money as "Capital added by owner".</p>
-<div class="row noprint" style="margin:12px 0"><div><label>From</label><input type="date" value="${f}" onchange="cf=this.value;render()"></div><div><label>To</label><input type="date" value="${t}" onchange="ct=this.value;render()"></div><button class="btn alt" onclick="print()">Print</button></div>
+<div class="row noprint" style="margin:12px 0"><div><label>From</label><input type="date" value="${f}" onchange="cf=this.value;render()"></div><div><label>To</label><input type="date" value="${t}" onchange="ct=this.value;render()"></div><button class="btn alt" onclick="F.prt()">Print</button></div>
 <div class="tw"><table><tr><th>Date</th><th>Details</th><th class="n">Money in</th><th class="n">Money out</th><th class="n">Balance</th><th></th></tr><tr class="sec"><td></td><td>Balance brought forward</td><td></td><td></td><td class="n">${m(op)}</td><td></td></tr>${rows.join('')}</table></div>`},
 
 reports(){const f=window.rf||mstart(),t=window.rt||today(),s=st(f,t),o=st(ALL,dayBefore(f)),bo=bal(dayBefore(f)),bc=bal(t),c=C();
  const R=(l,v,k='')=>`<tr class="${k}"><td>${l}</td><td class="n ${k==='tot'?cls(v):''}">${m(v)}</td></tr>`,S=l=>`<tr class="sec"><td>${l}</td><td></td></tr>`;
  const T=(title,body)=>`<div class="doc"><h2>${title}</h2><p>${esc(D.biz.name)} · ${f} to ${t} · ${c}</p><div class="tw"><table>${body}</table></div></div>`;
  const opCash=bo.cash,cfo=s.cashSales+s.collect-s.exp-s.stock,cfi=-s.asset,cff=s.cap+s.loan-s.repay-s.draw;
- return`<h1>Financial statements</h1><div class="row noprint" style="margin-bottom:16px"><div><label>From</label><input type="date" value="${f}" onchange="rf=this.value;render()"></div><div><label>To</label><input type="date" value="${t}" onchange="rt=this.value;render()"></div><button class="btn" onclick="print()">Print / Save PDF</button></div>
+ return`<h1>Financial statements</h1><div class="row noprint" style="margin-bottom:16px"><div><label>From</label><input type="date" value="${f}" onchange="rf=this.value;render()"></div><div><label>To</label><input type="date" value="${t}" onchange="rt=this.value;render()"></div><button class="btn" onclick="F.prt()">Print / Save PDF</button></div>
 ${T('1. Income statement (Profit & Loss)',S('Revenue')+R('Sales',s.rev)+S('Cost of goods sold')+R('Cost of items sold',s.cogs)+R('Gross profit',s.gross,'tot')+S('Other losses')+R('Damaged / lost stock',s.dmg)+S('Operating expenses')+Object.entries(s.expBy).map(([k,v])=>R(esc(k),v)).join('')+R('Total expenses',s.exp)+R(s.net>=0?'Net profit':'Net loss',s.net,'tot'))}
 ${T('2. Balance sheet as at '+t,S('Assets')+R('Cash and mobile money',bc.cash)+R('Money owed by customers',bc.ar)+R('Stock (inventory) at cost',bc.inv)+R('Equipment and other assets',bc.eqp)+R('Total assets',bc.assets,'tot')+S('Liabilities')+R('Loans outstanding',bc.loan)+S('Owner’s equity')+R('Capital introduced',bc.cap)+R('Retained profit / (loss)',bc.ret)+R('Less: owner drawings',-bc.draw)+R('Total equity',bc.eq,'tot')+R('Total liabilities and equity',bc.le,'tot'))}
 ${T('3. Cash flow statement',S('Operating activities')+R('Cash from sales and collections',s.cashSales+s.collect)+R('Expenses paid',-s.exp)+R('Stock purchased',-s.stock)+R('Net cash from operating',cfo,'tot')+S('Investing activities')+R('Equipment bought',-s.asset)+R('Net cash from investing',cfi,'tot')+S('Financing activities')+R('Capital introduced',s.cap)+R('Loans received',s.loan)+R('Loans repaid',-s.repay)+R('Owner drawings',-s.draw)+R('Net cash from financing',cff,'tot')+R('Net change in cash',cfo+cfi+cff,'tot')+R('Cash at start',opCash)+R('Cash at end',opCash+cfo+cfi+cff,'tot'))}
@@ -541,18 +950,31 @@ ${T('4. Statement of changes in equity',R('Equity at start of period',bo.eq)+R('
 <p><b>6. Loans.</b> Loans received less repayments. Interest paid should be recorded as an expense.</p>
 <p><b>7. Owner’s notes.</b> ${esc(D.notes)||'None.'}</p></div></div>`},
 
-settings(){const b=D.biz;return`<h1>Settings</h1><div class="card" style="margin-bottom:12px"><h3>Cloud backup</h3><p>${cloudOn()?'On. Your data is backed up to your account and updates automatically.':'Off. Your data is kept only on this phone. Turn it on to back it up and open it on other phones.'}</p>${cloudOn()?'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn sm" onclick="F.cloudNow()">Back up now</button><button class="btn sm alt" onclick="F.cloudDisable()">Turn off</button></div>':'<button class="btn sm" onclick="F.cloudEnable()">Turn on cloud backup</button>'}</div><div class="card" style="margin-bottom:12px"><h3>Team (Pro)</h3>${db.u[me].own?`<p>Your Business ID. Give it to your workers. They tap "Join as a worker", enter their email, a password and this ID, then you approve them below.</p><div class="card" style="background:var(--bg);text-align:center;margin-bottom:10px"><strong style="letter-spacing:.12em">${esc(db.u[me].own.code)}</strong></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0"><button class="btn sm" onclick="F.teamShare()">Share ID</button><button class="btn sm alt" onclick="F.teamNew()">New ID</button><button class="btn sm alt" onclick="F.teamOff()">Turn off</button></div><button class="btn sm" onclick="go('workers')">Manage workers</button>`:`<p>Let workers add sales and damaged items from their own phones. You approve every worker first.</p><button class="btn sm" onclick="F.teamOn()">Turn on Team</button>`}</div><form class="f" onsubmit="return F.saveBiz(event)"><h3>Business details</h3><div><label>Business name</label><input name="name" value="${esc(b.name)}" required></div>
+settings(){const S=window.setSub||'',b=D.biz,ow=db.u[me].own,cl=cloudOn(),fr=planKey()==='free';
+ if(S==='biz')return`<h1>Business details</h1><form class="f" onsubmit="return F.saveBiz(event)"><div><label>Business name</label><input name="name" value="${esc(b.name)}" required></div><div class="r2"><div><label>Registration number</label><input name="reg" value="${esc(b.reg)}"></div><div><label>Tax ID / TIN</label><input name="tin" value="${esc(b.tin)}"></div></div><div class="r2"><div><label>Phone</label><input name="phone" value="${esc(b.phone)}"></div><div><label>Currency</label><select name="cur">${[...new Set([b.cur,...Object.keys(FX)])].map(c=>`<option${c===b.cur?' selected':''}>${c}</option>`).join('')}</select></div></div><div><label>Address</label><input name="addr" value="${esc(b.addr)}"></div><div><label>Extra notes for your financial statements</label><textarea name="notes" rows="3">${esc(D.notes)}</textarea></div><button class="btn">Save</button></form>`;
+ if(S==='cloud')return`<h1>Cloud backup</h1><div class="hero"><div class="ic">${sIc('cloud')}</div><span class="pill ${cl?'on':''}">${cl?'On':'Off'}</span></div><p style="text-align:center;margin-top:16px">${cl?'On. Your data is backed up to your Biz Books account about every 30 minutes and when you leave the app. You can open it on other phones.':fr?'Off. Cloud backup is part of Business Pro. Your data is kept only on this phone.':'Off. Your data is kept only on this phone. Turn it on to back it up and open it on other phones.'}</p>${cl?'<ul class="fl"><li>Backed up to your account</li></ul><button class="btn big" onclick="F.cloudNow()">Back up now</button><button class="btn big alt" style="margin-top:10px" onclick="F.cloudDisable()">Turn off</button>':'<ul class="fl"><li>Open your business on other phones</li><li>Get your records back if your phone is lost</li><li>Backs up by itself</li></ul><button class="btn big" onclick="F.cloudEnable()">Turn on cloud backup</button>'}`;
+ if(S==='dl')return`<h1>Download PDF</h1><p>${fr?'PDF downloads are part of Business Pro. Choose a plan to turn them on.':'Save your records as a PDF on this phone.'}</p><button class="btn big" onclick="F.pdfAll()" style="margin:8px 0 4px">Download everything</button><h2 class="st-g">One by one</h2>${sRow('dl','Sales','Every sale with profit and who sold it',"F.pdfAll('sales')")}${sRow('dl','Damaged items','Losses and reasons',"F.pdfAll('damaged')")}${sRow('dl','Products','Prices, stock and stock value',"F.pdfAll('products')")}${sRow('dl','Cashbook','Money in and out with balance',"F.pdfAll('cashbook')")}${sRow('dl','Reports','Sales summary, income, balance sheet, cash flow',"F.pdfAll('reports')")}${sRow('dl','Workers','Performance, stats and attendance',"F.pdfAll('workers')")}`;
+ if(S==='team')return`<h1>Team (Pro)</h1>${ow?`<p>Your Business ID. Give it to your workers. They tap "Join as a worker", enter their email, a password and this ID, then you approve them in Workers.</p><div class="idc"><span>Business ID</span><b>${esc(ow.code)}</b></div>${sRow('share','Share ID','Send the link to your workers',"F.teamShare()")}${sRow('ref','New ID','The old ID stops working',"F.teamNew()")}<button class="st-r red" onclick="F.teamOff()">${sIc('off')}<span>Turn off Team<small>Workers lose access</small></span></button>`:`<div class="hero"><div class="ic">${sIc('team')}</div><span class="pill">Off</span></div><p style="text-align:center;margin-top:16px">Let workers add sales and damaged items from their own phones. You approve every worker first.</p><ul class="fl"><li>Workers send sales and damaged items</li><li>You approve every worker first</li><li>See each worker's sales, hours and losses</li></ul><button class="btn big" onclick="F.teamOn()">Turn on Team</button>`}`;
+ const h=t=>`<h2 class="st-g">${t}</h2>`;
+ return`${h('Business')}${sRow('biz','Business details','',"sGo('biz')")}${sRow('team','Team (Pro)',ow?'On':'Off',"sGo('team')")}${isInst()?'':h('App')+sRow('dl','Install Menya Books','Add it to your home screen',"F.install()")}${h('Backup')}${sRow('cloud','Cloud backup',cl?'On':'Off · Business Pro',"sGo('cloud')")}${sRow('dl','Download PDF',fr?'Business Pro':'Everything, or one part at a time',"sGo('dl')")}${sRow('dl','Download backup','Save a copy on this phone',"F.exp()")}<label class="st-r">${sIc('up')}<span>Restore backup<small>Load a copy from this phone</small></span><input type="file" accept=".json" hidden onchange="F.imp(event)"></label>${(db.u[me]||{}).cloud?sRow('del','Delete backup','Remove the copy in the cloud',"F.cloudDisable()"):''}${h('Account')}${sRow('del','Delete my account','Removes your login and all your data',"F.wipe()")}`},
+settingsOld(){const b=D.biz;return`<h1>Settings</h1><div class="card" style="margin-bottom:12px"><h3>Cloud backup</h3><p>${cloudOn()?'On. Your data is backed up to your account and updates automatically.':'Off. Your data is kept only on this phone. Turn it on to back it up and open it on other phones.'}</p>${cloudOn()?'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn sm" onclick="F.cloudNow()">Back up now</button><button class="btn sm alt" onclick="F.cloudDisable()">Turn off</button></div>':'<button class="btn sm" onclick="F.cloudEnable()">Turn on cloud backup</button>'}</div><div class="card" style="margin-bottom:12px"><h3>Team (Pro)</h3>${db.u[me].own?`<p>Your Business ID. Give it to your workers. They tap "Join as a worker", enter their email, a password and this ID, then you approve them below.</p><div class="card" style="background:var(--bg);text-align:center;margin-bottom:10px"><strong style="letter-spacing:.12em">${esc(db.u[me].own.code)}</strong></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0"><button class="btn sm" onclick="F.teamShare()">Share ID</button><button class="btn sm alt" onclick="F.teamNew()">New ID</button><button class="btn sm alt" onclick="F.teamOff()">Turn off</button></div>`:`<p>Let workers add sales and damaged items from their own phones. You approve every worker first.</p><button class="btn sm" onclick="F.teamOn()">Turn on Team</button>`}</div><form class="f" onsubmit="return F.saveBiz(event)"><h3>Business details</h3><div><label>Business name</label><input name="name" value="${esc(b.name)}" required></div>
 <div class="r2"><div><label>Registration number</label><input name="reg" value="${esc(b.reg)}"></div><div><label>Tax ID / TIN</label><input name="tin" value="${esc(b.tin)}"></div></div>
 <div class="r2"><div><label>Phone</label><input name="phone" value="${esc(b.phone)}"></div><div><label>Currency</label><input name="cur" value="${esc(b.cur)}" maxlength="5" required></div></div>
 <div><label>Address</label><input name="addr" value="${esc(b.addr)}"></div><div><label>Extra notes for your financial statements</label><textarea name="notes" rows="3">${esc(D.notes)}</textarea></div><button class="btn">Save</button></form>
 <h2>Backup</h2><p>Your records are saved on this device. Download a backup regularly.</p><div class="row"><button class="btn alt" onclick="F.exp()">Download backup</button><label class="btn alt" style="margin:0;cursor:pointer;color:var(--ink)">Restore backup<input type="file" accept=".json" hidden onchange="F.imp(event)"></label><button class="btn del" onclick="F.wipe()">Delete all my data</button></div>`}
 };
 function cashEntries(){const e=[];D.sales.forEach(x=>{if(x.pay==='cash')e.push({date:x.date,d:`Sale: ${x.name} ×${x.qty}`,i:x.qty*x.price,o:0});else if(x.paidOn)e.push({date:x.paidOn,d:`Paid by customer: ${x.name}`,i:x.qty*x.price,o:0})});
- D.tx.forEach(x=>{const inn=['capital','loan'].includes(x.type);e.push({id:x.id,date:x.date,d:`${TXT[x.type]}${x.cat&&x.type==='expense'?' – '+x.cat:''}${x.desc?': '+x.desc:''}`,i:inn?x.amt:0,o:inn?0:x.amt})});
+ D.tx.forEach(x=>{const inn=['capital','loan','collect'].includes(x.type);e.push({id:x.id,date:x.date,d:`${TXT[x.type]}${x.cat&&x.type==='expense'?' – '+x.cat:''}${x.desc?': '+x.desc:''}`,i:inn?x.amt:0,o:inn?0:x.amt})});
  return e.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
 
 /* ---------- actions ---------- */
+let IP=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;if(D)render()});
+window.addEventListener('appinstalled',()=>{IP=null;toast('Saved · App installed');if(D)render()});
+const isInst=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 const F={
+async install(){if(IP){IP.prompt();await IP.userChoice.catch(()=>{});IP=null;render();return}await dlg({title:'Install Menya Books',text:'Open the Chrome menu (⋮) and tap "Install app" or "Add to Home screen".',ok:'OK'})},
 async signup(e){e.preventDefault();if(e.target.classList.contains('s1')){F.next();return false}const v=fd(e),k=v.email.trim().toLowerCase();bbBusy=1;spin(1);if((v.pw||'').length<6)return bbBusy=0,toast('Password must be at least 6 characters'),false;try{await bbAuth.createUserWithEmailAndPassword(k,v.pw)}catch(x){return bbBusy=0,toast(authErr(x)),false}await bbAuth.currentUser.updateProfile({displayName:v.name}).catch(()=>{});
  db.u[k]={name:v.name,d:{biz:{name:v.bname,type:v.btype,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,country:v.country,cur:v.cur.toUpperCase(),owner:v.name},products:[],sales:[],damages:[],tx:[],notes:''}};
  save();bbBusy=0;spin(0);track('sign_up');F.enter(k);return false},
@@ -562,19 +984,38 @@ async login(e){e.preventDefault();spin(1);const v=fd(e),k=v.email.trim().toLower
   return toast(authErr(x)),false}
  track('login');return false},
 async reset() { const r = await dlg({ title: 'Reset password', text: 'We will email you a link to choose a new password.', ok: 'Send link', fields: [{ label: 'Email', type: 'email' }] }); if (!r) return; try { await bbAuth.sendPasswordResetEmail(r[0].trim()) } catch (x) { return toast(authErr(x)) } toast('Check your email') },
- next() { const f = document.querySelector('form.f');if([...f.querySelectorAll('.st1 input')].every(i=>i.reportValidity())){f.classList.replace('s1','s2');scrollTo(0,0)}},
-back(){document.querySelector('form.f').classList.replace('s2','s1');scrollTo(0,0)},
+ next() { const f = document.querySelector('form.f');if([...f.querySelectorAll('.st1 input')].every(i=>i.reportValidity())){f.classList.replace('s1','s2');scrollTo(0,0);hist()}},
+back(){document.querySelector('form.f').classList.replace('s2','s1');scrollTo(0,0);hist()},
 enter(k){me=k;D=db.u[k].d;localStorage.setItem(SK,k);page='home';render()},
 async teamOn(){if(!await dlg({title:'Turn on Team?',text:'Your product names and selling prices (not your costs) will be shared so workers can pick items. Workers can only add sales and damaged items, and only after you approve them.',ok:'Turn on'}))return;spin(1);const u=bbAuth.currentUser,code='BB'+Array.from(crypto.getRandomValues(new Uint8Array(6)),b=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b%32]).join('');try{await bbDb.collection('bb_invites').doc(code).set({owner:u.uid,name:D.biz.name});await bbDb.collection('bb_teams').doc(u.uid).set(teamDoc(code));db.u[me].own={code};localStorage.setItem(K,JSON.stringify(db));startTeam();toast('Team is on')}catch(x){toast(authErr(x))}spin(0);render()},
 teamShare(){const l=teamLink();if(navigator.share)navigator.share({title:'Join '+D.biz.name,text:'Join my team on Biz Books',url:l}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(l).then(()=>toast('Link copied'))},
 async teamNew(){if(!await dlg({title:'Make a new Business ID?',text:'The old ID stops working. Approved workers keep working.',ok:'New ID'}))return;spin(1);const u=bbAuth.currentUser,old=db.u[me].own.code,code='BB'+Array.from(crypto.getRandomValues(new Uint8Array(6)),b=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b%32]).join('');try{await bbDb.collection('bb_invites').doc(code).set({owner:u.uid,name:D.biz.name});await bbDb.collection('bb_invites').doc(old).delete();db.u[me].own.code=code;localStorage.setItem(K,JSON.stringify(db));teamPub()}catch(x){return toast(authErr(x))}spin(0);render()},
 async teamOff(){if(!await dlg({title:'Turn off Team?',text:'The link stops working and all workers lose access. Entries already in your books stay.',ok:'Turn off',danger:true}))return;spin(1);const tr=bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid);try{for(const w of TM)await tr.collection('members').doc(w.id).delete();await bbDb.collection('bb_invites').doc(db.u[me].own.code).delete();await tr.delete()}catch(x){return toast(authErr(x))}tw.forEach(f=>f());tw=[];TM=[];delete db.u[me].own;localStorage.setItem(K,JSON.stringify(db));spin(0);toast('Team is off');render()},
-async tmOk(id){if(!await dlg({title:'Approve this person?',text:'They will be able to add sales and damaged items to your books.',ok:'Approve'}))return;bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).update({status:'approved'}).then(()=>toast('Approved')).catch(x=>toast(authErr(x)))},
+async planFull(k){const p=planNow();if(await dlg({title:'Plan limit reached',text:k==='workers'?`Your ${p.n} plan allows ${p.w} worker(s). Upgrade to add more.`:`Your ${p.n} plan lets ${p.e} worker(s) send sales and damaged items. Upgrade to allow more.`,ok:'See plans'}))go('plans')},
+crPrice(){const p=D.products.find(x=>x.id===$('cps').value);$('cw').style.display=p?'none':'block';if(p)$('cpr').value=p.price},
+crAdd(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid),q=+v.qty,name=(v.cust||'').trim(),what=p?p.name:(v.what||'').trim();
+ if(!name)return toast('Enter the customer name'),false;
+ if(!what)return toast('Write what the customer took'),false;
+ if(!(q>0))return false;
+ if(p&&p.kind==='product'&&q>units(p))return toast(units(p)>0?'Only '+units(p)+' left. Restock this item first.':'This item is finished. Restock it first.'),false;
+ D.sales.push({id:uid(),date:v.date,pid:p?p.id:'',name:what,qty:q,price:+v.price,cost:p&&p.kind==='product'?p.cost:0,pay:'credit',cust:name,due:v.due||''});
+ save();toast('Saved · added to what customers owe you');render();return false},
+crPay(e){e.preventDefault();const v=fd(e),S=e.target.dataset.k,x=crData().find(y=>y.k===(S==='~'?'':S)),a=+v.amt;if(!x||!(a>0))return false;
+ if(a>x.ow+.005)return toast('That is more than the customer owes ('+m(x.ow)+')'),false;
+ D.tx.push({id:uid(),date:v.date,type:'collect',amt:a,cust:x.n,desc:x.n});save();toast('Saved · payment received');render();return false},
+planAsk(k){window.planSel=k;go('planinfo')},
+async planMail(){const wa=((document.getElementById('wa')||{}).value||'').trim();if(wa.replace(/\D/g,'').length<8){toast('Enter your WhatsApp number so we can text you');const e=document.getElementById('wa');if(e){e.classList.add('bad');e.scrollIntoView({block:'center'});e.focus()}return}try{localStorage.bb_wa=wa}catch(e){}try{const k0=window.planSel&&PLANS[window.planSel]?window.planSel:'p30',u0=bbAuth.currentUser;if(u0)window.prq=bbDb.collection('bb_plan_requests').doc(u0.uid+'_'+k0).set({uid:u0.uid,email:u0.email,wa:wa,biz:D.biz.name,plan:k0,price:priceTxt(PLANS[k0].p),cur:D.biz.cur,status:'new',t:FV()})}catch(e){}const k=window.planSel&&PLANS[window.planSel]?window.planSel:'p30',p=PLANS[k],u=bbAuth.currentUser,s='Business Pro request: '+p.n,b='Hello Biz Books team,\n\nI would like to get '+p.n+' ('+priceTxt(p.p)+' per month).\n\nBusiness: '+D.biz.name+'\nMy account email: '+((u&&u.email)||(db.u[me]||{}).email||'')+'\nMy WhatsApp: '+wa+'\n\nPlease message me on WhatsApp with the payment details so I can pay and start using '+p.n+'. Thank you.';try{await Promise.race([window.prq,new Promise(r=>setTimeout(r,3000))])}catch(e){}location.href='mailto:menyabusiness6@gmail.com?subject='+encodeURIComponent(s)+'&body='+encodeURIComponent(b)},
+async planAskOld(k){const p=PLANS[k],r=await dlg({title:'Choose '+p.n,text:`${priceTxt(p.p)} per month${D.biz.cur==='RWF'?'':' (base price '+p.p.toLocaleString()+' RWF)'}. Pay by MTN MoMo to YOUR_MOMO_NUMBER, then send your phone number here. We turn on your plan after we receive the payment.`,ok:'Send request',fields:[{label:'Your phone number',type:'tel'}]});if(!r)return;spin(1);const u=bbAuth.currentUser;try{await bbDb.collection('bb_plan_requests').add({uid:u.uid,email:u.email,biz:D.biz.name,plan:k,phone:r[0].trim(),t:FV()});toast('Sent to us. We will contact you after payment.')}catch(x){toast(authErr(x))}spin(0)},
+async tmEntry(id){const w=TM.find(x=>x.id===id);if(!w)return;const on=w.entry===false;if(on&&wkEntry().length>=planNow().e)return F.planFull('entry');bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).update({entry:on}).then(()=>toast('Saved')).catch(x=>toast(authErr(x)))},
+async tmOk(id){if(wkAppr().length>=planNow().w)return F.planFull('workers');if(!await dlg({title:'Approve this person?',text:'They will be able to add sales and damaged items to your books.',ok:'Approve'}))return;bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).update({status:'approved',entry:wkEntry().length<planNow().e}).then(()=>toast('Approved')).catch(x=>toast(authErr(x)))},
 async tmDel(id){if(!await dlg({title:'Remove this person?',text:'They will not be able to add anything.',ok:'Remove',danger:true}))return;bbDb.collection('bb_teams').doc(bbAuth.currentUser.uid).collection('members').doc(id).delete().then(()=>toast('Removed')).catch(x=>toast(authErr(x)))},
 wkPrice(){const p=(WT.products||[]).find(x=>x.id===$('wsp').value);if(p)$('wspr').value=p.price},
-async wkClock(){const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt),r={id:uid(),t:o?'out':'in',at:Date.now()};return F.wkSend('attend',r,()=>{if(o)o.outAt=r.at;else a.push({id:r.id,date:dstr(r.at),inAt:r.at,outAt:0})})},
+async wkClock(){const a=(D.att=D.att||[]),o=[...a].reverse().find(y=>!y.outAt),r={id:uid(),t:o?'out':'in',at:Date.now()};if(!o&&a.some(y=>y.date===today()))return toast('You already clocked in and out today. Come back tomorrow.'),false;return F.wkSend('attend',r,()=>{if(o)o.outAt=r.at;else a.push({id:r.id,date:dstr(r.at),inAt:r.at,outAt:0})})},
 async wkSend(kind,rec,fn){const pp=(WT.products||[]).find(x=>x.id===rec.pid);if(pp&&pp.left!=null&&rec.qty>pp.left)return toast(pp.left>0?'Only '+pp.left+' left. Tell the owner to restock.':'This item is finished. Tell the owner to restock.'),false;const t=db.u[me].team;spin(1);try{await bbDb.collection('bb_teams').doc(t.owner).collection('entries').doc(rec.id).set({by:bbAuth.currentUser.uid,byName:db.u[me].name,kind,rec,t:FV()});fn();save();toast(kind==='attend'?'Saved · '+(rec.t==='in'?'Clocked in':'Clocked out'):'Sent to the owner');render()}catch(x){toast(authErr(x))}spin(0);return false},
 wkSale(e){e.preventDefault();const v=fd(e),p=(WT.products||[]).find(x=>x.id===v.pid);if(!p)return false;const r={id:uid(),date:v.date,pid:p.id,qty:+v.qty,price:+v.price,pay:v.pay};return F.wkSend('sale',r,()=>D.sales.push({...r,name:p.name,cost:0}))},
+async wkPay(k,max){const y=((WT&&WT.owe)||[]).find(z=>z.k===k);if(!y)return;const r=await dlg({title:'Customer paid',text:y.n+' owes '+m(max)+'. Enter the amount the customer paid you. The owner will see that you received it.',ok:'Confirm payment',fields:[{label:'Amount received',type:'number',value:max}]});if(!r)return;const a=+r[0];if(!(a>0))return;if(a>max+.005)return toast('That is more than the customer owes ('+m(max)+')');
+ const rec={id:uid(),date:today(),cust:y.n,k,amt:a};return F.wkSend('payment',rec,()=>{(D.wpay=D.wpay||[]).push({id:rec.id,k,amt:a,at:Date.now()})})},
+wkCredit(e){e.preventDefault();const v=fd(e),p=(WT.products||[]).find(x=>x.id===v.pid),n=(v.cust||'').trim();if(!p)return false;if(!n)return toast('Enter the customer name'),false;const r={id:uid(),date:v.date,pid:p.id,qty:+v.qty,price:+v.price,pay:'credit',cust:n.slice(0,60),due:v.due||''};return F.wkSend('sale',r,()=>D.sales.push({...r,name:p.name,cost:0}))},
 wkDmg(e){e.preventDefault();const v=fd(e),p=(WT.products||[]).find(x=>x.id===v.pid);if(!p)return false;const r={id:uid(),date:v.date,pid:p.id,qty:+v.qty,why:v.why||''};return F.wkSend('damage',r,()=>D.damages.push({...r,name:p.name,cost:0}))},
 async joinGo(e){e.preventDefault();const v=fd(e),k=v.email.trim().toLowerCase(),c=localStorage.bb_join;
  if(db.u[k]&&db.u[k].role!=='worker')return toast('This email already has a business account. Use another email.'),false;
@@ -614,7 +1055,7 @@ padd(e,k){e.preventDefault();const v=fd(e),P=D.pers,a=+v.amt;if(!(a>0))return fa
 pneedAdd(e){e.preventDefault();const v=fd(e);D.pers.need.push({id:uid(),name:v.name.trim(),amt:+v.amt||0,done:false});save();toast('Added');render();return false},
 async pbuy(id){const x=D.pers.need.find(y=>y.id===id);if(!x||!await dlg({title:'Mark as bought?',text:'It will be added to your expenses so your totals stay right.',ok:'Yes, bought'}))return;x.done=true;D.pers.out.push({id:uid(),date:today(),amt:x.amt,cat:'Other',note:x.name});save();toast('Saved · Added to expenses');render()},
 async pdel(k,id){if(!await dlg({title:'Delete this?',text:'This entry will be removed and your totals will be updated.',ok:'Delete',danger:true}))return;D.pers[k]=D.pers[k].filter(x=>x.id!==id);save();toast('Deleted');render()},
-psum(){const P=D.pers,q=v=>{let s=String(v??'');if(/^[=+\-@]/.test(s)&&isNaN(s))s="'"+s;return'"'+s.replace(/"/g,'""')+'"'},row=r=>r.map(q).join(','),sum=r=>r.reduce((t,x)=>t+(+x.amt||0),0),mo={},desc=(x,y)=>x.date<y.date?1:-1;
+psum(){if(planKey()==='free')return dlg({title:'Download is part of Personal Pro',text:'Get Personal Pro to download your summary and back up your records.',ok:'See price'}).then(r=>{if(r)sGo('plan')});const P=D.pers,q=v=>{let s=String(v??'');if(/^[=+\-@]/.test(s)&&isNaN(s))s="'"+s;return'"'+s.replace(/"/g,'""')+'"'},row=r=>r.map(q).join(','),sum=r=>r.reduce((t,x)=>t+(+x.amt||0),0),mo={},desc=(x,y)=>x.date<y.date?1:-1;
  P.in.forEach(x=>{const k=x.date.slice(0,7);(mo[k]=mo[k]||{i:0,o:0}).i+=x.amt});
  P.out.forEach(x=>{const k=x.date.slice(0,7);(mo[k]=mo[k]||{i:0,o:0}).o+=x.amt});
  const cat=P.out.reduce((o,x)=>(o[x.cat]=(o[x.cat]||0)+x.amt,o),{});
@@ -626,9 +1067,9 @@ psum(){const P=D.pers,q=v=>{let s=String(v??'');if(/^[=+\-@]/.test(s)&&isNaN(s))
   row(['MONEY SPENT']),row(['Date','Category','What for','Amount']),...[...P.out].sort(desc).map(x=>row([x.date,x.cat,x.note,x.amt])),'',
   row(['WHAT I NEED']),row(['Item','Cost','Status']),...P.need.map(x=>row([x.name,x.amt,x.done?'Bought':'Still needed']))];
  const bl=new Blob(['\ufeff'+L.join('\r\n')],{type:'text/csv;charset=utf-8'}),lk=document.createElement('a');lk.href=URL.createObjectURL(bl);lk.download='my-money-summary-'+today()+'.csv';document.body.appendChild(lk);lk.click();lk.remove();setTimeout(()=>URL.revokeObjectURL(lk.href),4000);toast('Saved · Summary downloaded')},
-async cloudEnable(){if(!await dlg({title:'Back up to cloud?',text:'Your business data will be uploaded to your Biz Books account so you can open it on other phones. Only you can read it. You can turn this off at any time.',ok:'Turn on'}))return;spin(1);db.u[me].cloud=true;localStorage.setItem(K,JSON.stringify(db));try{await cloudPush();spin(0);toast('Cloud backup is on')}catch(x){db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));toast(authErr(x))}render()},
-async cloudNow(){spin(1);try{await cloudPush();toast('Backed up')}catch(x){toast(authErr(x))}spin(0)},
-async cloudDisable(){if(!await dlg({title:'Turn off cloud backup?',text:'Your data stays on this phone. The copy in the cloud will be deleted.',ok:'Turn off and delete',danger:true}))return;spin(1);try{await bbDb.collection('bb_users').doc(bbAuth.currentUser.uid).delete()}catch(x){return toast(authErr(x))}db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));spin(0);toast('Cloud backup is off');render()},
+async cloudEnable(){if(isP()&&planKey()==='free'){if(await dlg({title:'Keep your money records safe',text:'Personal Pro backs up your records to the cloud so you never lose them, and lets you open them on any phone and download your summary.',ok:'See price'}))sGo('plan');return}if(planKey()==='free'){if(await dlg({title:'Keep your business safe with Business Pro',text:'Cloud backup protects your records if your phone is lost, broken or stolen.\n\n• Open your business on any phone or computer\n• Get your sales, stock and cashbook back in minutes\n• Backup runs by itself, so you never forget\n\nBusiness Pro also helps you manage your business: add your workers, let them record sales and damaged items from their own phones, and see the sales, profit, losses and hours of every worker in one place.\n\nWithout Pro, your data stays on this phone only.',ok:'See prices'}))go('plans');return}if(!await dlg({title:'Back up to cloud?',text:'Your business data will be uploaded to your Biz Books account so you can open it on other phones. Backup runs about every 30 minutes and when you leave the app, not after every entry. Only you can read it. You can turn this off at any time.',ok:'Turn on'}))return;spin(1);db.u[me].cloud=true;localStorage.setItem(K,JSON.stringify(db));try{await cloudPush();spin(0);toast('Cloud backup is on')}catch(x){db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));toast(authErr(x))}render()},
+async cloudNow(){if(planKey()==='free')return F.cloudEnable();spin(1);try{await cloudPush();toast('Backed up')}catch(x){toast(authErr(x))}spin(0)},
+async cloudDisable(){if(!await dlg({title:'Turn off cloud backup?',text:'Your data stays on this phone. The copy in the cloud will be deleted.',ok:'Turn off and delete',danger:true}))return;spin(1);try{await cloudDel(bbAuth.currentUser)}catch(x){return toast(authErr(x))}db.u[me].cloud=false;localStorage.setItem(K,JSON.stringify(db));spin(0);toast('Cloud backup is off');render()},
 logout(){tw.forEach(f=>f());tw=[];TM=[];WS='';WT=null;bbAuth.signOut().catch(()=>{});localStorage.removeItem(SK);me=D=null;authTab='in';authView='land';render()},
 fillPrice(){const p=D.products.find(x=>x.id===$('sp').value);if(p)$('spr').value=p.price},
 async sell(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid);if(!p)return toast('Add a product first'),false;const q=+v.qty;
@@ -645,27 +1086,100 @@ async delProd(id){if(!await dlg({title:'Delete this item?',text:'Past sales stay
 dmg(e){e.preventDefault();const v=fd(e),p=D.products.find(x=>x.id===v.pid);if(!p)return toast('Add a product first'),false;if(+v.qty>units(p))return toast(units(p)>0?'Only '+units(p)+' left. Restock this item first.':'This item is finished. Restock it first.'),false;D.damages.push({id:uid(),date:v.date,pid:p.id,name:p.name,qty:+v.qty,cost:p.cost,why:v.why});save();toast('Saved');render();return false},
 addTx(e){e.preventDefault();const v=fd(e);D.tx.push({id:uid(),date:v.date,type:v.type,amt:+v.amt,desc:v.desc,cat:v.type==='expense'?v.cat:''});save();toast('Added');render();return false},
 async del(k,id){if(!await dlg({title:'Delete this record?',text:({sales:'This sale will be removed and the items go back into your stock. Your sales and profit will be updated.',damages:'This record will be removed and the items go back into your stock. Your loss and profit will be updated.'})[k]||'This entry will be removed from your cashbook. Your balances and profit will be updated.',ok:'Delete',danger:true}))return;D[k]=D[k].filter(x=>x.id!==id);save();toast('Deleted');render()},
-saveBiz(e){e.preventDefault();const v=fd(e);Object.assign(D.biz,{name:v.name,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,cur:v.cur.toUpperCase()});D.notes=v.notes;save();toast('Saved');render();return false},
-exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download='bizbooks-backup-'+today()+'.json';a.click()},
+async saveBiz(e){e.preventDefault();const v=fd(e),nc=v.cur.toUpperCase(),oc=D.biz.cur;if(nc!==oc){if(!fxRate(nc)||!fxRate(oc))return toast('This currency cannot be converted. Choose another one.'),false;if(!await dlg({title:'Change currency to '+nc+'?',text:'All your amounts will be converted from '+oc+' to '+nc+' using the current exchange rate: products, sales, damaged items, cashbook and customer credit. Pro plan prices will show in '+nc+'.',ok:'Convert'}))return false;spin(1);convCur(oc,nc);spin(0)}Object.assign(D.biz,{name:v.name,reg:v.reg,tin:v.tin,phone:v.phone,addr:v.addr,cur:v.cur.toUpperCase()});D.notes=v.notes;save();toast('Saved');render();return false},
+async pdfAll(which) {
+  if (planKey() === 'free') { if (await dlg({ title: 'PDF download is part of Business Pro', text: 'Download your sales, damaged items, products, cashbook, reports and worker stats as PDF.\n\nChoose a plan to turn it on.', ok: 'See prices' })) go('plans'); return }
+ if(!window.jspdf||!window.jspdf.jsPDF)return toast('No internet. Connect once to make the PDF');
+ try{
+ const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'pt',format:'a4'}),c=C(),t=today(),at=D.att||[],
+ z=s=>String(s??'').replace(/[\u202f\u00a0]/g,' ').replace(/[^\x20-\xFF\u2013\u2014\u2018\u2019\u201C\u201D]/g,'?'),
+ nm=s=>s&&s.includes(' · ')?s.split(' · ').pop():'',
+ bk=n=>{const d=new Date();d.setDate(d.getDate()-n);return dstr(d.getTime())},
+ first=s=>String(s||'').split(' · ')[0];
+ const W=k=>!which||which===k,NAMES={sales:'Sales',damaged:'Damaged and lost items',products:'Products and services',cashbook:'Cashbook',reports:'Reports',workers:'Workers'};
+ let started=false;
+ const S=(title,head,body,nums=[],foot)=>{
+  let y=started?doc.lastAutoTable.finalY+38:112;
+  if(y>680){doc.addPage();y=56}
+  doc.setFontSize(14);doc.setTextColor(17,19,23);doc.text(z(title),40,y);
+  const cs={},al=i=>nums.includes(i)?'right':'left',has=body.length>0;nums.forEach(i=>cs[i]={halign:'right'});
+  doc.autoTable({startY:y+10,theme:'grid',
+   head:[head.map((h,i)=>({content:z(h).toUpperCase(),styles:{halign:al(i)}}))],
+   body:has?body.map(r=>r.map(z)):[[{content:'Nothing here yet.',colSpan:head.length,styles:{halign:'left',textColor:[110,118,132]}}]],
+   foot:has&&foot?[foot.map((f,i)=>({content:z(f),styles:{halign:al(i)}}))]:undefined,
+   styles:{fontSize:9.5,cellPadding:{top:7,bottom:7,left:8,right:8},textColor:[17,19,23],lineColor:[225,228,233],lineWidth:.7,valign:'middle'},
+   headStyles:{fillColor:[244,245,247],textColor:[100,108,122],fontStyle:'bold',fontSize:8},
+   footStyles:{fillColor:[244,245,247],textColor:[17,19,23],fontStyle:'bold'},
+   alternateRowStyles:{fillColor:[255,255,255]},
+   columnStyles:cs,margin:{left:40,right:40},
+   didParseCell:d=>{if(d.section==='body'&&nums.includes(d.column.index)&&/^-\d/.test(String(d.cell.raw)))d.cell.styles.textColor=[200,30,30]}});
+  started=true};
+ doc.setFontSize(22);doc.setTextColor(17,19,23);doc.text(z(D.biz.name||'Biz Books'),40,54);
+ doc.setFontSize(10);doc.setTextColor(100);doc.text(z((which?NAMES[which]:'All records')+' · '+t+' · amounts in '+c),40,70);
+ if(W('sales')){
+  const sales=[...D.sales].sort((a,b)=>a.date<b.date?1:-1);
+  S('Sales',['Date','Item','Qty','Total','Profit','Paid','Sold by'],sales.map(x=>[x.date,first(x.name),x.qty,m(x.qty*x.price),m(x.qty*(x.price-x.cost)),x.pay==='cash'?'Cash':x.paidOn?'Credit (paid)':'Credit',x.wn||nm(x.name)||'Owner']),[2,3,4],
+   ['','Total',sales.reduce((s,x)=>s+x.qty,0),m(sales.reduce((s,x)=>s+x.qty*x.price,0)),m(sales.reduce((s,x)=>s+x.qty*(x.price-x.cost),0)),'','']);
+ }
+ if(W('damaged')){
+  S('Damaged and lost items',['Date','Item','Qty','Loss at cost','Reason','Reported by'],[...D.damages].sort((a,b)=>a.date<b.date?1:-1).map(x=>[x.date,x.name,x.qty,m(x.qty*x.cost),first(x.why),x.wn||nm(x.why)||'Owner']),[2,3],
+   ['','Total','',m(D.damages.reduce((s,x)=>s+x.qty*x.cost,0)),'','']);
+ }
+ if(W('products')){
+  S('Products and services',['Name','Type','Cost','Price','In stock','Stock value'],D.products.map(p=>{const u=units(p),pr=p.kind==='product';return[p.name,p.kind,m(p.cost),m(p.price),pr?u:'-',pr?m(u*p.cost):'-']}),[2,3,4,5],
+   ['','','','','Total',m(D.products.filter(p=>p.kind==='product').reduce((s,p)=>s+units(p)*p.cost,0))]);
+ }
+ if(W('cashbook')){
+  let run=0;
+  S('Cashbook',['Date','Details','Money in','Money out','Balance'],cashEntries().map(x=>{run+=x.i-x.o;return[x.date,x.d,x.i?m(x.i):'',x.o?m(x.o):'',m(run)]}),[2,3,4]);
+ }
+ const P=[['Today',t],['Last 7 days',bk(6)],['This month',mstart()],['All time',ALL]];
+ if(W('reports')){
+  S('Sales summary by period',['Period','Sales','Amount','Profit','Damaged loss'],P.map(([l,f])=>{const a=D.sales.filter(x=>x.date>=f&&x.date<=t),d=D.damages.filter(x=>x.date>=f&&x.date<=t);return[l,a.length,m(a.reduce((s,x)=>s+x.qty*x.price,0)),m(a.reduce((s,x)=>s+x.qty*(x.price-x.cost),0)),m(d.reduce((s,x)=>s+x.qty*x.cost,0))]}),[1,2,3,4]);
+  const s=st(ALL,t),b=bal(t),cfo=s.cashSales+s.collect-s.exp-s.stock,cfi=-s.asset,cff=s.cap+s.loan-s.repay-s.draw;
+  S('Income statement (all time)',['Item','Amount'],[['Sales',m(s.rev)],['Cost of items sold',m(s.cogs)],['Gross profit',m(s.gross)],['Damaged / lost stock',m(s.dmg)],...Object.entries(s.expBy).map(([k,v])=>['Expense: '+k,m(v)]),['Total expenses',m(s.exp)],[s.net>=0?'Net profit':'Net loss',m(s.net)]],[1]);
+  S('Balance sheet as at '+t,['Item','Amount'],[['Cash and mobile money',m(b.cash)],['Money owed by customers',m(b.ar)],['Stock at cost',m(b.inv)],['Equipment and other assets',m(b.eqp)],['Total assets',m(b.assets)],['Loans outstanding',m(b.loan)],['Capital introduced',m(b.cap)],['Retained profit / (loss)',m(b.ret)],['Owner drawings',m(-b.draw)],['Total equity',m(b.eq)],['Total liabilities and equity',m(b.le)]],[1]);
+  S('Cash flow statement (all time)',['Item','Amount'],[['Cash from sales and collections',m(s.cashSales+s.collect)],['Expenses paid',m(-s.exp)],['Stock purchased',m(-s.stock)],['Net cash from operating',m(cfo)],['Equipment bought',m(-s.asset)],['Capital introduced',m(s.cap)],['Loans received',m(s.loan)],['Loans repaid',m(-s.repay)],['Owner drawings',m(-s.draw)],['Net change in cash',m(cfo+cfi+cff)]],[1]);
+ }
+ if(W('workers')){
+  const N=new Set();
+  TM.filter(w=>w.status==='approved').forEach(w=>N.add(w.name));D.sales.forEach(x=>{const n=x.wn||nm(x.name);if(n)N.add(n)});D.damages.forEach(x=>{const n=x.wn||nm(x.why);if(n)N.add(n)});at.forEach(x=>{if(x.wn)N.add(x.wn)});
+  P.forEach(([l,f],i)=>S('Worker performance: '+l,['Worker','Sales','Amount','Profit','Damaged loss','Days','Hours'],[...N].map(n=>{const r={c:0,a:0,p:0,l:0,d:new Set(),ms:0};
+   D.sales.forEach(x=>{if((x.wn||nm(x.name))===n&&x.date>=f&&x.date<=t){r.c++;r.a+=x.qty*x.price;r.p+=x.qty*(x.price-x.cost)}});
+   D.damages.forEach(x=>{if((x.wn||nm(x.why))===n&&x.date>=f&&x.date<=t)r.l+=x.qty*x.cost});
+   at.forEach(x=>{if(x.wn===n&&x.date>=f&&x.date<=t){r.d.add(x.date);if(x.outAt)r.ms+=x.outAt-x.inAt}});
+   return[n,r.c,m(r.a),m(r.p),m(r.l),r.d.size,(r.ms/36e5).toFixed(1)]}),[1,2,3,4,5,6]));
+  S('Worker attendance',['Date','Worker','In','Out','Hours'],[...at].sort((a,b)=>b.inAt-a.inAt).map(x=>[x.date,x.wn||'',hm(x.inAt),x.outAt?hm(x.outAt):'-',x.outAt?((x.outAt-x.inAt)/36e5).toFixed(1):'-']),[4]);
+ }
+ const n=doc.internal.getNumberOfPages();
+ for(let i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(8);doc.setTextColor(120);doc.text('Page '+i+' of '+n,doc.internal.pageSize.getWidth()/2,820,{align:'center'})}
+ doc.save('bizbooks-'+(which||'all-records')+'-'+t+'.pdf');toast('PDF downloaded')
+ }catch(x){console.error(x);toast('Could not make the PDF')}
+},
+sg(i){const l=i.parentNode.querySelector('.sgl'),q=i.value.trim().toLowerCase(),a=JSON.parse(l.dataset.n||'[]').filter(n=>n.toLowerCase().includes(q)&&n.toLowerCase()!==q).slice(0,6);l.innerHTML=a.map(n=>`<button type="button" onmousedown="event.preventDefault()" onclick="F.sgp(this)">${esc(n)}</button>`).join('');l.hidden=!a.length},
+sgp(b){const w=b.closest('.sgw'),i=w.querySelector('input');i.value=b.textContent;w.querySelector('.sgl').hidden=true;i.focus()},
+sgx(i){const l=i.parentNode.querySelector('.sgl');if(l)l.hidden=true},
+async prt() { if (planKey() === 'free') { if (await dlg({ title: 'Printing and PDF are part of Business Pro', text: 'Choose a plan to turn them on.', ok: 'See prices' })) go('plans'); return } print() },
+ async exp() { if (planKey() === 'free') { if (await dlg({ title: 'Backup download is part of Business Pro', text: 'Choose a plan to turn it on.', ok: 'See prices' })) go('plans'); return } const a = document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download='bizbooks-backup-'+today()+'.json';a.click()},
 imp(e){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.biz||!d.sales)throw 0;db.u[me].d=D=d;save();toast('Restored');render()}catch{toast('Invalid backup file')}};r.readAsText(e.target.files[0])},
 async wipe(){const r=await dlg({title:'Delete your account?',text:'Your login and all your business data will be deleted for good.',ok:'Delete',danger:true,fields:[{label:'Confirm your password',type:'password'}]});if(!r)return;const u=bbAuth.currentUser;
- try{await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,r[0]));await bbDb.collection('bb_users').doc(u.uid).delete();bbBusy=1;await u.delete()}catch(x){bbBusy=0;return toast(authErr(x)),false}
+ try{await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,r[0]));await cloudDel(u);bbBusy=1;await u.delete()}catch(x){bbBusy=0;return toast(authErr(x)),false}
  bbBusy=0;delete db.u[me];localStorage.setItem(K,JSON.stringify(db));localStorage.removeItem(SK);me=D=null;authTab='in';authView='land';render()}
 };
 render();
 if(!sessionStorage.bb_s){sessionStorage.bb_s=1;track('visit')}
-{const jc=new URLSearchParams(location.search).get('join');if(jc){if(!D){localStorage.bb_join=jc;render()}history.replaceState(null,'',location.pathname)}}
+{const jc=new URLSearchParams(location.search).get('join');if(jc){if(!D){localStorage.bb_join=jc;render()}history.replaceState(history.state,'',location.pathname)}}
 bbAuth.onAuthStateChanged(async u=>{
  if(bbBusy)return;
  if(!u){if(me){localStorage.removeItem(SK);me=D=null;authView='land';render()}return}
  const k=(u.email||'').toLowerCase();let c=null;
- try{const s=await bbDb.collection('bb_users').doc(u.uid).get();if(s.exists)c=JSON.parse(s.data().d)}catch(x){}
+ try{c=await cloudPull(u)}catch(x){}
  const o=db.u[k];
- if(c&&(!o||(c._u||0)>((o.d||{})._u||0)))db.u[k]={name:u.displayName||'',d:c,cloud:true};
+ const swap=!!(c&&(!o||(c._u||0)>((o.d||{})._u||0)));if(c&&(!o||(c._u||0)>((o.d||{})._u||0)))db.u[k]=Object.assign({},o||{},{name:u.displayName||(o&&o.name)||'',d:c,cloud:true},c.pers?{role:'personal'}:{});
  else if(!o){toast('No data for this account on this phone. Turn on Cloud backup on your other phone first, or create a new account.');bbAuth.signOut();return}
  delete db.u[k].h;const fresh=me!==k;me=k;D=db.u[k].d;
  localStorage.setItem(SK,k);localStorage.setItem(K,JSON.stringify(db));
- if(fresh)page='home';spin(0);render();cloud();startTeam();
+ if(fresh)page='home';spin(0);if(fresh||swap)render();cloud();startTeam();
 });
 </script>
 </body>
