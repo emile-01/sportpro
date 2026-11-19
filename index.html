@@ -276,13 +276,18 @@ function parseM3U(t,cc){
   var o=[],L=t.split(/\r?\n/),m=null,seen={};
   for(var i=0;i<L.length;i++){var l=L[i].trim();
     if(l.indexOf("#EXTINF")===0){m={name:l.slice(l.lastIndexOf(",")+1).trim(),logo:(l.match(/tvg-logo="([^"]*)"/)||[])[1]||"",meta:(l.match(/group-title="([^"]*)"/)||[])[1]||""}}
-    else if(l&&l[0]!=="#"&&m){if(/^https?:/.test(l)&&!seen[l]){seen[l]=1;o.push({type:"tv",name:m.name,logo:m.logo,meta:m.meta,url:(location.protocol==="https:"?l.replace(/^http:/i,"https:"):l),cc:cc||""})}m=null}
+    else if(l&&l[0]!=="#"&&m){if(/^https?:/.test(l)&&!seen[l]){seen[l]=1;o.push({type:"tv",name:m.name,logo:m.logo,meta:m.meta,url:l,cc:cc||""})}m=null}
   }
   return o;
 }
+var BK=[
+{type:"tv",name:"KC2 (720p)",logo:"",meta:"Entertainment",cc:"RW",bk:1,url:"https://5c46fa289c89f.streamlock.net/kc2/kc2/chunklist.m3u8"},
+{type:"tv",name:"KC2 (720p)",logo:"",meta:"Entertainment",cc:"RW",bk:1,url:"http://197.243.19.131:1935/kc2/kc2/chunklist.m3u8"},
+{type:"tv",name:"RTV Rwanda (480p)",logo:"",meta:"General",cc:"RW",bk:1,url:"https://5c46fa289c89f.streamlock.net/rtv25/rtv/playlist.m3u8"},
+{type:"tv",name:"RTV Rwanda (480p)",logo:"",meta:"General",cc:"RW",bk:1,url:"http://197.243.19.131:1935/rtv25/rtv/chunklist.m3u8"}];
 function getTV(cc){
   if(cache["tv"+cc])return Promise.resolve(cache["tv"+cc]);
-  return fetch("https://iptv-org.github.io/iptv/countries/"+cc.toLowerCase()+".m3u").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){return cache["tv"+cc]=parseM3U(t,cc)}).catch(function(){return[]});
+  return fetch("https://iptv-org.github.io/iptv/countries/"+cc.toLowerCase()+".m3u").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){var a=parseM3U(t,cc);if(cc==="RW")BK.forEach(function(b){var x=a.filter(function(y){return y.url===b.url})[0];if(x)x.bk=1;else a.push(b)});return cache["tv"+cc]=a}).catch(function(){return[]});
 }
 var HOSTS=["https://de1.api.radio-browser.info","https://nl1.api.radio-browser.info","https://at1.api.radio-browser.info"];
 function rb(path){
@@ -303,15 +308,29 @@ function getIndex(){
   return fetch("https://iptv-org.github.io/iptv/index.m3u").then(function(r){return r.text()}).then(function(t){return cache.idx=parseM3U(t,"")}).catch(function(){return[]});
 }
 
+/* ---- custom channels (channels.json) ---- */
+var CU=[];
+function loadCustom(){
+  return fetch("channels.json?v="+Date.now()).then(function(r){return r.json()}).then(function(j){
+    ["tv","radio"].forEach(function(t){(j[t]||[]).forEach(function(x){
+      if(x&&x.name&&/^https?:/.test(x.url||""))CU.push({type:t,name:x.name,logo:x.logo||"",meta:x.meta||"",url:x.url,cc:(x.cc||"").toUpperCase(),cu:1})
+    })});
+  }).catch(function(){});
+}
+function mergeCU(l){
+  var mine=CU.filter(function(c){return !c.cc||c.cc===S.cc}),k={};
+  mine.forEach(function(c){k[c.type+"|"+c.name.toLowerCase()]=1;k[c.url]=1});
+  return mine.concat(l.filter(function(i){return !k[i.type+"|"+i.name.toLowerCase()]&&!k[i.url]}));
+}
 /* ---- live testing ---- */
 function fresh(u){var p=P[u];return !!p&&p[0]===1&&!p[3]&&Date.now()-p[1]<108e5}
-function alive(i){var p=P[i.url];return !!p&&p[0]===1}
+function alive(i){var p=P[i.url];return !!i.cu||(!!p&&p[0]===1)}
 function savePSoon(){if(savePSoon.t)return;savePSoon.t=setTimeout(function(){savePSoon.t=0;var k=Object.keys(P);if(k.length>5000)k.sort(function(a,b){return P[a][1]-P[b][1]}).slice(0,1500).forEach(function(x){delete P[x]});store.set("broad.probe",P)},2000)}
 function probe(i){
   return new Promise(function(res){
     var done=false,h=null,el=null,t;
     function fin(ok){if(done)return;done=true;clearTimeout(t);if(h){try{h.destroy()}catch(e){}}if(el){try{el.pause();el.removeAttribute("src");el.load()}catch(e){}}res(ok)}
-    t=setTimeout(function(){fin(false)},i.type==="tv"?20000:12000);
+    t=setTimeout(function(){fin(false)},i.bk?35000:(i.type==="tv"?20000:12000));
     var isH=/\.m3u8?(\?|$)/i.test(i.url)||i.url.indexOf("m3u8")>-1;
     if(isH&&window.Hls&&Hls.isSupported()){
       h=new Hls({manifestLoadingMaxRetry:1,levelLoadingMaxRetry:1,manifestLoadingTimeOut:9000,levelLoadingTimeOut:9000});
@@ -378,7 +397,7 @@ function load(){
     var qs=q.split(/\s+/).filter(Boolean),rad=[],tvl=[];
     function hit(i){var n=(i.name||"").toLowerCase();return qs.every(function(t){return n.indexOf(t)>-1})}
     function upd(l){if(id!==loadId)return;var seen={},a=[];l.forEach(function(i){if(!seen[i.url]){seen[i.url]=1;a.push(i)}});a.sort(function(x,y){return (x.name.toLowerCase().indexOf(q)===0?0:1)-(y.name.toLowerCase().indexOf(q)===0?0:1)});S.src=a;startProbe(S.src,id);render()}
-    var loc=(cache["tv"+S.cc]||[]).concat(cache["r"+S.cc]||[],cache.idx||[]).filter(hit).slice(0,60);
+    var loc=CU.concat(cache["tv"+S.cc]||[]).concat(cache["r"+S.cc]||[],cache.idx||[]).filter(hit).slice(0,60);
     if(loc.length)upd(loc);
     rb("/json/stations/search?name="+encodeURIComponent(S.search)+"&hidebroken=true&order=clickcount&reverse=true&limit=60&is_https=true").then(function(a){rad=mapRadio(a);upd(loc.concat(tvl,rad))});
     getIndex().then(function(a){tvl=a.filter(hit).slice(0,60);upd(loc.concat(tvl,rad))});
@@ -387,7 +406,7 @@ function load(){
   $("#list").innerHTML='<div class="msg">Loading…</div>';
   Promise.all([getTV(S.cc),getRadio(S.cc)]).then(function(r){
     if(id!==loadId)return;
-    S.src=r[0].concat(r[1]);startProbe(S.src,id);render();
+    S.src=mergeCU(r[0].concat(r[1]));startProbe(S.src,id);render();
   }).catch(function(){if(id===loadId)$("#list").innerHTML='<div class="msg">Could not load this list. Check your connection.</div>'});
 }
 
@@ -531,7 +550,7 @@ if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone&&!store.
 if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 
 /* ---- start ---- */
-loadCountries().then(function(){
+Promise.all([loadCountries(),loadCustom()]).then(function(){
   var p=new URLSearchParams(location.search),t=p.get("tab");
   if(t&&/^(all|tv|radio|fav|hist)$/.test(t))S.tab=t;
   load();
